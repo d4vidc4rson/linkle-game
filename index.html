@@ -2820,6 +2820,39 @@
         margin: 0 auto;
       }
     }
+
+    /* Very small screens (iPhone SE, etc.) */
+    @media (max-width: 400px) {
+      .daily-intro-screen {
+        padding: clamp(1.5rem, 5vw, 2rem) clamp(1rem, 4vw, 1.5rem); /* Reduced padding */
+      }
+      
+      /* Stack logomark and text vertically on very small screens */
+      .daily-intro-message-container {
+        flex-direction: column;
+        gap: 1em;
+        align-items: flex-start;
+      }
+      
+      /* Slightly reduce font sizes on very small screens */
+      .daily-intro-date {
+        font-size: 1.4em; /* Slightly smaller */
+      }
+      
+      .daily-intro-logomark {
+        width: 5.5em; /* Slightly smaller */
+      }
+      
+      .daily-intro-copy {
+        font-size: 1.4em; /* Slightly smaller */
+      }
+      
+      /* Reduce button padding on very small screens */
+      .daily-intro-play-button {
+        padding: 0.8em 2em; /* Reduced horizontal padding */
+        font-size: 1.7em; /* Slightly smaller */
+      }
+    }
   </style>
 <link rel="stylesheet" href="/index.css">
 </head>

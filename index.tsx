@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useBodyClasses } from './hooks/useBodyClasses';
@@ -9,6 +10,7 @@ import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './co
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './components/Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag } from './components/GameUI';
 import { GameBoard } from './components/GameBoard';
+import { DailyMode } from './components/DailyMode';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from './constants';
 
 const App = () => {
@@ -287,5 +289,20 @@ const App = () => {
     );
 };
 
+const RegularMode = () => {
+    return <App />;
+};
+
+const Root = () => {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/daily" element={<DailyMode />} />
+                <Route path="/*" element={<RegularMode />} />
+            </Routes>
+        </BrowserRouter>
+    );
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(<App />);
+root.render(<Root />);

@@ -67,7 +67,7 @@ export const useAuth = () => {
         return defaultPlayerData;
     }, []);
 
-    const saveGameState = useCallback(async (data: PlayerData) => {
+    const saveGameState = useCallback(async (data: PlayerData): Promise<{ success: boolean; error?: string }> => {
         try {
             if (user) {
                 // Create a clean copy to avoid saving Infinity to Firestore
@@ -79,8 +79,11 @@ export const useAuth = () => {
             } else {
                 localStorage.setItem('linklePlayerData', JSON.stringify(data));
             }
+            return { success: true };
         } catch (error) {
             console.error("Failed to save game state:", error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to save progress';
+            return { success: false, error: errorMessage };
         }
     }, [user]);
 
@@ -134,6 +137,12 @@ export const useAuth = () => {
                             fastestSolve = null;
                         }
 
+                        // Merge dailyResults - combine both sources
+                        const mergedDailyResults = {
+                            ...(saneRemoteData.dailyResults || {}),
+                            ...(localData.dailyResults || {}),
+                        };
+
                         finalPlayerData = {
                             ...defaultPlayerData,
                             totalScore: Math.max(localData.totalScore, saneRemoteData.totalScore),
@@ -151,6 +160,8 @@ export const useAuth = () => {
                             consecutivePerfects: Math.max(localData.consecutivePerfects || 0, saneRemoteData.consecutivePerfects || 0),
                             playedPuzzleIndices: [...new Set([...(localData.playedPuzzleIndices || []), ...(saneRemoteData.playedPuzzleIndices || [])])],
                             badges: mergedBadges,
+                            maxStreak: Math.max(localData.maxStreak || 0, saneRemoteData.maxStreak || 0),
+                            dailyResults: mergedDailyResults,
                         };
 
                     } else {

@@ -46,6 +46,8 @@ export const defaultPlayerData: PlayerData = {
     fastestEasySolve: null,
     impossiblePerfects: 0,
     consecutivePerfects: 0,
+    maxStreak: 0,
+    dailyResults: {},
 };
 
 export const LOSER_EMOJIS = ['😡', '🥵'];

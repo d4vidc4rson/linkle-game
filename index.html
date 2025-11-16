@@ -49,7 +49,7 @@
       --input-border: #2E2E2E;
       --box-bg-normal: #FFFFFF;
       --box-text-normal: #2E2E2E;
-      --box-bg-locked: #D2E499;
+      --box-bg-locked: #00bf63;
       --box-text-locked: #2E2E2E;
       --button-bg: #3966FF;
       --button-text: #FFFFFF;
@@ -78,7 +78,7 @@
       --input-border: #E9E2FF;
       --box-bg-normal: #7a7392;
       --box-text-normal: #FFFFFF;
-      --box-bg-locked: #D2E499;
+      --box-bg-locked: #00bf63;
       --box-text-locked: #2E2E2E;
       --button-bg: #3966FF;
       --button-text: #FFFFFF;
@@ -212,7 +212,7 @@
     }
     .mini-grid-tile {
         aspect-ratio: 1 / 1;
-        background-color: #D2E499;
+        background-color: #00bf63;
         border-radius: calc(var(--border-radius) / 2);
     }
     .mini-grid-tile.highlight {
@@ -274,8 +274,8 @@
         color: #2E2E2E;
     }
     .start-screen-container .button.button-signup {
-        background-color: #D2E499;
-        border-color: #D2E499;
+        background-color: #00bf63;
+        border-color: #00bf63;
         color: #2E2E2E;
     }
 
@@ -1729,7 +1729,7 @@
     /* TABLET STYLES */
     @media (min-width: 768px) {
       /* --- SCALING ROOTS --- */
-      .app-wrapper, .modal-overlay {
+      .app-wrapper, .modal-overlay, .daily-mode-wrapper {
         /* Set a font-size based on viewport height, with min/max caps */
         font-size: clamp(12px, 1.6vh, 20px);
       }
@@ -1753,9 +1753,7 @@
         justify-content: center;
         width: 100%;
       }
-      .main-content {
-          /* justify-content is now handled by app-wrapper */
-      }
+      /* justify-content is now handled by app-wrapper */
       
       .top-bar-container {
         width: 100vw;
@@ -1883,9 +1881,7 @@
         flex-grow: 0; /* Prevent stretching */
         justify-content: center;
       }
-      .game-board-wrapper {
-        /* Remove flex-grow properties to keep the unit from stretching */
-      }
+      /* Remove flex-grow properties from .game-board-wrapper to keep the unit from stretching */
       .bottom-content-container {
         margin-top: 2.5em;
       }
@@ -2104,6 +2100,210 @@
       100% { background-color: var(--background-color); }
     }
 
+    /* All Done Screen */
+    .all-done-screen {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .all-done-content {
+      max-width: calc(var(--grid-unit) * 63); /* 504px - matches #root max-width */
+      margin: 0 auto;
+      padding: 0 calc(var(--grid-unit) * 3);
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .all-done-content {
+        max-width: calc(var(--grid-unit) * 100); /* 800px */
+        padding: 0 calc(var(--grid-unit) * 4);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .all-done-content {
+        max-width: calc(var(--grid-unit) * 120); /* 960px */
+      }
+    }
+
+    .day-carousel-section {
+      width: 100vw;
+      margin-left: calc(50% - 50vw); /* Break out of parent container */
+      margin-right: calc(50% - 50vw);
+      margin-top: -12px; /* Moved up 12px on mobile */
+      padding: 0;
+      overflow-x: visible;
+    }
+
+    .day-carousel-scroll {
+      display: flex;
+      gap: calc(var(--grid-unit) * 1); /* 8px on mobile */
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 calc(var(--grid-unit) * 3); /* 24px on mobile */
+      scrollbar-width: none; /* Firefox - hide scrollbar */
+      -ms-overflow-style: none; /* IE and Edge - hide scrollbar */
+    }
+
+    .day-carousel-scroll::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera - hide scrollbar */
+    }
+
+    .day-carousel-card-wrapper {
+      flex: 0 0 min(calc(var(--grid-unit) * 41.75), 90vw); /* 334px or 90vw on mobile */
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    }
+
+    /* Mobile: Active card styling */
+    .day-carousel-card-wrapper.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .day-carousel-card-wrapper.inactive {
+      transform: scale(0.94);
+      opacity: 0.7;
+    }
+
+    @media (min-width: 768px) {
+      .day-carousel-scroll {
+        gap: 0.5em; /* Fluid gap for tablet/desktop */
+        padding: 0 1.5em; /* Fluid padding for tablet/desktop */
+        scroll-snap-type: none; /* Free scrolling on tablet/desktop */
+      }
+
+      .day-carousel-card-wrapper {
+        flex: 0 0 min(20.875em, 90vw); /* Fluid width for tablet/desktop */
+        scroll-snap-align: none; /* Remove snap alignment */
+        scroll-snap-stop: normal; /* Remove snap stop */
+      }
+
+      /* Tablet/Desktop: All cards same size, no scaling or opacity differences */
+      .day-carousel-card-wrapper.active,
+      .day-carousel-card-wrapper.inactive {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .day-carousel-section {
+        margin-top: 2em; /* Add spacing above carousel on desktop */
+      }
+    }
+
+    /* All Done Screen Quote */
+    .all-done-quote {
+      font-family: var(--font-ui);
+      font-size: clamp(1.75rem, 4vw, 2.5rem); /* Fluid scaling from 28px to 40px */
+      font-weight: 700;
+      text-align: center;
+      color: var(--primary-text);
+      margin: calc(var(--grid-unit) * 8 - 24px) 0 calc(var(--grid-unit) * 4) 0; /* Moved up 24px on mobile */
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+      .all-done-quote {
+        font-size: 3rem;
+        margin-top: 2em;
+        margin-bottom: 0.75em;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        text-align: center;
+      }
+    }
+
+    /* All Done Screen Stats Row */
+    .all-done-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: calc(var(--grid-unit) * 5);
+      margin-top: -12px; /* Moved up 12px on mobile (was 20px, now 8px down from that) */
+      margin-bottom: calc(var(--grid-unit) * 4);
+      width: 100%;
+      justify-items: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(var(--grid-unit) * 0.25); /* Reduced gap between number and label */
+      text-align: center;
+    }
+    .stat-value {
+      font-family: var(--font-ui);
+      font-size: clamp(1.875rem, 5vw, 3rem); /* Fluid scaling from 30px to 48px */
+      font-weight: 500;
+      color: var(--primary-text);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-ui);
+      font-size: clamp(0.875rem, 2.2vw, 1rem); /* Fluid scaling from 14px to 16px */
+      color: var(--primary-text);
+      text-transform: none;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+      .stat-value {
+        font-size: 2.5em;
+        font-weight: 500;
+      }
+      .stat-label {
+        font-size: 0.9em;
+      }
+      .all-done-stats-row {
+        gap: 3em;
+        margin: 0 auto 1.5em auto; /* Center horizontally */
+        grid-template-columns: repeat(4, auto);
+        width: fit-content;
+        max-width: 100%;
+      }
+    }
+
+    /* Play Missed Puzzles Button */
+    .play-missed-button {
+      background-color: #F5F5F5; /* Light gray/off-white */
+      color: #2E2E2E; /* Dark gray/black text */
+      border: 2px solid #2E2E2E; /* Thin dark border */
+      border-radius: 100px; /* Pill shape */
+      padding: clamp(1.25em, 3vw, 1.5em) clamp(3em, 7vw, 4em); /* Fluid padding scaling */
+      font-family: var(--font-ui);
+      font-size: clamp(1rem, 2.5vw, 1.25rem); /* Fluid scaling from 16px to 20px */
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin: calc(var(--grid-unit) * 2 + 4px) auto 0; /* Moved down 4px on mobile (was 4px up, now 8px down from that) */
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+    }
+
+    .play-missed-button:hover {
+      opacity: 0.9;
+      background-color: #E9E9E9;
+    }
+
+    .play-missed-button:active {
+      opacity: 0.8;
+    }
+
+    @media (min-width: 768px) {
+      .play-missed-button {
+        padding: 0.75em 2em;
+        font-size: 1em;
+        max-width: none;
+        width: auto;
+        margin-top: calc(var(--grid-unit) * 2); /* Reset mobile negative margin */
+      }
+    }
+
     /* MOBILE-ONLY STYLES */
     @media (max-width: 767px) {
       .app-container:not(.state-start) {
@@ -2161,6 +2361,444 @@
 
       .solved-feedback-container {
         padding-top: 0;
+      }
+    }
+
+    /* Day Card Styling */
+    .day-card {
+      background-color: #111111;
+      border-radius: calc(var(--grid-unit) * 1); /* 8px */
+      width: 100%;
+      height: calc(var(--grid-unit) * 56); /* Fixed height: 448px (56 × 8px) - ensures all cards same size */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* Prevent content overflow */
+    }
+
+    body[data-theme='dark'] .day-card-summary {
+      background-color: #7A7A9A; /* Muted purple-gray (dusty/slate purple) for dark mode */
+    }
+
+    .day-card-summary {
+      padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 3.5) calc(var(--grid-unit) * 3); /* 12px top, 24px sides, 28px bottom */
+      gap: calc(var(--grid-unit) * 1.25); /* 10px - slightly reduced */
+    }
+
+    .day-card-header-summary {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-align: center;
+      margin-bottom: calc(var(--grid-unit) * 0.25); /* 2px - 50% reduction from 4px */
+    }
+
+    .day-card-section {
+      background-color: #C8B8EF; /* Slightly darker purple for solved sections */
+      border-radius: calc(var(--grid-unit) * 1); /* 8px - matches daycard corner radius */
+      padding: calc(var(--grid-unit) * 1.25); /* 10px - slightly reduced */
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--grid-unit) * 0.625); /* 5px - slightly reduced */
+    }
+
+    body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) {
+      background-color: #2E2E2E; /* Dark mode background color for solved sections */
+    }
+
+    .day-card-section-failed {
+      background-color: #ff5757; /* Red for failed sections */
+    }
+
+    .day-card-section-header {
+      display: flex;
+      gap: calc(var(--grid-unit) * 3); /* 24px */
+      align-items: center;
+    }
+
+    .day-card-small-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: calc(var(--grid-unit) * 0.25); /* 2px - reduced from 4px */
+      flex-shrink: 0;
+      width: calc(var(--grid-unit) * 9.7); /* 77.6px - another 10% increase from 70.4px */
+      height: calc(var(--grid-unit) * 9.7); /* 77.6px - another 10% increase from 70.4px */
+    }
+
+    .day-card-solved-grid-svg {
+      width: calc(var(--grid-unit) * 9.7); /* Match grid size */
+      height: calc(var(--grid-unit) * 9.7); /* Match grid size */
+      flex-shrink: 0;
+      display: block;
+    }
+
+
+    .day-card-square-correct {
+      background-color: #00bf63; /* Vibrant green matching SVG */
+    }
+
+    .day-card-square-incorrect {
+      background-color: #FFFFFF; /* White for incorrect positions */
+    }
+
+    .day-card-section-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--grid-unit) * 0.25); /* 2px - 50% reduction from 4px */
+    }
+
+    .day-card-section-title {
+      font-family: var(--font-ui);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .day-card-section:not(.day-card-section-failed) .day-card-section-title {
+      color: #2E2E2E; /* Black text for solved puzzles */
+    }
+
+    body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-title {
+      color: #FFFFFF; /* White text for solved puzzles in dark mode */
+    }
+
+    .day-card-section-words {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .day-card-section:not(.day-card-section-failed) .day-card-section-words {
+      color: #2E2E2E; /* Black text for solved puzzles */
+    }
+
+    body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-words {
+      color: #FFFFFF; /* White text for solved puzzles in dark mode */
+    }
+
+    .day-card-share-container {
+      margin-top: calc(var(--grid-unit) * 2); /* 16px - increased from 4px */
+      display: flex;
+      justify-content: center;
+    }
+
+    .day-card-share-button {
+      background-color: #4CAF50; /* Vibrant green button */
+      color: #FFFFFF; /* White text */
+      border: none;
+      border-radius: 100px; /* Fully rounded pill shape */
+      padding: clamp(0.75em, 2vw, 1em) clamp(2em, 5vw, 2.5em); /* Fluid padding scaling */
+      font-family: var(--font-ui);
+      font-size: clamp(1rem, 2.5vw, 1.25rem); /* Fluid scaling from 16px to 20px */
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--grid-unit) * 1.5);
+      transition: opacity 0.2s ease;
+      line-height: 1.2; /* Slightly increased for better vertical centering */
+    }
+
+    .day-card-share-button span {
+      display: inline-block;
+      text-align: center;
+      line-height: 1.2; /* Match button line-height */
+    }
+
+    .day-card-share-button svg {
+      stroke: #FFFFFF; /* White icon */
+      flex-shrink: 0;
+      width: clamp(16px, 4vw, 20px); /* Fluid scaling from 16px to 20px */
+      height: clamp(16px, 4vw, 20px); /* Fluid scaling from 16px to 20px */
+      vertical-align: middle;
+    }
+
+    .day-card-share-button:hover {
+      opacity: 0.9;
+    }
+
+    .day-card-share-button:active {
+      opacity: 0.8;
+    }
+
+    /* Playable card styling */
+    .day-card-playable {
+      padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 3.5) calc(var(--grid-unit) * 3); /* Match summary card padding exactly */
+      background-color: #C8B8EF; /* Slightly darker purple matching solved sections */
+      border: 2px solid #2E2E2E; /* Black stroke outline */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--grid-unit) * 1.25); /* Match summary card gap */
+      min-height: fit-content;
+    }
+
+    body[data-theme='dark'] .day-card-playable {
+      background-color: #252525; /* Slightly darker than dark mode background (#2E2E2E) */
+      border-color: #E9E2FF; /* White stroke outline in dark mode */
+    }
+
+    .day-card-header-playable {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2E2E2E; /* Dark gray to match image */
+      text-align: center;
+      margin-bottom: calc(var(--grid-unit) * 0.25); /* Match summary header margin-bottom for consistent date position */
+    }
+
+    body[data-theme='dark'] .day-card-header-playable {
+      color: #E9E2FF; /* White text in dark mode */
+    }
+
+    .day-card-large-grid-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1; /* Take up available space */
+      margin: 0; /* Remove extra margins to match summary card spacing */
+    }
+
+    .day-card-logomark-img {
+      width: calc(var(--grid-unit) * 24); /* 192px - matches original grid size */
+      height: auto;
+      display: block;
+    }
+
+
+    .day-card-play-button {
+      background-color: var(--button-bg); /* Electric blue - matches app's play button */
+      color: var(--button-text); /* White text */
+      border: none;
+      border-radius: 100px; /* Pill shape */
+      padding: calc(var(--grid-unit) * 2.5) calc(var(--grid-unit) * 8); /* Horizontal oval shape */
+      font-family: var(--font-display); /* Antonio - matches app's play buttons */
+      font-size: 1.75rem; /* Increased font size */
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      width: auto;
+      min-width: calc(var(--grid-unit) * 20); /* Ensure it's wide enough */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      padding-top: calc(var(--grid-unit) * 2.5 - 2px); /* Slightly reduce top padding to move text up */
+      padding-bottom: calc(var(--grid-unit) * 2.5 + 2px); /* Compensate with bottom padding */
+      margin-top: calc(var(--grid-unit) * -3); /* Bring button closer to grid above */
+    }
+
+    .day-card-play-button:hover {
+      opacity: 0.9;
+    }
+
+    .day-card-play-button:active {
+      opacity: 0.8;
+    }
+
+    @media (min-width: 768px) {
+      .day-card {
+        height: 28em; /* Fixed height for tablet/desktop - maintains mobile aspect ratio (334px:448px = 20.875em:28em) */
+        border-radius: 0.5em; /* Match mobile proportions (8px/16px=0.5) */
+      }
+
+      .day-card-summary {
+        padding: 0.75em 1.5em 1.75em 1.5em; /* Match mobile proportions (12px/16px=0.75, 24px/16px=1.5, 28px/16px=1.75) */
+        gap: 0.625em; /* Match mobile proportions (10px/16px=0.625) */
+      }
+
+      .day-card-header-summary {
+        font-size: 1em; /* Match mobile (1rem = 16px) */
+        margin-bottom: 0.125em; /* Match mobile proportions (2px/16px=0.125) */
+      }
+
+      .day-card-section {
+        padding: 0.625em; /* Match mobile proportions (10px/16px=0.625) */
+        gap: 0.3125em; /* Match mobile proportions (5px/16px=0.3125) */
+        border-radius: 0.5em; /* Match mobile proportions (8px/16px=0.5) */
+      }
+
+      .day-card-small-grid {
+        width: 4.85em; /* Match mobile proportions (77.6px/16px=4.85) */
+        height: 4.85em; /* Match mobile proportions (77.6px/16px=4.85) */
+        gap: 0.125em; /* Match mobile proportions (2px/16px=0.125) */
+      }
+
+      .day-card-solved-grid-svg {
+        width: 4.85em; /* Match mobile proportions (77.6px/16px=4.85) */
+        height: 4.85em; /* Match mobile proportions (77.6px/16px=4.85) */
+      }
+
+      .day-card-small-square {
+        border-radius: 0.25em; /* Match mobile proportions (4px/16px=0.25) */
+      }
+
+      .day-card-section-header {
+        gap: 1.5em; /* 24px equivalent */
+      }
+
+      .day-card-section-title {
+        font-size: 0.875em;
+      }
+
+      .day-card-section-words {
+        font-size: 0.75em;
+      }
+
+      .day-card-share-container {
+        margin-top: 1em; /* Match mobile proportions (16px/16px=1) */
+      }
+
+      .day-card-share-button {
+        padding: 0.75em 2em; /* Match mobile proportions (12px/16px=0.75, 32px/16px=2) */
+        font-size: 1em; /* Match mobile (1rem = 16px) */
+        gap: 0.75em; /* Match mobile proportions (12px/16px=0.75) */
+      }
+
+      .day-card-share-button svg {
+        width: 1em; /* Match mobile proportions (16px/16px=1) */
+        height: 1em; /* Match mobile proportions (16px/16px=1) */
+      }
+
+      .day-card-playable {
+        padding: 0.75em 1.5em 1.75em 1.5em; /* Match mobile proportions (12px/16px=0.75, 24px/16px=1.5, 28px/16px=1.75) */
+        gap: 0.625em; /* Match mobile proportions (10px/16px=0.625) */
+      }
+
+      .day-card-header-playable {
+        font-size: 1em; /* Match mobile (1rem = 16px) */
+        margin-bottom: 0.125em; /* Match mobile proportions (2px/16px=0.125) */
+      }
+
+      .day-card-large-grid-container {
+        margin: 0; /* Remove extra margins to match summary card spacing */
+      }
+
+      .day-card-logomark-img {
+        width: 12em; /* Fluid scaling for tablet/desktop */
+      }
+
+      .day-card-play-button {
+        padding: 0.625em 2em; /* Fluid padding for pill shape */
+        padding-top: calc(0.625em - 0.125em); /* Slightly reduce top padding to move text up */
+        padding-bottom: calc(0.625em + 0.125em); /* Compensate with bottom padding */
+        font-size: 1.75em; /* Increased font size */
+        min-width: 5em; /* Fluid min-width */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        margin-top: -1.5em; /* Bring button closer to grid above (fluid scaling) */
+      }
+    }
+
+    /* Daily Intro Screen */
+    .daily-intro-screen {
+      width: calc(100% + calc(var(--grid-unit) * 10)); /* Account for body padding on both sides */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--background-color);
+      padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+      font-size: clamp(14px, 2vw, 20px); /* Base font size for proportional scaling */
+      margin-left: calc(-1 * calc(var(--grid-unit) * 5)); /* Break out of body padding */
+      margin-right: calc(-1 * calc(var(--grid-unit) * 5)); /* Break out of body padding */
+      box-sizing: border-box;
+    }
+
+    .daily-intro-content {
+      width: 100%;
+      max-width: clamp(320px, 44vw, 560px);
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .daily-intro-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2.5em; /* Scales proportionally with base font size */
+    }
+
+    .daily-intro-date {
+      font-family: var(--font-ui);
+      font-size: 1.6em; /* Scales proportionally with base font size */
+      font-weight: 700;
+      color: var(--primary-text);
+      white-space: nowrap;
+    }
+
+    .daily-intro-message-container {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.75em; /* Scales proportionally with base font size */
+    }
+
+    .daily-intro-logomark {
+      width: 6.5em; /* Scales proportionally with base font size */
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    .daily-intro-copy {
+      font-family: var(--font-ui);
+      font-weight: 400;
+      font-size: 1.6em; /* Scales proportionally with base font size, matching logomark */
+      line-height: 1.3;
+      color: var(--primary-text);
+      white-space: nowrap;
+    }
+
+    .daily-intro-play-button {
+      background-color: #3966FF;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9em 2.75em; /* Scales proportionally with base font size */
+      font-family: var(--font-display);
+      font-size: 1.9em; /* Scales proportionally with base font size */
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      margin-top: 1.5em; /* Scales proportionally with base font size */
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      line-height: 1;
+      transform: translateY(-2px); /* Move text up slightly to account for font baseline */
+    }
+
+    .daily-intro-play-button:hover {
+      transform: translateY(-4px); /* Maintain base offset plus hover lift */
+      opacity: 0.92;
+    }
+
+    .daily-intro-play-button:active {
+      transform: translateY(-2px); /* Maintain base offset */
+      opacity: 0.8;
+    }
+
+    /* Mobile-specific centering fix */
+    @media (max-width: 767px) {
+      .daily-intro-content {
+        width: 100%;
+        max-width: 90%;
+        margin: 0 auto;
       }
     }
   </style>

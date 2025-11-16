@@ -2169,6 +2169,12 @@
       opacity: 0.7;
     }
 
+    @media (max-width: 767px) {
+      .day-carousel-card-wrapper {
+        flex: 0 0 clamp(280px, 85vw, 360px); /* Responsive width: 280px min, 85vw preferred, 360px max */
+      }
+    }
+
     @media (min-width: 768px) {
       .day-carousel-scroll {
         gap: 0.5em; /* Fluid gap for tablet/desktop */
@@ -2248,6 +2254,18 @@
       text-transform: none;
       font-weight: 400;
       white-space: nowrap;
+    }
+    @media (max-width: 767px) {
+      .all-done-stats-row {
+        grid-template-columns: repeat(4, auto);
+        width: fit-content;
+        max-width: 100%;
+        margin: -12px auto calc(var(--grid-unit) * 4) auto; /* Center horizontally */
+        gap: calc(var(--grid-unit) * 5); /* Increased gap for better spacing (40px) */
+      }
+      .stat-item {
+        min-width: fit-content;
+      }
     }
     @media (min-width: 768px) {
       .stat-value {

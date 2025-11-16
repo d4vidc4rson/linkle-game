@@ -2257,11 +2257,11 @@
     }
     @media (max-width: 767px) {
       .all-done-stats-row {
-        grid-template-columns: repeat(4, auto);
-        width: fit-content;
-        max-width: 100%;
-        margin: -12px auto calc(var(--grid-unit) * 4) auto; /* Center horizontally */
-        gap: calc(var(--grid-unit) * 5); /* Increased gap for better spacing (40px) */
+        grid-template-columns: repeat(4, auto) !important;
+        width: fit-content !important;
+        max-width: 100% !important;
+        margin: -12px auto calc(var(--grid-unit) * 4) auto !important; /* Center horizontally */
+        gap: calc(var(--grid-unit) * 5) !important; /* Increased gap for better spacing (40px) */
       }
       .stat-item {
         min-width: fit-content;
@@ -2854,7 +2854,6 @@
       }
     }
   </style>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body>
   <div id="root"></div>

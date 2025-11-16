@@ -55,6 +55,8 @@ export const useDailyGameLogic = (
     const puzzleStartTimeRef = useRef<number | null>(null);
     const loadedPuzzleRef = useRef<string | null>(null); // Track which puzzle we've loaded to prevent reloads
     const navigatingToNextPuzzleRef = useRef<boolean>(false); // Track if we're actively navigating to next puzzle
+    const isSolvedRef = useRef<boolean>(false); // Track if we're currently in solved state to prevent reloads
+    const gameStateRef = useRef<GameState>(gameState); // Track current gameState in a ref for reliable checking
 
     const [dragState, setDragState] = useState<DragState>({
         isDragging: false, index: -1, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0
@@ -83,28 +85,48 @@ export const useDailyGameLogic = (
         }
     }, [animateGridShake]);
 
+    // Update gameStateRef whenever gameState changes
+    useEffect(() => {
+        gameStateRef.current = gameState;
+    }, [gameState]);
+
     // Load puzzle when puzzleIndices or currentPuzzleType changes
     useEffect(() => {
         if (!puzzleIndices) {
+            gameStateRef.current = 'loading';
             setGameState('loading');
             return;
         }
 
         const puzzleIndex = puzzleIndices[currentPuzzleType];
         if (puzzleIndex === undefined || puzzleIndex >= PREGENERATED_PUZZLES.length) {
+            gameStateRef.current = 'loading';
             setGameState('loading');
             return;
         }
 
         const newPuzzle = PREGENERATED_PUZZLES[puzzleIndex];
         if (!newPuzzle) {
+            gameStateRef.current = 'loading';
             setGameState('loading');
+            return;
+        }
+
+        // Create a unique key for this puzzle (do this early for comparison)
+        const dateKey = formatDateKey(targetDate);
+        const puzzleKey = `${dateKey}-${currentPuzzleType}-${puzzleIndex}`;
+        
+        // CRITICAL FIRST CHECK: If we're currently solved for this exact puzzle, don't reload AT ALL
+        // This prevents the reload that happens when playerData.dailyResults updates after completion
+        // Check the ref first (most reliable) and also check if we have the puzzle loaded
+        // Also check gameStateRef to catch cases where state hasn't updated yet
+        if ((isSolvedRef.current || gameStateRef.current === 'solved') && loadedPuzzleRef.current === puzzleKey && puzzle) {
+            // We're showing a solved puzzle - don't reload even if playerData changes
             return;
         }
 
         // Check if puzzle already completed
         // For replay mode: check if this is a past date (not today) - if so, ignore existing results and allow replay
-        const dateKey = formatDateKey(targetDate);
         const today = new Date();
         const todayKey = formatDateKey(today);
         const isPastDate = dateKey !== todayKey;
@@ -119,6 +141,7 @@ export const useDailyGameLogic = (
         // If we're navigating to next puzzle, clear the loaded puzzle ref to ensure fresh load
         if (navigatingToNextPuzzleRef.current) {
             loadedPuzzleRef.current = null;
+            isSolvedRef.current = false; // Clear solved flag when navigating
         }
         
         // Reset navigation flag after checking
@@ -126,18 +149,21 @@ export const useDailyGameLogic = (
         
         // Note: existingResult is only used for today's puzzles (not replays) and when not actively navigating
 
-        // Create a unique key for this puzzle
-        const puzzleKey = `${dateKey}-${currentPuzzleType}-${puzzleIndex}`;
+        // Additional safety check: if existingResult exists and we're marked as solved, don't reload
+        if (existingResult && isSolvedRef.current && loadedPuzzleRef.current === puzzleKey) {
+            return; // Don't reload - we're showing the solved state for this puzzle
+        }
         
-        // Don't reload if we've already loaded this exact puzzle
-        // Also don't reload if we're already in solved state for this puzzle (prevents reset after win/loss)
+        // Don't reload if we've already loaded this exact puzzle and it's still the same
         if (loadedPuzzleRef.current === puzzleKey && puzzle) {
-            // If we're already solved and this is the same puzzle, don't reload
-            if (gameState === 'solved' && solvedStatus !== null) {
+            // If we're already solved for this puzzle, don't reload
+            if (isSolvedRef.current) {
                 return;
             }
-            // Otherwise, only skip if puzzle object matches (prevents unnecessary reloads)
-            return;
+            // Otherwise, only skip if we're not in a state transition
+            if (gameState !== 'generating' && gameState !== 'loading') {
+                return;
+            }
         }
 
         loadedPuzzleRef.current = puzzleKey;
@@ -149,8 +175,10 @@ export const useDailyGameLogic = (
             setWinMessageBase('');
             setWinMessageBonus('');
             setFinalNarrative('');
+            isSolvedRef.current = false; // Clear solved flag when starting new puzzle
         }
         
+        gameStateRef.current = 'generating';
         setGameState('generating');
         
         setTimeout(() => {
@@ -201,13 +229,22 @@ export const useDailyGameLogic = (
                     setFinalNarrative(newPuzzle.narrative);
                 }
             }
-            setAnimationClass('');
+            // Don't clear animation if we're already in solved state (preserves win/loss animation)
+            if (gameState !== 'solved') {
+                setAnimationClass('');
+            }
             setNewlyUnlockedBadge(null);
             
             if (existingResult) {
+                gameStateRef.current = 'solved';
                 setGameState('solved');
+                isSolvedRef.current = true; // Mark as solved for already-completed puzzles
             } else {
-                setTimeout(() => setGameState('playing'), 0);
+                isSolvedRef.current = false; // Clear solved flag when starting new puzzle
+                setTimeout(() => {
+                    gameStateRef.current = 'playing';
+                    setGameState('playing');
+                }, 0);
             }
         }, 500);
     }, [puzzleIndices, currentPuzzleType, targetDate, playerData.dailyResults]); // Removed theme from dependencies to prevent reload on theme change
@@ -325,8 +362,10 @@ export const useDailyGameLogic = (
             setWinMessageBase("You did it! Good replay");
             setWinMessageBonus('');
             setFinalNarrative(puzzle.narrative);
+            gameStateRef.current = 'solved';
             setGameState('solved');
             setSolvedStatus('win');
+            isSolvedRef.current = true; // Mark as solved to prevent reloads
             if (gameState !== 'solved') {
                 setAnimationClass('screen-shake-win');
             }
@@ -420,6 +459,13 @@ export const useDailyGameLogic = (
             dailyResults,
         };
         
+        // Set solved flag BEFORE updating playerData to prevent reload when useEffect runs
+        isSolvedRef.current = true;
+        gameStateRef.current = 'solved';
+        setFinalNarrative(puzzle.narrative);
+        setGameState('solved');
+        setSolvedStatus('win');
+        
         setPlayerData(newPlayerData);
         const saveResult = await saveGameState(newPlayerData);
         if (!saveResult.success && onSaveError) {
@@ -429,10 +475,6 @@ export const useDailyGameLogic = (
         if (newlyUnlocked) {
             setTimeout(() => setNewlyUnlockedBadge(newlyUnlocked), 2500);
         }
-        
-        setFinalNarrative(puzzle.narrative);
-        setGameState('solved');
-        setSolvedStatus('win');
         // Only set animation if we're not already in solved state (prevents restart)
         if (gameState !== 'solved') {
             setAnimationClass('screen-shake-win');
@@ -476,8 +518,10 @@ export const useDailyGameLogic = (
                 setWinMessageBonus('');
                 setBoardState(puzzle.solution);
                 setFinalNarrative(puzzle.narrative);
+                gameStateRef.current = 'solved';
                 setGameState('solved');
                 setSolvedStatus('loss');
+                isSolvedRef.current = true; // Mark as solved to prevent reloads
                 if (gameState !== 'solved') {
                     setAnimationClass('screen-shake-loss');
                 }
@@ -511,16 +555,19 @@ export const useDailyGameLogic = (
                 dailyResults,
             };
             
+            // Set solved flag BEFORE updating playerData to prevent reload when useEffect runs
+            isSolvedRef.current = true;
+            gameStateRef.current = 'solved';
+            setBoardState(puzzle.solution);
+            setFinalNarrative(puzzle.narrative);
+            setGameState('solved');
+            setSolvedStatus('loss');
+            
             setPlayerData(newPlayerData);
             const saveResult = await saveGameState(newPlayerData);
             if (!saveResult.success && onSaveError) {
                 onSaveError(saveResult.error || 'Failed to save progress');
             }
-            
-            setBoardState(puzzle.solution);
-            setFinalNarrative(puzzle.narrative);
-            setGameState('solved');
-            setSolvedStatus('loss');
             // Only set animation if we're not already in solved state (prevents restart)
             if (gameState !== 'solved') {
                 setAnimationClass('screen-shake-loss');

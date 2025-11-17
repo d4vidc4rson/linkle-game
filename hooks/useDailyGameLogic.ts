@@ -375,7 +375,7 @@ export const useDailyGameLogic = (
         // First-time play: save results normally
         const dailyResult: DailyResult = {
             solved: true,
-            triesUsed: triesLeft,
+            triesUsed: initialTries - triesLeft + 1, // Calculate actual tries used (current try counts as used)
             timeSeconds: solveTimeSeconds,
         };
         

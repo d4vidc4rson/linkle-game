@@ -283,6 +283,21 @@ const App = () => {
                             )}
                         </div>
                     </div>
+                    {import.meta.env.DEV && (
+                        <button 
+                            className="dev-reset-button" 
+                            onClick={() => {
+                                if (confirm('Reset all game data? This will clear your progress and reload the page.')) {
+                                    localStorage.removeItem('linklePlayerData');
+                                    localStorage.removeItem('chainReactionPlayerData');
+                                    window.location.reload();
+                                }
+                            }}
+                            title="Reset Game Data (Dev Only)"
+                        >
+                            🔄 Reset
+                        </button>
+                    )}
                 </footer>
             )}
         </>
@@ -306,3 +321,21 @@ const Root = () => {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(<Root />);
+
+// Dev utility: Reset game data
+// Call this from the browser console: resetLinkleData()
+if (typeof window !== 'undefined') {
+    (window as any).resetLinkleData = () => {
+        try {
+            localStorage.removeItem('linklePlayerData');
+            localStorage.removeItem('chainReactionPlayerData'); // Also clear old key if it exists
+            console.log('✅ Game data cleared! Reloading page...');
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } catch (error) {
+            console.error('❌ Failed to reset game data:', error);
+        }
+    };
+    console.log('💡 Dev utility available: Call resetLinkleData() in the console to reset your game data');
+}

@@ -146,13 +146,15 @@ const Section = ({ title, result, words, results, puzzleIndices, difficulty }: {
                         {title}: {result}
                     </div>
                     <div className="day-card-section-words">
-                        {words.reduce((acc: (string | JSX.Element)[], word, i) => {
-                            if (i > 0 && i % 3 === 0) {
-                                acc.push(<br key={`br-${i}`} />);
-                            }
-                            acc.push(word);
-                            if (i < words.length - 1) {
-                                acc.push(', ');
+                        {words.reduce((acc: JSX.Element[], word, i) => {
+                            // Group words into chunks of 3
+                            if (i % 3 === 0) {
+                                const groupWords = words.slice(i, Math.min(i + 3, words.length));
+                                acc.push(
+                                    <span key={`group-${i}`} className="day-card-word-group">
+                                        {groupWords.join(', ')}
+                                    </span>
+                                );
                             }
                             return acc;
                         }, [])}

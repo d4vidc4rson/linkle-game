@@ -265,7 +265,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         <div className="achievement-icon" onClick={onShowAchievements}><AchievementIcon /></div>
                         <div className="user-display">
                             {user ? (
-                                <button className="avatar-button" onClick={onShowLogout || onShowAuth} title="Profile & Logout">
+                                <button className="avatar-button" onClick={onShowLogout} title="Profile & Logout">
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
@@ -382,7 +382,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         <div className="achievement-icon" onClick={onShowAchievements}><AchievementIcon /></div>
                         <div className="user-display">
                             {user ? (
-                                <button className="avatar-button" onClick={onShowAuth} title="Profile & Logout">
+                                <button className="avatar-button" onClick={onShowLogout} title="Profile & Logout">
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
@@ -390,6 +390,21 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                             )}
                         </div>
                     </div>
+                    {import.meta.env.DEV && (
+                        <button 
+                            className="dev-reset-button" 
+                            onClick={() => {
+                                if (confirm('Reset all game data? This will clear your progress and reload the page.')) {
+                                    localStorage.removeItem('linklePlayerData');
+                                    localStorage.removeItem('chainReactionPlayerData');
+                                    window.location.reload();
+                                }
+                            }}
+                            title="Reset Game Data (Dev Only)"
+                        >
+                            🔄 Reset
+                        </button>
+                    )}
                 </footer>
             </main>
         </div>

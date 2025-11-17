@@ -529,7 +529,37 @@ export const DailyMode = () => {
                             )}
                         </div>
                     </div>
+                    {isDev && (
+                        <button 
+                            className="dev-reset-button" 
+                            onClick={() => {
+                                if (confirm('Reset all game data? This will clear your progress and reload the page.')) {
+                                    localStorage.removeItem('linklePlayerData');
+                                    localStorage.removeItem('chainReactionPlayerData');
+                                    window.location.reload();
+                                }
+                            }}
+                            title="Reset Game Data (Dev Only)"
+                        >
+                            🔄 Reset
+                        </button>
+                    )}
                 </footer>
+            )}
+            {isDev && view !== 'playing' && (
+                <button 
+                    className="dev-reset-button" 
+                    onClick={() => {
+                        if (confirm('Reset all game data? This will clear your progress and reload the page.')) {
+                            localStorage.removeItem('linklePlayerData');
+                            localStorage.removeItem('chainReactionPlayerData');
+                            window.location.reload();
+                        }
+                    }}
+                    title="Reset Game Data (Dev Only)"
+                >
+                    🔄 Reset
+                </button>
             )}
         </>
     );

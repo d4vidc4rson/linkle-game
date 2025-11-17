@@ -152,6 +152,19 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
     const winPercentage = totalPlayed > 0 ? Math.round((totalSolved / totalPlayed) * 100) : 0;
     const maxStreak = playerData.maxStreak || 0;
     
+    // Helper function to format puzzle results
+    const formatPuzzleResult = (result: DailyResult | undefined): string => {
+        if (!result || !result.solved) {
+            return 'Nope';
+        }
+        
+        if (result.triesUsed === 1) {
+            return 'Perfect';
+        }
+        
+        return `${result.triesUsed} Tries`;
+    };
+    
     // Convert dates to DaySummary format
     const days: DaySummary[] = useMemo(() => {
         // Use the actual current date for "today" comparison, not the date prop
@@ -205,9 +218,9 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
             const hardPuzzle = dayPuzzleIndices ? PREGENERATED_PUZZLES[dayPuzzleIndices.hard] : null;
             const impossiblePuzzle = dayPuzzleIndices ? PREGENERATED_PUZZLES[dayPuzzleIndices.impossible] : null;
             
-            const easyResult = dayResults?.easy ? `${dayResults.easy.triesUsed}/4` : '0/4';
-            const hardResult = dayResults?.hard ? `${dayResults.hard.triesUsed}/3` : '0/3';
-            const impossibleResult = dayResults?.impossible ? `${dayResults.impossible.triesUsed}/2` : '0/2';
+            const easyResult = formatPuzzleResult(dayResults?.easy);
+            const hardResult = formatPuzzleResult(dayResults?.hard);
+            const impossibleResult = formatPuzzleResult(dayResults?.impossible);
             
             return {
                 id: dateKey,

@@ -1497,6 +1497,14 @@
         opacity: 0.6;
     }
 
+    .badge.earned .badge-icon {
+        background-color: #b3a7fe; /* Darker purple from logomark for light mode */
+    }
+
+    body[data-theme='dark'] .badge.earned .badge-icon {
+        background-color: #000000; /* Solid black for dark mode */
+    }
+
     .badge-info {
         flex-grow: 1;
         display: flex;

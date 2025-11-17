@@ -82,7 +82,7 @@ const formatDate = (dateString: string | null) => {
 };
 
 const BadgeDisplay = ({ badge, onSelectBadge }) => (
-    <button className="badge" onClick={() => onSelectBadge(badge)}>
+    <button className={`badge ${badge.unlocked ? 'earned' : ''}`} onClick={() => onSelectBadge(badge)}>
         <div className="badge-icon">{badge.icon}</div>
         <div className="badge-info">
             <h4>{badge.name}</h4>

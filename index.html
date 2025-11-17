@@ -2869,9 +2869,9 @@
       color: var(--button-text);
       border: none;
       border-radius: 999px;
-      padding: 0.65em 2.45em 0.95em 2.45em; /* Asymmetric vertical padding: less top, more bottom */
+      padding: 0.72em 2.45em 0.88em 2.45em; /* Asymmetric vertical padding: slightly more top */
       font-family: var(--font-display);
-      font-size: 2.1em; /* Increased from 1.9em - bigger text */
+      font-size: 2.3em; /* Increased from 2.1em - bigger button */
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -2916,6 +2916,10 @@
 
     /* Mobile-specific adjustments */
     @media (max-width: 767px) {
+      .daily-intro-screen {
+        font-size: clamp(12px, 2.5vw, 20px); /* Larger base font on mobile - scales everything up */
+      }
+
       .daily-intro-content {
         width: 100%;
         max-width: 95%;
@@ -2932,6 +2936,7 @@
     @media (max-width: 400px) {
       .daily-intro-screen {
         padding: clamp(1.5rem, 5vw, 2rem) clamp(1rem, 4vw, 1.5rem); /* Reduced padding */
+        font-size: clamp(11px, 2.8vw, 16px); /* Slightly larger base font even on tiny screens */
       }
       
       /* Keep logomark and text side by side, but reduce sizes */
@@ -2939,23 +2944,23 @@
         gap: 0.75em; /* Reduce gap slightly */
       }
       
-      /* Slightly reduce font sizes on very small screens */
+      /* Adjust sizes on very small screens */
       .daily-intro-date {
-        font-size: 1.3em;
+        font-size: 1.5em; /* Increased for better visibility */
       }
       
       .daily-intro-logomark {
-        width: 4.5em; /* Smaller on very small screens */
+        width: 5.5em; /* Larger for better visibility */
       }
       
       .daily-intro-copy {
-        font-size: 1.2em; /* Smaller on very small screens */
+        font-size: 1.4em; /* Larger for better readability */
       }
       
       /* Adjust button for very small screens */
       .daily-intro-play-button {
-        padding: 0.58em 1.59em 0.78em 1.59em; /* Asymmetric vertical padding: less top, more bottom */
-        font-size: 1.76em; /* Increased from 1.6em - bigger text */
+        padding: 0.65em 1.59em 0.71em 1.59em; /* Asymmetric vertical padding: slightly more top */
+        font-size: 2.05em; /* Increased for better visibility */
       }
     }
 

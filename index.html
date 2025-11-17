@@ -2115,6 +2115,13 @@
       width: 100%;
     }
 
+    @media (max-width: 767px) {
+      .all-done-content {
+        padding: 0 calc(var(--grid-unit) * 2); /* Consistent padding: 16px - matches puzzle screen approach */
+        overflow-x: visible; /* Prevent clipping */
+      }
+    }
+
     @media (min-width: 768px) {
       .all-done-content {
         max-width: calc(var(--grid-unit) * 100); /* 800px */
@@ -2135,6 +2142,7 @@
       margin-top: -12px; /* Moved up 12px on mobile */
       padding: 0;
       overflow-x: visible;
+      overflow-y: visible; /* Allow vertical overflow so share button isn't clipped */
     }
 
     .day-carousel-scroll {
@@ -2171,7 +2179,7 @@
 
     @media (max-width: 767px) {
       .day-carousel-card-wrapper {
-        flex: 0 0 clamp(280px, 85vw, 360px); /* Responsive width: 280px min, 85vw preferred, 360px max */
+        flex: 0 0 clamp(252px, 76.5vw, 324px); /* Responsive width: 90% of original (280px→252px, 85vw→76.5vw, 360px→324px) */
       }
     }
 
@@ -2211,6 +2219,16 @@
       line-height: 1.2;
       white-space: nowrap;
     }
+    @media (max-width: 767px) {
+      .all-done-quote {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: calc(var(--grid-unit) * 2); /* Reduced to 16px - minimal space from top bar */
+        margin-bottom: calc(var(--grid-unit) * 3); /* Increased to 24px - more space before stats line */
+      }
+    }
     @media (min-width: 768px) {
       .all-done-quote {
         font-size: 3rem;
@@ -2227,7 +2245,7 @@
     .all-done-stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: calc(var(--grid-unit) * 5);
+      gap: clamp(16px, 4vw, 40px); /* Fluid gap: scales from 16px on smallest screens to 40px on larger */
       margin-top: -12px; /* Moved up 12px on mobile (was 20px, now 8px down from that) */
       margin-bottom: calc(var(--grid-unit) * 4);
       width: 100%;
@@ -2242,7 +2260,7 @@
     }
     .stat-value {
       font-family: var(--font-ui);
-      font-size: clamp(1.875rem, 5vw, 3rem); /* Fluid scaling from 30px to 48px */
+      font-size: clamp(1.5rem, 4vw, 2.5rem); /* Fluid scaling from 24px to 40px - reduced from 30px-48px */
       font-weight: 500;
       color: var(--primary-text);
       line-height: 1;
@@ -2257,14 +2275,8 @@
     }
     @media (max-width: 767px) {
       .all-done-stats-row {
-        grid-template-columns: repeat(4, auto) !important;
-        width: fit-content !important;
-        max-width: 100% !important;
-        margin: -12px auto calc(var(--grid-unit) * 4) auto !important; /* Center horizontally */
-        gap: calc(var(--grid-unit) * 5) !important; /* Increased gap for better spacing (40px) */
-      }
-      .stat-item {
-        min-width: fit-content;
+        /* Keep repeat(4, 1fr) - respects container boundaries like puzzle grid */
+        gap: clamp(12px, 3vw, 32px); /* Fluid gap: scales from 12px on iPhone SE to 32px on larger phones */
       }
     }
     @media (min-width: 768px) {
@@ -2393,6 +2405,29 @@
       display: flex;
       flex-direction: column;
       overflow: hidden; /* Prevent content overflow */
+    }
+
+    @media (max-width: 767px) {
+      .day-card {
+        height: auto !important; /* Allow card to grow to fit all content including share button */
+        min-height: min(calc(var(--grid-unit) * 50.4), calc((100vh - 250px) * 0.9)); /* Fluid min-height: accounts for header + bottom nav (250px) */
+        max-height: none !important; /* Remove max-height constraint - let content determine height */
+        overflow: visible !important; /* Allow content to be visible, especially share button */
+      }
+      .day-carousel-scroll {
+        padding-bottom: calc(var(--grid-unit) * 4); /* Add bottom padding to ensure share button isn't clipped by viewport */
+      }
+      .day-card-summary {
+        padding: clamp(7.2px, 1.8vw, 10.8px) clamp(14.4px, 3.6vw, 21.6px) clamp(18px, 4.5vw, 25.2px) clamp(14.4px, 3.6vw, 21.6px); /* 90% of original padding - scales proportionally */
+        gap: clamp(5.4px, 1.35vw, 9px); /* 90% of original gap: scales from 5.4px to 9px */
+      }
+      .day-card-section {
+        padding: clamp(5.4px, 1.35vw, 9px); /* 90% of original padding: scales from 5.4px to 9px */
+        gap: clamp(3.6px, 0.9vw, 5.4px); /* 90% of original gap: scales from 3.6px to 5.4px */
+      }
+      .day-card-share-container {
+        margin-top: calc(var(--grid-unit) * 1.8); /* 90% of original (16px → 14.4px) - scales proportionally */
+      }
     }
 
     body[data-theme='dark'] .day-card-summary {

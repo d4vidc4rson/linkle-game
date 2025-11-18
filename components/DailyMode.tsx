@@ -9,6 +9,7 @@ import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Ic
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots } from './GameUI';
 import { GameBoard } from './GameBoard';
+import { DailyStartScreen } from './DailyStartScreen';
 import { DailyIntroScreen } from './DailyIntroScreen';
 import { DailyPuzzleSolved } from './DailyPuzzleSolved';
 import { AllDoneScreen } from './AllDoneScreen';
@@ -17,14 +18,14 @@ import { ErrorToast } from './ErrorToast';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
 import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } from '../dailySchedule';
 
-type DailyModeView = 'intro' | 'playing' | 'allDone' | 'archive';
+type DailyModeView = 'start' | 'intro' | 'playing' | 'allDone' | 'archive';
 
 export const DailyMode = () => {
     // Check if we're in development mode
     const isDev = import.meta.env.DEV;
     const [theme, setTheme] = useState<Theme>('light');
     const [showcaseVisible, setShowcaseVisible] = useState(false);
-    const [view, setView] = useState<DailyModeView>('intro');
+    const [view, setView] = useState<DailyModeView>('start');
     const [currentPuzzleType, setCurrentPuzzleType] = useState<DailyPuzzleDifficulty>('easy');
     const [targetDate, setTargetDate] = useState<Date>(new Date()); // Can be changed to play past dates
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -155,7 +156,11 @@ export const DailyMode = () => {
         setPuzzleResults({});
         setCurrentPuzzleType('easy');
         setGameState('loading'); // Reset game state
-        setView('intro'); // Go back to intro
+        setView('start'); // Go back to start screen
+    };
+
+    const handleStartPlay = () => {
+        setView('intro');
     };
 
     const handleIntroContinue = () => {
@@ -273,6 +278,26 @@ export const DailyMode = () => {
         return null;
     }
 
+    if (view === 'start') {
+        return (
+            <>
+                {errorMessage && (
+                    <ErrorToast 
+                        message={errorMessage} 
+                        onClose={() => setErrorMessage(null)} 
+                    />
+                )}
+                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+                {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+                <DailyStartScreen 
+                    onPlay={handleStartPlay} 
+                    user={user}
+                    onShowAuth={() => setShowAuthModal(true)}
+                />
+            </>
+        );
+    }
+
     if (view === 'intro') {
         return (
             <>
@@ -287,6 +312,7 @@ export const DailyMode = () => {
                     date={targetDate}
                     theme={theme}
                     onContinue={handleIntroContinue}
+                    allSolved={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
                 />
             </>
         );

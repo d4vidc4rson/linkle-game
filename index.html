@@ -2462,7 +2462,7 @@
         margin-bottom: calc(var(--grid-unit) * 0.5); /* 4px - space below button */
       }
       .day-card-share-button {
-        padding: clamp(0.5em, 1.5vw, 0.75em) clamp(2em, 5vw, 2.5em); /* Reduced vertical padding from 0.75em-1em to 0.5em-0.75em */
+        padding: clamp(0.6em, 1.8vw, 0.9em) clamp(2em, 5vw, 2.5em) clamp(0.4em, 1.2vw, 0.6em) clamp(2em, 5vw, 2.5em); /* Asymmetric padding: more top, less bottom */
       }
     }
 
@@ -2584,7 +2584,7 @@
       color: #FFFFFF; /* White text */
       border: none;
       border-radius: 100px; /* Fully rounded pill shape */
-      padding: clamp(0.75em, 2vw, 1em) clamp(2em, 5vw, 2.5em); /* Fluid padding scaling */
+      padding: clamp(0.85em, 2.2vw, 1.15em) clamp(2em, 5vw, 2.5em) clamp(0.65em, 1.8vw, 0.85em) clamp(2em, 5vw, 2.5em); /* Asymmetric padding: more top, less bottom */
       font-family: var(--font-ui);
       font-size: clamp(1rem, 2.5vw, 1.25rem); /* Fluid scaling from 16px to 20px */
       font-weight: 700;
@@ -2752,7 +2752,7 @@
       }
 
       .day-card-share-button {
-        padding: 0.75em 2em; /* Match mobile proportions (12px/16px=0.75, 32px/16px=2) */
+        padding: 0.85em 2em 0.65em 2em; /* Asymmetric padding: more top (13.6px), less bottom (10.4px) */
         font-size: 1em; /* Match mobile (1rem = 16px) */
         gap: 0.75em; /* Match mobile proportions (12px/16px=0.75) */
       }

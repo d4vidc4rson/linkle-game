@@ -262,7 +262,7 @@ export const DailyMode = () => {
         // Generate a schedule starting 5 days ago for testing
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - 5); // 5 days ago
-        const testSchedule = generateDailySchedule(startDate, 70);
+        const testSchedule = generateDailySchedule(startDate); // Uses dynamic day count
         await updateSchedule(testSchedule);
         if (import.meta.env.DEV) {
             console.log('Test schedule generated! Starting from 5 days ago. Refresh to see past dates in archive.');

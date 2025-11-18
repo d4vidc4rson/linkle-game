@@ -93,6 +93,46 @@ When creating IMPOSSIBLE puzzles, use these techniques to build effective chains
 ### Step 1: Brainstorm the Chain
 Start with a word and build forward, ensuring each new word creates a valid pair with the previous one. Write down your 9-word chain.
 
+#### Alternative Brainstorming Method: The "Friends Game"
+
+When you need fresh ideas or want to create absurdist IMPOSSIBLE-level puzzles, try this collaborative approach:
+
+**The Setup:**
+Imagine 9 friends playing a word association game. Each friend must:
+1. Connect their word to the previous friend's word
+2. Make the connection absurd and funny (while still being explainable)
+3. Use only ONE word (no phrases)
+4. Keep connections real and understandable (not obtuse)
+
+**Why This Works:**
+- Creates natural cascades of creative leaps
+- Produces memorable, entertaining puzzles
+- Generates IMPOSSIBLE-level chains organically
+- Reduces writer's block by making creation playful
+- Each "friend" focuses on one connection, not the whole chain
+
+**Example Session:**
+- Friend 1: "BURRITO!"
+- Friend 2: "BABY! Because you swaddle a baby like a burrito!"
+- Friend 3: "SHOWER! Baby shower!"
+- Friend 4: "KARAOKE! We all sing in the shower!"
+- Friend 5: "TORTURE! Have you heard you sing karaoke?!"
+- Friend 6: "MEDIEVAL! Like medieval torture devices!"
+- Friend 7: "TIMES! Medieval Times, the restaurant!"
+- Friend 8: "SQUARE! Times Square in New York!"
+- Friend 9: "PANTS! SpongeBob SquarePants!"
+
+**Result:**
+`BURRITO` -> `BABY` -> `SHOWER` -> `KARAOKE` -> `TORTURE` -> `MEDIEVAL` -> `TIMES` -> `SQUARE` -> `PANTS`
+
+This chain naturally produced multiple gatekeepers (BURRITO BABY internet culture, MEDIEVAL TIMES brand, SQUARE PANTS pop culture) while maintaining explainable connections—a perfect IMPOSSIBLE puzzle.
+
+**When to Use This Method:**
+- Creating IMPOSSIBLE puzzles with cascading gatekeepers
+- Breaking through creative blocks
+- Making puzzle creation more enjoyable
+- Generating absurdist but coherent chains
+
 ### Step 2: Verify Dyadic Integrity
 For each of the 8 pairs in your chain, ask: **"Does this pair make sense on its own, without needing a third word?"**
 

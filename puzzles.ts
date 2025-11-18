@@ -1171,5 +1171,25 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["MIDNIGHT", "COWBOY", "BEBOP", "JAZZ", "HANDS", "FREE", "WILL", "POWER", "RANGER"],
         narrative: "MIDNIGHT COWBOY is a classic 1969 film. COWBOY BEBOP is a popular Japanese anime series. BEBOP is a style of jazz music. JAZZ HANDS is a theatrical dance move. HANDS FREE means without using hands. FREE WILL is a philosophical concept about choice. WILL POWER is mental strength and determination. POWER RANGER is a character from the Mighty Morphin Power Rangers TV show.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PENGUIN", "TUXEDO", "WEDDING", "DISASTER", "VOLCANO", "LAVA", "FONDUE", "SKEWER", "VAMPIRE"],
+        narrative: "A PENGUIN looks like it's wearing a TUXEDO. A TUXEDO is formal wear for a WEDDING. A WEDDING can turn into a DISASTER. A VOLCANO can cause a DISASTER. A VOLCANO erupts LAVA. LAVA flows like melted FONDUE. FONDUE is eaten with a SKEWER. A SKEWER can be used to stake a VAMPIRE.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BANANA", "MONKEY", "JUNGLE", "TARZAN", "LOINCLOTH", "WEDGIE", "EMBARRASSED", "BLUSH", "TOMATO"],
+        narrative: "BANANA is a favorite food of a MONKEY. A MONKEY lives in the JUNGLE. TARZAN is famous for living in the JUNGLE. TARZAN wears a LOINCLOTH. A poorly fitted LOINCLOTH could give you a WEDGIE. Getting a WEDGIE makes you EMBARRASSED. When you're EMBARRASSED, you BLUSH. When you BLUSH, you turn red like a TOMATO.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BURRITO", "BABY", "SHOWER", "KARAOKE", "TORTURE", "MEDIEVAL", "TIMES", "SQUARE", "PANTS"],
+        narrative: "A baby wrapped snugly is a BURRITO BABY. A celebration for an expectant parent is a BABY SHOWER. People sing karaoke in the SHOWER. Listening to bad karaoke can feel like TORTURE. MEDIEVAL TORTURE devices were used in the Middle Ages. MEDIEVAL TIMES is a dinner theater restaurant with knights and jousting. TIMES SQUARE is a famous landmark in New York City. SQUARE PANTS are what SpongeBob SquarePants wears.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SPRINKLES", "RAINBOW", "UNICORN", "HORN", "ALARM", "BURGLAR", "GLOVE", "PRINTS", "INTERROGATION"],
+        narrative: "SPRINKLES look like a chopped-up RAINBOW. A RAINBOW UNICORN is a colorful myth. A unicorn has a distinctive HORN. A loud HORN can act as an ALARM to protect you from a BURGLAR who may be wearing a GLOVE on each hand to hide his or her finger PRINTS, because finding prints at a crime scene can lead to an INTERROGATION.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

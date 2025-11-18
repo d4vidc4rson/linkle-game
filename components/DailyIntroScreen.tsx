@@ -44,7 +44,7 @@ export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({ date, theme,
                             progress={progress}
                             className="daily-intro-logomark"
                         />
-                        <div className="daily-intro-copy">
+                        <div className="daily-intro-copy fade-in">
                             {allSolved ? (
                                 <>
                                     Looks like you've already<br />

@@ -447,8 +447,8 @@
       outline-offset: 2px;
     }
     .avatar-button svg {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.5em;
+      height: 1.5em;
     }
 
     .auth-button {
@@ -521,8 +521,8 @@
         transition: transform 0.2s ease;
     }
     .bottom-bar .achievement-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 0.9rem;
+        height: 0.9rem;
     }
     .bottom-bar .theme-toggle:hover {
         transform: scale(1.1);
@@ -531,8 +531,8 @@
         font-size: 0.8rem;
     }
     .bottom-bar .avatar-button svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.5em;
+        height: 1.5em;
     }
 
     .achievement-icon {
@@ -544,8 +544,8 @@
       color: var(--header-text);
     }
     .achievement-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 0.9rem;
+        height: 0.9rem;
         overflow: visible;
     }
     .achievement-medal-star {
@@ -2254,8 +2254,8 @@
         cursor: pointer;
       }
       .utility-group .achievement-icon svg {
-        width: 4em;
-        height: 4em;
+        width: 3.6em;
+        height: 3.6em;
       }
       .utility-group .theme-toggle:hover {
         transform: scale(1.1);
@@ -2264,9 +2264,15 @@
         font-size: 1em;
         text-transform: none;
       }
+      .utility-group .user-display {
+        font-size: 1em;
+      }
+      .utility-group .user-display .avatar-button {
+        font-size: 1em;
+      }
       .utility-group .avatar-button svg {
-        width: 4em;
-        height: 4em;
+        width: 3.6em;
+        height: 3.6em;
       }
     }
 
@@ -2515,8 +2521,8 @@
       }
     }
 
-    /* MOBILE-ONLY STYLES */
-    @media (max-width: 767px) {
+    /* MOBILE AND TABLET STYLES */
+    @media (max-width: 1023px) {
       .app-container:not(.state-start) {
         justify-content: center;
       }
@@ -2594,8 +2600,8 @@
         height: 3rem;
       }
       .bottom-bar-content .avatar-button svg {
-        width: 3rem;
-        height: 3rem;
+        width: 3.2rem;
+        height: 3.2rem;
       }
       .bottom-bar-content .user-display {
         grid-column: 3;

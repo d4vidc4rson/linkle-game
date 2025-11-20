@@ -17,7 +17,7 @@ export const AchievementIcon = (props) => (
       {/* Badge background - same as avatar */}
       <path 
         d="M150 40.5C166.569 40.5 180 53.9315 180 70.5V120.5C180 148.115 157.615 170.5 130 170.5H50C33.4315 170.5 20 157.069 20 140.5V90.5C20 62.8858 42.3858 40.5 70 40.5H150Z" 
-        fill="#00bf63" 
+        fill="#b3a7fe" 
         stroke="#2E2E2E" 
         strokeWidth="6"
       />
@@ -155,7 +155,7 @@ export const LinkleAvatarIcon = (props) => (
       {/* Badge background */}
       <path 
         d="M150 40.5C166.569 40.5 180 53.9315 180 70.5V120.5C180 148.115 157.615 170.5 130 170.5H50C33.4315 170.5 20 157.069 20 140.5V90.5C20 62.8858 42.3858 40.5 70 40.5H150Z" 
-        fill="#00bf63" 
+        fill="#b3a7fe" 
         stroke="#2E2E2E" 
         strokeWidth="6"
       />

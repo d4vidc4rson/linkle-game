@@ -2,12 +2,45 @@
 import React from 'react';
 
 export const AchievementIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-        <g className="achievement-medal">
-            <g transform="translate(12, 12) scale(1.15) translate(-12, -12)">
-                <path className="achievement-medal-star" fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </g>
-        </g>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" {...props}>
+        {/* Shadow layer */}
+        <path 
+            d="M19.2 6.06C21.188 6.06 22.8 7.672 22.8 9.66V15.66C22.8 18.974 20.114 21.66 16.8 21.66H7.2C5.212 21.66 3.6 20.048 3.6 18.06V12.06C3.6 8.746 6.286 6.06 9.6 6.06H19.2Z" 
+            fill="#2E2E2E"
+            opacity="0.3"
+        />
+
+        {/* Badge background */}
+        <path 
+            d="M18 4.86C19.988 4.86 21.6 6.472 21.6 8.46V14.46C21.6 17.774 18.914 20.46 15.6 20.46H6C4.012 20.46 2.4 18.848 2.4 16.86V10.86C2.4 7.546 5.086 4.86 8.4 4.86H18Z" 
+            fill="#00bf63"
+            stroke="#2E2E2E"
+            strokeWidth="0.72"
+        />
+
+        {/* Highlight bar */}
+        <path 
+            d="M16.8 6.66C17.794 6.66 18.6 7.466 18.6 8.46V10.86C18.6 11.854 17.794 12.66 16.8 12.66H8.4C7.406 12.66 6.6 11.854 6.6 10.86V8.46C6.6 7.466 7.406 6.66 8.4 6.66H16.8Z" 
+            fill="#FFFFFF"
+            fillOpacity="0.3"
+        />
+
+        {/* Star */}
+        <path 
+            d="M12 7.8L13.5 11.1L16.8 11.76L14.1 13.8L15 17.4L12 15.36L9 17.4L9.9 13.8L7.2 11.76L10.5 11.1L12 7.8Z" 
+            fill="#FFD93D"
+            stroke="#2E2E2E"
+            strokeWidth="0.72"
+            strokeLinejoin="round"
+        />
+
+        {/* Star accent line */}
+        <path 
+            d="M12.96 10.2L13.44 11.4" 
+            stroke="#2E2E2E" 
+            strokeWidth="0.48" 
+            strokeLinecap="round"
+        />
     </svg>
 );
 

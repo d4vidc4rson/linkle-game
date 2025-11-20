@@ -431,32 +431,13 @@
       align-items: center;
     }
     
-    .avatar {
-      width: calc(var(--grid-unit) * 4); /* 32px */
-      height: calc(var(--grid-unit) * 4); /* 32px */
-      border-radius: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1rem;
-      text-transform: uppercase;
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .avatar svg {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-    
     .avatar-button {
       background: none;
       border: none;
       padding: 0;
       margin: 0;
       cursor: pointer;
-      border-radius: 50%;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -464,6 +445,10 @@
     .avatar-button:focus-visible {
       outline: 2px solid var(--button-bg);
       outline-offset: 2px;
+    }
+    .avatar-button svg {
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
     .auth-button {
@@ -545,9 +530,9 @@
     .bottom-bar .auth-button {
         font-size: 0.8rem;
     }
-    .bottom-bar .avatar {
-        width: calc(var(--grid-unit) * 4.5); /* 36px */
-        height: calc(var(--grid-unit) * 4.5); /* 36px */
+    .bottom-bar .avatar-button svg {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
     .achievement-icon {
@@ -2279,11 +2264,7 @@
         font-size: 1em;
         text-transform: none;
       }
-      .utility-group .avatar {
-        width: 4em;
-        height: 4em;
-      }
-      .utility-group .avatar svg {
+      .utility-group .avatar-button svg {
         width: 4em;
         height: 4em;
       }
@@ -2612,7 +2593,7 @@
         width: 3rem;
         height: 3rem;
       }
-      .bottom-bar-content .avatar svg {
+      .bottom-bar-content .avatar-button svg {
         width: 3rem;
         height: 3rem;
       }

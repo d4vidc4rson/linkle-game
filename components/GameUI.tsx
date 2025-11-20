@@ -69,21 +69,7 @@ export const LoserEmojis = () => {
 };
 
 export const UserAvatar = ({ displayName, theme }: { displayName: string, theme: Theme }) => {
-    const lightModeColors = ['#331922', '#7d6c63', '#4a2f3a', '#d0506e', '#e57373', '#c7a992'];
-    const darkModeColors = ['#eddec9', '#c7a992', '#f7f2ec', '#d4c4b4', '#ff914d'];
-
-    const colors = theme === 'light' ? lightModeColors : darkModeColors;
-    const textColor = theme === 'light' ? '#eddec9' : '#331922';
-
-    // Simple hash to get a consistent color for a name
-    const colorIndex = (displayName.charCodeAt(0) + (displayName.length || 0)) % colors.length;
-    const avatarColor = colors[colorIndex];
-
-    return (
-        <div className="avatar" style={{ color: textColor }} title={displayName}>
-            <LinkleAvatarIcon />
-        </div>
-    );
+    return <LinkleAvatarIcon title={displayName} />;
 };
 
 export const TriesDots = ({ count, totalTries }) => (

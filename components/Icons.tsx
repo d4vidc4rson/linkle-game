@@ -2,45 +2,42 @@
 import React from 'react';
 
 export const AchievementIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" {...props}>
-        {/* Shadow layer */}
-        <path 
-            d="M19.2 6.06C21.188 6.06 22.8 7.672 22.8 9.66V15.66C22.8 18.974 20.114 21.66 16.8 21.66H7.2C5.212 21.66 3.6 20.048 3.6 18.06V12.06C3.6 8.746 6.286 6.06 9.6 6.06H19.2Z" 
-            fill="#2E2E2E"
-            opacity="0.3"
-        />
-
-        {/* Badge background */}
-        <path 
-            d="M18 4.86C19.988 4.86 21.6 6.472 21.6 8.46V14.46C21.6 17.774 18.914 20.46 15.6 20.46H6C4.012 20.46 2.4 18.848 2.4 16.86V10.86C2.4 7.546 5.086 4.86 8.4 4.86H18Z" 
-            fill="#00bf63"
-            stroke="#2E2E2E"
-            strokeWidth="0.72"
-        />
-
-        {/* Highlight bar */}
-        <path 
-            d="M16.8 6.66C17.794 6.66 18.6 7.466 18.6 8.46V10.86C18.6 11.854 17.794 12.66 16.8 12.66H8.4C7.406 12.66 6.6 11.854 6.6 10.86V8.46C6.6 7.466 7.406 6.66 8.4 6.66H16.8Z" 
-            fill="#FFFFFF"
-            fillOpacity="0.3"
-        />
-
-        {/* Star */}
-        <path 
-            d="M12 7.8L13.5 11.1L16.8 11.76L14.1 13.8L15 17.4L12 15.36L9 17.4L9.9 13.8L7.2 11.76L10.5 11.1L12 7.8Z" 
-            fill="#FFD93D"
-            stroke="#2E2E2E"
-            strokeWidth="0.72"
-            strokeLinejoin="round"
-        />
-
-        {/* Star accent line */}
-        <path 
-            d="M12.96 10.2L13.44 11.4" 
-            stroke="#2E2E2E" 
-            strokeWidth="0.48" 
-            strokeLinecap="round"
-        />
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 200 200" 
+      fill="none" 
+      {...props}
+    >
+      {/* Shadow layer - same as avatar */}
+      <path 
+        d="M160 50.5C176.569 50.5 190 63.9315 190 80.5V130.5C190 158.115 167.615 180.5 140 180.5H60C43.4315 180.5 30 167.069 30 150.5V100.5C30 72.8858 52.3858 50.5 80 50.5H160Z" 
+        fill="#2D2A32"
+      />
+      
+      {/* Badge background - same as avatar */}
+      <path 
+        d="M150 40.5C166.569 40.5 180 53.9315 180 70.5V120.5C180 148.115 157.615 170.5 130 170.5H50C33.4315 170.5 20 157.069 20 140.5V90.5C20 62.8858 42.3858 40.5 70 40.5H150Z" 
+        fill="#00bf63" 
+        stroke="#2E2E2E" 
+        strokeWidth="6"
+      />
+      
+      {/* Gold Star - scaled and centered */}
+      <path 
+        d="M100 65L112.5 92.5L140 98L117.5 115L125 145L100 128L75 145L82.5 115L60 98L87.5 92.5L100 65Z" 
+        fill="#FFD93D"
+        stroke="#2E2E2E"
+        strokeWidth="6"
+        strokeLinejoin="round"
+      />
+      
+      {/* Star accent line */}
+      <path 
+        d="M108 85L112 95" 
+        stroke="#2E2E2E" 
+        strokeWidth="4" 
+        strokeLinecap="round"
+      />
     </svg>
 );
 

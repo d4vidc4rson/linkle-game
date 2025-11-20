@@ -145,16 +145,85 @@ export const TitleGraphic = () => (
 export const LinkleAvatarIcon = (props) => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+      viewBox="0 0 200 200" 
       fill="none" 
-      stroke="currentColor" 
-      strokeWidth="3" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
       {...props}
     >
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path>
+      {/* Shadow layer */}
+      <path 
+        d="M160 50.5C176.569 50.5 190 63.9315 190 80.5V130.5C190 158.115 167.615 180.5 140 180.5H60C43.4315 180.5 30 167.069 30 150.5V100.5C30 72.8858 52.3858 50.5 80 50.5H160Z" 
+        fill="#2D2A32"
+      />
+      
+      {/* Badge background */}
+      <path 
+        d="M150 40.5C166.569 40.5 180 53.9315 180 70.5V120.5C180 148.115 157.615 170.5 130 170.5H50C33.4315 170.5 20 157.069 20 140.5V90.5C20 62.8858 42.3858 40.5 70 40.5H150Z" 
+        fill="#00bf63" 
+        stroke="#2E2E2E" 
+        strokeWidth="6"
+      />
+      
+      {/* Character */}
+      <g id="character">
+        {/* Left holder arm */}
+        <path 
+          d="M75 70C75 70 65 55 55 60" 
+          stroke="#2E2E2E" 
+          strokeWidth="6" 
+          strokeLinecap="round"
+        />
+        {/* Right holder arm */}
+        <path 
+          d="M125 70C125 70 135 55 145 60" 
+          stroke="#2E2E2E" 
+          strokeWidth="6" 
+          strokeLinecap="round"
+        />
+        {/* Left holder accent */}
+        <circle 
+          cx="55" 
+          cy="60" 
+          r="7" 
+          fill="#FFD93D" 
+          stroke="#2E2E2E" 
+          strokeWidth="4"
+        />
+        {/* Right holder accent */}
+        <circle 
+          cx="145" 
+          cy="60" 
+          r="7" 
+          fill="#FFD93D" 
+          stroke="#2E2E2E" 
+          strokeWidth="4"
+        />
+        {/* Face */}
+        <path 
+          d="M145 115C145 139.853 124.853 160 100 160C75.1472 160 55 139.853 55 115C55 90.1472 70 70 100 70C130 70 145 90.1472 145 115Z" 
+          fill="#FFFFFF" 
+          stroke="#2E2E2E" 
+          strokeWidth="6"
+        />
+        {/* Left eye */}
+        <circle cx="85" cy="110" r="6" fill="#2E2E2E"/>
+        {/* Right eye */}
+        <circle cx="115" cy="110" r="6" fill="#2E2E2E"/>
+        {/* Smile */}
+        <path 
+          d="M88 125Q100 135 112 125" 
+          stroke="#2E2E2E" 
+          strokeWidth="5" 
+          strokeLinecap="round"
+        />
+        {/* Face highlight */}
+        <path 
+          d="M80 85Q95 80 110 85" 
+          stroke="#FFFFFF" 
+          strokeWidth="4" 
+          strokeLinecap="round" 
+          opacity="0.6"
+        />
+      </g>
     </svg>
 );
 

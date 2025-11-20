@@ -80,7 +80,7 @@ export const UserAvatar = ({ displayName, theme }: { displayName: string, theme:
     const avatarColor = colors[colorIndex];
 
     return (
-        <div className="avatar" style={{ backgroundColor: avatarColor, color: textColor }} title={displayName}>
+        <div className="avatar" style={{ color: textColor }} title={displayName}>
             <LinkleAvatarIcon />
         </div>
     );

@@ -434,7 +434,7 @@
     .avatar {
       width: calc(var(--grid-unit) * 4); /* 32px */
       height: calc(var(--grid-unit) * 4); /* 32px */
-      border-radius: 50%;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -446,8 +446,8 @@
     }
 
     .avatar svg {
-      width: 60%;
-      height: 60%;
+      width: 1.5rem;
+      height: 1.5rem;
     }
     
     .avatar-button {
@@ -536,8 +536,8 @@
         transition: transform 0.2s ease;
     }
     .bottom-bar .achievement-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
     }
     .bottom-bar .theme-toggle:hover {
         transform: scale(1.1);
@@ -559,8 +559,8 @@
       color: var(--header-text);
     }
     .achievement-icon svg {
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
         overflow: visible;
     }
     .achievement-medal-star {
@@ -2280,9 +2280,12 @@
         text-transform: none;
       }
       .utility-group .avatar {
-        width: 2em;
-        height: 2em;
-        font-size: 1.4em;
+        width: 4em;
+        height: 4em;
+      }
+      .utility-group .avatar svg {
+        width: 4em;
+        height: 4em;
       }
     }
 
@@ -2606,6 +2609,10 @@
         justify-self: center;
       }
       .bottom-bar-content .achievement-icon svg {
+        width: 3rem;
+        height: 3rem;
+      }
+      .bottom-bar-content .avatar svg {
         width: 3rem;
         height: 3rem;
       }

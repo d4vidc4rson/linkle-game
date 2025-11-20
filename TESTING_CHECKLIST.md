@@ -9,7 +9,7 @@
    - Should return to intro screen
 
 2. **Start daily mode**:
-   - Navigate to `/daily` route
+   - Navigate to `/` route (daily mode is now the default)
    - Should see "Brace yourself..." intro screen
    - Click "PLAY" button
 

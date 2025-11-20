@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useBodyClasses } from './hooks/useBodyClasses';
@@ -11,6 +11,7 @@ import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag } from './components/GameUI';
 import { GameBoard } from './components/GameBoard';
 import { DailyMode } from './components/DailyMode';
+import { SandboxPage } from './components/SandboxPage';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from './constants';
 
 const App = () => {
@@ -318,8 +319,10 @@ const Root = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/daily" element={<DailyMode />} />
-                <Route path="/*" element={<RegularMode />} />
+                <Route path="/" element={<DailyMode />} />
+                <Route path="/daily" element={<Navigate to="/" replace />} />
+                <Route path="/sandbox" element={<SandboxPage />} />
+                <Route path="/sandbox/infinite" element={<RegularMode />} />
             </Routes>
         </BrowserRouter>
     );

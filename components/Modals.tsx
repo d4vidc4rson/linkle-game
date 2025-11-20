@@ -1,7 +1,7 @@
 
 
 // @ts-nocheck
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Badge, AuthMode } from '../types';
 import { CloseIcon } from './Icons';
 
@@ -231,12 +231,17 @@ export const ExplanationModal = ({ narrative, solution, onClose }: { narrative: 
     </div>
 );
 
-export const AuthModal = ({ onClose }) => {
-    const [mode, setMode] = useState<AuthMode>('signup');
+export const AuthModal = ({ onClose, initialMode = 'signup' }: { onClose: () => void; initialMode?: AuthMode }) => {
+    const [mode, setMode] = useState<AuthMode>(initialMode);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Reset mode when initialMode prop changes (e.g., modal reopened with different mode)
+    useEffect(() => {
+        setMode(initialMode);
+    }, [initialMode]);
 
     const handleGoogleSignIn = async () => {
         setLoading(true);

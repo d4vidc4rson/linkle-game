@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useDailySchedule } from '../hooks/useDailySchedule';
 import { useDailyGameLogic, type DailyPuzzleDifficulty } from '../hooks/useDailyGameLogic';
 import { useBodyClasses } from '../hooks/useBodyClasses';
-import type { Theme, GameState, DailyResult } from '../types';
+import type { Theme, GameState, DailyResult, AuthMode } from '../types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots } from './GameUI';
@@ -29,6 +29,7 @@ export const DailyMode = () => {
     const [currentPuzzleType, setCurrentPuzzleType] = useState<DailyPuzzleDifficulty>('easy');
     const [targetDate, setTargetDate] = useState<Date>(new Date()); // Can be changed to play past dates
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [authModalMode, setAuthModalMode] = useState<AuthMode>('signup');
 
     const {
         user,
@@ -163,6 +164,11 @@ export const DailyMode = () => {
         setView('intro');
     };
 
+    const handleShowAuth = (mode?: AuthMode) => {
+        setAuthModalMode(mode || 'signup');
+        setShowAuthModal(true);
+    };
+
     const handleIntroContinue = () => {
         // Set flag to indicate we're starting fresh from intro (ignore existing results)
         setNavigatingToNextPuzzle();
@@ -288,11 +294,11 @@ export const DailyMode = () => {
                     />
                 )}
                 {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
-                {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+                {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
                 <DailyStartScreen 
                     onPlay={handleStartPlay} 
                     user={user}
-                    onShowAuth={() => setShowAuthModal(true)}
+                    onShowAuth={handleShowAuth}
                 />
             </>
         );
@@ -328,7 +334,7 @@ export const DailyMode = () => {
                     />
                 )}
                 {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
-                {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+                {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
                 {showLogoutModal && <LogoutModal 
                     onLogout={async () => {
                         await handleLogout();
@@ -349,7 +355,7 @@ export const DailyMode = () => {
                     onGenerateTestSchedule={isDev ? handleGenerateTestSchedule : undefined}
                     onThemeToggle={handleThemeToggle}
                     onShowAchievements={() => setShowcaseVisible(true)}
-                    onShowAuth={() => setShowAuthModal(true)}
+                    onShowAuth={handleShowAuth}
                     onShowLogout={() => setShowLogoutModal(true)}
                     user={user}
                 />
@@ -394,7 +400,7 @@ export const DailyMode = () => {
             {newlyUnlockedBadge && <BadgeUnlockModal badge={newlyUnlockedBadge} onClose={() => setNewlyUnlockedBadge(null)} />}
             {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
             {showExplanationModal && puzzle && <ExplanationModal narrative={finalNarrative} solution={puzzle.solution} onClose={handleCloseExplanation} />}
-            {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+            {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
             {showLogoutModal && <LogoutModal 
                 onLogout={async () => {
                     await handleLogout();
@@ -427,7 +433,7 @@ export const DailyMode = () => {
                                         <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                     </button>
                                 ) : (
-                                    <button className="auth-button" onClick={() => setShowAuthModal(true)}><span>Sign-Up / In</span></button>
+                                    <button className="auth-button" onClick={() => handleShowAuth()}><span>Sign-Up / In</span></button>
                                 )}
                             </div>
                         </div>
@@ -551,7 +557,7 @@ export const DailyMode = () => {
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
-                                <button className="auth-button" onClick={() => setShowAuthModal(true)}><span>Sign-Up / In</span></button>
+                                <button className="auth-button" onClick={() => handleShowAuth()}><span>Sign-Up / In</span></button>
                             )}
                         </div>
                     </div>

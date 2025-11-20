@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { TitleGraphic } from './Icons';
 import { MiniGrid } from './GameUI';
+import type { AuthMode } from '../types';
 
 interface DailyStartScreenProps {
     onPlay: () => void;
     user: any; // Using any to avoid importing User type for now, or import it if preferred
-    onShowAuth: () => void;
+    onShowAuth: (mode?: AuthMode) => void;
 }
 
 export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ onPlay, user, onShowAuth }) => {
@@ -29,8 +30,8 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ onPlay, user
                         <button className="button" onClick={handlePlay}><span>Play</span></button>
                         {!user && (
                             <>
-                                <button className="button button-outline" onClick={onShowAuth}><span>Login</span></button>
-                                <button className="button button-signup" onClick={onShowAuth}><span>Sign-Up</span></button>
+                                <button className="button button-outline" onClick={() => onShowAuth('login')}><span>Login</span></button>
+                                <button className="button button-signup" onClick={() => onShowAuth('signup')}><span>Sign-Up</span></button>
                             </>
                         )}
                     </div>

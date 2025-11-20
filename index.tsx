@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useBodyClasses } from './hooks/useBodyClasses';
-import type { Theme, GameState } from './types';
+import type { Theme, GameState, AuthMode } from './types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './components/Icons';
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './components/Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag } from './components/GameUI';
@@ -18,6 +18,7 @@ const App = () => {
     const [showcaseVisible, setShowcaseVisible] = useState(false);
     const prevGameStateRef = useRef<GameState>();
     const [animateHeader, setAnimateHeader] = useState(false);
+    const [authModalMode, setAuthModalMode] = useState<AuthMode>('signup');
 
     const {
         user,
@@ -122,6 +123,11 @@ const App = () => {
         generateNewPuzzle();
     };
 
+    const handleShowAuth = (mode?: AuthMode) => {
+        setAuthModalMode(mode || 'signup');
+        setShowAuthModal(true);
+    };
+
     const totalTries = puzzle ? TRIES_PER_DIFFICULTY[puzzle.difficulty] : DEFAULT_TRIES;
     
     if (authLoading || gameState === 'loading') {
@@ -135,7 +141,7 @@ const App = () => {
             {newlyUnlockedBadge && <BadgeUnlockModal badge={newlyUnlockedBadge} onClose={() => setNewlyUnlockedBadge(null)} />}
             {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
             {showExplanationModal && puzzle && <ExplanationModal narrative={finalNarrative} solution={puzzle.solution} onClose={handleCloseExplanation} />}
-            {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+            {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
             {showLogoutModal && <LogoutModal 
                 onLogout={async () => {
                     await handleLogout();
@@ -176,7 +182,7 @@ const App = () => {
                                             <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                         </button>
                                     ) : (
-                                        <button className="auth-button" onClick={() => setShowAuthModal(true)}><span>Sign-Up / In</span></button>
+                                        <button className="auth-button" onClick={() => handleShowAuth()}><span>Sign-Up / In</span></button>
                                     )}
                                 </div>
                             </div>
@@ -198,8 +204,8 @@ const App = () => {
                                         <button className="button" onClick={handlePlayClick}><span>Play</span></button>
                                         {!user && (
                                             <>
-                                                <button className="button button-outline" onClick={() => setShowAuthModal(true)}><span>Login</span></button>
-                                                <button className="button button-signup" onClick={() => setShowAuthModal(true)}><span>Sign-Up</span></button>
+                                                <button className="button button-outline" onClick={() => handleShowAuth('login')}><span>Login</span></button>
+                                                <button className="button button-signup" onClick={() => handleShowAuth('signup')}><span>Sign-Up</span></button>
                                             </>
                                         )}
                                     </div>

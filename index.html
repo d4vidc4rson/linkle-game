@@ -1837,9 +1837,14 @@
     /* CREATE ACCOUNT / LOGIN button */
     .auth-modal form .button {
        margin-top: calc(var(--grid-unit) / 2);
-       background-color: #EAEAEA; /* White bg */
        color: #282828; /* Charcoal text */
-       border: 2px solid #EAEAEA;
+    }
+    .auth-modal form .button::after {
+       background-color: #EAEAEA; /* White bg for face */
+       border-radius: 8px !important;
+    }
+    .auth-modal form .button::before {
+       background-color: rgba(234, 234, 234, 0.3); /* Light shadow */
     }
     .auth-modal .divider {
       display: flex;

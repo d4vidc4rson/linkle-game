@@ -38,6 +38,7 @@
       --border-radius: 6px;
       --font-display: 'Antonio', sans-serif;
       --font-ui: 'Poppins', sans-serif;
+      --shadow-depth: 10px;
     }
     
     body[data-theme='light'] {
@@ -52,14 +53,18 @@
       --box-text-normal: #2E2E2E;
       --box-bg-locked: #00bf63;
       --box-text-locked: #2E2E2E;
-      --button-bg: #3966FF;
+      --button-bg: #2962FF; /* Bright Blue */
       --button-text: #FFFFFF;
+      --button-shadow: #0039CB; /* Dark Blue Shadow */
+      --tile-shadow-normal: #BDBDBD; /* Grey Shadow for White Tile */
+      --tile-shadow-locked: #008542; /* Dark Green Shadow */
       --tries-dot-color: #2E2E2E;
       --gunmetal: #7a7392;
       --light-text-static: #f7f2ec;
       --bar-border: rgba(46, 46, 46, 0.2);
       --bg-pattern-color: hsla(255, 60%, 95%, 1);
       --bg-dot-color: hsla(255, 28%, 15%, 0.15);
+      /* Legacy shadows - keeping for compatibility or removing if unused */
       --box-shadow-float-color: hsla(255, 10%, 15%, 0.1);
       --box-shadow-highlight-color: hsla(0, 0%, 100%, 0.4);
       --box-shadow-inset-color: hsla(255, 10%, 15%, 0.1);
@@ -68,7 +73,7 @@
       --achievement-color: #ff914d;
       --difficulty-impossible-bg: #ff5757;
     }
-
+    
     body[data-theme='dark'] {
       --background-color: #2E2E2E;
       --header-text: #E9E2FF;
@@ -81,8 +86,11 @@
       --box-text-normal: #FFFFFF;
       --box-bg-locked: #00bf63;
       --box-text-locked: #2E2E2E;
-      --button-bg: #3966FF;
+      --button-bg: #2962FF;
       --button-text: #FFFFFF;
+      --button-shadow: #0039CB;
+      --tile-shadow-normal: #5a5372; /* Darker Purple-Grey for Tile */
+      --tile-shadow-locked: #008542;
       --tries-dot-color: #E9E2FF;
       --bar-border: rgba(233, 226, 255, 0.2);
       --box-shadow-float-color: hsla(0, 0%, 0%, 0.2);
@@ -251,41 +259,114 @@
     .start-screen-container .button {
         font-size: 1.5rem;
         padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 4);
-        background-color: var(--button-bg);
-        border-color: var(--button-bg);
+        background-color: transparent;
         color: var(--button-text);
         position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease;
+        overflow: visible;
+        box-shadow: none;
+        border-radius: 0; /* No radius on parent - let ::after control it */
+        transition: transform 0.1s ease;
+        z-index: 1;
     }
+    
+    /* Face (with shimmer for default button) */
+    .start-screen-container .button::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--button-bg);
+        background-image: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+        background-size: 200% 100%;
+        background-position: 200% 0;
+        background-repeat: no-repeat;
+        border-radius: 16px !important; /* Face radius - 16px */
+        transform: translateZ(0); /* Force hardware acceleration */
+        z-index: -1;
+        transition: background-position 0.7s ease-in-out, background-color 0.2s ease;
+    }
+
+    /* Shadow */
     .start-screen-container .button::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 75%;
+        top: var(--shadow-depth);
+        left: 0;
+        width: 100%;
         height: 100%;
-        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-        transform: skewX(-20deg);
-        transition: left 0.7s ease-in-out;
+        background: none; 
+        background-color: var(--button-shadow);
+        transform: none;
+        border-radius: 100px;
+        z-index: -2;
+        transition: background-color 0.2s ease, transform 0.1s ease;
     }
+
     .start-screen-container .button.button-outline {
-        background-color: #E9E2FF;
-        border-color: #2E2E2E;
+        background-color: transparent;
         color: #2E2E2E;
     }
+    .start-screen-container .button.button-outline::after {
+        display: block;
+        background-color: #E9E2FF;
+        background-image: none;
+        border-radius: 16px !important; /* Face radius - 16px */
+    }
+    .start-screen-container .button.button-outline::before {
+        background-color: #BDBDBD;
+    }
+
+    body[data-theme='dark'] .start-screen-container .button.button-outline {
+        color: #E9E2FF;
+    }
+    body[data-theme='dark'] .start-screen-container .button.button-outline::after {
+        display: block;
+        background-color: #4A4A4A;
+        border-radius: 16px !important; /* Face radius - 16px */
+    }
+    body[data-theme='dark'] .start-screen-container .button.button-outline::before {
+        background-color: #222;
+    }
+
     .start-screen-container .button.button-signup {
-        background-color: #b3a7fe;
-        border-color: #b3a7fe;
+        background-color: transparent;
         color: #2E2E2E;
+    }
+    .start-screen-container .button.button-signup::after {
+        display: block;
+        background-color: #b3a7fe;
+        background-image: none;
+        border-radius: 16px !important; /* Face radius - 16px */
+    }
+    .start-screen-container .button.button-signup::before {
+        background-color: #7E57C2;
+    }
+    
+    .start-screen-container .button:active {
+        transform: translateY(var(--shadow-depth)) !important;
+        box-shadow: none !important;
+    }
+    .start-screen-container .button:active::before {
+        transform: translateY(calc(var(--shadow-depth) * -1));
     }
 
     @media (hover: hover) and (pointer: fine) {
       .start-screen-container .button:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+      }
+      .start-screen-container .button:hover::after {
+        background-position: -100% 0;
       }
       .start-screen-container .button:hover::before {
-        left: 125%;
+         /* No shadow change needed? Or maybe adjust? */
+         /* If parent lifts, shadow lifts. We want shadow on ground. */
+         /* So shadow transform down relative to parent. */
+         transform: translateY(2px);
       }
     }
 
@@ -568,11 +649,11 @@
     }
     
     .word-card {
-      background-color: var(--box-bg-normal);
+      background-color: transparent;
       color: var(--box-text-normal);
-      border: 2px solid transparent;
+      border: none; /* Removed border - using pseudo-element approach */
       aspect-ratio: 1 / 1;
-      border-radius: var(--border-radius);
+      border-radius: 0; /* No radius on parent - let ::after control it */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -588,81 +669,111 @@
       -ms-user-select: none;
       -webkit-touch-callout: none;
       touch-action: none;
-      position: relative; /* For pseudo-element positioning */
-      overflow: hidden; /* Ensures gradient respects border-radius */
-      box-shadow: 
-          inset 0 1px 1px var(--box-shadow-highlight-color),
-          inset 0 -1px 1px var(--box-shadow-inset-color),
-          0 calc(var(--grid-unit) * 1) calc(var(--grid-unit) * 2) var(--box-shadow-float-color);
-      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease, background-color 0.2s ease, color 0.2s ease;
+      position: relative;
+      overflow: visible;
+      box-shadow: none;
+      transition: transform 0.1s ease, opacity 0.4s ease, color 0.2s ease;
       opacity: 0;
       transform: scale(0.9) translateY(10px);
+      z-index: 1;
+    }
+
+    /* The Face */
+    .word-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: var(--box-bg-normal);
+      border-radius: 12px; /* Face radius - 12px */
+      z-index: -1;
+      transition: background-color 0.2s ease;
+    }
+
+    /* The Shadow (Chunky) */
+    .word-card::before {
+      content: '';
+      position: absolute;
+      top: var(--shadow-depth);
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--tile-shadow-normal);
+      border-radius: 24px; /* Independent radius for chunky look */
+      z-index: -2;
+      transition: background-color 0.2s ease, transform 0.1s ease;
     }
 
     .word-card > span {
       position: relative;
-      top: -0.22em;
+      z-index: 1;
+      top: -0.1em;
     }
     button > span {
       position: relative;
       top: -0.1em;
     }
 
-    .word-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: linear-gradient(
-        160deg,
-        rgba(255, 255, 255, 0.07),
-        rgba(0, 0, 0, 0.05)
-      );
-      border-radius: inherit; /* Match parent's border-radius */
-      pointer-events: none; /* Make sure it doesn't interfere with clicks */
-    }
-
     @media (hover: hover) and (pointer: fine) {
       body:not(.dragging-active) .word-card:not(.locked):not(.revealed):hover {
-          transform: scale(1.04) translateZ(calc(var(--grid-unit) * 2));
-          box-shadow: 
-              inset 0 1px 1px var(--box-shadow-highlight-color),
-              inset 0 -1px 1px var(--box-shadow-inset-color),
-              0 calc(var(--grid-unit) * 2.5) calc(var(--grid-unit) * 5) var(--box-shadow-float-color-hover);
-          z-index: 10;
+          transform: translateY(-2px);
+      }
+      body:not(.dragging-active) .word-card:not(.locked):not(.revealed):hover::before {
+          transform: translateY(2px);
       }
     }
     
+    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):active {
+        transform: translateY(var(--shadow-depth));
+    }
+    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):active::before {
+        transform: translateY(calc(var(--shadow-depth) * -1));
+    }
+    
     .word-card.dragging {
-        opacity: 0.5;
+        opacity: 0.8;
+        transform: scale(1.05);
+        z-index: 100;
     }
     
     .word-card.placeholder {
         background-color: transparent;
         color: transparent;
         box-shadow: none;
-        border: 2px solid var(--placeholder-border-color);
+        border: 2px dashed var(--placeholder-border-color);
+    }
+    .word-card.placeholder::before, .word-card.placeholder::after {
+        display: none;
     }
 
     .word-card.locked {
-      background-color: var(--box-bg-locked);
       color: var(--box-text-locked);
-      border: 2px solid transparent;
       cursor: not-allowed;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
+      box-shadow: none;
+      background-color: transparent !important; /* Prevent any background from showing */
+    }
+    .word-card.locked::after {
+      background-color: var(--box-bg-locked);
+      border-radius: 12px; /* Ensure consistent face radius */
+    }
+    .word-card.locked::before {
+      background-color: var(--tile-shadow-locked);
     }
     
     .word-card.revealed {
-      background-color: var(--box-bg-locked);
       color: var(--box-text-locked);
-      border: 2px solid transparent;
       opacity: 0;
       cursor: default;
       animation-fill-mode: forwards;
       transform: scale(1);
+      box-shadow: none;
+      background-color: transparent !important; /* Prevent any background from showing */
+    }
+    .word-card.revealed::after {
+      background-color: var(--box-bg-locked);
+      border-radius: 12px; /* Ensure consistent face radius */
+    }
+    .word-card.revealed::before {
+      background-color: var(--tile-shadow-locked);
     }
     
     .word-card.revealed.win {
@@ -700,19 +811,16 @@
       0% {
         opacity: 0;
         transform: translate(var(--tx, 0), var(--ty, 0)) rotate(var(--rot, 0)) scale(0.5);
-        background-color: var(--win-start-bg-color);
         color: var(--win-start-text-color);
       }
       60% {
         opacity: 1;
         transform: translate(calc(var(--tx, 0) / 2), calc(var(--ty, 0) / 2)) rotate(calc(var(--rot, 0) / 3)) scale(1.1);
-        background-color: var(--win-mid-bg-color);
         color: var(--win-mid-text-color);
       }
       100% {
         opacity: 1;
         transform: translate(0, 0) rotate(0) scale(1);
-        background-color: var(--box-bg-locked);
         color: var(--box-text-locked);
       }
     }
@@ -720,19 +828,16 @@
       0% {
         opacity: 0;
         transform: translate(var(--loss-tx), var(--loss-ty)) rotate(var(--loss-rot)) scale(0.8);
-        background-color: var(--loss-start-bg-color);
         color: var(--loss-start-text-color);
       }
       50% {
         opacity: 1;
         transform: translate(calc(var(--loss-tx) / 2), calc(var(--loss-ty) / 2)) rotate(calc(var(--loss-rot) / 2)) scale(1.1);
-        background-color: var(--loss-mid-bg-color);
         color: var(--loss-mid-text-color);
       }
       100% {
         opacity: 1;
         transform: translate(0,0) rotate(0) scale(1);
-        background-color: var(--box-bg-locked);
         color: var(--box-text-locked);
       }
     }
@@ -836,33 +941,90 @@
     
     .button {
       padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3);
-      border: 2px solid var(--button-bg);
-      border-radius: 100px;
-      background-color: var(--button-bg);
+      border: none;
+      border-radius: 0; /* No radius on parent - let ::after control it */
+      background-color: transparent;
       color: var(--button-text);
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 1.1rem;
       cursor: pointer;
       text-transform: uppercase;
-      transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, filter 0.2s ease;
+      transition: transform 0.1s ease, filter 0.2s ease;
       white-space: nowrap;
+      box-shadow: none;
+      margin-bottom: var(--shadow-depth);
+      position: relative;
+      overflow: visible; /* Allow ::after to extend */
+      z-index: 1;
     }
 
-    .button.button-submit {
+    /* Face */
+    .button::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
       background-color: var(--button-bg);
-      color: var(--button-text);
-      border-color: var(--button-bg);
+      border-radius: 16px !important; /* Face radius - 16px */
+      transform: translateZ(0); /* Force hardware acceleration */
+      z-index: -1;
+      transition: background-color 0.2s ease;
     }
-    
-    .button-secondary {
-       background-color: var(--button-bg);
-       color: var(--button-text);
-       border: none;
+
+    /* Shadow */
+    .button::before {
+      content: '';
+      position: absolute;
+      top: var(--shadow-depth);
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--button-shadow);
+      border-radius: 100px; /* Pill Shadow */
+      z-index: -2;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .button > span {
+      position: relative;
+      z-index: 1;
+      top: -0.1em;
     }
 
     .button:active {
-      transform: scale(0.95);
+      transform: translateY(var(--shadow-depth));
+    }
+    .button:active::before {
+      transform: translateY(calc(var(--shadow-depth) * -1));
+    }
+
+    .button.button-submit {
+      color: var(--button-text);
+    }
+    .button.button-submit::after {
+      background-color: var(--button-bg);
+    }
+
+    .button.button-primary {
+      color: var(--button-text);
+    }
+    .button.button-primary::after {
+      background-color: var(--button-bg);
+      border-radius: 8px !important; /* Face radius - 8px */
+    }
+    
+    .button-secondary {
+       color: var(--button-text);
+       border: none;
+    }
+    .button-secondary::after {
+       background-color: var(--button-bg);
     }
     
     .logic-narrative {
@@ -1025,20 +1187,37 @@
     }
 
     .button-outline {
-      background-color: #E9E2FF;
+      background-color: transparent;
       color: #2E2E2E;
-      border: 2px solid #2E2E2E;
+      border: none; /* Removed border - using pseudo-element approach */
+    }
+
+    .button-outline::after {
+      background-color: #E9E2FF; /* Light lavender/off-white face */
+      background-image: none;
+      border-radius: 16px !important; /* Face radius - 16px */
+    }
+
+    .button-outline::before {
+      background-color: #BDBDBD; /* Gray shadow */
     }
 
     body[data-theme='dark'] .button-outline {
         background-color: transparent;
         color: #E9E2FF;
-        border-color: #E9E2FF;
+    }
+
+    body[data-theme='dark'] .button-outline::after {
+        background-color: #4A4A4A; /* Dark gray face for dark mode */
+        border-radius: 16px !important; /* Face radius - 16px */
+    }
+
+    body[data-theme='dark'] .button-outline::before {
+        background-color: #222; /* Darker shadow for dark mode */
     }
 
     body[data-theme='dark'] .start-screen-container .button.button-outline {
         background-color: transparent;
-        border-color: #E9E2FF;
         color: #E9E2FF;
     }
 
@@ -2374,6 +2553,20 @@
         font-size: 1.2rem;
       }
 
+      /* Mobile: Set face corner radius to 8px for SHOW LINKLE, NEXT PUZZLE, and SHOW STATS buttons */
+      .button-outline::after {
+        border-radius: 8px !important; /* Face radius - 8px on mobile */
+      }
+      body[data-theme='dark'] .button-outline::after {
+        border-radius: 8px !important; /* Face radius - 8px on mobile dark mode */
+      }
+      .button-secondary::after {
+        border-radius: 8px !important; /* Face radius - 8px on mobile */
+      }
+      body[data-theme='dark'] .button-secondary::after {
+        border-radius: 8px !important; /* Face radius - 8px on mobile dark mode */
+      }
+
       .bottom-content-container {
         padding-top: calc(var(--grid-unit) * 3.5);
       }
@@ -2580,10 +2773,10 @@
     }
 
     .day-card-share-button {
-      background-color: #4CAF50; /* Vibrant green button */
+      background-color: transparent;
       color: #FFFFFF; /* White text */
       border: none;
-      border-radius: 100px; /* Fully rounded pill shape */
+      border-radius: 0; /* No radius on parent - let ::after control it */
       padding: clamp(0.85em, 2.2vw, 1.15em) clamp(2em, 5vw, 2.5em) clamp(0.65em, 1.8vw, 0.85em) clamp(2em, 5vw, 2.5em); /* Asymmetric padding: more top, less bottom */
       font-family: var(--font-ui);
       font-size: clamp(1rem, 2.5vw, 1.25rem); /* Fluid scaling from 16px to 20px */
@@ -2595,14 +2788,51 @@
       align-items: center;
       justify-content: center;
       gap: calc(var(--grid-unit) * 1.5);
-      transition: opacity 0.2s ease;
+      transition: transform 0.1s ease;
       line-height: 1.2; /* Slightly increased for better vertical centering */
+      box-shadow: none;
+      margin-bottom: var(--shadow-depth);
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    /* Face */
+    .day-card-share-button::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #4CAF50; /* Vibrant green button */
+      border-radius: 12px !important; /* Face radius - 12px */
+      transform: translateZ(0); /* Force hardware acceleration */
+      z-index: -1;
+    }
+
+    /* Shadow */
+    .day-card-share-button::before {
+      content: '';
+      position: absolute;
+      top: var(--shadow-depth);
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--tile-shadow-locked);
+      border-radius: 100px;
+      z-index: -2;
+      transition: transform 0.1s ease;
     }
 
     .day-card-share-button span {
       display: inline-block;
       text-align: center;
       line-height: 1.2; /* Match button line-height */
+      position: relative; z-index: 1;
     }
 
     .day-card-share-button svg {
@@ -2611,14 +2841,21 @@
       width: clamp(16px, 4vw, 20px); /* Fluid scaling from 16px to 20px */
       height: clamp(16px, 4vw, 20px); /* Fluid scaling from 16px to 20px */
       vertical-align: middle;
+      position: relative; z-index: 1;
     }
 
     .day-card-share-button:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .day-card-share-button:hover::before {
+      transform: translateY(2px);
     }
 
     .day-card-share-button:active {
-      opacity: 0.8;
+      transform: translateY(var(--shadow-depth));
+    }
+    .day-card-share-button:active::before {
+      transform: translateY(calc(var(--shadow-depth) * -1));
     }
 
     /* Playable card styling */
@@ -2668,17 +2905,17 @@
 
 
     .day-card-play-button {
-      background-color: var(--button-bg); /* Electric blue - matches app's play button */
+      background-color: transparent;
       color: var(--button-text); /* White text */
       border: none;
-      border-radius: 100px; /* Pill shape */
+      border-radius: 0; /* No radius on parent - let ::after control it */
       padding: calc(var(--grid-unit) * 2.5) calc(var(--grid-unit) * 8); /* Horizontal oval shape */
       font-family: var(--font-display); /* Antonio - matches app's play buttons */
       font-size: 1.75rem; /* Increased font size */
       font-weight: 700;
       text-transform: uppercase;
       cursor: pointer;
-      transition: opacity 0.2s ease;
+      transition: transform 0.1s ease;
       width: auto;
       min-width: calc(var(--grid-unit) * 20); /* Ensure it's wide enough */
       display: flex;
@@ -2688,14 +2925,56 @@
       padding-top: calc(var(--grid-unit) * 2.5 - 2px); /* Slightly reduce top padding to move text up */
       padding-bottom: calc(var(--grid-unit) * 2.5 + 2px); /* Compensate with bottom padding */
       margin-top: 0; /* No margin - spacing handled by grid container */
+      box-shadow: none;
+      margin-bottom: var(--shadow-depth);
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    /* Face */
+    .day-card-play-button::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--button-bg);
+      border-radius: 16px !important; /* Face radius - 16px */
+      transform: translateZ(0); /* Force hardware acceleration */
+      z-index: -1;
+    }
+
+    /* Shadow */
+    .day-card-play-button::before {
+      content: '';
+      position: absolute;
+      top: var(--shadow-depth);
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--button-shadow);
+      border-radius: 100px;
+      z-index: -2;
+      transition: transform 0.1s ease;
     }
 
     .day-card-play-button:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .day-card-play-button:hover::before {
+      transform: translateY(2px);
     }
 
     .day-card-play-button:active {
-      opacity: 0.8;
+      transform: translateY(var(--shadow-depth));
+    }
+    .day-card-play-button:active::before {
+      transform: translateY(calc(var(--shadow-depth) * -1));
     }
 
     @media (min-width: 768px) {
@@ -2748,7 +3027,7 @@
       }
 
       .day-card-share-container {
-        margin-top: 1em; /* Match mobile proportions (16px/16px=1) */
+        margin-top: 8px; /* 8px space above button */
       }
 
       .day-card-share-button {

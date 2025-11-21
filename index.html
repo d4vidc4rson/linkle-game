@@ -274,11 +274,13 @@
         background-color: transparent;
         color: var(--button-text);
         position: relative;
+        display: block; /* Ensure block display for pseudo-elements */
         overflow: visible;
         box-shadow: none;
         border-radius: 0; /* No radius on parent - let ::after control it */
         transition: transform 0.1s ease;
-        z-index: 1;
+        isolation: isolate; /* Create new stacking context */
+        min-height: 3em; /* Ensure button has height for pseudo-elements */
     }
     
     /* Face (with shimmer for default button) */
@@ -299,7 +301,7 @@
         background-repeat: no-repeat;
         border-radius: 16px !important; /* Face radius - 16px */
         transform: translateZ(0); /* Force hardware acceleration */
-        z-index: -1;
+        z-index: 1;
         transition: background-position 0.7s ease-in-out, background-color 0.2s ease;
     }
 
@@ -315,8 +317,59 @@
         background-color: var(--button-shadow);
         transform: none;
         border-radius: 100px;
-        z-index: -2;
+        z-index: 0;
         transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    /* Ensure text inside button appears above pseudo-elements */
+    .start-screen-container .button > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Ensure Link components (rendered as <a> tags) work correctly */
+    .start-screen-container a.button {
+        display: block !important;
+        text-decoration: none !important;
+        isolation: isolate !important; /* Ensure stacking context */
+        position: relative !important;
+        /* Debug: add visible border */
+        /* border: 2px solid red !important; */
+    }
+
+    /* Force pseudo-elements to show for Link buttons */
+    .start-screen-container a.button::after {
+        content: '' !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #2962FF !important; /* Force blue color directly */
+        background-image: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%) !important;
+        background-size: 200% 100% !important;
+        background-position: 200% 0 !important;
+        background-repeat: no-repeat !important;
+        border-radius: 16px !important;
+        transform: translateZ(0) !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+    }
+
+    .start-screen-container a.button::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 10px !important; /* Force shadow depth */
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #0039CB !important; /* Force shadow color directly */
+        border-radius: 100px !important;
+        z-index: 0 !important;
+        pointer-events: none !important;
     }
 
     .start-screen-container .button.button-outline {

@@ -689,6 +689,34 @@
       z-index: -1;
       transition: background-color 0.2s ease;
     }
+    
+    /* Bonus mode red tiles */
+    .bonus-mode .word-card:not(.locked):not(.revealed)::after {
+      background-color: #ff5757;
+    }
+    .bonus-mode .word-card:not(.locked):not(.revealed)::before {
+      background-color: #cc4646;
+    }
+    
+    /* Bonus mode time pressure overlay */
+    .bonus-time-pressure-overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background-color: rgba(255, 80, 120, 0.4);
+      z-index: 0; /* Behind all content but above background */
+      pointer-events: none;
+      transition: height 0.1s linear;
+    }
+    
+    /* Ensure app-container and its content are above the overlay */
+    .main-content {
+      position: relative;
+      z-index: 1;
+    }
+    
 
     /* The Shadow (Chunky) */
     .word-card::before {
@@ -744,6 +772,29 @@
     }
     .word-card.placeholder::before, .word-card.placeholder::after {
         display: none;
+    }
+    
+    /* Override for bonus mode - placeholder should be completely blank (no red background) */
+    .bonus-mode .word-card.placeholder:not(.locked):not(.revealed)::before,
+    .bonus-mode .word-card.placeholder:not(.locked):not(.revealed)::after {
+        display: none !important; /* Hide red background and shadow completely */
+    }
+    .bonus-mode .word-card.placeholder:not(.locked):not(.revealed) {
+        background-color: transparent !important;
+        color: transparent !important; /* Hide text */
+        border: 2px dashed rgba(255, 87, 87, 0.5) !important; /* Red dashed border */
+        box-shadow: none !important;
+    }
+    
+    /* Ghost tile in bonus mode should be red */
+    .ghost-tile.word-card.bonus-mode::after {
+        background-color: #ff5757 !important;
+    }
+    .ghost-tile.word-card.bonus-mode::before {
+        background-color: #cc4646 !important;
+    }
+    .ghost-tile.word-card.bonus-mode {
+        background-color: transparent !important;
     }
 
     .word-card.locked {
@@ -905,6 +956,22 @@
       grid-column: span 2;
     }
 
+    .bonus-timer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff5757;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    
+    .bonus-timer-text {
+      color: #ff5757;
+      font-weight: 700;
+    }
+    
     .tries-container > span {
       position: relative;
       top: 1px;
@@ -1026,6 +1093,19 @@
     }
     .button-secondary::after {
        background-color: var(--button-bg);
+    }
+    
+    .button-bonus {
+       color: #FFFFFF;
+       border: none;
+    }
+    .button-bonus::after {
+       background-color: #ff5757;
+       border-radius: 16px !important;
+    }
+    .button-bonus::before {
+       background-color: #cc4646;
+       border-radius: 100px;
     }
     
     .logic-narrative {
@@ -2570,6 +2650,9 @@
       }
       body[data-theme='dark'] .button-outline::after {
         border-radius: 8px !important; /* Face radius - 8px on mobile dark mode */
+      }
+      .button-bonus::after {
+        border-radius: 8px !important; /* Face radius - 8px on mobile */
       }
       .button-secondary::after {
         border-radius: 8px !important; /* Face radius - 8px on mobile */

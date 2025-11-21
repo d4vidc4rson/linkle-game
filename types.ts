@@ -41,6 +41,7 @@ export interface DailyResults {
         easy?: DailyResult;
         hard?: DailyResult;
         impossible?: DailyResult;
+        bonus?: DailyResult; // Bonus speed round result
     };
 }
 
@@ -89,6 +90,7 @@ export interface DaySummary {
         easy?: DailyResult;
         hard?: DailyResult;
         impossible?: DailyResult;
+        bonus?: DailyResult; // Bonus speed round result
     };
     puzzleIndices?: { easy: number; hard: number; impossible: number } | null;
 }

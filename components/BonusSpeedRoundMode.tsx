@@ -22,6 +22,41 @@ import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } f
 
 type DailyModeView = 'start' | 'intro' | 'playing' | 'allDone' | 'archive';
 
+// Helper function to calculate overlay color based on time remaining
+const getOverlayColor = (timeRemaining: number): string => {
+  const opacity = 0.4;
+  
+  // 53-60s (0-8s remaining): Solid Red
+  if (timeRemaining <= 8) {
+    return `rgba(255, 80, 120, ${opacity})`;
+  }
+  
+  // 41-52s (8-20s remaining): Orange to Red
+  if (timeRemaining <= 20) {
+    const progress = (20 - timeRemaining) / 12; // 0 to 1
+    const r = 255;
+    const g = Math.round(140 - (60 * progress)); // 140 to 80
+    const b = Math.round(60 - (60 * progress)); // 60 to 0
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+  
+  // 21-40s (20-40s remaining): Purple to Orange
+  if (timeRemaining <= 40) {
+    const progress = (40 - timeRemaining) / 20; // 0 to 1
+    const r = Math.round(147 + (108 * progress)); // 147 to 255
+    const g = Math.round(51 + (89 * progress)); // 51 to 140
+    const b = Math.round(230 - (170 * progress)); // 230 to 60
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+  
+  // 0-20s (40-60s remaining): Blue to Purple
+  const progress = (60 - timeRemaining) / 20; // 0 to 1
+  const r = Math.round(41 + (106 * progress)); // 41 to 147
+  const g = Math.round(98 - (47 * progress)); // 98 to 51
+  const b = Math.round(255 - (25 * progress)); // 255 to 230
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
 export const BonusSpeedRoundMode = () => {
     // Check if we're in development mode
     const isDev = import.meta.env.DEV;
@@ -33,9 +68,10 @@ export const BonusSpeedRoundMode = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [authModalMode, setAuthModalMode] = useState<AuthMode>('signup');
     const [isBonusRound, setIsBonusRound] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState(30);
+    const [timeRemaining, setTimeRemaining] = useState(60);
     const [bonusStartTime, setBonusStartTime] = useState<number | null>(null);
     const [overlayHeight, setOverlayHeight] = useState(0);
+    const [overlayColor, setOverlayColor] = useState('rgba(41, 98, 255, 0.4)');
     const [bonusPuzzle, setBonusPuzzle] = useState<any>(null);
     const [bonusWinMessage, setBonusWinMessage] = useState<string>('');
     const [bonusSolvedStatus, setBonusSolvedStatus] = useState<'win' | 'loss' | null>(null);
@@ -261,11 +297,15 @@ export const BonusSpeedRoundMode = () => {
             if (bonusStartTime === null) return;
             
             const elapsed = (Date.now() - bonusStartTime) / 1000; // elapsed time in seconds
-            const remaining = Math.max(0, 30 - elapsed);
+            const remaining = Math.max(0, 60 - elapsed);
             
             // Update overlay height smoothly (every 100ms)
-            const heightPercent = Math.min(100, (elapsed / 30) * 100);
+            const heightPercent = Math.min(100, (elapsed / 60) * 100);
             setOverlayHeight(heightPercent);
+            
+            // Update overlay color based on remaining time
+            const newColor = getOverlayColor(remaining);
+            setOverlayColor(newColor);
             
             // Update time remaining (for display purposes, round to nearest second)
             setTimeRemaining(Math.ceil(remaining));
@@ -463,9 +503,10 @@ export const BonusSpeedRoundMode = () => {
         const selectedPuzzle = PREGENERATED_PUZZLES[randomIndex];
             setBonusPuzzle(selectedPuzzle);
             setIsBonusRound(true);
-            setTimeRemaining(30);
+            setTimeRemaining(60);
             setBonusStartTime(null); // Will be set when gameState becomes 'playing'
             setOverlayHeight(0);
+            setOverlayColor('rgba(41, 98, 255, 0.4)'); // Reset to blue
             setGameState('loading');
         
         // Load bonus puzzle
@@ -496,7 +537,7 @@ export const BonusSpeedRoundMode = () => {
     const handleShowStats = () => {
         setIsBonusRound(false);
         setBonusPuzzle(null);
-        setTimeRemaining(30);
+        setTimeRemaining(60);
         setBonusSolvedStatus(null);
         setBonusWinMessage('');
         setView('allDone');
@@ -746,7 +787,8 @@ export const BonusSpeedRoundMode = () => {
                         <div 
                             className="bonus-time-pressure-overlay"
                             style={{
-                                height: `${overlayHeight}%`
+                                height: `${overlayHeight}%`,
+                                backgroundColor: overlayColor
                             }}
                         />
                     )}

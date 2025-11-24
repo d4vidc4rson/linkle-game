@@ -232,7 +232,7 @@ export const DayCard: React.FC<DayCardProps> = ({
                 {onShare && (
                     <div className="day-card-share-container">
                         <button className="day-card-share-button" onClick={onShare}>
-                            <span>SHARE YOUR RESULTS</span>
+                            <span>SHARE</span>
                         </button>
                     </div>
                 )}

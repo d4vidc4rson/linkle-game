@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { DaySummary, Theme } from '../types';
 import { DayCard } from './DayCard';
+import { BonusDayCard } from './BonusDayCard';
 
 interface DayCarouselProps {
     days: DaySummary[];
@@ -80,6 +81,23 @@ export const DayCarousel: React.FC<DayCarouselProps> = ({
                     const offset = index - currentIndex;
                     const isActive = offset === 0;
                     
+                    if (day.mode === 'bonus') {
+                        return (
+                            <div
+                                key={day.id}
+                                className={`day-carousel-card-wrapper ${isActive ? 'active' : 'inactive'}`}
+                                style={{
+                                    pointerEvents: 'auto',
+                                }}
+                            >
+                                <BonusDayCard 
+                                    result={day.results?.bonus!}
+                                    date={day.date}
+                                />
+                            </div>
+                        );
+                    }
+
                     return (
                         <div
                             key={day.id}

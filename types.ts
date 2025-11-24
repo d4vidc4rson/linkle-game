@@ -76,7 +76,7 @@ export interface PlayerData {
 }
 
 // Day summary for carousel
-export type DaySummaryMode = 'summary' | 'playable';
+export type DaySummaryMode = 'summary' | 'playable' | 'bonus';
 
 export interface DaySummary {
     id: string;

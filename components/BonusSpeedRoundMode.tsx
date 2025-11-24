@@ -13,6 +13,7 @@ import { DailyStartScreen } from './DailyStartScreen';
 import { DailyIntroScreen } from './DailyIntroScreen';
 import { DailyPuzzleSolved } from './DailyPuzzleSolved';
 import { BonusTimer } from './BonusTimer';
+import { BonusSplashScreen } from './BonusSplashScreen';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { AllDoneScreen } from './AllDoneScreen';
 import { ArchiveView } from './ArchiveView';
@@ -20,7 +21,7 @@ import { ErrorToast } from './ErrorToast';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
 import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } from '../dailySchedule';
 
-type DailyModeView = 'start' | 'intro' | 'playing' | 'allDone' | 'archive';
+type DailyModeView = 'start' | 'intro' | 'playing' | 'bonusSplash' | 'allDone' | 'archive';
 
 // Helper function to calculate overlay color based on time remaining
 const getOverlayColor = (timeRemaining: number): string => {
@@ -200,7 +201,11 @@ export const BonusSpeedRoundMode = () => {
             // Capture current timeRemaining value
             const currentTimeRemaining = timeRemaining;
             const isCorrect = JSON.stringify(bonusBoardState) === JSON.stringify(bonusPuzzle.solution);
-            const timeUsed = 30 - currentTimeRemaining;
+            // Calculate time used: timer is 60 seconds, so timeUsed = 60 - timeRemaining
+            // Or use actual elapsed time if bonusStartTime is available (more accurate)
+            const timeUsed = bonusStartTime 
+                ? Math.round((Date.now() - bonusStartTime) / 1000)
+                : (60 - currentTimeRemaining);
             const dateKey = formatDateKey(targetDate);
             let finalPlayerData;
         
@@ -278,7 +283,7 @@ export const BonusSpeedRoundMode = () => {
             console.error('Error in handleBonusSubmit:', error);
             setErrorMessage('An error occurred while submitting the bonus puzzle.');
         }
-    }, [bonusPuzzle, bonusBoardState, timeRemaining, targetDate, playerData, setPlayerData, saveGameState, setGameState, setPuzzleResults, setBonusSolvedStatus, setBonusWinMessage, setErrorMessage]);
+    }, [bonusPuzzle, bonusBoardState, timeRemaining, bonusStartTime, targetDate, playerData, setPlayerData, saveGameState, setGameState, setPuzzleResults, setBonusSolvedStatus, setBonusWinMessage, setErrorMessage]);
 
     // Timer logic for bonus round - updates every 100ms for smooth overlay animation
     useEffect(() => {
@@ -535,12 +540,25 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleShowStats = () => {
-        setIsBonusRound(false);
-        setBonusPuzzle(null);
-        setTimeRemaining(60);
-        setBonusSolvedStatus(null);
-        setBonusWinMessage('');
-        setView('allDone');
+        // Check if bonus round hasn't been played yet
+        if (!isBonusRound && !bonusSolvedStatus) {
+            // Show bonus splash screen instead of stats
+            setView('bonusSplash');
+        } else {
+            // Regular flow: reset bonus state and show stats
+            setIsBonusRound(false);
+            setBonusPuzzle(null);
+            setTimeRemaining(60);
+            setBonusSolvedStatus(null);
+            setBonusWinMessage('');
+            setOverlayColor('rgba(41, 98, 255, 0.4)');
+            setView('allDone');
+        }
+    };
+
+    const handlePlayBonusFromSplash = () => {
+        setView('playing'); // Move to playing view
+        handleBonusPuzzle(); // Start the bonus round (existing function)
     };
 
     const handlePlayMissedPuzzles = () => {
@@ -660,6 +678,20 @@ export const BonusSpeedRoundMode = () => {
                     onContinue={handleIntroContinue}
                     allSolved={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
                 />
+            </>
+        );
+    }
+
+    if (view === 'bonusSplash') {
+        return (
+            <>
+                {errorMessage && (
+                    <ErrorToast 
+                        message={errorMessage} 
+                        onClose={() => setErrorMessage(null)} 
+                    />
+                )}
+                <BonusSplashScreen onPlay={handlePlayBonusFromSplash} />
             </>
         );
     }
@@ -922,23 +954,12 @@ export const BonusSpeedRoundMode = () => {
                                                     </button>
                                                 </div>
                                             ) : (
-                                                isLastPuzzle ? (
-                                                    <div className="solved-buttons daily-solved-buttons">
-                                                        <button className="button button-outline" onClick={handleShowExplanation}>
-                                                            <span>Show Linkle</span>
-                                                        </button>
-                                                        <button className="button button-bonus" onClick={handleBonusPuzzle}>
-                                                            <span>BONUS PUZZLE</span>
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <DailyPuzzleSolved
-                                                        isLastPuzzle={isLastPuzzle}
-                                                        onNextPuzzle={handleNextPuzzle}
-                                                        onShowStats={handleShowStats}
-                                                        onShowExplanation={handleShowExplanation}
-                                                    />
-                                                )
+                                                <DailyPuzzleSolved
+                                                    isLastPuzzle={isLastPuzzle}
+                                                    onNextPuzzle={handleNextPuzzle}
+                                                    onShowStats={handleShowStats}
+                                                    onShowExplanation={handleShowExplanation}
+                                                />
                                             )
                                         )}
                                     </div>

@@ -191,23 +191,22 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
         // Reverse to show newest (today) first, oldest last
         const reversedDates = dates.reverse();
         
-        return reversedDates
-            .filter((d) => {
-                // Only include dates that have puzzles in the schedule
-                const dayPuzzleIndices = getPuzzlesForDateFromSchedule(schedule, d);
-                return dayPuzzleIndices !== null;
-            })
-            .map((d) => {
-                const dateKey = formatDateKey(d);
-                // Compare against actual today, not the viewed date
-                const isToday = d.toDateString() === actualToday.toDateString();
-                const dayResults = playerData.dailyResults?.[dateKey];
-                const dayPuzzleIndices = getPuzzlesForDateFromSchedule(schedule, d);
-                
-                // Determine mode: 'summary' if all puzzles completed, 'playable' otherwise
-                const allCompleted = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
-                const mode: 'summary' | 'playable' = allCompleted ? 'summary' : 'playable';
+        const summaries: DaySummary[] = [];
+        
+        reversedDates.forEach((d) => {
+            // Only include dates that have puzzles in the schedule
+            const dayPuzzleIndices = getPuzzlesForDateFromSchedule(schedule, d);
+            if (!dayPuzzleIndices) return;
+
+            const dateKey = formatDateKey(d);
+            // Compare against actual today, not the viewed date
+            const isToday = d.toDateString() === actualToday.toDateString();
+            const dayResults = playerData.dailyResults?.[dateKey];
             
+            // Determine mode: 'summary' if all puzzles completed, 'playable' otherwise
+            const allCompleted = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
+            const mode: 'summary' | 'playable' = allCompleted ? 'summary' : 'playable';
+        
             // Format date label
             const dayName = d.toLocaleDateString('en-US', { weekday: 'long' });
             const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
@@ -222,7 +221,8 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
             const hardResult = formatPuzzleResult(dayResults?.hard);
             const impossibleResult = formatPuzzleResult(dayResults?.impossible);
             
-            return {
+            // Add standard day summary
+            summaries.push({
                 id: dateKey,
                 dateLabel,
                 mode,
@@ -244,8 +244,26 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                 date: d,
                 results: dayResults,
                 puzzleIndices: isToday ? puzzleIndices : dayPuzzleIndices,
-            };
+            });
+
+            // Add Bonus card if solved (inserted immediately after standard card)
+            if (dayResults?.bonus?.solved) {
+                summaries.push({
+                    id: `${dateKey}-bonus`,
+                    dateLabel,
+                    mode: 'bonus',
+                    // Fill with placeholders as this card uses 'results' prop mostly
+                    easy: { label: '', result: '', words: [] },
+                    hard: { label: '', result: '', words: [] },
+                    impossible: { label: '', result: '', words: [] },
+                    date: d,
+                    results: dayResults,
+                    puzzleIndices: isToday ? puzzleIndices : dayPuzzleIndices,
+                });
+            }
         });
+        
+        return summaries;
     }, [date, playerData.dailyResults, schedule, puzzleIndices]);
     
     // Find the index of the viewed date in the days array for initial carousel position

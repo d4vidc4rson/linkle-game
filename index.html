@@ -2614,7 +2614,7 @@
       width: 100vw;
       margin-left: calc(50% - 50vw); /* Break out of parent container */
       margin-right: calc(50% - 50vw);
-      margin-top: -12px; /* Moved up 12px on mobile */
+      margin-top: 0; /* Removed negative margin */
       padding: 0;
       overflow-x: visible;
       overflow-y: visible; /* Allow vertical overflow so share button isn't clipped */
@@ -2725,8 +2725,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: clamp(16px, 4vw, 40px); /* Fluid gap: scales from 16px on smallest screens to 40px on larger */
-      margin-top: 0; /* Removed negative margin for symmetry */
-      margin-bottom: calc(var(--grid-unit) * 4);
+      margin: 0; /* Removed margins for symmetry */
       width: 100%;
       justify-items: center;
     }
@@ -2768,7 +2767,7 @@
       }
       .all-done-stats-row {
         gap: 3em;
-        margin: 0 auto 1.5em auto; /* Center horizontally */
+        margin: 0 auto; /* Center horizontally, no bottom margin */
         grid-template-columns: repeat(4, auto);
         width: fit-content;
         max-width: 100%;

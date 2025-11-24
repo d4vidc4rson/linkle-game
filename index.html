@@ -2585,13 +2585,13 @@
     .all-done-content {
       max-width: calc(var(--grid-unit) * 63); /* 504px - matches #root max-width */
       margin: 0 auto;
-      padding: 0 calc(var(--grid-unit) * 3);
+      padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3); /* 16px top/bottom, 24px left/right */
       width: 100%;
     }
 
     @media (max-width: 767px) {
       .all-done-content {
-        padding: 0 calc(var(--grid-unit) * 2); /* Consistent padding: 16px - matches puzzle screen approach */
+        padding: calc(var(--grid-unit) * 2); /* 16px all around */
         overflow-x: visible; /* Prevent clipping */
       }
     }
@@ -2599,13 +2599,14 @@
     @media (min-width: 768px) {
       .all-done-content {
         max-width: calc(var(--grid-unit) * 100); /* 800px */
-        padding: 0 calc(var(--grid-unit) * 4);
+        padding: calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4); /* 24px top/bottom, 32px left/right */
       }
     }
 
     @media (min-width: 1024px) {
       .all-done-content {
         max-width: calc(var(--grid-unit) * 120); /* 960px */
+        padding: calc(var(--grid-unit) * 4.5) calc(var(--grid-unit) * 4); /* 36px top/bottom, 32px left/right */
       }
     }
 
@@ -2693,6 +2694,10 @@
       line-height: 1.2;
       white-space: nowrap;
     }
+    /* Hide quote in bonus speed round mode */
+    .bonus-speed-round-mode .all-done-quote {
+      display: none;
+    }
     @media (max-width: 767px) {
       .all-done-quote {
         display: block;
@@ -2720,7 +2725,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: clamp(16px, 4vw, 40px); /* Fluid gap: scales from 16px on smallest screens to 40px on larger */
-      margin-top: -12px; /* Moved up 12px on mobile (was 20px, now 8px down from that) */
+      margin-top: 0; /* Removed negative margin for symmetry */
       margin-bottom: calc(var(--grid-unit) * 4);
       width: 100%;
       justify-items: center;

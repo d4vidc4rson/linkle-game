@@ -698,7 +698,7 @@ export const BonusSpeedRoundMode = () => {
 
     if (view === 'allDone') {
         return (
-            <>
+            <div className="bonus-speed-round-mode">
                 {errorMessage && (
                     <ErrorToast 
                         message={errorMessage} 
@@ -731,7 +731,7 @@ export const BonusSpeedRoundMode = () => {
                     onShowLogout={() => setShowLogoutModal(true)}
                     user={user}
                 />
-            </>
+            </div>
         );
     }
 
@@ -782,7 +782,7 @@ export const BonusSpeedRoundMode = () => {
                 onClose={() => setShowLogoutModal(false)} 
             />}
 
-            <div className="app-wrapper daily-mode-wrapper">
+            <div className="app-wrapper daily-mode-wrapper bonus-speed-round-mode">
                 <div className="top-bar-container">
                     <header className="top-bar">
                         <div className="logo logo-is-graphic">

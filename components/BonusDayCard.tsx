@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { DailyResult } from '../types';
 import { CloseIcon } from './Icons';
 
@@ -130,7 +131,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                 </div>
             </div>
 
-            {showShareModal && (
+            {showShareModal && createPortal(
                 <div className="modal-overlay" onClick={() => setShowShareModal(false)}>
                     <div className="modal-content share-results-modal" onClick={(e) => e.stopPropagation()}>
                         <button className="modal-close-button" onClick={() => setShowShareModal(false)} aria-label="Close">
@@ -144,7 +145,8 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                             {copied ? 'Copied!' : 'Copy to Clipboard'}
                         </button>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );

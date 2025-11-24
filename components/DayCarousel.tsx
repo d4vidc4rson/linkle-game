@@ -53,18 +53,27 @@ export const DayCarousel: React.FC<DayCarouselProps> = ({
         if (!carousel) return;
         
         const handleScroll = () => {
-            const scrollLeft = carousel.scrollLeft;
+            const cards = carousel.querySelectorAll('.day-carousel-card-wrapper');
+            if (cards.length === 0) return;
             
-            // Get actual rendered card width and gap from CSS
-            const firstCard = carousel.querySelector('.day-carousel-card-wrapper') as HTMLElement;
-            if (!firstCard) return;
+            const carouselRect = carousel.getBoundingClientRect();
+            const carouselCenter = carouselRect.left + carouselRect.width / 2;
             
-            const cardRect = firstCard.getBoundingClientRect();
-            const cardWidth = cardRect.width;
-            const gap = parseFloat(getComputedStyle(carousel).gap) || 0;
+            let closestIndex = 0;
+            let closestDistance = Infinity;
             
-            const newIndex = Math.round(scrollLeft / (cardWidth + gap));
-            setCurrentIndex(newIndex);
+            cards.forEach((card, index) => {
+                const cardRect = card.getBoundingClientRect();
+                const cardCenter = cardRect.left + cardRect.width / 2;
+                const distance = Math.abs(cardCenter - carouselCenter);
+                
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+            
+            setCurrentIndex(closestIndex);
         };
         
         carousel.addEventListener('scroll', handleScroll);

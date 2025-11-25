@@ -7,6 +7,7 @@ interface BonusSplashScreenProps {
 export const BonusSplashScreen: React.FC<BonusSplashScreenProps> = ({ onPlay }) => {
     const [theme, setTheme] = useState<'light' | 'dark' | null>(null); // Start with null to avoid race condition
     const [svgContent, setSvgContent] = useState<string>('');
+    const [isReady, setIsReady] = useState(false); // Track when everything is loaded
 
     useEffect(() => {
         // Detect theme from body data-theme attribute
@@ -38,9 +39,17 @@ export const BonusSplashScreen: React.FC<BonusSplashScreenProps> = ({ onPlay }) 
         
         fetch(svgPath)
             .then(response => response.text())
-            .then(text => setSvgContent(text))
+            .then(text => {
+                setSvgContent(text);
+                setIsReady(true); // Mark as ready only after SVG loads
+            })
             .catch(error => console.error('Error loading SVG:', error));
     }, [theme]);
+
+    // Don't render anything until SVG is loaded
+    if (!isReady) {
+        return null;
+    }
 
     return (
         <div className="bonus-splash-container">

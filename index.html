@@ -3311,18 +3311,24 @@
 
     @media (min-width: 768px) {
       .day-card {
-        height: 28em; /* Fixed height for tablet/desktop - maintains mobile aspect ratio (334px:448px = 20.875em:28em) */
+        height: 29em; /* Taller height for tablet/desktop (reduced by 48px total) */
         border-radius: 0.5em; /* Match mobile proportions (8px/16px=0.5) */
       }
 
       .day-card-summary {
         padding: 0.75em 1.5em 1.75em 1.5em; /* Match mobile proportions (12px/16px=0.75, 24px/16px=1.5, 28px/16px=1.75) */
-        gap: 0.625em; /* Match mobile proportions (10px/16px=0.625) */
+        gap: 0.75em; /* Increased by ~2px */
+        display: flex;
+        flex-direction: column;
       }
 
       .bonus-day-card {
-        padding: 0.75em 1.5em 1.75em 1.5em; /* Match .day-card-summary tablet/desktop padding */
+        padding: 0.75em 1.5em 1.5em 1.5em; /* Match .day-card-summary tablet/desktop padding */
         gap: 0.625em; /* Match .day-card-summary tablet/desktop gap */
+        height: 100%; /* Fill card height */
+        max-height: 100%; /* Never exceed parent card height */
+        box-sizing: border-box;
+        overflow: hidden; /* Clip any overflow */
       }
 
       .day-card-header-summary {
@@ -3364,7 +3370,8 @@
       }
 
       .day-card-share-container {
-        margin-top: 8px; /* 8px space above button */
+        margin-top: auto; /* Push to bottom of card */
+        padding-top: 0.75em; /* Minimum space above button */
       }
 
       .day-card-share-button {
@@ -3379,53 +3386,49 @@
       }
 
       .day-card-playable {
-        padding: clamp(7.2px, 1.8vw, 10.8px) clamp(8px, 2vw, 12px) clamp(6.5856px, 1.6464vw, 9.8784px) clamp(8px, 2vw, 12px); /* Bottom padding: 6.5856-9.8784px (98% of 6.72-10.08px) */
-        gap: 0; /* Remove gap - we'll use individual margins for precise control */
-        justify-content: flex-start; /* Align from top instead of center - fixes header alignment */
-        align-items: center; /* Horizontally center all content */
-        min-height: min(calc(var(--grid-unit) * 45), calc((100vh - 250px) * 0.85)); /* Match summary card min-height */
+        padding: 0.75em 1.5em 0.75em 1.5em; /* Equal top/bottom padding */
+        gap: 0;
+        justify-content: center; /* Center all content vertically as a group */
+        align-items: center;
+        position: relative; /* For absolute positioning of header */
       }
+
+      .day-card-header-playable {
+        font-size: 1em;
+        margin-bottom: 0;
+        position: absolute; /* Take header out of flow so it doesn't affect centering */
+        top: 0.75em; /* Position at top with same padding as card */
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+
       .day-card-large-grid-container {
-        flex: 0 1 auto; /* Don't grow - let content determine size */
-        margin-top: 0; /* No top margin - spacing handled by header */
-        margin-bottom: calc(var(--grid-unit) * 3); /* 24px space between logomark and button - reduced by half from 48px */
+        flex: 0 0 auto;
+        margin-top: 0;
+        margin-bottom: 0.75em; /* Tight space between grid and button */
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .day-card-header-playable {
-        font-size: 1em; /* Match mobile (1rem = 16px) */
-        margin-bottom: clamp(43.2px, 10.8vw, 72px); /* 8x spacing between date and logomark - 8x from original clamp(5.4px, 1.35vw, 9px) */
-      }
-      .day-card-play-button {
-        margin-top: 0 !important; /* Remove margin - spacing handled by grid container margin-bottom */
-        margin-bottom: 0; /* No margin-bottom - bottom padding handles spacing */
-        align-self: center; /* Center the button */
-      }
-
       .day-card-logomark-img {
-        width: 12em; /* Fluid scaling for tablet/desktop */
+        width: 12em;
       }
 
       .day-card-play-button {
-        padding: 0.625em 2em; /* Fluid padding for pill shape */
-        padding-top: calc(0.625em - 0.125em); /* Slightly reduce top padding to move text up */
-        padding-bottom: calc(0.625em + 0.125em); /* Compensate with bottom padding */
-        font-size: 1.75em; /* Increased font size */
-        min-width: 5em; /* Fluid min-width */
+        padding: 0.625em 2em;
+        padding-top: calc(0.625em - 0.125em);
+        padding-bottom: calc(0.625em + 0.125em);
+        font-size: 1.75em;
+        min-width: 5em;
         display: flex;
         align-items: center;
         justify-content: center;
         line-height: 1;
-        margin-top: -1.5em; /* Bring button closer to grid above (fluid scaling) */
-      }
-    }
-
-    /* Desktop: Restore logomark spacing */
-    @media (min-width: 1024px) {
-      .day-card-large-grid-container {
-        margin-bottom: calc(var(--grid-unit) * 6); /* 48px space between logomark and button - restored for desktop */
+        margin-top: 0;
+        margin-bottom: 0;
+        align-self: center;
       }
     }
 
@@ -3620,7 +3623,7 @@
       background-color: #b2a7fe; /* Purple background */
       border: none; /* No border */
       padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 1.4) calc(var(--grid-unit) * 3); /* Match .day-card-summary: 12px top, 24px sides, 11.2px bottom */
-      gap: calc(var(--grid-unit) * 0.25); /* 2px gap */
+      gap: calc(var(--grid-unit) * 1.25); /* 10px gap - match summary card */
       display: flex;
       flex-direction: column;
     }
@@ -3635,7 +3638,7 @@
       grid-template-columns: 1fr 1fr;
       gap: calc(var(--grid-unit) * 1.25);
       width: 100%;
-      margin-top: calc(var(--grid-unit) * 1.75); /* 14px spacing from date header */
+      /* No margin-top - parent gap handles spacing */
     }
 
     .bonus-col-2a {
@@ -3653,36 +3656,6 @@
       object-fit: contain;
     }
 
-    /* Desktop: Override logo and columns to use em units for proportional scaling */
-    @media (min-width: 768px) {
-      .bonus-row-2 {
-        margin-top: 1.09375em !important; /* Match mobile proportions (14px/16px=0.875, but scale with em) */
-        gap: 0.78125em !important; /* Match mobile proportions (10px/16px=0.625, but scale with em) */
-      }
-
-      .bonus-col-2a,
-      .bonus-col-2b {
-        height: 3.75em !important; /* Fixed height instead of min-height - prevents growing */
-        max-height: 3.75em !important; /* Also set max-height as safety */
-        min-height: 3.75em !important; /* Match mobile proportions (60px/16px=3.75) - scales with em */
-        padding-left: 0.78125em !important; /* Match mobile proportions (10px/16px=0.625) */
-        padding-right: 0.78125em !important; /* Match mobile proportions (10px/16px=0.625) */
-        overflow: hidden !important; /* Prevent content from overflowing - time box is constrained to fit */
-      }
-
-      .bonus-col-2a {
-        justify-content: flex-start !important; /* Left align logo */
-      }
-
-      .bonus-col-2b {
-        justify-content: flex-end !important; /* Right align time box */
-      }
-
-      .bonus-logo {
-        max-height: 3.75em !important; /* Constrain height to match column min-height - scales proportionally */
-      }
-    }
-
     .bonus-col-2b {
       min-height: 60px;
       border-radius: calc(var(--grid-unit) * 0.5);
@@ -3696,107 +3669,135 @@
       background-color: #f2f1f4; /* White/light purple */
       border: 2px solid #2d2a32; /* Dark charcoal */
       border-radius: clamp(6px, 0.8vw, 8px); /* Fluid border radius */
-      width: auto; /* Changed from 100% to auto for proper sizing */
+      width: auto;
       min-width: fit-content;
-      height: auto; /* Changed from 100% to auto */
-      min-height: 60px; /* Set minimum height */
+      height: auto;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-ui); /* Poppins */
       font-weight: 700; /* Bold */
-      font-size: clamp(3rem, 8vw, 5rem); /* Fluid font size - doubled (mobile/tablet) */
+      font-size: clamp(3rem, 8vw, 5rem); /* Fluid font size for mobile */
       color: #2d2a32; /* Dark charcoal */
       padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 1); /* 4px top/bottom, 8px left/right */
     }
 
-    /* Tablet: Override container and time box to prevent clipping */
-    @media (min-width: 768px) and (max-width: 1023px) {
+    /* Tablet/Desktop: Consistent em-based scaling for bonus card row 2 */
+    @media (min-width: 768px) {
+      .bonus-row-2 {
+        gap: 0.625em; /* Match gap in summary card */
+        /* No margin-top - parent gap handles spacing */
+      }
+
       .bonus-col-2a,
       .bonus-col-2b {
-        height: 4em !important; /* Slightly taller container for tablet to prevent clipping */
-        max-height: 4em !important;
-        min-height: 4em !important;
-        padding-left: 0.78125em !important; /* Match mobile proportions (10px/16px=0.625) */
-        padding-right: 0.78125em !important; /* Match mobile proportions (10px/16px=0.625) */
+        height: auto; /* Let content determine height */
+        min-height: auto;
+        padding: 0.5em 0.625em; /* Consistent padding */
+        overflow: visible;
       }
 
       .bonus-col-2a {
-        justify-content: flex-start !important; /* Left align logo */
+        justify-content: flex-start; /* Left align logo */
       }
 
       .bonus-col-2b {
-        justify-content: flex-end !important; /* Right align time box */
+        justify-content: flex-end; /* Right align time box */
       }
 
       .bonus-logo {
-        max-height: 4em !important; /* Match taller container */
+        height: 4.5em; /* Scales with card - match day-card-section grid height */
+        width: auto;
       }
 
       .bonus-time-box {
-        font-size: 2em !important; /* Smaller font for tablet to ensure it fits */
-        height: 100% !important; /* Fill parent container height (4em) */
-        max-height: 100% !important; /* Don't exceed parent */
-        line-height: 0.95 !important; /* Even tighter line-height to prevent clipping */
-        padding: 0.15em 0.5em !important; /* Minimal padding for tablet */
-        border-radius: 0.5em !important; /* Match mobile proportions (8px/16px=0.5) */
-        display: flex !important; /* Ensure flex is set */
-        align-items: center !important; /* Center vertically */
-        justify-content: center !important; /* Center horizontally */
-        box-sizing: border-box !important; /* Include padding in height calculation */
+        font-size: 2.5em; /* Scales with card */
+        height: auto;
+        min-height: auto;
+        line-height: 1;
+        padding: 0.15em 0.35em;
+        border-radius: 0.2em;
+        box-sizing: border-box;
       }
-    }
 
-    /* Desktop: Override time box to use em units for proportional scaling */
-    @media (min-width: 1024px) {
+      /* Row 2: Match height of ONE puzzle section */
+      .bonus-row-2 {
+        height: auto;
+        min-height: 5.5em;
+      }
+
+      .bonus-col-2a,
+      .bonus-col-2b {
+        height: auto;
+        min-height: auto;
+      }
+
+      .bonus-logo {
+        height: 4.5em;
+        width: auto;
+      }
+
       .bonus-time-box {
-        font-size: 2.5em !important; /* Larger font for desktop */
-        height: 100% !important; /* Fill parent container height (3.75em) */
-        max-height: 100% !important; /* Don't exceed parent */
-        line-height: 1 !important; /* Tight line-height so text fits */
-        padding: 0.25em 0.5em !important; /* Match mobile proportions (4px/16px=0.25, 8px/16px=0.5) */
-        border-radius: 0.5em !important; /* Match mobile proportions (8px/16px=0.5) */
-        display: flex !important; /* Ensure flex is set */
-        align-items: center !important; /* Center vertically */
-        justify-content: center !important; /* Center horizontally */
-        box-sizing: border-box !important; /* Include padding in height calculation */
+        font-size: 2.5em;
+        height: auto;
+        padding: 0.15em 0.3em;
+      }
+
+      /* Row 3: Grid container */
+      .bonus-row-3 {
+        flex: 0 0 auto;
+      }
+
+      .bonus-col-3 {
+        height: auto;
+        min-height: auto;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .bonus-grid-container {
+        width: 100%; /* Fill width */
+        max-width: 18em; /* Limit max size */
+        height: auto;
+        aspect-ratio: 332.25 / 333; /* Match SVG viewBox exactly */
+      }
+
+      .bonus-grid-svg {
+        width: 100%;
+        height: 100%;
+        object-fit: fill; /* Fill container exactly - no gaps */
       }
     }
 
     /* Row 3: One Column */
     .bonus-row-3 {
       width: 100%;
-      margin-top: calc(var(--grid-unit) * 1.5); /* 12px positive margin to add space above */
-    }
-
-    @media (min-width: 1024px) {
-      .bonus-row-3 {
-        margin-top: calc(var(--grid-unit) * 1.75); /* 14px on desktop - slightly more space */
-      }
+      margin-top: -3px; /* Reduce gap between logo+time and grid */
     }
 
     .bonus-col-3 {
-      min-height: 99px; /* 5% increase: 94px * 1.05 = 98.7px (rounded to 99px) */
       border-radius: calc(var(--grid-unit) * 0.5);
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0; /* No negative margin - removed to fix centering */
+      margin: 0;
     }
 
     .bonus-grid-container {
       position: relative;
       display: inline-block; /* Shrink-wrap to content */
       width: clamp(155.73px, 83.04%, 311.45px); /* Match SVG width */
-      /* SVG aspect ratio: 363.749991/369 ≈ 0.9863, so height = width * 0.9863 */
-      aspect-ratio: 369 / 363.749991; /* Match SVG viewBox aspect ratio */
+      /* New SVG viewBox: 332.25 x 333 - nearly square */
+      aspect-ratio: 332.25 / 333; /* Match new SVG viewBox aspect ratio */
     }
 
     .bonus-grid-svg {
       width: 100%; /* Fill container */
       height: 100%; /* Fill container */
-      object-fit: contain;
+      object-fit: fill; /* Fill container exactly */
       display: block;
     }
 
@@ -3806,110 +3807,13 @@
       }
     }
 
-    .bonus-grid-words {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none; /* Allow clicks to pass through to SVG */
-    }
-
-    .bonus-grid-word {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display); /* Antonio */
-      font-weight: 700;
-      color: #2E2E2E; /* Dark charcoal */
-      font-size: clamp(0.65rem, 1.6vw, 0.95rem); /* Responsive font size - sized to fit grid cells */
-      text-align: center;
-      padding: 0.1em 0.15em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-word;
-      line-height: 1.1;
-      text-transform: uppercase; /* Match puzzle word styling */
-      /* Calculated positions based on SVG viewBox (369 x 363.75) and cell positions */
-    }
-
-    /* Row 1 - Top row (y=16, height=100) */
-    /* Calculated from SVG viewBox: 369 x 363.749991 */
-    .bonus-grid-word:nth-child(1) { /* Column 1: x=17, width=100 */
-      left: 4.607%; /* 17/369 = 0.04607046070460705 */
-      top: 4.401%; /* 16/363.75 = 0.04400110001100011 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(2) { /* Column 2: x=134, width=100 */
-      left: 36.314%; /* 134/369 = 0.3631436314363144 */
-      top: 4.401%; /* 16/363.75 = 0.04400110001100011 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(3) { /* Column 3: x=250, width=100 */
-      left: 67.751%; /* 250/369 = 0.6775067750677507 */
-      top: 4.401%; /* 16/363.75 = 0.04400110001100011 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-
-    /* Row 2 - Middle row (y=131, height=100) */
-    .bonus-grid-word:nth-child(4) { /* Column 1: x=17, width=100 */
-      left: 4.607%; /* 17/369 = 0.04607046070460705 */
-      top: 36.014%; /* 131/363.75 = 0.36013760137601376 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(5) { /* Column 2: x=133, width=100 */
-      left: 36.043%; /* 133/369 = 0.3604336043360434 */
-      top: 36.014%; /* 131/363.75 = 0.36013760137601376 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(6) { /* Column 3: x=250, width=100 */
-      left: 67.751%; /* 250/369 = 0.6775067750677507 */
-      top: 36.014%; /* 131/363.75 = 0.36013760137601376 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-
-    /* Row 3 - Bottom row (y=246, height=100) */
-    .bonus-grid-word:nth-child(7) { /* Column 1: x=17, width=100 */
-      left: 4.607%; /* 17/369 = 0.04607046070460705 */
-      top: 67.699%; /* 246/363.75 = 0.6769767697676977 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(8) { /* Column 2: x=134, width=100 */
-      left: 36.314%; /* 134/369 = 0.3631436314363144 */
-      top: 67.699%; /* 246/363.75 = 0.6769767697676977 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-    .bonus-grid-word:nth-child(9) { /* Column 3: x=250, width=100 */
-      left: 67.751%; /* 250/369 = 0.6775067750677507 */
-      top: 67.699%; /* 246/363.75 = 0.6769767697676977 */
-      width: 27.101%; /* 100/369 = 0.2710027100271003 */
-      height: 27.520%; /* 100/363.75 = 0.2752027520275203 */
-    }
-
     /* Row 4: One Column */
     .bonus-row-4 {
       width: 100%;
-      margin-top: calc(var(--grid-unit) * 1.25); /* 10px spacing from grid row (mobile) */
-    }
-
-    /* Tablet/Desktop: Remove spacing above bonus card share button */
-    @media (min-width: 768px) {
-      .bonus-row-4 {
-        margin-top: 0 !important; /* No spacing above share button */
-      }
+      margin-top: -0.5em; /* Reduce gap between grid and share button */
     }
 
     .bonus-col-4 {
-      min-height: 60px;
       border-radius: calc(var(--grid-unit) * 0.5);
       width: 100%;
       display: flex;

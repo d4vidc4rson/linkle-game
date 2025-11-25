@@ -8,6 +8,19 @@ interface BonusDayCardProps {
     date: Date;
 }
 
+// Tile center positions in SVG coordinates (viewBox: 332.25 x 333)
+const TILE_CENTERS = [
+    { x: 57, y: 57 },   // Row 1, Col 1
+    { x: 166, y: 57 },  // Row 1, Col 2
+    { x: 274, y: 57 },  // Row 1, Col 3
+    { x: 57, y: 165 },  // Row 2, Col 1
+    { x: 166, y: 165 }, // Row 2, Col 2
+    { x: 274, y: 165 }, // Row 2, Col 3
+    { x: 57, y: 273 },  // Row 3, Col 1
+    { x: 166, y: 273 }, // Row 3, Col 2
+    { x: 274, y: 273 }, // Row 3, Col 3
+];
+
 export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -20,6 +33,9 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
     // Format time with colon before the number
     const absTime = result.timeSeconds ? Math.abs(result.timeSeconds) : 0;
     const formattedTime = `:${absTime.toString().padStart(2, '0')}`;
+
+    // Get words from board state
+    const words = result.boardState || [];
 
     // Generate bonus share text
     const generateBonusShareText = () => {
@@ -97,24 +113,59 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                     </div>
                 </div>
 
-                {/* Row 3: One Column */}
+                {/* Row 3: One Column - Inline SVG with embedded words */}
                 <div className="bonus-row-3">
                     <div className="bonus-col-3">
                         <div className="bonus-grid-container">
-                            <img 
-                                src="/bonus-3x3-grid.svg" 
-                                alt="Bonus Speed Round Grid" 
+                            <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 332.25 333"
                                 className="bonus-grid-svg"
-                            />
-                            {result.boardState && result.boardState.length === 9 && (
-                                <div className="bonus-grid-words">
-                                    {result.boardState.map((word, index) => (
-                                        <div key={index} className="bonus-grid-word">
-                                            {word}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                                preserveAspectRatio="xMidYMid meet"
+                            >
+                                {/* Dark background with rounded corners */}
+                                <rect 
+                                    x="0" 
+                                    y="0" 
+                                    width="332.25" 
+                                    height="333" 
+                                    rx="13" 
+                                    ry="13" 
+                                    fill="#343434"
+                                />
+                                
+                                {/* Row 1 tiles */}
+                                <rect x="7.8" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="116" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="224.2" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                
+                                {/* Row 2 tiles */}
+                                <rect x="7.8" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="116" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="224.2" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                
+                                {/* Row 3 tiles */}
+                                <rect x="7.8" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="116" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                <rect x="224.2" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                
+                                {/* Words - embedded directly in SVG */}
+                                {words.length === 9 && words.map((word, index) => (
+                                    <text
+                                        key={index}
+                                        x={TILE_CENTERS[index].x}
+                                        y={TILE_CENTERS[index].y}
+                                        textAnchor="middle"
+                                        dominantBaseline="central"
+                                        fill="#2d2a32"
+                                        fontSize="18"
+                                        fontFamily="'Poppins', sans-serif"
+                                        fontWeight="600"
+                                    >
+                                        {word}
+                                    </text>
+                                ))}
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -151,4 +202,3 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
         </>
     );
 };
-

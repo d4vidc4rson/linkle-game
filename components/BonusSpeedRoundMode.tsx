@@ -540,8 +540,12 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleShowStats = () => {
-        // Check if bonus round hasn't been played yet
-        if (!isBonusRound && !bonusSolvedStatus) {
+        // Check if bonus round hasn't been played yet AND all 3 puzzles were won
+        const allThreeWon = puzzleResults.easy?.solved && 
+                            puzzleResults.hard?.solved && 
+                            puzzleResults.impossible?.solved;
+        
+        if (!isBonusRound && !bonusSolvedStatus && allThreeWon) {
             // Show bonus splash screen instead of stats
             setView('bonusSplash');
         } else {

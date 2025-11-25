@@ -5,7 +5,7 @@ interface BonusSplashScreenProps {
 }
 
 export const BonusSplashScreen: React.FC<BonusSplashScreenProps> = ({ onPlay }) => {
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const [theme, setTheme] = useState<'light' | 'dark' | null>(null); // Start with null to avoid race condition
     const [svgContent, setSvgContent] = useState<string>('');
 
     useEffect(() => {
@@ -28,6 +28,9 @@ export const BonusSplashScreen: React.FC<BonusSplashScreenProps> = ({ onPlay }) 
     }, []);
 
     useEffect(() => {
+        // Don't fetch until theme is detected
+        if (theme === null) return;
+        
         // Load the appropriate SVG file based on theme
         const svgPath = theme === 'light' 
             ? '/bonus-splash-light.svg' 

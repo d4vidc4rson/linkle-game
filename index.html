@@ -773,7 +773,8 @@
     /* Bonus Splash Screen */
     .bonus-splash-container {
       width: 100%;
-      min-height: 100vh;
+      min-height: 100vh; /* Fallback for older browsers */
+      min-height: 100dvh; /* Modern browsers - accounts for mobile browser UI */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3431,7 +3432,8 @@
     /* Daily Intro Screen */
     .daily-intro-screen {
       width: calc(100% + calc(var(--grid-unit) * 10)); /* Account for body padding on both sides */
-      min-height: 100vh;
+      min-height: 100vh; /* Fallback for older browsers */
+      min-height: 100dvh; /* Modern browsers - accounts for mobile browser UI */
       display: flex;
       justify-content: center;
       align-items: center;

@@ -320,7 +320,7 @@ const Root = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<DailyMode />} />
+                <Route path="/" element={<BonusSpeedRoundMode />} />
                 <Route path="/daily" element={<Navigate to="/" replace />} />
                 <Route path="/sandbox" element={<SandboxPage />} />
                 <Route path="/sandbox/infinite" element={<RegularMode />} />

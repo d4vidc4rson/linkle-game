@@ -10,7 +10,6 @@ import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './co
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './components/Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag } from './components/GameUI';
 import { GameBoard } from './components/GameBoard';
-import { DailyMode } from './components/DailyMode';
 import { SandboxPage } from './components/SandboxPage';
 import { BonusSpeedRoundMode } from './components/BonusSpeedRoundMode';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from './constants';

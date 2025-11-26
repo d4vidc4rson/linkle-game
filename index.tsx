@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { useAuth } from './hooks/useAuth';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useBodyClasses } from './hooks/useBodyClasses';
@@ -325,6 +326,7 @@ const Root = () => {
                 <Route path="/sandbox/infinite" element={<RegularMode />} />
                 <Route path="/sandbox/bonusspeedround" element={<BonusSpeedRoundMode />} />
             </Routes>
+            <Analytics />
         </BrowserRouter>
     );
 };

@@ -1863,6 +1863,30 @@
       transform: scale(0);
       opacity: 0;
     }
+    
+    /* Badge sign-up prompt for guests */
+    .badge-signup-prompt {
+      margin: calc(var(--grid-unit) * 2) 0;
+      padding: calc(var(--grid-unit) * 1.5);
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: var(--border-radius);
+    }
+    
+    [data-theme="dark"] .badge-signup-prompt {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .badge-signup-text {
+      font-size: 0.85rem;
+      color: var(--primary-text);
+      margin: 0 0 calc(var(--grid-unit));
+      opacity: 0.8;
+    }
+    
+    .badge-signup-button {
+      padding: calc(var(--grid-unit)) calc(var(--grid-unit) * 2) !important;
+      font-size: 0.85rem !important;
+    }
 
     .achievement-section {
         margin-top: 32px;
@@ -2195,6 +2219,148 @@
       flex: 1;
       padding-left: calc(var(--grid-unit) * 1.5);
       padding-right: calc(var(--grid-unit) * 1.5);
+    }
+
+    /* --- Sign-Up Bottom Sheet --- */
+    .signup-sheet-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 10000;
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .signup-sheet-overlay.visible {
+      background: rgba(0, 0, 0, 0.5);
+      pointer-events: auto;
+    }
+    
+    .signup-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--background-color);
+      border-top-left-radius: calc(var(--border-radius) * 2);
+      border-top-right-radius: calc(var(--border-radius) * 2);
+      box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+      padding: calc(var(--grid-unit) * 2) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      touch-action: none;
+      user-select: none;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .signup-sheet.visible {
+      transform: translateY(0);
+    }
+    
+    .signup-sheet .sheet-drag-handle {
+      width: 40px;
+      height: 4px;
+      background-color: var(--bar-border);
+      border-radius: 2px;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: grab;
+    }
+    
+    .signup-sheet-close {
+      position: absolute;
+      top: calc(var(--grid-unit) * 1.5);
+      right: calc(var(--grid-unit) * 1.5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: calc(var(--grid-unit) / 2);
+      color: var(--primary-text);
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+    
+    .signup-sheet-close:hover {
+      opacity: 1;
+    }
+    
+    .signup-sheet-close svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .signup-sheet-header {
+      text-align: center;
+      margin-top: calc(var(--grid-unit) * 2);
+      cursor: grab;
+    }
+    
+    .signup-sheet-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--header-text);
+      margin: 0;
+      letter-spacing: -1px;
+    }
+    
+    .signup-sheet-content {
+      text-align: center;
+      margin: calc(var(--grid-unit) * 2) 0;
+    }
+    
+    .signup-sheet-value-prop {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--primary-text);
+      margin: 0 0 calc(var(--grid-unit) * 2);
+    }
+    
+    .signup-sheet-streak-warning {
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--header-text);
+      margin: 0;
+      padding: calc(var(--grid-unit) * 1.5);
+      background: rgba(255, 140, 0, 0.1);
+      border-radius: var(--border-radius);
+    }
+    
+    .signup-sheet-actions {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--grid-unit) * 1.5);
+      align-items: center;
+      margin-top: calc(var(--grid-unit) * 2);
+    }
+    
+    .signup-sheet-signup-button {
+      width: 100%;
+      max-width: 280px;
+    }
+    
+    .signup-sheet-later-button {
+      background: none;
+      border: none;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      color: var(--primary-text);
+      opacity: 0.7;
+      cursor: pointer;
+      padding: calc(var(--grid-unit));
+      transition: opacity 0.2s ease;
+    }
+    
+    .signup-sheet-later-button:hover {
+      opacity: 1;
     }
 
     /* TABLET STYLES */

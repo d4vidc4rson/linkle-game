@@ -20,6 +20,7 @@ import { ArchiveView } from './ArchiveView';
 import { ErrorToast } from './ErrorToast';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
 import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } from '../dailySchedule';
+import { checkStreakReset } from '../utils/introMessages';
 
 type DailyModeView = 'start' | 'intro' | 'playing' | 'bonusSplash' | 'allDone' | 'archive';
 
@@ -81,6 +82,7 @@ export const BonusSpeedRoundMode = () => {
     const [bonusLockedSlots, setBonusLockedSlots] = useState<boolean[]>(Array(9).fill(false));
     const [bonusTriesLeft, setBonusTriesLeft] = useState(1);
     const [bonusFeedback, setBonusFeedback] = useState('');
+    const [streakWasReset, setStreakWasReset] = useState(false);
 
     const {
         user,
@@ -188,6 +190,27 @@ export const BonusSpeedRoundMode = () => {
         setTheme(initialTheme);
         document.body.dataset.theme = initialTheme;
     }, []);
+
+    // Phase 0: Wordle-style streak reset check on entering daily mode
+    // Check if streak should be reset due to missed days
+    useEffect(() => {
+        if (authLoading) return; // Wait for auth to load
+        
+        const { shouldReset } = checkStreakReset(playerData.lastPlayedDate);
+        
+        if (shouldReset && playerData.currentStreak > 0) {
+            // Reset streak to 0 due to missed day
+            const updatedPlayerData = {
+                ...playerData,
+                currentStreak: 0,
+            };
+            setPlayerData(updatedPlayerData);
+            saveGameState(updatedPlayerData);
+            setStreakWasReset(true);
+        } else {
+            setStreakWasReset(false);
+        }
+    }, [authLoading]); // Only run once when auth loads
 
     useBodyClasses(gameState, puzzle, solvedStatus, theme);
 
@@ -681,6 +704,9 @@ export const BonusSpeedRoundMode = () => {
                     theme={theme}
                     onContinue={handleIntroContinue}
                     allSolved={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
+                    user={user}
+                    playerData={playerData}
+                    streakWasReset={streakWasReset}
                 />
             </>
         );
@@ -774,7 +800,7 @@ export const BonusSpeedRoundMode = () => {
             )}
             {gameState === 'solved' && (isBonusRound ? bonusSolvedStatus === 'win' : solvedStatus === 'win') && <Confetti theme={theme} />}
             {gameState === 'solved' && (isBonusRound ? bonusSolvedStatus === 'loss' : solvedStatus === 'loss') && <LoserEmojis />}
-            {newlyUnlockedBadge && <BadgeUnlockModal badge={newlyUnlockedBadge} onClose={() => setNewlyUnlockedBadge(null)} />}
+            {newlyUnlockedBadge && <BadgeUnlockModal badge={newlyUnlockedBadge} onClose={() => setNewlyUnlockedBadge(null)} user={user} onShowAuth={handleShowAuth} />}
             {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
             {showExplanationModal && currentPuzzle && <ExplanationModal narrative={isBonusRound ? bonusPuzzle?.narrative || '' : finalNarrative} solution={currentPuzzle.solution} onClose={handleCloseExplanation} />}
             {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}

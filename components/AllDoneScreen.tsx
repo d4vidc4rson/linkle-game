@@ -1,10 +1,11 @@
 // @ts-nocheck
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import type { PlayerData, DailyResult, Theme, DaySummary } from '../types';
 import { formatDateKey, getPuzzlesForDateFromSchedule } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { DayCarousel } from './DayCarousel';
 import { ShareResults } from './ShareResults';
+import { SignUpSheet } from './SignUpSheet';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
 import { UserAvatar } from './GameUI';
 
@@ -110,11 +111,24 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
 }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [shareDate, setShareDate] = useState<Date>(date);
+    const [showSignUpSheet, setShowSignUpSheet] = useState(false);
+    const hasShownSignUpSheetRef = useRef(false);
     
     // Update shareDate when date prop changes (e.g., when viewing a different date's All Done screen)
     useEffect(() => {
         setShareDate(date);
     }, [date]);
+    
+    // Show sign-up sheet for non-logged-in users after a short delay (only once per session)
+    useEffect(() => {
+        if (!user && !hasShownSignUpSheetRef.current) {
+            const timer = setTimeout(() => {
+                setShowSignUpSheet(true);
+                hasShownSignUpSheetRef.current = true;
+            }, 1500); // 1.5 second delay
+            return () => clearTimeout(timer);
+        }
+    }, [user]);
     
     const dateKey = formatDateKey(date);
     const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -404,6 +418,18 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         puzzleIndices={getPuzzlesForDateFromSchedule(schedule, shareDate)}
                         schedule={schedule}
                         onClose={() => setShowShareModal(false)}
+                    />
+                )}
+                
+                {showSignUpSheet && (
+                    <SignUpSheet
+                        onSignUp={() => {
+                            setShowSignUpSheet(false);
+                            if (onShowAuth) onShowAuth();
+                        }}
+                        onClose={() => setShowSignUpSheet(false)}
+                        currentStreak={playerData.currentStreak}
+                        headline="Nice work!"
                     />
                 )}
 

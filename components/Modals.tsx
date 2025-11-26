@@ -41,18 +41,43 @@ const formatLogicNarrative = (text: string, solution: string[]) => {
     return elements;
 };
 
-export const BadgeUnlockModal = ({ badge, onClose }: { badge: Badge, onClose: () => void }) => (
-    <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-content badge-unlock-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
-            <h2>BADGE UNLOCKED!</h2>
-            <div className="badge-unlocked-icon">{badge.icon}</div>
-            <h3>{badge.name}</h3>
-            <p>{badge.unlockMessage || badge.description}</p>
-            <button className="button" onClick={onClose}><span>Awesome!</span></button>
+interface BadgeUnlockModalProps {
+    badge: Badge;
+    onClose: () => void;
+    user?: any;
+    onShowAuth?: () => void;
+}
+
+export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlockModalProps) => {
+    const handleSignUp = () => {
+        onClose();
+        if (onShowAuth) onShowAuth();
+    };
+    
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content badge-unlock-modal" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
+                <h2>BADGE UNLOCKED!</h2>
+                <div className="badge-unlocked-icon">{badge.icon}</div>
+                <h3>{badge.name}</h3>
+                <p>{badge.unlockMessage || badge.description}</p>
+                
+                {/* Sign-up prompt for guests */}
+                {!user && onShowAuth && (
+                    <div className="badge-signup-prompt">
+                        <p className="badge-signup-text">Create an account to save this badge.</p>
+                        <button className="button badge-signup-button" onClick={handleSignUp}>
+                            <span>Sign Up</span>
+                        </button>
+                    </div>
+                )}
+                
+                <button className="button" onClick={onClose}><span>Awesome!</span></button>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const BadgeDetailModal = ({ badge, onClose }: { badge: Badge, onClose: () => void }) => (
     <div className="modal-overlay" onClick={onClose}>

@@ -1747,6 +1747,11 @@
       user-select: none;
     }
     
+    /* Darker purple background for achievement sheet in light mode (matches bonus day card) */
+    body[data-theme='light'] .achievement-sheet {
+      background: #b2a7fe;
+    }
+    
     .achievement-sheet:not(.is-dragging) {
       user-select: none;
     }
@@ -1858,7 +1863,10 @@
       margin: 0 0 calc(var(--grid-unit) * 2);
     }
     .badge-unlocked-icon {
-      font-size: 4rem;
+      /* Changed from emoji text to image */
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
       animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
       transform: scale(0);
       opacity: 0;
@@ -1954,30 +1962,17 @@
     }
     
     .badge-icon {
-        font-size: 2.5rem;
-        line-height: 1;
+        /* Changed from emoji text to image - removed border and background */
         transition: filter 0.3s ease;
         width: 56px;
         height: 56px;
-        border: 1px solid var(--bar-border);
-        border-radius: var(--border-radius);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        object-fit: contain;
         margin-bottom: var(--grid-unit);
     }
 
     .unearned .badge-icon {
         filter: grayscale(1);
         opacity: 0.6;
-    }
-
-    .badge.earned .badge-icon {
-        background-color: #b3a7fe; /* Darker purple from logomark for light mode */
-    }
-
-    body[data-theme='dark'] .badge.earned .badge-icon {
-        background-color: #000000; /* Solid black for dark mode */
     }
 
     .badge-info {
@@ -2049,8 +2044,10 @@
     
     /* --- Badge Detail Modal --- */
     .badge-detail-modal .badge-detail-icon {
-        font-size: 4rem;
-        line-height: 1;
+        /* Changed from emoji text to image */
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
         margin-bottom: var(--grid-unit);
     }
      .badge-detail-modal h3 {
@@ -2613,7 +2610,9 @@
         font-size: 1em;
       }
       .badge-unlocked-icon {
-        font-size: 6em;
+        /* Changed from emoji text to image */
+        width: 120px;
+        height: 120px;
       }
       .badge-unlock-modal .button {
         font-size: 1.2em;
@@ -2628,7 +2627,7 @@
         font-size: 0.75rem;
       }
       .achievement-sheet .badge-icon {
-        font-size: 3.5rem;
+        /* Changed from emoji text to image */
         width: 80px;
         height: 80px;
       }

@@ -59,7 +59,7 @@ export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlo
             <div className="modal-content badge-unlock-modal" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
                 <h2>BADGE UNLOCKED!</h2>
-                <div className="badge-unlocked-icon">{badge.icon}</div>
+                <img src={badge.icon} alt={badge.name} className="badge-unlocked-icon" />
                 <h3>{badge.name}</h3>
                 <p>{badge.unlockMessage || badge.description}</p>
                 
@@ -99,7 +99,7 @@ const BadgeDetailModal = ({ badge, onClose, user, onShowAuth }: BadgeDetailModal
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content badge-detail-modal" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
-                <div className="badge-detail-icon">{badge.icon}</div>
+                <img src={badge.icon} alt={badge.name} className="badge-detail-icon" />
                 <h3>{badge.name}</h3>
                 <p>{badge.unlocked ? (badge.unlockMessage || badge.description) : badge.description}</p>
                 
@@ -135,7 +135,7 @@ const formatDate = (dateString: string | null) => {
 
 const BadgeDisplay = ({ badge, onSelectBadge }) => (
     <button className={`badge ${badge.unlocked ? 'earned' : ''}`} onClick={() => onSelectBadge(badge)}>
-        <div className="badge-icon">{badge.icon}</div>
+        <img src={badge.icon} alt={badge.name} className="badge-icon" />
         <div className="badge-info">
             <h4>{badge.name}</h4>
             {badge.unlocked && badge.dateUnlocked ? (

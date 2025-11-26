@@ -63,17 +63,17 @@ export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlo
                 <h3>{badge.name}</h3>
                 <p>{badge.unlockMessage || badge.description}</p>
                 
-                {/* Sign-up prompt for guests */}
-                {!user && onShowAuth && (
+                {/* Sign-up prompt for guests - replaces Awesome button */}
+                {!user && onShowAuth ? (
                     <div className="badge-signup-prompt">
                         <p className="badge-signup-text">Create an account to save this badge.</p>
-                        <button className="button badge-signup-button" onClick={handleSignUp}>
+                        <button className="button" onClick={handleSignUp}>
                             <span>Sign Up</span>
                         </button>
                     </div>
+                ) : (
+                    <button className="button" onClick={onClose}><span>Awesome!</span></button>
                 )}
-                
-                <button className="button" onClick={onClose}><span>Awesome!</span></button>
             </div>
         </div>
     );

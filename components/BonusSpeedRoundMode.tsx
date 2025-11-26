@@ -678,7 +678,7 @@ export const BonusSpeedRoundMode = () => {
                         onClose={() => setErrorMessage(null)} 
                     />
                 )}
-                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
                 <DailyStartScreen 
                     onPlay={handleStartPlay} 
@@ -698,7 +698,7 @@ export const BonusSpeedRoundMode = () => {
                         onClose={() => setErrorMessage(null)} 
                     />
                 )}
-                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 <DailyIntroScreen
                     date={targetDate}
                     theme={theme}
@@ -735,7 +735,7 @@ export const BonusSpeedRoundMode = () => {
                         onClose={() => setErrorMessage(null)} 
                     />
                 )}
-                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
                 {showLogoutModal && <LogoutModal 
                     onLogout={async () => {
@@ -774,7 +774,7 @@ export const BonusSpeedRoundMode = () => {
                         onClose={() => setErrorMessage(null)} 
                     />
                 )}
-                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+                {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 <ArchiveView
                     playerData={playerData}
                     schedule={schedule}
@@ -801,7 +801,7 @@ export const BonusSpeedRoundMode = () => {
             {gameState === 'solved' && (isBonusRound ? bonusSolvedStatus === 'win' : solvedStatus === 'win') && <Confetti theme={theme} />}
             {gameState === 'solved' && (isBonusRound ? bonusSolvedStatus === 'loss' : solvedStatus === 'loss') && <LoserEmojis />}
             {newlyUnlockedBadge && <BadgeUnlockModal badge={newlyUnlockedBadge} onClose={() => setNewlyUnlockedBadge(null)} user={user} onShowAuth={handleShowAuth} />}
-            {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} />}
+            {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
             {showExplanationModal && currentPuzzle && <ExplanationModal narrative={isBonusRound ? bonusPuzzle?.narrative || '' : finalNarrative} solution={currentPuzzle.solution} onClose={handleCloseExplanation} />}
             {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
             {showLogoutModal && <LogoutModal 

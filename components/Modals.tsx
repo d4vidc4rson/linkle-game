@@ -79,17 +79,44 @@ export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlo
     );
 };
 
-const BadgeDetailModal = ({ badge, onClose }: { badge: Badge, onClose: () => void }) => (
-    <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-content badge-detail-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
-            <div className="badge-detail-icon">{badge.icon}</div>
-            <h3>{badge.name}</h3>
-            <p>{badge.unlocked ? (badge.unlockMessage || badge.description) : badge.description}</p>
-            <button className="button" onClick={onClose}><span>Got it</span></button>
+interface BadgeDetailModalProps {
+    badge: Badge;
+    onClose: () => void;
+    user?: any;
+    onShowAuth?: () => void;
+}
+
+const BadgeDetailModal = ({ badge, onClose, user, onShowAuth }: BadgeDetailModalProps) => {
+    const handleSignUp = () => {
+        onClose();
+        if (onShowAuth) onShowAuth();
+    };
+    
+    // Show sign-up prompt for earned badges when user is not logged in
+    const showSignUpPrompt = badge.unlocked && !user && onShowAuth;
+    
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content badge-detail-modal" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
+                <div className="badge-detail-icon">{badge.icon}</div>
+                <h3>{badge.name}</h3>
+                <p>{badge.unlocked ? (badge.unlockMessage || badge.description) : badge.description}</p>
+                
+                {showSignUpPrompt ? (
+                    <div className="badge-signup-prompt">
+                        <p className="badge-signup-text">Create an account to save this badge.</p>
+                        <button className="button" onClick={handleSignUp}>
+                            <span>Sign Up</span>
+                        </button>
+                    </div>
+                ) : (
+                    <button className="button" onClick={onClose}><span>Got it</span></button>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 
 const formatDate = (dateString: string | null) => {
@@ -124,7 +151,14 @@ const BadgeDisplay = ({ badge, onSelectBadge }) => (
 );
 
 
-export const AchievementShowcaseModal = ({ badges, onClose }: { badges: Badge[], onClose: () => void }) => {
+interface AchievementShowcaseModalProps {
+    badges: Badge[];
+    onClose: () => void;
+    user?: any;
+    onShowAuth?: () => void;
+}
+
+export const AchievementShowcaseModal = ({ badges, onClose, user, onShowAuth }: AchievementShowcaseModalProps) => {
     const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
     const [dragState, setDragState] = useState({ isDragging: false, startY: 0 });
     const sheetRef = useRef(null);
@@ -240,7 +274,7 @@ export const AchievementShowcaseModal = ({ badges, onClose }: { badges: Badge[],
 
                 </div>
             </div>
-            {selectedBadge && <BadgeDetailModal badge={selectedBadge} onClose={() => setSelectedBadge(null)} />}
+            {selectedBadge && <BadgeDetailModal badge={selectedBadge} onClose={() => setSelectedBadge(null)} user={user} onShowAuth={onShowAuth} />}
         </>
     );
 };

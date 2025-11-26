@@ -159,7 +159,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                                         dominantBaseline="central"
                                         fill="#2d2a32"
                                         fontSize="18"
-                                        fontFamily="'Poppins', sans-serif"
+                                        fontFamily="'Antonio', sans-serif"
                                         fontWeight="600"
                                     >
                                         {word}

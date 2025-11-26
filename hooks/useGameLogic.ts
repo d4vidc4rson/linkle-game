@@ -241,7 +241,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         };
         const successLevel = successMessages[difficulty]?.[triesLeft] || "Solved!";
         
-        if (difficulty === 'HARD') return `Hard Puzzle: ${successLevel} +${baseScore} points!`;
+        if (difficulty === 'HARD') return `${successLevel} +${baseScore} points!`;
         if (difficulty === 'IMPOSSIBLE') return `Impossible Feat! +${baseScore} points!`;
         return `${successLevel} +${baseScore} points!`;
     };

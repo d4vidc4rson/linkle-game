@@ -90,6 +90,22 @@ export const useDailyGameLogic = (
         gameStateRef.current = gameState;
     }, [gameState]);
 
+    // Detect logout: when dailyResults for today becomes empty/undefined, clear refs to allow fresh puzzle load
+    // This fixes the bug where logging out while on a solved puzzle keeps showing it as solved
+    useEffect(() => {
+        const dateKey = formatDateKey(targetDate);
+        const dayResults = playerData.dailyResults?.[dateKey];
+        
+        // If today's results are empty or undefined, and we have a loaded puzzle ref,
+        // this likely means the user logged out - clear the refs to allow fresh load
+        if ((!dayResults || Object.keys(dayResults).length === 0) && loadedPuzzleRef.current) {
+            loadedPuzzleRef.current = null;
+            isSolvedRef.current = false;
+            gameStateRef.current = 'loading';
+            setGameState('loading');
+        }
+    }, [playerData.dailyResults, targetDate]);
+
     // Load puzzle when puzzleIndices or currentPuzzleType changes
     useEffect(() => {
         if (!puzzleIndices) {

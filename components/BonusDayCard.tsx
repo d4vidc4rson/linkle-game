@@ -129,25 +129,34 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                                     y="0" 
                                     width="332.25" 
                                     height="333" 
-                                    rx="13" 
-                                    ry="13" 
+                                    rx="12" 
+                                    ry="12" 
                                     fill="#343434"
                                 />
                                 
                                 {/* Row 1 tiles */}
-                                <rect x="7.8" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="116" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="224.2" y="7.3" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                {/* Tile 1 (top-left): 8px top-left, 4px other corners */}
+                                <path d="M15.8 7.3 H103.8 Q107.8 7.3 107.8 11.3 V103.3 Q107.8 107.3 103.8 107.3 H11.8 Q7.8 107.3 7.8 103.3 V15.3 Q7.8 7.3 15.8 7.3 Z" fill="#ff5757"/>
+                                {/* Tile 2 (top-center): 4px all corners */}
+                                <rect x="116" y="7.3" width="100" height="100" rx="4" ry="4" fill="#ff5757"/>
+                                {/* Tile 3 (top-right): 8px top-right, 4px other corners */}
+                                <path d="M228.2 7.3 H316.2 Q324.2 7.3 324.2 15.3 V103.3 Q324.2 107.3 320.2 107.3 H228.2 Q224.2 107.3 224.2 103.3 V11.3 Q224.2 7.3 228.2 7.3 Z" fill="#ff5757"/>
                                 
                                 {/* Row 2 tiles */}
-                                <rect x="7.8" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="116" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="224.2" y="115.2" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                {/* Tile 4 (middle-left): 4px all corners */}
+                                <rect x="7.8" y="115.2" width="100" height="100" rx="4" ry="4" fill="#ff5757"/>
+                                {/* Tile 5 (center): 4px all corners */}
+                                <rect x="116" y="115.2" width="100" height="100" rx="4" ry="4" fill="#ff5757"/>
+                                {/* Tile 6 (middle-right): 4px all corners */}
+                                <rect x="224.2" y="115.2" width="100" height="100" rx="4" ry="4" fill="#ff5757"/>
                                 
                                 {/* Row 3 tiles */}
-                                <rect x="7.8" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="116" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
-                                <rect x="224.2" y="223.4" width="100" height="100" rx="9" ry="9" fill="#ff5757"/>
+                                {/* Tile 7 (bottom-left): 8px bottom-left, 4px other corners */}
+                                <path d="M11.8 223.4 H103.8 Q107.8 223.4 107.8 227.4 V319.4 Q107.8 323.4 103.8 323.4 H15.8 Q7.8 323.4 7.8 315.4 V227.4 Q7.8 223.4 11.8 223.4 Z" fill="#ff5757"/>
+                                {/* Tile 8 (bottom-center): 4px all corners */}
+                                <rect x="116" y="223.4" width="100" height="100" rx="4" ry="4" fill="#ff5757"/>
+                                {/* Tile 9 (bottom-right): 8px bottom-right, 4px other corners */}
+                                <path d="M228.2 223.4 H320.2 Q324.2 223.4 324.2 227.4 V315.4 Q324.2 323.4 316.2 323.4 H228.2 Q224.2 323.4 224.2 319.4 V227.4 Q224.2 223.4 228.2 223.4 Z" fill="#ff5757"/>
                                 
                                 {/* Words - embedded directly in SVG */}
                                 {words.length === 9 && words.map((word, index) => (

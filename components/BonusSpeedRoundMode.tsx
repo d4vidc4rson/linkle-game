@@ -84,6 +84,9 @@ export const BonusSpeedRoundMode = () => {
     const [bonusFeedback, setBonusFeedback] = useState('');
     const [streakWasReset, setStreakWasReset] = useState(false);
 
+    // Track previous user for login detection
+    const prevUserRef = useRef<any>(undefined);
+
     const {
         user,
         playerData,
@@ -211,6 +214,42 @@ export const BonusSpeedRoundMode = () => {
             setStreakWasReset(false);
         }
     }, [authLoading]); // Only run once when auth loads
+
+    // Login state detection: When user logs in, check if today's puzzles are already solved
+    // and redirect to the appropriate view instead of staying on the playing screen
+    useEffect(() => {
+        // Skip on initial mount (prevUserRef is undefined)
+        if (prevUserRef.current === undefined) {
+            prevUserRef.current = user;
+            return;
+        }
+        
+        // Detect login: user went from null/falsy to truthy
+        if (!prevUserRef.current && user) {
+            const dateKey = formatDateKey(targetDate);
+            const dayResults = playerData.dailyResults?.[dateKey];
+            
+            // Check if all three main puzzles are solved
+            const allMainPuzzlesSolved = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
+            
+            if (allMainPuzzlesSolved) {
+                // User already solved today's puzzles - redirect to allDone
+                setView('allDone');
+            } else if (dayResults?.easy || dayResults?.hard || dayResults?.impossible) {
+                // Some puzzles solved - stay on playing but ensure puzzleResults is synced
+                // The puzzleResults sync happens in the other useEffect
+                // Just make sure we're on the playing view
+                if (view !== 'playing') {
+                    setView('playing');
+                }
+            } else {
+                // No puzzles solved - go to start screen
+                setView('start');
+            }
+        }
+        
+        prevUserRef.current = user;
+    }, [user, playerData.dailyResults, targetDate, view]);
 
     useBodyClasses(gameState, puzzle, solvedStatus, theme);
 
@@ -740,6 +779,7 @@ export const BonusSpeedRoundMode = () => {
                 {showLogoutModal && <LogoutModal 
                     onLogout={async () => {
                         await handleLogout();
+                        setView('start');
                         setShowLogoutModal(false);
                     }} 
                     onClose={() => setShowLogoutModal(false)} 
@@ -807,6 +847,7 @@ export const BonusSpeedRoundMode = () => {
             {showLogoutModal && <LogoutModal 
                 onLogout={async () => {
                     await handleLogout();
+                    setView('start');
                     setShowLogoutModal(false);
                 }} 
                 onClose={() => setShowLogoutModal(false)} 

@@ -92,6 +92,7 @@ export const BonusSpeedRoundMode = () => {
         playerData,
         setPlayerData,
         authLoading,
+        dataReady,
         showAuthModal,
         setShowAuthModal,
         showLogoutModal,
@@ -250,6 +251,29 @@ export const BonusSpeedRoundMode = () => {
         
         prevUserRef.current = user;
     }, [user, playerData.dailyResults, targetDate, view]);
+
+    // Auto-redirect when data becomes ready: If cloud data shows today's puzzles are already solved,
+    // redirect to allDone immediately (prevents playing on second device after solving on first)
+    const dataReadyCheckedRef = useRef(false);
+    useEffect(() => {
+        // Only run this check once when dataReady becomes true
+        if (!dataReady || dataReadyCheckedRef.current) return;
+        dataReadyCheckedRef.current = true;
+        
+        // Only apply this logic for logged-in users (cloud data)
+        if (!user) return;
+        
+        const dateKey = formatDateKey(targetDate);
+        const dayResults = playerData.dailyResults?.[dateKey];
+        
+        // Check if all three main puzzles are solved
+        const allMainPuzzlesSolved = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
+        
+        if (allMainPuzzlesSolved && view === 'start') {
+            // User already solved today's puzzles on another device - redirect to allDone
+            setView('allDone');
+        }
+    }, [dataReady, user, playerData.dailyResults, targetDate, view]);
 
     useBodyClasses(gameState, puzzle, solvedStatus, theme);
 
@@ -691,8 +715,9 @@ export const BonusSpeedRoundMode = () => {
         }
     };
 
-    // Show loading state instead of null to help debug blank page
-    if (authLoading) {
+    // Show loading state until auth is complete AND data is ready from Firebase
+    // This prevents users from starting gameplay before cloud data is synced
+    if (authLoading || !dataReady) {
         return (
             <div style={{ 
                 display: 'flex', 
@@ -703,7 +728,7 @@ export const BonusSpeedRoundMode = () => {
                 fontFamily: 'Arial, sans-serif',
                 fontSize: '18px'
             }}>
-                Loading...
+                {user ? 'Syncing...' : 'Loading...'}
             </div>
         );
     }

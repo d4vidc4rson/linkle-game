@@ -39,6 +39,7 @@ export const useAuth = () => {
     const [playerData, setPlayerData] = useState<PlayerData>(defaultPlayerData);
     const [user, setUser] = useState(undefined); // undefined: loading, null: logged out, User: logged in
     const [authLoading, setAuthLoading] = useState(true);
+    const [dataReady, setDataReady] = useState(false); // True only after Firebase/localStorage data is loaded
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const lastUserUidRef = useRef<string | null | undefined>(undefined);
@@ -75,6 +76,32 @@ export const useAuth = () => {
                 if (dataToSave.fastestEasySolve === Infinity) {
                     dataToSave.fastestEasySolve = null;
                 }
+                
+                // "First Play Wins" logic: Check cloud data before saving daily results
+                // This prevents Device B from overwriting Device A's legitimate results
+                try {
+                    const cloudDoc = await getDoc(doc(db, "users", user.uid));
+                    if (cloudDoc.exists()) {
+                        const cloudData = cloudDoc.data() as Partial<PlayerData>;
+                        const cloudDailyResults = cloudData.dailyResults || {};
+                        const localDailyResults = dataToSave.dailyResults || {};
+                        
+                        // For each date in cloud, if cloud has results, keep cloud data (first play wins)
+                        const mergedDailyResults = { ...localDailyResults };
+                        for (const dateKey of Object.keys(cloudDailyResults)) {
+                            const cloudDay = cloudDailyResults[dateKey];
+                            // If cloud has any puzzle results for this date, use cloud data
+                            if (cloudDay && (cloudDay.easy || cloudDay.hard || cloudDay.impossible || cloudDay.bonus)) {
+                                mergedDailyResults[dateKey] = cloudDay;
+                            }
+                        }
+                        dataToSave.dailyResults = mergedDailyResults;
+                    }
+                } catch (fetchError) {
+                    // If we can't fetch cloud data, proceed with save anyway
+                    console.warn("Could not fetch cloud data for first-play-wins check:", fetchError);
+                }
+                
                 await setDoc(doc(db, "users", user.uid), dataToSave, { merge: true });
             } else {
                 localStorage.setItem('linklePlayerData', JSON.stringify(data));
@@ -91,6 +118,10 @@ export const useAuth = () => {
         if (!auth) {
             setUser(null);
             setAuthLoading(false);
+            // For non-Firebase environments, load from localStorage and mark ready
+            const localData = loadDataFromLocalStorage();
+            setPlayerData(localData);
+            setDataReady(true);
             return;
         }
 
@@ -104,6 +135,7 @@ export const useAuth = () => {
             lastUserUidRef.current = currentUid;
             
             setAuthLoading(true);
+            setDataReady(false); // Reset dataReady while fetching
             setUser(currentUser);
 
             try {
@@ -137,11 +169,23 @@ export const useAuth = () => {
                             fastestSolve = null;
                         }
 
-                        // Merge dailyResults - combine both sources
-                        const mergedDailyResults = {
-                            ...(saneRemoteData.dailyResults || {}),
-                            ...(localData.dailyResults || {}),
-                        };
+                        // Merge dailyResults - "First Play Wins" logic
+                        // For each date, prefer cloud data if it has results (first play wins)
+                        const mergedDailyResults = { ...(localData.dailyResults || {}) };
+                        const cloudDailyResults = saneRemoteData.dailyResults || {};
+                        
+                        for (const dateKey of Object.keys(cloudDailyResults)) {
+                            const cloudDay = cloudDailyResults[dateKey];
+                            const localDay = mergedDailyResults[dateKey];
+                            
+                            // If cloud has any results for this date, use cloud data (first play wins)
+                            if (cloudDay && (cloudDay.easy || cloudDay.hard || cloudDay.impossible || cloudDay.bonus)) {
+                                mergedDailyResults[dateKey] = cloudDay;
+                            } else if (!mergedDailyResults[dateKey]) {
+                                // If local doesn't have this date at all, use cloud (even if empty)
+                                mergedDailyResults[dateKey] = cloudDay;
+                            }
+                        }
 
                         finalPlayerData = {
                             ...defaultPlayerData,
@@ -172,6 +216,7 @@ export const useAuth = () => {
                     localStorage.removeItem('linklePlayerData');
                     setPlayerData(finalPlayerData);
                 } else {
+                    // Logged out user - load from localStorage
                     const dataForPuzzle = loadDataFromLocalStorage();
                     setPlayerData(dataForPuzzle);
                 }
@@ -183,6 +228,7 @@ export const useAuth = () => {
             } finally {
                 // This guarantees the loading screen will always be dismissed.
                 setAuthLoading(false);
+                setDataReady(true); // Data is now ready (either from cloud or fallback)
             }
         });
 
@@ -200,6 +246,7 @@ export const useAuth = () => {
         playerData,
         setPlayerData,
         authLoading,
+        dataReady,
         showAuthModal,
         setShowAuthModal,
         showLogoutModal,

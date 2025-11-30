@@ -1191,5 +1191,410 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SPRINKLES", "RAINBOW", "UNICORN", "HORN", "ALARM", "BURGLAR", "GLOVE", "PRINTS", "INTERROGATION"],
         narrative: "SPRINKLES look like a chopped-up RAINBOW. A RAINBOW UNICORN is a colorful myth. A unicorn has a distinctive HORN. A loud HORN can act as an ALARM to protect you from a BURGLAR who may be wearing a GLOVE on each hand to hide his or her finger PRINTS, because finding prints at a crime scene can lead to an INTERROGATION.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GOLDEN", "GATE", "CRASH", "TEST", "DUMMY", "PROOF", "READING", "ROOM", "TEMP"],
+        narrative: "The GOLDEN GATE is a famous bridge in San Francisco. To GATE CRASH is to enter without invitation. A CRASH TEST evaluates vehicle safety. A TEST DUMMY is used in crash tests. DUMMY PROOF means foolproof. PROOF READING checks for errors. A READING ROOM is a quiet space in a library. ROOM TEMP is short for room temperature.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HONEY", "TRAP", "DOOR", "BELL", "HOP", "SCOTCH", "TAPE", "WORM", "WOOD"],
+        narrative: "A HONEY TRAP is an espionage tactic using seduction. A TRAP DOOR is a hidden floor panel. A DOORBELL announces visitors. A BELLHOP carries luggage at hotels. HOPSCOTCH is a children's game. SCOTCH TAPE is an adhesive. A TAPEWORM is a parasitic worm. WORMWOOD is a bitter herb used in absinthe.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DOOM", "SCROLL", "SAW", "BUCK", "NAKED", "EYE", "CANDY", "MAN", "CAVE"],
+        narrative: "To DOOM SCROLL is to endlessly browse negative news. A SCROLL SAW is a tool for intricate cuts. A SAWBUCK is old slang for a $10 bill. BUCK NAKED means completely nude. The NAKED EYE sees without optical aid. EYE CANDY is something visually appealing. The CANDY MAN is a horror villain or slang for a drug dealer. A MAN CAVE is a personal retreat space.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SLAY", "QUEEN", "SIZE", "ZERO", "DARK", "THIRTY", "ROCK", "LOBSTER", "TAIL"],
+        narrative: "SLAY QUEEN is internet slang for empowerment. A QUEEN SIZE bed is larger than full. SIZE ZERO is the smallest clothing size. ZERO DARK is military time for early morning. DARK THIRTY refers to pre-dawn hours, from the film Zero Dark Thirty. 30 ROCK is the Tina Fey TV comedy. ROCK LOBSTER is a classic B-52's song. A LOBSTER TAIL is a seafood delicacy.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LAMP", "POST", "CARD", "BOARD", "WALK", "ABOUT", "TURN", "OVER", "COAT"],
+        narrative: "A LAMP POST is a street light. A POST CARD is a mailable souvenir. CARDBOARD is stiff paper material. A BOARDWALK is a wooden promenade. A WALKABOUT is an informal stroll. An ABOUT TURN is a reversal of direction. A TURNOVER is a pastry or a business metric. An OVERCOAT is a warm outer garment.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CORN", "BREAD", "WINNER", "TAKE", "ALL", "NIGHT", "STAND", "STILL", "LIFE"],
+        narrative: "CORNBREAD is a food. A BREADWINNER supports a family. WINNER-TAKE-ALL is a competition style. An ALL-NIGHT event lasts until morning. A NIGHTSTAND is bedside furniture. To STAND STILL is to not move. A STILL LIFE is a type of painting.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SPACE", "CAMP", "GROUND", "FLOOR", "MODEL", "T", "SHIRT", "FRONT", "DESK"],
+        narrative: "SPACE CAMP is for aspiring astronauts. A CAMPGROUND is for camping. The GROUND FLOOR is street level. A FLOOR MODEL is a display item. The MODEL T was an early Ford car. A T-SHIRT is a casual top. A SHIRT FRONT is the front part of a shirt. The FRONT DESK is a reception area.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COLD", "CASE", "LOAD", "STAR", "GAZING", "BALL", "HOG", "WILD", "SIDE"],
+        narrative: "A COLD CASE is an unsolved crime. A CASE LOAD is the number of cases handled. A LOADSTAR is a guiding star (lodestar). STARGAZING is looking at the night sky. A GAZING BALL is a garden ornament. To BALL HOG is to keep the ball to oneself. HOG WILD means out of control. The WILD SIDE is an adventurous lifestyle.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["THUG", "LIFE", "HACK", "JOB", "HUNT", "DOWN", "BAD", "BLOOD", "ORANGE"],
+        narrative: "THUG LIFE is a hip hop culture term. A LIFE HACK is a clever trick. A HACK JOB is poorly done work. A JOB HUNT is searching for employment. To HUNT DOWN is to pursue relentlessly. DOWN BAD is slang for being depressed or desperate. BAD BLOOD means animosity. A BLOOD ORANGE is a citrus fruit.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PRIMA", "FACIE", "VALUE", "JUDGMENT", "CALL", "FORWARD", "MARCH", "HARE", "BRAINED"],
+        narrative: "PRIMA FACIE is Latin for 'at first sight' or 'on the face of it'. FACIE is Latin for FACE, connecting to FACE VALUE, which is the apparent worth. A VALUE JUDGMENT is an assessment of merit. A JUDGMENT CALL is a subjective decision. CALL FORWARDING redirects phone calls. FORWARD MARCH is a command to advance. The MARCH HARE is a character in Alice in Wonderland. A HAREBRAINED idea is reckless or foolish.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LOCK", "STEP", "BROTHER", "HOOD", "WINK", "EYE", "SHADOW", "BOX", "OFFICE"],
+        narrative: "To be in LOCKSTEP is to move in unison. A STEPBROTHER is a sibling by marriage. BROTHERHOOD is a bond between brothers. To HOODWINK is to deceive. To WINK AN EYE is a gesture. EYESHADOW is makeup. SHADOWBOXING is training against an imaginary opponent. The BOX OFFICE sells tickets.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["OCKHAM", "RAZOR", "SHARP", "SHOOTER", "MARBLE", "RYE", "WHISKEY", "SOUR", "GRAPES"],
+        narrative: "OCKHAM'S RAZOR is the philosophical principle of parsimony, attributed to the 14th-century English friar and philosopher William of Ockham (also spelled Occam). RAZOR SHARP means extremely keen. A SHARPSHOOTER is an expert marksman. A SHOOTER MARBLE is used to strike other marbles in the game. MARBLE RYE is a swirled bread (famously featured in Seinfeld). RYE WHISKEY is a spirit made from rye grain. A WHISKEY SOUR is a classic cocktail. SOUR GRAPES is an idiom from Aesop's fable about bitter jealousy.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FREUDIAN", "SLIP", "COVER", "BAND", "WAGON", "TRAIN", "WRECK", "BALL", "ROOM"],
+        narrative: "A FREUDIAN SLIP is an error revealing subconscious thoughts. A SLIPCOVER protects furniture. A COVER BAND plays songs by other artists. To jump on the BANDWAGON is to follow a popular trend. A WAGON TRAIN was a caravan of pioneers heading West. A TRAIN WRECK is a disaster (literal or figurative). A WRECKING BALL demolishes buildings. A BALLROOM is a grand space for dancing.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SCHRODINGER", "CAT", "WALK", "OVER", "THROW", "BACK", "CHANNEL", "ISLANDS", "HOP"],
+        narrative: "SCHRÖDINGER'S CAT is a famous quantum mechanics thought experiment. A CATWALK is a fashion runway. A WALKOVER is an easy victory. To OVERTHROW is to depose a ruler. A THROWBACK is a return to the past. A BACK CHANNEL is an unofficial communication route. The CHANNEL ISLANDS are located between England and France. ISLAND HOPPING is traveling between islands.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["TURING", "TEST", "TUBE", "TOP", "HEAVY", "METAL", "HEAD", "BANGER", "SISTERS"],
+        narrative: "The TURING TEST evaluates machine intelligence. A TEST TUBE is laboratory glassware. A TUBE TOP is a strapless garment. TOP-HEAVY means unbalanced with weight at the top. HEAVY METAL is a music genre. A METALHEAD is a heavy metal enthusiast. A HEADBANGER is someone who headbangs to music. THE BANGER SISTERS is a 2002 film starring Goldie Hawn and Susan Sarandon.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SINE", "QUA", "NON", "STARTER", "PISTOL", "GRIP", "STRENGTH", "TRAINING", "WHEELS"],
+        narrative: "SINE QUA NON is Latin for 'without which not' — an essential condition. A NON-STARTER is something that won't succeed. A STARTER PISTOL begins races. A PISTOL GRIP is a type of handle shaped like a gun grip. GRIP STRENGTH measures hand power. STRENGTH TRAINING is exercise to build muscle. TRAINING WHEELS help children learn to ride bicycles.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PYRRHIC", "VICTORY", "GARDEN", "VARIETY", "HOUR", "HAND", "WRITTEN", "WORD", "SMITH"],
+        narrative: "A PYRRHIC VICTORY is a win at too great a cost, named after King Pyrrhus of Epirus who defeated the Romans but suffered devastating losses. A VICTORY GARDEN was a home vegetable plot encouraged during WWII. GARDEN VARIETY means ordinary or common. A VARIETY HOUR was a TV entertainment format. The HOUR HAND indicates time on a clock. HANDWRITTEN means composed by hand. The WRITTEN WORD refers to literature and text. A WORDSMITH is a skilled writer or linguist.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PLANCK", "CONSTANT", "COMPANION", "PIECE", "MEAL", "PREP", "SCHOOL", "MASTER", "MIND"],
+        narrative: "The PLANCK CONSTANT (h) is a fundamental constant in quantum mechanics, discovered by Max Planck. A CONSTANT COMPANION is an ever-present friend. A COMPANION PIECE is a related work of art or literature. PIECEMEAL means doing something gradually, bit by bit. MEAL PREP is the practice of preparing food in advance. PREP SCHOOL is a private preparatory school. A SCHOOLMASTER is a teacher (archaic). A MASTERMIND is a brilliant planner or criminal genius.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CARTESIAN", "PLANE", "CRASH", "COURSE", "WORK", "FLOW", "CHART", "BUSTER", "KEATON"],
+        narrative: "The CARTESIAN PLANE is a coordinate system named after philosopher René Descartes. A PLANE CRASH is an aviation disaster. A CRASH COURSE is intensive, accelerated learning. COURSEWORK refers to academic assignments. WORKFLOW is a sequence of processes. A FLOW CHART diagrams a process visually. A CHARTBUSTER is a hit song that tops the charts. BUSTER KEATON was a legendary silent film comedian known for his physical stunts and deadpan expression.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["QUIXOTIC", "QUEST", "ION", "CHANNEL", "SURF", "ACE", "VENTURA", "HIGHWAY", "MAN"],
+        narrative: "A QUIXOTIC QUEST is an idealistic but impractical pursuit, evoking Don Quixote's noble yet foolish adventures. A QUESTION is an inquiry (QUEST + ION). An ION CHANNEL is a protein in cell membranes that allows ions to pass through. To CHANNEL SURF is to flip through TV channels. A SURFACE is the outer boundary of something (SURF + ACE). ACE VENTURA is Jim Carrey's eccentric pet detective character. VENTURA HIGHWAY is a 1972 song by the band America. A HIGHWAYMAN was a mounted robber who held up travelers.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SISYPHEAN", "TASK", "BAR", "TENDER", "LOIN", "CLOTH", "BOUND", "LESS", "THAN"],
+        narrative: "A SISYPHEAN TASK is an endless, futile labor, from the Greek myth of Sisyphus condemned to roll a boulder up a hill for eternity. A TASKBAR is the strip at the bottom of a computer screen. A BARTENDER serves drinks. TENDERLOIN is a premium cut of meat (also a neighborhood in San Francisco). A LOINCLOTH is a minimal garment worn around the waist. CLOTHBOUND describes books bound in fabric. BOUNDLESS means without limits or infinite. LESS THAN is a mathematical inequality symbol (<).",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PLATONIC", "SOLID", "GOLD", "DIGGER", "WASP", "STING", "OPERATION", "MANUAL", "LABOR"],
+        narrative: "A PLATONIC SOLID is one of five regular polyhedra identified by Plato: tetrahedron, cube, octahedron, dodecahedron, and icosahedron. SOLID GOLD means pure gold or something excellent. A GOLD DIGGER is someone who pursues wealthy partners for money. A DIGGER WASP is a solitary wasp that burrows into the ground. A WASP STING is the painful injection of venom. A STING OPERATION is an undercover law enforcement operation. An OPERATION MANUAL provides instructions. MANUAL LABOR is physical work done by hand.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HIPPOCRATIC", "OATH", "TAKER", "OVER", "LORD", "BYRON", "BAY", "LEAF", "BLOWER"],
+        narrative: "The HIPPOCRATIC OATH is the ethical pledge taken by physicians, attributed to the ancient Greek physician Hippocrates. An OATH TAKER is one who swears a solemn promise. A TAKEOVER is the acquisition of control, especially of a company. An OVERLORD is a supreme ruler or master. LORD BYRON (George Gordon Byron) was a leading Romantic poet. BYRON BAY is a famous coastal town in New South Wales, Australia. A BAY LEAF is an aromatic herb used in cooking. A LEAF BLOWER is a garden tool for clearing debris.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["JUNGIAN", "ANALYSIS", "PARALYSIS", "TICK", "BORNE", "IDENTITY", "POLITICS", "USUAL", "SUSPECT"],
+        narrative: "JUNGIAN ANALYSIS is the psychoanalytic approach developed by Carl Jung, exploring archetypes and the collective unconscious. ANALYSIS PARALYSIS is the state of overthinking that prevents action. A PARALYSIS TICK is a tick whose bite can cause temporary paralysis. TICK-BORNE diseases are illnesses transmitted by tick bites. THE BOURNE IDENTITY is a novel and film about an amnesiac spy. IDENTITY POLITICS refers to political positions based on social identity. POLITICS AS USUAL describes typical political behavior. THE USUAL SUSPECTS is a 1995 neo-noir film.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KEYNESIAN", "ECONOMICS", "CLASS", "ACTION", "FIGURE", "SKATING", "RINK", "RAT", "PACK"],
+        narrative: "KEYNESIAN ECONOMICS is the macroeconomic theory developed by John Maynard Keynes, advocating government intervention during recessions. An ECONOMICS CLASS is a course studying economic principles. A CLASS ACTION is a lawsuit filed on behalf of a group. An ACTION FIGURE is a poseable toy figurine. FIGURE SKATING is an ice sport combining athleticism and artistry. A SKATING RINK is an arena for ice skating. A RINK RAT is someone who spends excessive time at skating rinks. The RAT PACK was the famous 1960s entertainment group led by Frank Sinatra.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ORWELLIAN", "DOUBLE", "SPEAK", "EASY", "RIDER", "HAGGARD", "LOOK", "OUT", "CAST"],
+        narrative: "ORWELLIAN DOUBLESPEAK refers to deliberately contradictory or misleading language, from George Orwell's dystopian novel '1984.' DOUBLESPEAK is language that obscures or distorts meaning. A SPEAKEASY was an illicit bar during Prohibition. EASY RIDER is the iconic 1969 counterculture film. H. RIDER HAGGARD was a Victorian adventure novelist who wrote 'King Solomon's Mines.' A HAGGARD LOOK is an exhausted, worn appearance. A LOOKOUT is a person keeping watch or a vantage point. An OUTCAST is someone rejected by society.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FARADAY", "CAGE", "MATCH", "MAKER", "OVER", "BITE", "SIZE", "ABLE", "SEAMAN"],
+        narrative: "A FARADAY CAGE is an enclosure that blocks electromagnetic fields, named after physicist Michael Faraday. A CAGE MATCH is a wrestling bout inside an enclosed ring. A MATCHMAKER arranges marriages or partnerships. A MAKEOVER is a transformation of appearance. An OVERBITE is a dental condition where upper teeth protrude. BITE-SIZE means small enough to eat in one mouthful. SIZEABLE means fairly large or considerable. An ABLE SEAMAN is a naval rank for an experienced sailor.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SOCRATIC", "IRONY", "CURTAIN", "CALL", "SIGN", "POST", "SCRIPT", "DOCTOR", "WHO"],
+        narrative: "SOCRATIC IRONY is the technique of feigning ignorance to expose others' contradictions, used by the philosopher Socrates. The IRON CURTAIN was the ideological boundary dividing Cold War Europe. A CURTAIN CALL is when performers take a bow after a show. A CALL SIGN is an identifying radio broadcast signal. A SIGNPOST is a directional marker. A POSTSCRIPT (P.S.) is an additional note after a letter's main body. A SCRIPT DOCTOR is a writer hired to improve screenplays. DOCTOR WHO is the long-running BBC science fiction series.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DARWINIAN", "FITNESS", "CENTER", "FOLD", "OUT", "PATIENT", "ZERO", "HOUR", "GLASS"],
+        narrative: "DARWINIAN FITNESS refers to an organism's reproductive success in evolutionary biology, a concept from Charles Darwin. A FITNESS CENTER is a gym or health club. A CENTERFOLD is the center spread of a magazine. A FOLDOUT is a page that unfolds to reveal more content. An OUTPATIENT receives medical treatment without being admitted to a hospital. PATIENT ZERO is the first identified case in an epidemic. ZERO HOUR is the critical moment when something begins. An HOURGLASS is a device that measures time with flowing sand.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KAFKAESQUE", "NIGHTMARE", "FUEL", "EFFICIENT", "MARKET", "SQUARE", "ROOT", "CANAL", "BOAT"],
+        narrative: "KAFKAESQUE describes surreal, oppressive situations reminiscent of Franz Kafka's nightmarish fiction. NIGHTMARE FUEL is slang for something terrifying. FUEL EFFICIENT describes vehicles that use less gasoline. The EFFICIENT MARKET hypothesis is an economics theory. A MARKET SQUARE is a public plaza for commerce. A SQUARE ROOT is a mathematical operation. A ROOT CANAL is a dental procedure to treat infected pulp. A CANAL BOAT is a narrow vessel designed for waterways.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["COPERNICAN", "REVOLUTION", "COUNTER", "ATTACK", "DOG", "POUND", "CAKE", "STAND", "ALONE"],
+        narrative: "The COPERNICAN REVOLUTION was the paradigm shift from geocentric to heliocentric astronomy, initiated by Nicolaus Copernicus. A REVOLUTION COUNTER (tachometer) measures rotational speed. A COUNTERATTACK is a retaliatory military strike. An ATTACK DOG is trained for aggressive protection. A DOG POUND is an animal shelter. POUND CAKE is a dense, buttery cake traditionally made with a pound each of butter, sugar, eggs, and flour. A CAKE STAND displays baked goods. STAND-ALONE means independent or self-contained.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["EUCLIDEAN", "ALGORITHM", "DESIGN", "FLAW", "LESS", "FILLING", "STATION", "WAGON", "WHEEL"],
+        narrative: "The EUCLIDEAN ALGORITHM is an ancient method for finding the greatest common divisor, developed by the Greek mathematician Euclid. ALGORITHM DESIGN is the process of creating computational procedures. A DESIGN FLAW is a defect in planning. FLAWLESS means perfect, without defects. LESS FILLING was the famous Miller Lite advertising slogan. A FILLING STATION is an old term for a gas station. A STATION WAGON is a type of car with extended cargo space. A WAGON WHEEL is the circular wheel on a wagon.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HEGELIAN", "DIALECTIC", "TENSION", "HEADACHE", "RELIEF", "PITCHER", "PLANT", "BASED", "KING"],
+        narrative: "The HEGELIAN DIALECTIC is the philosophical method of thesis-antithesis-synthesis developed by Georg Wilhelm Friedrich Hegel. DIALECTICAL TENSION is the opposition between contradictory ideas. A TENSION HEADACHE is stress-induced head pain. HEADACHE RELIEF is pain remedy. A RELIEF PITCHER in baseball substitutes for the starting pitcher. A PITCHER PLANT is a carnivorous plant that traps insects. PLANT-BASED means derived from plants. BASED KING is internet slang for a confident, unapologetic person who stays true to themselves.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["NEWTONIAN", "PHYSICS", "TEACHER", "PET", "SHOP", "GIRL", "POWER", "PLAY", "GROUND"],
+        narrative: "NEWTONIAN PHYSICS refers to classical mechanics developed by Sir Isaac Newton. A PHYSICS TEACHER instructs students in science. A TEACHER'S PET is a favored student. A PET SHOP sells animals. A SHOP GIRL is a female retail worker. GIRL POWER is a slogan of female empowerment. A POWER PLAY is a strategic advantage, especially in hockey. A PLAYGROUND is a children's recreation area.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LACONIC", "SPARTAN", "LIFESTYLE", "BRAND", "NAME", "PLATE", "GLASS", "HOUSE", "WORK"],
+        narrative: "LACONIC means using few words, named after Laconia (Sparta) whose citizens were famously terse. A SPARTAN LIFESTYLE is austere and disciplined. A LIFESTYLE BRAND sells a way of living, not just products. A BRAND NAME is a trademarked product name. A NAMEPLATE identifies a person or place. PLATE GLASS is flat glass used in windows. A GLASSHOUSE is a greenhouse (or British slang for military prison). HOUSEWORK is domestic chores.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PTOLEMAIC", "MODEL", "HOME", "SICK", "NOTE", "WORTHY", "CAUSE", "WAY", "STATION"],
+        narrative: "The PTOLEMAIC MODEL was the geocentric astronomical system developed by Claudius Ptolemy, placing Earth at the center of the universe. A MODEL HOME is a display house in a new development. HOMESICK is longing for home while away. A SICK NOTE is a doctor's excuse from work or school. NOTEWORTHY means deserving of attention. A WORTHY CAUSE is a charitable endeavor deserving support. A CAUSEWAY is a raised road over water or wetland. A WAY STATION is a stopping point on a journey.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SILVER", "BULLET", "JOURNAL", "ENTRY", "LEVEL", "PLAYING", "FIELD", "DAY", "DREAM"],
+        narrative: "A SILVER BULLET is a simple solution to a complex problem. A BULLET JOURNAL is a customizable organization system. A JOURNAL ENTRY is a written record in a diary or ledger. ENTRY LEVEL refers to a beginner position in a career. A LEVEL PLAYING FIELD means fair and equal conditions for all. A PLAYING FIELD is a sports area for games. A FIELD DAY is a day of outdoor activities or a great success. A DAYDREAM is a pleasant fantasy while awake.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["GUILTY", "PLEASURE", "CRUISE", "CONTROL", "FREAK", "ACCIDENT", "PRONE", "POSITION", "PAPER"],
+        narrative: "A GUILTY PLEASURE is something enjoyable despite being considered lowbrow or embarrassing. A PLEASURE CRUISE is a vacation voyage for relaxation. CRUISE CONTROL is an automatic system that maintains vehicle speed. A CONTROL FREAK is someone who needs to be in charge of everything. A FREAK ACCIDENT is an unusual or bizarre mishap. ACCIDENT-PRONE describes someone likely to have accidents. The PRONE POSITION is lying face down. A POSITION PAPER is a formal statement of views on an issue.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BITTER", "SWEET", "HEART", "BREAK", "FAST", "FORWARD", "THINKING", "CAP", "STONE"],
+        narrative: "BITTERSWEET describes something pleasant but tinged with sadness. SWEETHEART is a term of endearment for a loved one. HEARTBREAK is intense emotional pain from loss or disappointment. BREAKFAST is the first meal of the day. FAST FORWARD means to skip ahead quickly. FORWARD THINKING describes a progressive, future-oriented mindset. A THINKING CAP is a metaphor for mental focus and problem-solving. A CAPSTONE is a crowning achievement or final accomplishment.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["WITCH", "CRAFT", "FAIR", "WEATHER", "PROOF", "POSITIVE", "THINKING", "MAN", "HUNT"],
+        narrative: "WITCHCRAFT is the practice of magic or sorcery. A CRAFT FAIR is a market where artisans sell handmade goods. A FAIR-WEATHER friend is unreliable when times get tough. WEATHERPROOF means resistant to the effects of weather. PROOF POSITIVE is definite, undeniable evidence. POSITIVE THINKING is an optimistic mental attitude. A THINKING MAN is an intellectual or thoughtful person. A MANHUNT is an organized search for a person, typically a criminal.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DEAD", "HEAT", "WAVE", "POOL", "SIDE", "EFFECT", "PEDAL", "STEEL", "TRAP"],
+        narrative: "A DEAD HEAT is a tie or draw in a race or competition. A HEAT WAVE is an extended period of unusually hot weather. A WAVE POOL is a swimming pool with artificially generated waves. POOLSIDE means located beside a swimming pool. A SIDE EFFECT is a secondary, often unintended consequence. An EFFECT PEDAL is a device that modifies guitar sound. PEDAL STEEL is a type of steel guitar played with foot pedals. A STEEL TRAP describes a sharp, quick mind (or a literal animal trap).",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["STRAW", "POLL", "TAX", "SHELTER", "ISLAND", "HOPPING", "MAD", "MAX", "OUT"],
+        narrative: "A STRAW POLL is an informal vote to gauge opinion. A POLL TAX was a fee required to vote, historically used to disenfranchise minorities. A TAX SHELTER is a legal method to reduce taxable income. SHELTER ISLAND is a town in New York between the North and South Forks of Long Island. ISLAND HOPPING was the World War II military strategy of capturing Pacific islands to advance toward Japan. HOPPING MAD means extremely angry. MAD MAX is the post-apocalyptic film franchise starring Mel Gibson and later Tom Hardy. To MAX OUT means to reach the limit or exhaust a resource.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ACHILLES", "HEEL", "TURN", "PIKE", "PLACE", "KICK", "START", "UP", "SWING"],
+        narrative: "An ACHILLES HEEL is a fatal weakness, from Greek mythology where Achilles was invulnerable except for his heel. A HEEL TURN is professional wrestling slang for when a good guy becomes a villain. A TURNPIKE is a toll road or highway. PIKE PLACE is the famous public market in Seattle, Washington. A PLACE KICK is a kick in football where the ball is held on the ground. To KICKSTART means to start something forcefully or jump-start a process. A START-UP is a newly established business, typically in tech. An UPSWING is an upward trend or improvement in conditions.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["RUBBER", "DUCK", "DYNASTY", "WARRIOR", "CATS", "MEOW", "MIX", "MASTER", "CHEF"],
+        narrative: "A RUBBER DUCK is a bath toy, also used in programming as a debugging technique where explaining code to an inanimate object helps find bugs. DUCK DYNASTY was a popular reality TV show about a Louisiana family's duck call business. DYNASTY WARRIORS is a hack-and-slash video game series by Koei. WARRIOR CATS is a bestselling young adult book series about clans of wild cats. The CAT'S MEOW is an idiom meaning something excellent or the height of fashion. MEOW MIX is a popular cat food brand known for its jingle. A MIX MASTER is DJ equipment for blending audio tracks. MASTERCHEF is a competitive cooking reality TV show.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["POISON", "IVY", "LEAGUE", "TABLE", "MANNER", "BORN", "FREE", "KICK", "BOXER"],
+        narrative: "POISON IVY is a plant that causes itchy rashes, and also a Batman villain. The IVY LEAGUE is the group of eight elite American universities including Harvard, Yale, and Princeton. A LEAGUE TABLE is a ranking chart showing competitive standings. TABLE MANNERS are the rules of etiquette for eating. 'To the MANNER BORN' is a Shakespeare phrase meaning accustomed to privilege from birth. BORN FREE is a 1966 film and song about Elsa the lioness being released into the wild. A FREE KICK is a direct or indirect kick awarded in soccer after a foul. A KICKBOXER is a martial artist who combines boxing with kicking techniques.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ELEPHANT", "GRAVEYARD", "SMASH", "MOUTH", "WASH", "OUT", "FIELD", "GOAL", "TENDER"],
+        narrative: "An ELEPHANT GRAVEYARD is a mythical place where elephants go to die, famously depicted in Disney's The Lion King. A GRAVEYARD SMASH refers to the 1962 novelty song 'Monster Mash' ('It was a graveyard smash'). SMASH MOUTH is the rock band known for 'All Star' from the Shrek soundtrack. MOUTHWASH is an antiseptic liquid used for oral hygiene. A WASHOUT is a complete failure or disappointment. The OUTFIELD is the area of a baseball diamond beyond the infield. A FIELD GOAL is a scoring play in football (3 points) or basketball. A GOALTENDER (or goalkeeper) is the player who defends the goal in hockey or soccer.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["KANGAROO", "COURT", "MARTIAL", "LAW", "ABIDING", "CITIZEN", "SOLDIER", "FIELD", "STRIP"],
+        narrative: "A KANGAROO COURT is an illegitimate tribunal that ignores proper legal procedure. A COURT MARTIAL is a military court for trying armed forces personnel. MARTIAL LAW is temporary military rule over civilian affairs during emergencies. LAW-ABIDING means obeying the law. LAW ABIDING CITIZEN is a 2009 thriller film starring Gerard Butler and Jamie Foxx. CITIZEN SOLDIER is a 2006 song by 3 Doors Down and the slogan of the U.S. National Guard. SOLDIER FIELD is the historic Chicago stadium, home of the Chicago Bears. To FIELD STRIP is to disassemble a weapon for cleaning or inspection.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SITTING", "DUCK", "FACE", "HEEL", "STONE", "COLD", "TURKEY", "SHOOT", "MOON"],
+        narrative: "A SITTING DUCK is an easy, defenseless target. DUCK FACE is the exaggerated pout pose popular in selfies. In professional wrestling, a FACE is a hero and a HEEL is a villain—a 'face/heel turn' means switching sides. The HEEL STONE is a large sarsen stone at Stonehenge. STONE COLD refers to wrestler Steve Austin or means completely cold. COLD TURKEY means quitting an addiction abruptly without tapering. A TURKEY SHOOT is a contest that's so easy it's like shooting sitting targets. To SHOOT THE MOON is to attempt something ambitious, or in the card game Hearts, to capture all penalty cards.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["GOLDEN", "PARACHUTE", "PANTS", "ON", "FIRE", "DRILL", "SERGEANT", "PEPPER", "SPRAY"],
+        narrative: "A GOLDEN PARACHUTE is a lucrative severance package for executives who lose their jobs. PARACHUTE PANTS are the baggy, nylon pants popularized by MC Hammer in the 1980s. 'PANTS ON FIRE' comes from the children's taunt 'Liar, liar, pants on fire.' ON FIRE means performing exceptionally well. A FIRE DRILL is an emergency evacuation practice. A DRILL SERGEANT is a military instructor known for strict discipline. SERGEANT PEPPER'S Lonely Hearts Club Band is the iconic 1967 Beatles album. PEPPER SPRAY is an inflammatory agent used for self-defense.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DUTCH", "TREAT", "WILLIAMS", "SONOMA", "VALLEY", "GIRL", "SCOUT", "HONOR", "ROLL"],
+        narrative: "A DUTCH TREAT is an outing where each person pays for themselves. TREAT WILLIAMS was an American actor known for 'Hair' and 'Everwood.' WILLIAMS-SONOMA is an upscale American kitchenware retailer. SONOMA VALLEY is a renowned wine-producing region in Northern California. A VALLEY GIRL is a 1980s stereotype of materialistic young women from the San Fernando Valley, immortalized in Frank Zappa's 1982 song. A GIRL SCOUT is a member of the youth organization known for cookies and outdoor skills. SCOUT'S HONOR is a pledge of truthfulness. The HONOR ROLL is a list of students who achieve academic distinction.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["TROJAN", "WAR", "CHEST", "HAIR", "TRIGGER", "HAPPY", "CAMPER", "VAN", "GOGH"],
+        narrative: "The TROJAN WAR was the legendary Greek conflict over Helen of Troy, featuring the famous wooden horse. A WAR CHEST is a reserve of funds for a campaign or battle. CHEST HAIR is the body hair on a person's torso. A HAIR TRIGGER is an extremely sensitive gun trigger, or describes someone easily provoked. TRIGGER HAPPY means overly eager to shoot or react aggressively. A HAPPY CAMPER is someone who is content and satisfied. A CAMPER VAN is a recreational vehicle equipped for living and traveling. Vincent VAN GOGH was the Dutch Post-Impressionist painter famous for 'Starry Night' and his severed ear.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["FROG", "LEGS", "DIAMOND", "BACK", "DOOR", "PRIZE", "PIG", "LATIN", "LOVER"],
+        narrative: "FROG LEGS are a French culinary delicacy. LEGS DIAMOND was the nickname of Jack Diamond, a notorious Prohibition-era gangster. A DIAMONDBACK is a venomous rattlesnake named for the diamond pattern on its back, also the name of the Arizona baseball team. A BACK DOOR is a rear entrance, or a sneaky method of access. A DOOR PRIZE is a gift awarded by random drawing at an event. A PRIZE PIG is an award-winning pig at a county fair. PIG LATIN is a playful language game where syllables are rearranged ('igpay atinlay'). A LATIN LOVER is a stereotype of a romantic, passionate man from Southern Europe or Latin America.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BLUE", "BLOOD", "BATH", "SALT", "MINE", "FIELD", "HOCKEY", "STICK", "INSECT"],
+        narrative: "BLUE BLOOD refers to aristocracy or noble lineage. A BLOODBATH is a massacre or extremely violent event. BATH SALTS are crystalline substances for bathing, also slang for dangerous synthetic drugs. A SALT MINE is where salt is extracted, or slang for a place of hard, tedious work ('back to the salt mines'). A MINEFIELD is an area planted with explosive mines, or any situation fraught with hidden dangers. FIELD HOCKEY is a team sport played on grass or turf with curved sticks. A HOCKEY STICK is the equipment used to hit the puck. A STICK INSECT is a bug that camouflages itself by resembling a twig.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MONKEY", "WRENCH", "GANG", "GREEN", "THUMB", "SCREW", "DRIVER", "ANT", "FARM"],
+        narrative: "A MONKEY WRENCH is an adjustable spanner tool. 'The Monkey WRENCH GANG' is Edward Abbey's 1975 eco-sabotage novel about environmental activists in the Southwest. GANG GREEN was the nickname for the New York Jets' fearsome defense in the 1980s, also a pun on gangrene. A GREEN THUMB means natural skill at gardening. A THUMBSCREW is a medieval torture device that crushes fingers. A SCREWDRIVER is a tool for turning screws, also a vodka and orange juice cocktail. A DRIVER ANT is an aggressive African ant species known for massive swarm raids. An ANT FARM is an educational terrarium for observing ant colonies.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MAGIC", "MIKE", "TYSON", "FURY", "ROAD", "KILL", "JOY", "RIDE", "SHOTGUN"],
+        narrative: "MAGIC MIKE is the 2012 film about male strippers starring Channing Tatum. MIKE TYSON is the legendary heavyweight boxing champion known for his ferocious knockouts. TYSON FURY is the British heavyweight champion known as 'The Gypsy King.' FURY ROAD is the subtitle of the 2015 film 'Mad Max: Fury Road.' ROADKILL is an animal killed by a vehicle on a road. A KILLJOY is a person who spoils others' fun. A JOYRIDE is a reckless drive taken for pleasure, often in a stolen car. To RIDE SHOTGUN means to sit in the front passenger seat, originating from stagecoach guards who rode with shotguns.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SILVER", "TONGUE", "LASHING", "OUT", "BREAK", "DANCING", "BEAR", "MARKET", "SHARE"],
+        narrative: "A SILVER TONGUE describes someone gifted at persuasive or eloquent speech. A TONGUE LASHING is a harsh verbal scolding. LASHING OUT means attacking someone verbally or physically in anger. An OUTBREAK is a sudden occurrence of disease or violence. BREAK DANCING is an athletic street dance style originating in 1970s New York hip-hop culture. A DANCING BEAR was a circus attraction, also the name of a Grateful Dead icon and song. A BEAR MARKET is a period of declining stock prices, opposite of a bull market. MARKET SHARE is the percentage of total sales in an industry captured by a particular company.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["WHISTLE", "STOP", "MOTION", "PICTURE", "PERFECT", "GAME", "BIRD", "WATCHING", "BRIEF"],
+        narrative: "A WHISTLE STOP tour is a political campaign traveling to many small towns by train. STOP MOTION is an animation technique where objects are physically manipulated frame by frame. A MOTION PICTURE is a film or movie. PICTURE PERFECT means flawless or ideal. A PERFECT GAME in baseball is when a pitcher allows no batters to reach base. A GAME BIRD is a bird hunted for sport, like pheasant or quail. BIRD WATCHING is the hobby of observing birds in their natural habitat. A WATCHING BRIEF is a legal term for monitoring court proceedings without actively participating.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["YELLOW", "BRICK", "ROAD", "WARRIOR", "PRINCESS", "CUT", "THROAT", "SINGER", "SONGWRITER"],
+        narrative: "The YELLOW BRICK Road is the famous path to the Emerald City in 'The Wizard of Oz.' A BRICK ROAD is a street paved with bricks. A ROAD WARRIOR is someone who travels frequently for work, also the subtitle of 'Mad Max 2.' WARRIOR PRINCESS refers to Xena from the TV series 'Xena: Warrior Princess.' A PRINCESS CUT is a square-shaped diamond cut. CUTTHROAT means ruthlessly competitive. A THROAT SINGER practices the ancient vocal technique from Tuva and Mongolia where multiple pitches are produced simultaneously. A SINGER-SONGWRITER is a musician who writes and performs their own songs.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SMOKE", "SIGNAL", "FIRE", "STARTER", "MOTOR", "CITY", "LIGHTS", "CAMERA", "SHY"],
+        narrative: "A SMOKE SIGNAL is an ancient form of long-distance communication using puffs of smoke. A SIGNAL FIRE is a beacon lit to send a message or warning. 'FIRESTARTER' is a 1997 hit song by The Prodigy, also someone who starts fires. A STARTER MOTOR is the electric motor that initiates an engine. MOTOR CITY is the nickname for Detroit, home of the American auto industry. 'CITY LIGHTS' is Charlie Chaplin's beloved 1931 silent film. 'LIGHTS, CAMERA, Action!' is the traditional film set command. CAMERA SHY describes someone uncomfortable being photographed or filmed.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COLD", "OPEN", "SESAME", "STREET", "SMART", "ALECK", "BALDWIN", "BROTHERS", "KEEPER"],
+        narrative: "A COLD OPEN is a TV or film technique that begins without the usual title sequence or introduction. 'OPEN SESAME' is the magic phrase from 'Ali Baba and the Forty Thieves.' SESAME STREET is the beloved children's educational TV show that began in 1969. STREET SMART means having practical knowledge gained from urban experience. A SMART ALECK is someone who is annoyingly clever or sarcastic. ALEC BALDWIN is the acclaimed actor known for '30 Rock' and his SNL Trump impression. The BALDWIN BROTHERS are the acting family including Alec, Daniel, William, and Stephen. 'Am I my BROTHER'S KEEPER?' is the famous biblical question from Cain in Genesis.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["GLASS", "HALF", "NELSON", "COLUMN", "INCH", "WORM", "FOOD", "BABY", "BOOMER"],
+        narrative: "The 'GLASS HALF full or empty' question is a classic test of optimism versus pessimism. A HALF NELSON is a wrestling hold where one arm is passed under the opponent's arm and behind their neck. NELSON'S COLUMN is the monument in London's Trafalgar Square honoring Admiral Horatio Nelson. A COLUMN INCH is a unit of newspaper space measuring one column wide by one inch tall. An INCHWORM is a caterpillar that moves by looping its body. WORM FOOD is dark slang for being dead and buried. A FOOD BABY is the bloated stomach appearance after eating a large meal. A BABY BOOMER is someone born during the post-World War II population boom (1946-1964).",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SNOW", "BALL", "GAME", "TIME", "LINE", "UP", "GRADE", "SCHOOL", "WORK"],
+        narrative: "Start with winter fun: a SNOWBALL is a packed ball of snow. A BALL GAME is any sports event played with a ball. GAME TIME is when the action begins. A TIMELINE is a chronological sequence of events. LINE UP means to arrange in order or queue. UPGRADE means to improve or enhance. GRADE SCHOOL is another term for elementary school. SCHOOLWORK refers to homework and assignments.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SUN", "FLOWER", "POT", "HOLE", "PUNCH", "LINE", "DANCE", "FLOOR", "PLAN"],
+        narrative: "A SUNFLOWER is a tall yellow bloom that follows the sun. A FLOWER POT is a container for growing plants. A POTHOLE is a hole in the road surface. A HOLE PUNCH is an office tool for making holes in paper. A PUNCH LINE is the funny ending of a joke. LINE DANCE is a type of country dancing done in rows. A DANCE FLOOR is where people boogie. A FLOOR PLAN is a building's layout diagram.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["STAR", "LIGHT", "HOUSE", "HOLD", "UP", "KEEP", "SAKE", "CUP", "BOARD"],
+        narrative: "STARLIGHT is the gentle glow from distant stars. A LIGHTHOUSE is a coastal beacon guiding ships. A HOUSEHOLD is your family unit or home. HOLD UP can mean a robbery or a delay. UPKEEP refers to maintenance and care. A KEEPSAKE is a treasured memento. A SAKE CUP is a small Japanese vessel for drinking rice wine. A CUPBOARD is a kitchen cabinet for storage.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SAND", "STORM", "CLOUD", "NINE", "LIVES", "STOCK", "MARKET", "PLACE", "MAT"],
+        narrative: "A SANDSTORM is a desert weather phenomenon with blowing sand. A STORM CLOUD is a dark cloud signaling bad weather. CLOUD NINE means a state of extreme happiness. NINE LIVES refers to the saying about cats' resilience. LIVESTOCK are farm animals raised for food or work. The STOCK MARKET is where shares are traded. A MARKETPLACE is a venue for buying and selling. A PLACE MAT is a protective table setting.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["MOON", "SHINE", "BOX", "TURTLE", "NECK", "TIE", "BREAK", "EVEN", "HANDED"],
+        narrative: "MOONSHINE is illegally distilled alcohol, also called white lightning. A SHINE BOX is a kit for polishing shoes. A BOX TURTLE is a land-dwelling turtle with a domed shell. A TURTLENECK is a sweater with a high, close-fitting collar. A NECK TIE is a formal accessory worn around the collar. A TIE BREAKER is a deciding game or point. BREAK EVEN means neither profit nor loss. EVEN HANDED means fair and impartial.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TRASH", "PANDA", "BEAR", "CUB", "REPORTER", "NOTEBOOK", "COMPUTER", "VIRUS", "SCAN"],
+        narrative: "TRASH PANDA is slang for a raccoon, those masked bandits of the garbage bins. A PANDA BEAR is the beloved black-and-white bamboo eater from China. A BEAR CUB is a baby bear. A CUB REPORTER is a junior journalist learning the ropes. A REPORTER'S NOTEBOOK is the spiral-bound tool of the trade. A NOTEBOOK COMPUTER is another name for a laptop. A COMPUTER VIRUS is malicious software. A VIRUS SCAN is what your antivirus runs to protect you.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BANANA", "REPUBLIC", "PARTY", "ANIMAL", "FARM", "HOUSE", "MUSIC", "CITY", "SLICKER"],
+        narrative: "BANANA REPUBLIC is both a clothing store and a term for an unstable government dependent on a single export. The REPUBLICAN PARTY is the GOP. A PARTY ANIMAL is someone who loves to celebrate. ANIMAL FARM is George Orwell's satirical novella about power and corruption. A FARMHOUSE is a rural dwelling. HOUSE MUSIC is an electronic dance genre born in Chicago. MUSIC CITY is Nashville's famous nickname. A CITY SLICKER is an urban person unfamiliar with rural life.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CARBON", "NEUTRAL", "ZONE", "DEFENSE", "ATTORNEY", "GENERAL", "STORE", "CREDIT", "CARD"],
+        narrative: "CARBON NEUTRAL means having a net-zero carbon footprint. The NEUTRAL ZONE is hockey's center ice area (and a Star Trek reference). ZONE DEFENSE is a basketball strategy where players guard areas rather than individuals. A DEFENSE ATTORNEY represents defendants in court. The ATTORNEY GENERAL is the nation's top legal officer. A GENERAL STORE is an old-fashioned shop selling everything. STORE CREDIT is a refund option. A CREDIT CARD is a ubiquitous payment method.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FOSSIL", "FUEL", "TANK", "TOP", "DOLLAR", "STORE", "BOUGHT", "TIME", "WARP"],
+        narrative: "FOSSIL FUEL includes coal, oil, and natural gas formed from ancient organisms. A FUEL TANK stores gasoline in vehicles. A TANK TOP is a sleeveless shirt. TOP DOLLAR means paying the highest price. A DOLLAR STORE sells items cheaply. STORE BOUGHT means not homemade. BOUGHT TIME means you delayed the inevitable. TIME WARP is the Rocky Horror dance and a sci-fi concept of temporal distortion.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FLASH", "MOB", "BOSS", "FIGHT", "BACK", "HAND", "SHAKE", "DOWN", "POUR"],
+        narrative: "A FLASH MOB is a spontaneous public performance organized via social media. A MOB BOSS is a crime family leader like Don Corleone. A BOSS FIGHT is a video game's climactic battle against a powerful enemy. FIGHT BACK means to resist or retaliate. A BACKHAND is a tennis stroke hit with the back of the hand facing forward. A HANDSHAKE is a greeting or agreement gesture. A SHAKEDOWN is extortion or a thorough search. A DOWNPOUR is heavy rainfall.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PARALLEL", "PARKING", "GARAGE", "SALE", "PITCH", "PERFECT", "STORM", "CHASER", "LIGHTS"],
+        narrative: "PARALLEL PARKING is the tricky driving maneuver that tests every new driver. A PARKING GARAGE is a multi-level structure for vehicles. A GARAGE SALE is a yard sale held in your driveway. A SALES PITCH is a persuasive presentation. PITCH PERFECT is the 2012 a cappella comedy film (and means musically accurate). A PERFECT STORM describes ideal conditions for disaster. A STORM CHASER hunts tornadoes for science or thrills. CHASER LIGHTS are sequential lights like those on theater marquees.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CONTINENTAL", "BREAKFAST", "CLUB", "SANDWICH", "ARTIST", "STATEMENT", "NECKLACE", "CHAIN", "SAW"],
+        narrative: "A CONTINENTAL BREAKFAST is the light hotel breakfast with pastries and coffee. THE BREAKFAST CLUB is John Hughes' iconic 1985 teen drama. A CLUB SANDWICH is a triple-decker with turkey, bacon, and tomato. A SANDWICH ARTIST is Subway's official title for their employees. An ARTIST STATEMENT explains the meaning behind creative work. A STATEMENT NECKLACE is bold, eye-catching jewelry. A NECKLACE CHAIN is the metal links that hold a pendant. A CHAINSAW is the powerful cutting tool.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["METROPOLITAN", "TRANSIT", "AUTHORITY", "FIGURE", "EIGHT", "BALL", "PIT", "BULL", "DOG"],
+        narrative: "A METROPOLITAN TRANSIT system serves urban areas. A TRANSIT AUTHORITY is the agency running public transportation. An AUTHORITY FIGURE is someone in a position of power. A FIGURE EIGHT is a skating move and a shape. An EIGHT BALL is the black ball in pool (and a fortune-telling toy). A BALL PIT is the colorful play area at kids' venues. A PIT BULL is the powerful dog breed. A BULLDOG is the wrinkly, stocky dog breed known for tenacity.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["EXECUTIVE", "BRANCH", "OFFICE", "MANAGER", "TRAINEE", "PROGRAM", "DIRECTOR", "CUT", "SCENE"],
+        narrative: "The EXECUTIVE BRANCH is one of three branches of US government. A BRANCH OFFICE is a satellite location of a company. An OFFICE MANAGER handles administrative duties. A MANAGER TRAINEE is learning the ropes of leadership. A TRAINEE PROGRAM develops new employees. A PROGRAM DIRECTOR oversees operations or content. A DIRECTOR'S CUT is an alternate film version with the director's vision. A CUT SCENE is a video game cinematic that advances the story.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HELICOPTER", "PARENT", "COMPANY", "PICNIC", "BLANKET", "STATEMENT", "NECKLACE", "PENDANT", "LIGHT"],
+        narrative: "A HELICOPTER PARENT hovers over their children obsessively. A PARENT COMPANY owns other businesses. A COMPANY PICNIC is a corporate team-building outing. A PICNIC BLANKET is spread on the grass for outdoor dining. A BLANKET STATEMENT is an overgeneralization. A STATEMENT NECKLACE is bold, attention-grabbing jewelry. A NECKLACE PENDANT is the decorative piece hanging from a chain. A PENDANT LIGHT is a hanging light fixture suspended from the ceiling.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["JURASSIC", "WORLD", "CUP", "CAKE", "BOSS", "BATTLE", "CRY", "BABY", "SHARK"],
+        narrative: "JURASSIC WORLD is the 2015 dinosaur blockbuster. The WORLD CUP is FIFA's global soccer tournament. A CUPCAKE is a small frosted dessert. CAKE BOSS is the TLC reality show about Buddy Valastro's bakery. A BOSS BATTLE is a video game's climactic fight against a powerful enemy. A BATTLE CRY is a war shout. CRY BABY is someone who whines excessively (or the 1990 Johnny Depp film). BABY SHARK is the viral children's song that took over the internet.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["MILKY", "WAY", "FINDER", "FEE", "SIMPLE", "JACK", "KNIFE", "EDGE", "CASE"],
+        narrative: "The MILKY WAY is our home galaxy (and a candy bar). A WAYFINDER is a navigation tool used in Polynesian seafaring. A FINDER'S FEE is payment for a successful referral. FEE SIMPLE is a type of property ownership in real estate law. SIMPLE JACK is Ben Stiller's character in Tropic Thunder. A JACKKNIFE is a folding pocket knife (or a truck accident type). KNIFE EDGE describes something precarious or a sharp boundary. An EDGE CASE is a programming term for unusual boundary conditions.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SPOTIFY", "PREMIUM", "BOND", "VILLAIN", "ORIGIN", "STORY", "ARC", "REACTOR", "CORE"],
+        narrative: "SPOTIFY PREMIUM is the paid tier of the music streaming service. A PREMIUM BOND is a UK government savings product. A BOND VILLAIN is an antagonist in the James Bond franchise. A VILLAIN ORIGIN explains how a bad guy became evil. An ORIGIN STORY is a superhero's backstory. A STORY ARC is a narrative structure spanning multiple episodes. An ARC REACTOR is Tony Stark's power source in Iron Man. A REACTOR CORE is the central part of a nuclear reactor.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BUNSEN", "BURNER", "PHONE", "CALL", "BACK", "STORY", "BOARD", "SHORTS", "STOP"],
+        narrative: "A BUNSEN BURNER is the lab heating device named after Robert Bunsen. A BURNER PHONE is a disposable prepaid phone. A PHONE CALL is basic communication. A CALLBACK is a return call or an audition invitation. A BACKSTORY is a character's history. A STORYBOARD is visual planning for film/animation. BOARD SHORTS are swim trunks. A SHORT STOP is the baseball position between second and third base.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SQUID", "INK", "WELL", "DONE", "DEAL", "FLOW", "STATE", "FARM", "FRESH"],
+        narrative: "SQUID INK is used in pasta and other dishes. An INK WELL is a container for writing ink. WELL DONE means thoroughly cooked (or congratulations). A DONE DEAL is a completed agreement. DEAL FLOW is a business term for the rate of investment opportunities. FLOW STATE is the psychology term for being 'in the zone.' STATE FARM is the insurance company ('Like a good neighbor...'). FARM FRESH describes produce straight from the source.",
+        difficulty: 'EASY'
     }
 ];

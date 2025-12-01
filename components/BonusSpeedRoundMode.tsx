@@ -228,7 +228,9 @@ export const BonusSpeedRoundMode = () => {
         }
         
         // Detect login: user went from null/falsy to truthy
-        if (!prevUserRef.current && user) {
+        // IMPORTANT: Wait for dataReady before making routing decisions
+        // This ensures Firebase data has been fetched and merged
+        if (!prevUserRef.current && user && dataReady) {
             const dateKey = formatDateKey(targetDate);
             const dayResults = playerData.dailyResults?.[dateKey];
             
@@ -251,8 +253,11 @@ export const BonusSpeedRoundMode = () => {
             }
         }
         
-        prevUserRef.current = user;
-    }, [user, playerData.dailyResults, targetDate, view]);
+        // Only update prevUserRef when dataReady is true (or user is null)
+        if (dataReady || !user) {
+            prevUserRef.current = user;
+        }
+    }, [user, dataReady, playerData.dailyResults, targetDate, view]);
 
     // Auto-redirect when data becomes ready: If cloud data shows today's puzzles are already solved,
     // redirect to allDone immediately (prevents playing on second device after solving on first)

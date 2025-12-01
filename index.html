@@ -73,7 +73,7 @@
       --achievement-color: #ff914d;
       --difficulty-impossible-bg: #ff5757;
     }
-    
+
     body[data-theme='dark'] {
       --background-color: #2E2E2E;
       --header-text: #E9E2FF;
@@ -1168,7 +1168,7 @@
       color: #ff5757;
       font-weight: 700;
     }
-    
+
     .tries-container > span {
       position: relative;
       top: 1px;
@@ -2381,7 +2381,7 @@
         justify-content: center;
         width: 100%;
       }
-      /* justify-content is now handled by app-wrapper */
+          /* justify-content is now handled by app-wrapper */
       
       .top-bar-container {
         width: 100vw;
@@ -3147,6 +3147,13 @@
       }
       .day-card-share-button {
         padding: clamp(0.6em, 1.8vw, 0.9em) clamp(2em, 5vw, 2.5em) clamp(0.4em, 1.2vw, 0.6em) clamp(2em, 5vw, 2.5em); /* Asymmetric padding: more top, less bottom */
+      }
+      
+      /* Mobile: Reduce start screen tagline font size to prevent awkward line breaks */
+      .start-screen-container .tagline {
+        font-size: 1.4rem;
+        max-width: 85vw;
+        line-height: 1.3;
       }
     }
 

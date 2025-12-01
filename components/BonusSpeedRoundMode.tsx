@@ -218,8 +218,8 @@ export const BonusSpeedRoundMode = () => {
         }
     }, [authLoading]); // Only run once when auth loads
 
-    // Login state detection: When user logs in, check if today's puzzles are already solved
-    // and redirect to the appropriate view instead of staying on the playing screen
+    // Login state detection: When user logs in, redirect to start screen
+    // The start screen will show appropriate button (PLAY or VIEW STATS) based on puzzle state
     useEffect(() => {
         // Skip on initial mount (prevUserRef is undefined)
         if (prevUserRef.current === undefined) {
@@ -231,26 +231,9 @@ export const BonusSpeedRoundMode = () => {
         // IMPORTANT: Wait for dataReady before making routing decisions
         // This ensures Firebase data has been fetched and merged
         if (!prevUserRef.current && user && dataReady) {
-            const dateKey = formatDateKey(targetDate);
-            const dayResults = playerData.dailyResults?.[dateKey];
-            
-            // Check if all three main puzzles are solved
-            const allMainPuzzlesSolved = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
-            
-            if (allMainPuzzlesSolved) {
-                // User already solved today's puzzles - redirect to allDone
-                setView('allDone');
-            } else if (dayResults?.easy || dayResults?.hard || dayResults?.impossible) {
-                // Some puzzles solved - stay on playing but ensure puzzleResults is synced
-                // The puzzleResults sync happens in the other useEffect
-                // Just make sure we're on the playing view
-                if (view !== 'playing') {
-                    setView('playing');
-                }
-            } else {
-                // No puzzles solved - go to start screen
-                setView('start');
-            }
+            // Always go to start screen on login - it will show the right button
+            // (PLAY if not played, VIEW STATS if already played)
+            setView('start');
         }
         
         // Only update prevUserRef when dataReady is true (or user is null)
@@ -259,40 +242,9 @@ export const BonusSpeedRoundMode = () => {
         }
     }, [user, dataReady, playerData.dailyResults, targetDate, view]);
 
-    // Auto-redirect when data becomes ready: If cloud data shows today's puzzles are already solved,
-    // redirect to allDone immediately (prevents playing on second device after solving on first)
-    const dataReadyCheckedRef = useRef(false);
-    const lastCheckedUserRef = useRef<string | null>(null);
-    
-    // Reset dataReadyCheckedRef when user changes (logout/login cycle)
-    useEffect(() => {
-        const currentUserId = user?.uid || null;
-        if (lastCheckedUserRef.current !== currentUserId) {
-            // User changed - reset the check so it runs again for new user
-            dataReadyCheckedRef.current = false;
-            lastCheckedUserRef.current = currentUserId;
-        }
-    }, [user]);
-    
-    useEffect(() => {
-        // Only run this check once when dataReady becomes true (per user)
-        if (!dataReady || dataReadyCheckedRef.current) return;
-        dataReadyCheckedRef.current = true;
-        
-        // Only apply this logic for logged-in users (cloud data)
-        if (!user) return;
-        
-        const dateKey = formatDateKey(targetDate);
-        const dayResults = playerData.dailyResults?.[dateKey];
-        
-        // Check if all three main puzzles are solved
-        const allMainPuzzlesSolved = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
-        
-        if (allMainPuzzlesSolved && view === 'start') {
-            // User already solved today's puzzles on another device - redirect to allDone
-            setView('allDone');
-        }
-    }, [dataReady, user, playerData.dailyResults, targetDate, view]);
+    // Note: We no longer auto-redirect to allDone when puzzles are solved.
+    // Instead, the start screen shows "VIEW STATS" button for users who have already played,
+    // giving them a consistent experience with the transition screen.
 
     useBodyClasses(gameState, puzzle, solvedStatus, theme);
 

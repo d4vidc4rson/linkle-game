@@ -27,10 +27,30 @@ const upgradePlayerData = (savedData: Partial<PlayerData>): PlayerData => {
         return { ...initialBadge, progress: 0 };
     });
 
+    // Clean up dailyResults to remove any undefined values (Firestore corruption fix)
+    const cleanedDailyResults: Record<string, any> = {};
+    if (savedData.dailyResults) {
+        for (const dateKey of Object.keys(savedData.dailyResults)) {
+            const dayData = savedData.dailyResults[dateKey];
+            if (dayData) {
+                const cleanedDay: Record<string, any> = {};
+                if (dayData.easy) cleanedDay.easy = dayData.easy;
+                if (dayData.hard) cleanedDay.hard = dayData.hard;
+                if (dayData.impossible) cleanedDay.impossible = dayData.impossible;
+                if (dayData.bonus) cleanedDay.bonus = dayData.bonus;
+                // Only include the day if it has at least one puzzle result
+                if (Object.keys(cleanedDay).length > 0) {
+                    cleanedDailyResults[dateKey] = cleanedDay;
+                }
+            }
+        }
+    }
+
     // Ensure all new PlayerData fields exist, using saved value or default
     return {
         ...defaultPlayerData, // Start with defaults for all fields
         ...savedData,         // Override with any saved data
+        dailyResults: cleanedDailyResults, // Use cleaned daily results
         badges: upgradedBadges, // Use the carefully upgraded badges
     };
 };
@@ -97,12 +117,14 @@ export const useAuth = () => {
                             // Merge each puzzle type individually:
                             // - If cloud has a result, use cloud (first play wins)
                             // - If only local has a result, keep local (new progress)
-                            mergedDailyResults[dateKey] = {
-                                easy: cloudDay.easy || localDay.easy,
-                                hard: cloudDay.hard || localDay.hard,
-                                impossible: cloudDay.impossible || localDay.impossible,
-                                bonus: cloudDay.bonus || localDay.bonus,
-                            };
+                            // IMPORTANT: Only include fields that have actual values (Firestore rejects undefined)
+                            const mergedDay: Record<string, any> = {};
+                            if (cloudDay.easy || localDay.easy) mergedDay.easy = cloudDay.easy || localDay.easy;
+                            if (cloudDay.hard || localDay.hard) mergedDay.hard = cloudDay.hard || localDay.hard;
+                            if (cloudDay.impossible || localDay.impossible) mergedDay.impossible = cloudDay.impossible || localDay.impossible;
+                            if (cloudDay.bonus || localDay.bonus) mergedDay.bonus = cloudDay.bonus || localDay.bonus;
+                            
+                            mergedDailyResults[dateKey] = mergedDay;
                         }
                         dataToSave.dailyResults = mergedDailyResults;
                     }
@@ -191,12 +213,14 @@ export const useAuth = () => {
                             // Merge each puzzle type individually:
                             // - If cloud has a result, use cloud (first play wins)
                             // - If only local has a result, keep local (new progress)
-                            mergedDailyResults[dateKey] = {
-                                easy: cloudDay.easy || localDay.easy,
-                                hard: cloudDay.hard || localDay.hard,
-                                impossible: cloudDay.impossible || localDay.impossible,
-                                bonus: cloudDay.bonus || localDay.bonus,
-                            };
+                            // IMPORTANT: Only include fields that have actual values (Firestore rejects undefined)
+                            const mergedDay: Record<string, any> = {};
+                            if (cloudDay.easy || localDay.easy) mergedDay.easy = cloudDay.easy || localDay.easy;
+                            if (cloudDay.hard || localDay.hard) mergedDay.hard = cloudDay.hard || localDay.hard;
+                            if (cloudDay.impossible || localDay.impossible) mergedDay.impossible = cloudDay.impossible || localDay.impossible;
+                            if (cloudDay.bonus || localDay.bonus) mergedDay.bonus = cloudDay.bonus || localDay.bonus;
+                            
+                            mergedDailyResults[dateKey] = mergedDay;
                         }
 
                         finalPlayerData = {

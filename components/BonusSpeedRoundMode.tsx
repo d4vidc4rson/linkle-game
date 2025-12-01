@@ -780,7 +780,7 @@ export const BonusSpeedRoundMode = () => {
                     onViewStats={handleViewStats}
                     user={user}
                     playerData={playerData}
-                    alreadyPlayedToday={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
+                    alreadyPlayedToday={!!(puzzleResults.easy && puzzleResults.hard && puzzleResults.impossible)}
                     onShowAuth={handleShowAuth}
                 />
             </>
@@ -801,7 +801,7 @@ export const BonusSpeedRoundMode = () => {
                     date={targetDate}
                     theme={theme}
                     onContinue={handleIntroContinue}
-                    allSolved={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
+                    allSolved={!!(puzzleResults.easy && puzzleResults.hard && puzzleResults.impossible)}
                     mode={introMode}
                     user={user}
                     playerData={playerData}

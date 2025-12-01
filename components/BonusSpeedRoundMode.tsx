@@ -262,8 +262,20 @@ export const BonusSpeedRoundMode = () => {
     // Auto-redirect when data becomes ready: If cloud data shows today's puzzles are already solved,
     // redirect to allDone immediately (prevents playing on second device after solving on first)
     const dataReadyCheckedRef = useRef(false);
+    const lastCheckedUserRef = useRef<string | null>(null);
+    
+    // Reset dataReadyCheckedRef when user changes (logout/login cycle)
     useEffect(() => {
-        // Only run this check once when dataReady becomes true
+        const currentUserId = user?.uid || null;
+        if (lastCheckedUserRef.current !== currentUserId) {
+            // User changed - reset the check so it runs again for new user
+            dataReadyCheckedRef.current = false;
+            lastCheckedUserRef.current = currentUserId;
+        }
+    }, [user]);
+    
+    useEffect(() => {
+        // Only run this check once when dataReady becomes true (per user)
         if (!dataReady || dataReadyCheckedRef.current) return;
         dataReadyCheckedRef.current = true;
         

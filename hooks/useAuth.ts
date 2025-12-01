@@ -77,8 +77,8 @@ export const useAuth = () => {
                     dataToSave.fastestEasySolve = null;
                 }
                 
-                // "First Play Wins" logic: Check cloud data before saving daily results
-                // This prevents Device B from overwriting Device A's legitimate results
+                // "First Play Wins" logic: Merge per-puzzle, not per-day
+                // This preserves local progress while respecting first play for each puzzle
                 try {
                     const cloudDoc = await getDoc(doc(db, "users", user.uid));
                     if (cloudDoc.exists()) {
@@ -86,14 +86,23 @@ export const useAuth = () => {
                         const cloudDailyResults = cloudData.dailyResults || {};
                         const localDailyResults = dataToSave.dailyResults || {};
                         
-                        // For each date in cloud, if cloud has results, keep cloud data (first play wins)
+                        // Start with all local dates
                         const mergedDailyResults = { ...localDailyResults };
+                        
+                        // Merge each date from cloud, per-puzzle
                         for (const dateKey of Object.keys(cloudDailyResults)) {
-                            const cloudDay = cloudDailyResults[dateKey];
-                            // If cloud has any puzzle results for this date, use cloud data
-                            if (cloudDay && (cloudDay.easy || cloudDay.hard || cloudDay.impossible || cloudDay.bonus)) {
-                                mergedDailyResults[dateKey] = cloudDay;
-                            }
+                            const cloudDay = cloudDailyResults[dateKey] || {};
+                            const localDay = mergedDailyResults[dateKey] || {};
+                            
+                            // Merge each puzzle type individually:
+                            // - If cloud has a result, use cloud (first play wins)
+                            // - If only local has a result, keep local (new progress)
+                            mergedDailyResults[dateKey] = {
+                                easy: cloudDay.easy || localDay.easy,
+                                hard: cloudDay.hard || localDay.hard,
+                                impossible: cloudDay.impossible || localDay.impossible,
+                                bonus: cloudDay.bonus || localDay.bonus,
+                            };
                         }
                         dataToSave.dailyResults = mergedDailyResults;
                     }
@@ -169,22 +178,25 @@ export const useAuth = () => {
                             fastestSolve = null;
                         }
 
-                        // Merge dailyResults - "First Play Wins" logic
-                        // For each date, prefer cloud data if it has results (first play wins)
+                        // Merge dailyResults - "First Play Wins" logic (per-puzzle)
+                        // For each puzzle type, prefer cloud if it has results, otherwise keep local
                         const mergedDailyResults = { ...(localData.dailyResults || {}) };
                         const cloudDailyResults = saneRemoteData.dailyResults || {};
                         
+                        // Merge each date from cloud, per-puzzle
                         for (const dateKey of Object.keys(cloudDailyResults)) {
-                            const cloudDay = cloudDailyResults[dateKey];
-                            const localDay = mergedDailyResults[dateKey];
+                            const cloudDay = cloudDailyResults[dateKey] || {};
+                            const localDay = mergedDailyResults[dateKey] || {};
                             
-                            // If cloud has any results for this date, use cloud data (first play wins)
-                            if (cloudDay && (cloudDay.easy || cloudDay.hard || cloudDay.impossible || cloudDay.bonus)) {
-                                mergedDailyResults[dateKey] = cloudDay;
-                            } else if (!mergedDailyResults[dateKey]) {
-                                // If local doesn't have this date at all, use cloud (even if empty)
-                                mergedDailyResults[dateKey] = cloudDay;
-                            }
+                            // Merge each puzzle type individually:
+                            // - If cloud has a result, use cloud (first play wins)
+                            // - If only local has a result, keep local (new progress)
+                            mergedDailyResults[dateKey] = {
+                                easy: cloudDay.easy || localDay.easy,
+                                hard: cloudDay.hard || localDay.hard,
+                                impossible: cloudDay.impossible || localDay.impossible,
+                                bonus: cloudDay.bonus || localDay.bonus,
+                            };
                         }
 
                         finalPlayerData = {

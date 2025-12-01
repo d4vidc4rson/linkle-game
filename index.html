@@ -1204,6 +1204,16 @@
       padding-right: calc(var(--grid-unit) * 1.5);
     }
     
+    /* Disable mobile tap highlight on all button types */
+    .button,
+    .button-outline,
+    .day-card-share-button,
+    .day-card-play-button,
+    .avatar-button,
+    .achievement-button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     .button {
       padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3);
       border: none;

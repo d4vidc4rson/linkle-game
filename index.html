@@ -148,6 +148,9 @@
       max-width: calc(var(--grid-unit) * 63); /* 504px */
       margin: 0 auto;
       text-align: left;
+      min-height: 100dvh; /* Ensure root takes full viewport height */
+      display: flex;
+      flex-direction: column;
     }
 
     .app-wrapper {
@@ -206,8 +209,14 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        flex-grow: 1;
         min-height: 100dvh; /* Ensure full viewport height for vertical centering */
+        box-sizing: border-box;
+    }
+    .start-screen-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
     }
     .start-screen-container .header {
         margin-top: 0;

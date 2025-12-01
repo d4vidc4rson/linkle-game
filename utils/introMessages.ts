@@ -239,6 +239,45 @@ export const getIntroMessage = (context: IntroMessageContext): string => {
     return topMessages[randomIndex]?.text || "Brace yourself — today's\nEasy, Hard and Impossible\npuzzles are ready.";
 };
 
+// Get personalized message for start screen (logged-in users only)
+export const getStartScreenMessage = (playerData: PlayerData, alreadyPlayedToday: boolean): string => {
+    const streak = playerData.currentStreak || 0;
+    const maxStreak = playerData.maxStreak || 0;
+    const totalSolved = playerData.totalSolved || 0;
+    
+    // Already played today
+    if (alreadyPlayedToday) {
+        return "You've conquered today's\npuzzles. Nice work!";
+    }
+    
+    // Active streak messages
+    if (streak >= 7) {
+        return `${streak}-day streak! 🔥\nYou're on fire.`;
+    } else if (streak >= 3) {
+        return `${streak}-day streak.\nKeep it going!`;
+    } else if (streak > 0 && streak === maxStreak && maxStreak >= 3) {
+        return `Tied with your best\nstreak of ${maxStreak}. Beat it!`;
+    } else if (streak > 0 && maxStreak > streak && maxStreak >= 5 && streak >= maxStreak - 2) {
+        return `${streak} days in. Your record\nis ${maxStreak}. Go for it!`;
+    } else if (streak > 0) {
+        return `${streak}-day streak.\nLet's keep it alive.`;
+    }
+    
+    // No streak but has played before
+    if (totalSolved > 0) {
+        const wins = countYesterdayWins(playerData.dailyResults);
+        if (wins === 3) {
+            return "You crushed it yesterday.\nDo it again!";
+        } else if (wins === 0 && getYesterdayResults(playerData.dailyResults) !== null) {
+            return "Fresh start today.\nYou've got this.";
+        }
+        return "Welcome back!\nReady to play?";
+    }
+    
+    // First time player (logged in but never played)
+    return "Welcome to Linkle!\nLet's see what you've got.";
+};
+
 // Check if streak should be reset based on last played date
 export const checkStreakReset = (lastPlayedDate: string | null): { shouldReset: boolean; wasYesterday: boolean } => {
     if (!lastPlayedDate) {

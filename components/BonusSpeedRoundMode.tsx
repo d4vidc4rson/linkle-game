@@ -23,6 +23,7 @@ import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } f
 import { checkStreakReset } from '../utils/introMessages';
 
 type DailyModeView = 'start' | 'intro' | 'playing' | 'bonusSplash' | 'allDone' | 'archive';
+type IntroMode = 'play' | 'stats';
 
 // Helper function to calculate overlay color based on time remaining
 const getOverlayColor = (timeRemaining: number): string => {
@@ -83,6 +84,7 @@ export const BonusSpeedRoundMode = () => {
     const [bonusTriesLeft, setBonusTriesLeft] = useState(1);
     const [bonusFeedback, setBonusFeedback] = useState('');
     const [streakWasReset, setStreakWasReset] = useState(false);
+    const [introMode, setIntroMode] = useState<IntroMode>('play');
 
     // Track previous user for login detection
     const prevUserRef = useRef<any>(undefined);
@@ -537,6 +539,12 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleStartPlay = () => {
+        setIntroMode('play');
+        setView('intro');
+    };
+
+    const handleViewStats = () => {
+        setIntroMode('stats');
         setView('intro');
     };
 
@@ -546,6 +554,12 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleIntroContinue = () => {
+        // If in stats mode, go directly to allDone
+        if (introMode === 'stats') {
+            setView('allDone');
+            return;
+        }
+        
         // Set flag to indicate we're starting fresh from intro (ignore existing results)
         setNavigatingToNextPuzzle();
         
@@ -745,8 +759,11 @@ export const BonusSpeedRoundMode = () => {
                 {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
                 <DailyStartScreen 
-                    onPlay={handleStartPlay} 
+                    onPlay={handleStartPlay}
+                    onViewStats={handleViewStats}
                     user={user}
+                    playerData={playerData}
+                    alreadyPlayedToday={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
                     onShowAuth={handleShowAuth}
                 />
             </>
@@ -768,6 +785,7 @@ export const BonusSpeedRoundMode = () => {
                     theme={theme}
                     onContinue={handleIntroContinue}
                     allSolved={!!(existingResults.easy && existingResults.hard && existingResults.impossible)}
+                    mode={introMode}
                     user={user}
                     playerData={playerData}
                     streakWasReset={streakWasReset}

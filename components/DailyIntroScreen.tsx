@@ -12,6 +12,7 @@ interface DailyIntroScreenProps {
     user?: any;
     playerData?: PlayerData;
     streakWasReset?: boolean;
+    mode?: 'play' | 'stats'; // 'play' = normal intro, 'stats' = shorter transition to stats
 }
 
 export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({ 
@@ -21,14 +22,21 @@ export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({
     allSolved = false,
     user = null,
     playerData,
-    streakWasReset = false
+    streakWasReset = false,
+    mode = 'play'
 }) => {
     const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
     const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
     const [progress, setProgress] = useState(0);
 
-    // Get personalized intro message - memoize to prevent re-randomization on re-renders
+    // Stats mode uses a fixed message, play mode uses personalized messages
     const introMessage = useMemo(() => {
+        // Stats mode: short message for viewing stats
+        if (mode === 'stats') {
+            return "Calculating your stats...";
+        }
+        
+        // Play mode: personalized messages
         if (!playerData) {
             return allSolved 
                 ? "Looks like you've already\nsolved today's daily\nLinkle. Kudos."
@@ -41,24 +49,28 @@ export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({
             streakWasReset,
             allSolved
         });
-    }, [playerData, user, streakWasReset, allSolved]);
+    }, [playerData, user, streakWasReset, allSolved, mode]);
 
     useEffect(() => {
-        // Animate one tile every 400ms (9 tiles * 400ms = 3600ms)
+        // Stats mode: faster animation (~2 seconds total)
+        // Play mode: normal animation (~3.6 seconds total)
+        const intervalMs = mode === 'stats' ? 200 : 400;
+        
         const interval = setInterval(() => {
             setProgress(prev => {
                 if (prev >= 9) {
                     clearInterval(interval);
                     // Wait a moment after completion before continuing
-                    setTimeout(onContinue, 400);
+                    const delayMs = mode === 'stats' ? 200 : 400;
+                    setTimeout(onContinue, delayMs);
                     return 9;
                 }
                 return prev + 1;
             });
-        }, 400);
+        }, intervalMs);
 
         return () => clearInterval(interval);
-    }, [onContinue]);
+    }, [onContinue, mode]);
 
     // Convert newlines in message to <br /> tags
     const renderMessage = (message: string) => {

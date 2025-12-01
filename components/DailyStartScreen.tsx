@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { TitleGraphic } from './Icons';
 import { MiniGrid } from './GameUI';
-import type { AuthMode } from '../types';
+import type { AuthMode, PlayerData } from '../types';
+import { getStartScreenMessage } from '../utils/introMessages';
 
 interface DailyStartScreenProps {
     onPlay: () => void;
+    onViewStats?: () => void;
     user: any; // Using any to avoid importing User type for now, or import it if preferred
+    playerData?: PlayerData;
+    alreadyPlayedToday?: boolean;
     onShowAuth: (mode?: AuthMode) => void;
 }
 
-export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ onPlay, user, onShowAuth }) => {
+export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ 
+    onPlay, 
+    onViewStats,
+    user, 
+    playerData,
+    alreadyPlayedToday = false,
+    onShowAuth 
+}) => {
     const [isExiting, setIsExiting] = useState(false);
 
     const handlePlay = () => {
@@ -17,17 +28,44 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ onPlay, user
         setTimeout(onPlay, 300);
     };
 
+    const handleViewStats = () => {
+        if (onViewStats) {
+            setIsExiting(true);
+            setTimeout(onViewStats, 300);
+        }
+    };
+
+    // Get personalized message for logged-in users
+    const personalizedMessage = user && playerData 
+        ? getStartScreenMessage(playerData, alreadyPlayedToday)
+        : null;
+
     return (
         <div className={`start-screen-container ${isExiting ? 'fade-out' : ''}`}>
             <div className="start-screen-content">
                 <div className="header">
                     <MiniGrid />
                     <TitleGraphic />
-                    <p className="tagline">One dumb thing<br />leads to another.</p>
+                    {/* Show personalized message for logged-in users, tagline for guests */}
+                    {user && personalizedMessage ? (
+                        <p className="tagline">{personalizedMessage.split('\n').map((line, i) => (
+                            <React.Fragment key={i}>
+                                {line}
+                                {i < personalizedMessage.split('\n').length - 1 && <br />}
+                            </React.Fragment>
+                        ))}</p>
+                    ) : (
+                        <p className="tagline">One dumb thing<br />leads to another.</p>
+                    )}
                 </div>
                 <div className="start-screen-interaction">
                     <div className="start-screen-buttons">
-                        <button className="button" onClick={handlePlay}><span>Play</span></button>
+                        {/* Show VIEW STATS button if already played today, otherwise PLAY */}
+                        {user && alreadyPlayedToday && onViewStats ? (
+                            <button className="button" onClick={handleViewStats}><span>View Stats</span></button>
+                        ) : (
+                            <button className="button" onClick={handlePlay}><span>Play</span></button>
+                        )}
                         {!user && (
                             <>
                                 <button className="button button-outline" onClick={() => onShowAuth('login')}><span>Login</span></button>

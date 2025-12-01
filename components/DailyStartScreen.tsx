@@ -60,9 +60,9 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({
                 </div>
                 <div className="start-screen-interaction">
                     <div className="start-screen-buttons">
-                        {/* Show VIEW STATS button if already played today, otherwise PLAY */}
+                        {/* Show ADMIRE MY STATS button if already played today, otherwise PLAY */}
                         {user && alreadyPlayedToday && onViewStats ? (
-                            <button className="button" onClick={handleViewStats}><span>View Stats</span></button>
+                            <button className="button" onClick={handleViewStats}><span>Admire My Stats</span></button>
                         ) : (
                             <button className="button" onClick={handlePlay}><span>Play</span></button>
                         )}

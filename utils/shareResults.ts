@@ -73,7 +73,7 @@ export const generateShareText = (
     const impossibleGrid = generateGrid(impossibleResult, impossibleSolution);
 
     // Add spacing between grids (blank line)
-    return `Linkle Daily #${calculatedDayNumber} - ${dateStr}\nEasy ${easyStatus} Hard ${hardStatus} Impossible ${impossibleStatus}\n\n${easyGrid}\n\n${hardGrid}\n\n${impossibleGrid}`;
+    return `Linkle.fun Daily #${calculatedDayNumber} - ${dateStr}\nEasy ${easyStatus} Hard ${hardStatus} Impossible ${impossibleStatus}\n\n${easyGrid}\n\n${hardGrid}\n\n${impossibleGrid}`;
 };
 
 export const copyToClipboard = async (text: string): Promise<boolean> => {

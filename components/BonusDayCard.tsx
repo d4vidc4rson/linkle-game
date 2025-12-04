@@ -49,7 +49,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
             row.length === 3 ? '🟥🟥🟥' : '🟥🟥🟥'
         ).join('\n');
         
-        return `Linkle Bonus Speed Round ⏱️ ${formattedTime}\n\n${gridEmoji}`;
+        return `Linkle.fun Bonus Speed Round ⏱️ ${formattedTime}\n\n${gridEmoji}`;
     };
 
     const handleShare = () => {

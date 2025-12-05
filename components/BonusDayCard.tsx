@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { DailyResult } from '../types';
 import { CloseIcon } from './Icons';
@@ -7,6 +7,16 @@ interface BonusDayCardProps {
     result: DailyResult;
     date: Date;
 }
+
+// Helper to get the correct bonus logo based on redesign mode and theme
+const getBonusLogoSrc = (): string => {
+    const isRedesign1 = document.body.classList.contains('redesign-1');
+    if (!isRedesign1) {
+        return '/bonus-speed-round-logo.svg';
+    }
+    const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+    return isDarkMode ? '/bonus-speed-round-logo-dark.svg' : '/bonus-speed-round-logo-light.svg';
+};
 
 // Tile center positions in SVG coordinates (viewBox: 332.25 x 333)
 const TILE_CENTERS = [
@@ -24,6 +34,25 @@ const TILE_CENTERS = [
 export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [logoSrc, setLogoSrc] = useState(getBonusLogoSrc);
+
+    // Update logo when theme changes
+    useEffect(() => {
+        const updateLogo = () => setLogoSrc(getBonusLogoSrc());
+        
+        // Observe changes to the body's data-theme attribute
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'data-theme' || mutation.attributeName === 'class') {
+                    updateLogo();
+                }
+            });
+        });
+        
+        observer.observe(document.body, { attributes: true });
+        
+        return () => observer.disconnect();
+    }, []);
 
     // Format date exactly like solved daycard
     const isToday = date.toDateString() === new Date().toDateString();
@@ -101,7 +130,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
                 <div className="bonus-row-2">
                     <div className="bonus-col-2a">
                         <img 
-                            src="/bonus-speed-round-logo.svg" 
+                            src={logoSrc} 
                             alt="Bonus Speed Round" 
                             className="bonus-logo"
                         />

@@ -22,6 +22,9 @@ export const SandboxPage: React.FC = () => {
                             <Link to="/sandbox/bonusspeedround" className="button" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
                                 <span>Bonus Speed Round</span>
                             </Link>
+                            <Link to="/sandbox/redesign1" className="button" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
+                                <span>Redesign 1</span>
+                            </Link>
                             {/* Future test versions will be added here */}
                         </div>
                         <Link to="/" style={{ marginTop: '1em', color: 'var(--primary-text)', textDecoration: 'underline', fontSize: '0.9em' }}>

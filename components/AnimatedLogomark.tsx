@@ -6,9 +6,12 @@ interface AnimatedLogomarkProps {
 }
 
 export const AnimatedLogomark: React.FC<AnimatedLogomarkProps> = ({ progress, className }) => {
-    const PURPLE = '#b3a7fe';
-    const GREEN = '#00bf63';
-    const BACKGROUND = '#343434';
+    // Check if we're in redesign-1 mode
+    const isRedesign1 = typeof document !== 'undefined' && document.body.classList.contains('redesign-1');
+    
+    const PURPLE = isRedesign1 ? '#b0a4fb' : '#b3a7fe';
+    const GREEN = isRedesign1 ? '#9eef80' : '#00bf63';
+    const BACKGROUND = isRedesign1 ? '#3b422e' : '#343434';
 
     const getFill = (index: number) => index < progress ? GREEN : PURPLE;
 

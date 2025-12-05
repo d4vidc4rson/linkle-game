@@ -49,9 +49,13 @@ const PuzzleGrid = ({ solved, triesUsed, maxTries, boardState, solution, isLarge
         ];
         
         const squareSize = 33.5; // Approximate size of each square
-        const greenColor = '#00bf63';
-        const whiteColor = '#FFFFFF';
-        const bgColor = '#343434';
+        
+        // Check if we're in redesign-1 mode
+        const isRedesign1 = typeof document !== 'undefined' && document.body.classList.contains('redesign-1');
+        
+        const greenColor = isRedesign1 ? '#9eef80' : '#00bf63';
+        const whiteColor = isRedesign1 ? '#f6e6d9' : '#FFFFFF';
+        const bgColor = isRedesign1 ? '#3b422e' : '#343434';
         const bgBorderRadius = 8.18; // Rounded corners for background (matches original SVG)
         const squareBorderRadius = 2.5; // Rounded corners for squares (matches original SVG)
         
@@ -174,6 +178,9 @@ export const DayCard: React.FC<DayCardProps> = ({
     const { dateLabel, mode, easy, hard, impossible, results, puzzleIndices } = day;
     
     if (mode === 'playable') {
+        // Check if we're in redesign-1 mode for playable card colors
+        const isRedesign1 = typeof document !== 'undefined' && document.body.classList.contains('redesign-1');
+        
         // "old puzzle play" version (logomark + PLAY button)
         return (
             <article className="day-card day-card-playable">
@@ -181,12 +188,35 @@ export const DayCard: React.FC<DayCardProps> = ({
                     {dateLabel}
                 </div>
                 <div className="day-card-large-grid-container">
-                    {/* Use the logomark SVG from the start screen */}
-                    <img 
-                        src="/linkle-logomark.svg" 
-                        alt="Linkle logomark" 
-                        className="day-card-logomark-img"
-                    />
+                    {isRedesign1 ? (
+                        // Inline SVG with redesign-1 colors
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 123 123"
+                            className="day-card-logomark-img"
+                            preserveAspectRatio="xMidYMid meet"
+                        >
+                            <rect x="0" y="0" width="123" height="123" rx="8.18" ry="8.18" fill="#3b422e" />
+                            {/* Row 1 */}
+                            <rect x="6" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            <rect x="44" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                            {/* Row 2 */}
+                            <rect x="6" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                            <rect x="83" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            {/* Row 3 */}
+                            <rect x="6" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            <rect x="83" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                            <rect x="44" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        </svg>
+                    ) : (
+                        <img 
+                            src="/linkle-logomark.svg" 
+                            alt="Linkle logomark" 
+                            className="day-card-logomark-img"
+                        />
+                    )}
                 </div>
                 <button className="day-card-play-button" onClick={onPlay}>
                     PLAY

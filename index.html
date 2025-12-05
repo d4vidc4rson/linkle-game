@@ -38,30 +38,30 @@
       --border-radius: 6px;
       --font-display: 'Antonio', sans-serif;
       --font-ui: 'Poppins', sans-serif;
-      --shadow-depth: 10px;
+      --shadow-depth: 6px;
     }
     
     body[data-theme='light'] {
-      --background-color: #D8C8FF;
-      --header-text: #2E2E2E;
-      --primary-text: #2E2E2E;
-      --tagline-text: #2E2E2E;
+      --background-color: #f6e6d9;
+      --header-text: #3b422e;
+      --primary-text: #3b422e;
+      --tagline-text: #3b422e;
       --subtle-text: #7a7392;
       --input-bg: #E9E2FF;
-      --input-border: #2E2E2E;
+      --input-border: #3b422e;
       --box-bg-normal: #FFFFFF;
-      --box-text-normal: #2E2E2E;
-      --box-bg-locked: #00bf63;
-      --box-text-locked: #2E2E2E;
-      --button-bg: #2962FF; /* Bright Blue */
-      --button-text: #FFFFFF;
-      --button-shadow: #0039CB; /* Dark Blue Shadow */
-      --tile-shadow-normal: #BDBDBD; /* Grey Shadow for White Tile */
-      --tile-shadow-locked: #008542; /* Dark Green Shadow */
-      --tries-dot-color: #2E2E2E;
+      --box-text-normal: #3b422e;
+      --box-bg-locked: #9eef80;
+      --box-text-locked: #3b422e;
+      --button-bg: #b0a4fb;
+      --button-text: #3b422e;
+      --button-shadow: #8981bd;
+      --tile-shadow-normal: #8981bd;
+      --tile-shadow-locked: #81c269;
+      --tries-dot-color: #b0a4fb;
       --gunmetal: #7a7392;
       --light-text-static: #f7f2ec;
-      --bar-border: rgba(46, 46, 46, 0.2);
+      --bar-border: rgba(59, 66, 46, 0.2);
       --bg-pattern-color: hsla(255, 60%, 95%, 1);
       --bg-dot-color: hsla(255, 28%, 15%, 0.15);
       /* Legacy shadows - keeping for compatibility or removing if unused */
@@ -75,24 +75,24 @@
     }
 
     body[data-theme='dark'] {
-      --background-color: #2E2E2E;
-      --header-text: #E9E2FF;
-      --primary-text: #E9E2FF;
-      --tagline-text: #E9E2FF;
+      --background-color: #3b422e;
+      --header-text: #f6e6d9;
+      --primary-text: #f6e6d9;
+      --tagline-text: #f6e6d9;
       --subtle-text: #7a7392;
       --input-bg: #7a7392;
-      --input-border: #E9E2FF;
+      --input-border: #f6e6d9;
       --box-bg-normal: #7a7392;
       --box-text-normal: #FFFFFF;
-      --box-bg-locked: #00bf63;
-      --box-text-locked: #2E2E2E;
-      --button-bg: #2962FF;
-      --button-text: #FFFFFF;
-      --button-shadow: #0039CB;
-      --tile-shadow-normal: #5a5372; /* Darker Purple-Grey for Tile */
-      --tile-shadow-locked: #008542;
-      --tries-dot-color: #E9E2FF;
-      --bar-border: rgba(233, 226, 255, 0.2);
+      --box-bg-locked: #9eef80;
+      --box-text-locked: #3b422e;
+      --button-bg: #b0a4fb;
+      --button-text: #3b422e;
+      --button-shadow: #8981bd;
+      --tile-shadow-normal: #8981bd;
+      --tile-shadow-locked: #81c269;
+      --tries-dot-color: #b0a4fb;
+      --bar-border: rgba(246, 230, 217, 0.2);
       --box-shadow-float-color: hsla(0, 0%, 0%, 0.2);
       --box-shadow-highlight-color: hsla(0, 0%, 100%, 0.1);
       --box-shadow-inset-color: hsla(0, 0%, 0%, 0.2);
@@ -105,10 +105,16 @@
       --difficulty-impossible-bg: #ff5757;
     }
 
-    /* Dark mode icon background colors */
+    /* Achievement and avatar icon colors - match background colors */
+    .achievement-icon svg path[fill="#b3a7fe"],
+    .avatar-button svg path[fill="#b3a7fe"] {
+      fill: #f6e6d9;
+    }
     body[data-theme='dark'] .achievement-icon svg path[fill="#b3a7fe"],
-    body[data-theme='dark'] .avatar-button svg path[fill="#b3a7fe"] {
-      fill: #7a7392;
+    body[data-theme='dark'] .achievement-icon svg path[fill="#7a7392"],
+    body[data-theme='dark'] .avatar-button svg path[fill="#b3a7fe"],
+    body[data-theme='dark'] .avatar-button svg path[fill="#7a7392"] {
+      fill: #3b422e;
     }
     
     /* Dark mode icon shadow colors */
@@ -398,15 +404,15 @@
     }
 
     body[data-theme='dark'] .start-screen-container .button.button-outline {
-        color: #E9E2FF;
+        color: #3b422e;
     }
     body[data-theme='dark'] .start-screen-container .button.button-outline::after {
         display: block;
-        background-color: #4A4A4A;
+        background-color: #f6e6d9;
         border-radius: 16px !important; /* Face radius - 16px */
     }
     body[data-theme='dark'] .start-screen-container .button.button-outline::before {
-        background-color: #222;
+        background-color: #949494;
     }
 
     .start-screen-container .button.button-signup {
@@ -1503,21 +1509,21 @@
 
     body[data-theme='dark'] .button-outline {
         background-color: transparent;
-        color: #E9E2FF;
+        color: #3b422e;
     }
 
     body[data-theme='dark'] .button-outline::after {
-        background-color: #4A4A4A; /* Dark gray face for dark mode */
+        background-color: #f6e6d9;
         border-radius: 16px !important; /* Face radius - 16px */
     }
 
     body[data-theme='dark'] .button-outline::before {
-        background-color: #222; /* Darker shadow for dark mode */
+        background-color: #949494;
     }
 
     body[data-theme='dark'] .start-screen-container .button.button-outline {
         background-color: transparent;
-        color: #E9E2FF;
+        color: #3b422e;
     }
 
 
@@ -1768,9 +1774,9 @@
       user-select: none;
     }
     
-    /* Darker purple background for achievement sheet in light mode (matches bonus day card) */
+    /* Achievement sheet background in light mode */
     body[data-theme='light'] .achievement-sheet {
-      background: #b2a7fe;
+      background: #f6e6d9;
     }
     
     .achievement-sheet:not(.is-dragging) {
@@ -3179,7 +3185,7 @@
     }
 
     body[data-theme='dark'] .day-card-summary {
-      background-color: #7A7A9A; /* Muted purple-gray (dusty/slate purple) for dark mode */
+      background-color: #3b422e;
     }
 
     .day-card-summary {
@@ -3206,7 +3212,7 @@
     }
 
     body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) {
-      background-color: #2E2E2E; /* Dark mode background color for solved sections */
+      background-color: #3b422e;
     }
 
     .day-card-section-failed {
@@ -3263,7 +3269,7 @@
     }
 
     body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-title {
-      color: #FFFFFF; /* White text for solved puzzles in dark mode */
+      color: #f6e6d9;
     }
 
     .day-card-section-words {
@@ -3282,7 +3288,7 @@
     }
 
     body[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-words {
-      color: #FFFFFF; /* White text for solved puzzles in dark mode */
+      color: #f6e6d9;
     }
 
     .day-card-share-container {
@@ -3391,8 +3397,9 @@
     }
 
     body[data-theme='dark'] .day-card-playable {
-      background-color: #252525; /* Slightly darker than dark mode background (#2E2E2E) */
-      border-color: #E9E2FF; /* White stroke outline in dark mode */
+      background-color: #3b422e;
+      border: none;
+      box-shadow: inset 0 0 0 2px #f6e6d9;
     }
 
     .day-card-header-playable {
@@ -3405,7 +3412,7 @@
     }
 
     body[data-theme='dark'] .day-card-header-playable {
-      color: #E9E2FF; /* White text in dark mode */
+      color: #f6e6d9;
     }
 
     .day-card-large-grid-container {
@@ -4018,369 +4025,310 @@
     }
 
     /* ============================================
-       REDESIGN 1 - Sandbox Color Overrides
+       MAIN DESIGN STYLES
        ============================================ */
     
-    /* Background colors */
-    body.redesign-1 {
-      --background-color: #f6e6d9;
-    }
-    body.redesign-1[data-theme='dark'] {
-      --background-color: #3b422e;
-    }
-
-    /* Text colors - Light mode: charcoal (#2E2E2E) → dark green (#3b422e) */
-    body.redesign-1 {
-      --header-text: #3b422e;
-      --primary-text: #3b422e;
-      --tagline-text: #3b422e;
-      --box-text-normal: #3b422e;
-    }
-
-    /* Text colors - Dark mode: light purple (#E9E2FF) → warm beige (#f6e6d9) */
-    body.redesign-1[data-theme='dark'] {
-      --header-text: #f6e6d9;
-      --primary-text: #f6e6d9;
-      --tagline-text: #f6e6d9;
-    }
-
-    /* Default button colors - blue → purple (for modals, etc.) */
-    body.redesign-1 {
-      --button-bg: #b0a4fb;
-      --button-shadow: #8981bd;
-      --button-text: #3b422e;
-      --shadow-depth: 6px;
-    }
-    body.redesign-1[data-theme='dark'] {
-      --button-bg: #b0a4fb;
-      --button-shadow: #8981bd;
-      --button-text: #3b422e;
-      --shadow-depth: 6px;
-    }
-
-    /* Reduce modal button face border radius (not start screen buttons) */
-    body.redesign-1 .modal-content .button::after,
-    body.redesign-1 .modal-content .button-primary::after {
+    /* Modal button border radius */
+    .modal-content .button::after,
+    .modal-content .button-primary::after {
       border-radius: 8px !important;
     }
 
-    /* Playable tiles - face and shadow */
-    body.redesign-1 .word-card:not(.locked):not(.revealed)::after {
+    /* Playable tiles - face and shadow with outline */
+    .word-card:not(.locked):not(.revealed)::after {
       background-color: #b0a4fb;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .word-card:not(.locked):not(.revealed)::before {
+    .word-card:not(.locked):not(.revealed)::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
     }
     /* Playable tile text color in dark mode */
-    body.redesign-1[data-theme='dark'] .word-card:not(.locked):not(.revealed) {
+    [data-theme='dark'] .word-card:not(.locked):not(.revealed) {
       color: #3b422e;
     }
 
     /* Locked/correctly placed tiles and revealed solution tiles - face and shadow */
-    body.redesign-1 .word-card.locked::after,
-    body.redesign-1 .word-card.revealed::after {
+    .word-card.locked::after,
+    .word-card.revealed::after {
       background-color: #9eef80;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .word-card.locked::before,
-    body.redesign-1 .word-card.revealed::before {
+    .word-card.locked::before,
+    .word-card.revealed::before {
       background-color: #81c269;
       outline: 2px solid #3b422e;
     }
 
     /* SUBMIT button - face, shadow, and outline */
-    body.redesign-1 .button.button-submit::after {
+    .button.button-submit::after {
       background-color: #b0a4fb;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button.button-submit::before {
+    .button.button-submit::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
     }
+    .button.button-submit {
+      color: #3b422e;
+    }
 
     /* All buttons get outline stroke */
-    body.redesign-1 .button::after {
+    .button::after {
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button::before {
+    .button::before {
       outline: 2px solid #3b422e;
     }
 
     /* Start screen PLAY button - face and shadow (green) */
-    body.redesign-1 .start-screen-container .button:not(.button-outline):not(.button-signup)::after {
+    .start-screen-container .button:not(.button-outline):not(.button-signup)::after {
       background-color: #9eef80;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .start-screen-container .button:not(.button-outline):not(.button-signup)::before {
+    .start-screen-container .button:not(.button-outline):not(.button-signup)::before {
       background-color: #81c269;
       outline: 2px solid #3b422e;
     }
+    .start-screen-container .button:not(.button-outline):not(.button-signup) {
+      color: #3b422e;
+    }
 
     /* Start screen LOGIN button - face and shadow */
-    body.redesign-1 .start-screen-container .button.button-outline::after {
+    .start-screen-container .button.button-outline::after {
       background-color: #f6e6d9;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .start-screen-container .button.button-outline::before {
+    .start-screen-container .button.button-outline::before {
       background-color: #949494;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .start-screen-container .button.button-outline {
+    [data-theme='dark'] .start-screen-container .button.button-outline {
       color: #3b422e;
     }
 
     /* Start screen SIGN-UP button - face and shadow (purple) */
-    body.redesign-1 .start-screen-container .button.button-signup::after {
+    .start-screen-container .button.button-signup::after {
       background-color: #b0a4fb;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .start-screen-container .button.button-signup::before {
+    .start-screen-container .button.button-signup::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
     }
 
     /* MiniGrid logomark */
-    body.redesign-1 .mini-grid-wrapper {
+    .mini-grid-wrapper {
       background-color: #3b422e;
     }
-    body.redesign-1 .mini-grid-tile {
+    .mini-grid-tile {
       background-color: #9eef80;
     }
-    body.redesign-1 .mini-grid-tile.highlight {
+    .mini-grid-tile.highlight {
       background-color: #f6e6d9;
     }
 
     /* Tries circles (dots) */
-    body.redesign-1 .dot {
+    .dot {
       border-color: #b0a4fb;
     }
-    body.redesign-1 .dot.active {
+    .dot.active {
       background-color: #b0a4fb;
-    }
-
-    /* Submit button text color */
-    body.redesign-1 .button.button-submit {
-      color: #3b422e;
-    }
-
-    /* Start screen PLAY button text color */
-    body.redesign-1 .start-screen-container .button:not(.button-outline):not(.button-signup) {
-      color: #3b422e;
     }
 
     /* NEXT PUZZLE and SHOW STATS buttons (button-secondary) */
-    body.redesign-1 .button-secondary::after {
+    .button-secondary::after {
       background-color: #b0a4fb;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button-secondary::before {
+    .button-secondary::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button-secondary {
+    .button-secondary {
       color: #3b422e;
     }
 
-    /* SHOW LINKLE button (button-outline) - light mode */
-    body.redesign-1 .button-outline::after {
+    /* SHOW LINKLE button (button-outline) */
+    .button-outline::after {
       background-color: #f6e6d9;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button-outline::before {
+    .button-outline::before {
       background-color: #949494;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .button-outline {
+    .button-outline {
       color: #3b422e;
     }
 
     /* Theme toggle colors */
-    body.redesign-1 .theme-toggle svg rect[fill="#E9E2FF"] {
+    .theme-toggle svg rect[fill="#E9E2FF"] {
       fill: #f6e6d9;
     }
-    body.redesign-1 .theme-toggle svg rect[fill="#2E2E2E"] {
+    .theme-toggle svg rect[fill="#2E2E2E"] {
       fill: #3b422e;
     }
 
-    /* Achievement sheet background (light mode) */
-    body.redesign-1 .achievement-sheet {
+    /* Achievement sheet background */
+    .achievement-sheet {
       background: #f6e6d9;
     }
-    body.redesign-1[data-theme='dark'] .achievement-sheet {
+    [data-theme='dark'] .achievement-sheet {
       background: #3b422e;
     }
 
-    /* Achievement icon purple color - change to background colors */
-    body.redesign-1 .achievement-icon svg path[fill="#b3a7fe"] {
-      fill: #f6e6d9;
-    }
-    body.redesign-1[data-theme='dark'] .achievement-icon svg path[fill="#b3a7fe"],
-    body.redesign-1[data-theme='dark'] .achievement-icon svg path[fill="#7a7392"] {
-      fill: #3b422e;
-    }
-
-    /* Avatar button purple color - change to background colors */
-    body.redesign-1 .avatar-button svg path[fill="#b3a7fe"] {
-      fill: #f6e6d9;
-    }
-    body.redesign-1[data-theme='dark'] .avatar-button svg path[fill="#b3a7fe"],
-    body.redesign-1[data-theme='dark'] .avatar-button svg path[fill="#7a7392"] {
-      fill: #3b422e;
-    }
-
-    /* Bonus splash PLAY button - add outline stroke */
-    body.redesign-1 .bonus-splash-play-button::after {
+    /* Bonus splash PLAY button - outline stroke */
+    .bonus-splash-play-button::after {
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .bonus-splash-play-button::before {
+    .bonus-splash-play-button::before {
       outline: 2px solid #3b422e;
     }
 
-    /* Bonus speed round tiles - keep red colors, add outline stroke */
-    body.redesign-1 .bonus-mode .word-card:not(.locked):not(.revealed)::after {
+    /* Bonus speed round tiles - red colors with outline stroke */
+    .bonus-mode .word-card:not(.locked):not(.revealed)::after {
       background-color: #ff5757;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .bonus-mode .word-card:not(.locked):not(.revealed)::before {
+    .bonus-mode .word-card:not(.locked):not(.revealed)::before {
       background-color: #cc4646;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .ghost-tile.word-card.bonus-mode::after {
+    .ghost-tile.word-card.bonus-mode::after {
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .ghost-tile.word-card.bonus-mode::before {
+    .ghost-tile.word-card.bonus-mode::before {
       outline: 2px solid #3b422e;
     }
 
-    /* Show Linkle modal word highlight - use new green */
-    body.redesign-1 .logic-narrative b {
+    /* Show Linkle modal word highlight */
+    .logic-narrative b {
       background-color: #9eef80;
     }
 
     /* ============================================
-       ALL DONE / STATS SCREEN OVERRIDES
+       ALL DONE / STATS SCREEN STYLES
        ============================================ */
 
-    /* Day card background with contrasting stroke (using box-shadow to avoid clipping) */
-    body.redesign-1 .day-card {
+    /* Day card background with contrasting stroke */
+    .day-card {
       background-color: #f6e6d9;
       box-shadow: inset 0 0 0 2px #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card {
+    [data-theme='dark'] .day-card {
       background-color: #3b422e;
       box-shadow: inset 0 0 0 2px #f6e6d9;
     }
 
     /* Day card header text */
-    body.redesign-1 .day-card-header-summary {
+    .day-card-header-summary {
       color: #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card-header-summary {
+    [data-theme='dark'] .day-card-header-summary {
       color: #f6e6d9;
     }
 
     /* Day card section labels and text */
-    body.redesign-1 .day-card-section-label {
+    .day-card-section-label {
       color: #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card-section-label {
+    [data-theme='dark'] .day-card-section-label {
       color: #f6e6d9;
     }
 
-    /* Day card section (solved puzzles) - background matches mode, no stroke */
-    body.redesign-1 .day-card-section:not(.day-card-section-failed) {
+    /* Day card section (solved puzzles) - background matches mode */
+    .day-card-section:not(.day-card-section-failed) {
       background-color: #f6e6d9;
     }
-    body.redesign-1[data-theme='dark'] .day-card-section:not(.day-card-section-failed) {
+    [data-theme='dark'] .day-card-section:not(.day-card-section-failed) {
       background-color: #3b422e;
     }
 
     /* Day card section text colors */
-    body.redesign-1 .day-card-section:not(.day-card-section-failed) .day-card-section-label,
-    body.redesign-1 .day-card-section:not(.day-card-section-failed) .day-card-section-header,
-    body.redesign-1 .day-card-section:not(.day-card-section-failed) .day-card-section-title,
-    body.redesign-1 .day-card-section:not(.day-card-section-failed) .day-card-word-group {
+    .day-card-section:not(.day-card-section-failed) .day-card-section-label,
+    .day-card-section:not(.day-card-section-failed) .day-card-section-header,
+    .day-card-section:not(.day-card-section-failed) .day-card-section-title,
+    .day-card-section:not(.day-card-section-failed) .day-card-word-group {
       color: #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-label,
-    body.redesign-1[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-header,
-    body.redesign-1[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-title,
-    body.redesign-1[data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-word-group {
+    [data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-label,
+    [data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-header,
+    [data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-section-title,
+    [data-theme='dark'] .day-card-section:not(.day-card-section-failed) .day-card-word-group {
       color: #f6e6d9;
     }
 
-    /* Day card playable background with contrasting stroke (remove base border, use box-shadow) */
-    body.redesign-1 .day-card-playable {
+    /* Day card playable background with contrasting stroke */
+    .day-card-playable {
       background-color: #f6e6d9;
       border: none;
       box-shadow: inset 0 0 0 2px #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card-playable {
+    [data-theme='dark'] .day-card-playable {
       background-color: #3b422e;
       border: none;
       box-shadow: inset 0 0 0 2px #f6e6d9;
     }
 
     /* Playable card header text */
-    body.redesign-1 .day-card-header-playable {
+    .day-card-header-playable {
       color: #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .day-card-header-playable {
+    [data-theme='dark'] .day-card-header-playable {
       color: #f6e6d9;
     }
 
     /* Share button - green face and shadow with outline */
-    body.redesign-1 .day-card-share-button::after {
+    .day-card-share-button::after {
       background-color: #9eef80;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .day-card-share-button::before {
+    .day-card-share-button::before {
       background-color: #81c269;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .day-card-share-button {
+    .day-card-share-button {
       color: #3b422e;
     }
 
     /* Play button on playable cards - green face and shadow with outline */
-    body.redesign-1 .day-card-play-button::after {
+    .day-card-play-button::after {
       background-color: #9eef80;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .day-card-play-button::before {
+    .day-card-play-button::before {
       background-color: #81c269;
       outline: 2px solid #3b422e;
     }
-    body.redesign-1 .day-card-play-button {
+    .day-card-play-button {
       color: #3b422e;
     }
 
-    /* Grid squares (correct positions) - new green */
-    body.redesign-1 .day-card-square-correct,
-    body.redesign-1 .grid-square-solved {
+    /* Grid squares (correct positions) */
+    .day-card-square-correct,
+    .grid-square-solved {
       background-color: #9eef80;
     }
 
-    /* Grid squares (incorrect positions) - light mode background instead of white */
-    body.redesign-1 .day-card-square-incorrect,
-    body.redesign-1 .grid-square-unsolved {
+    /* Grid squares (incorrect positions) */
+    .day-card-square-incorrect,
+    .grid-square-unsolved {
       background-color: #f6e6d9;
     }
 
     /* SVG grid squares in day cards */
-    body.redesign-1 .day-card-solved-grid-svg rect[fill="#00bf63"] {
+    .day-card-solved-grid-svg rect[fill="#00bf63"] {
       fill: #9eef80;
     }
 
     /* Bonus time box - background and stroke */
-    body.redesign-1 .bonus-time-box {
+    .bonus-time-box {
       background-color: #f6e6d9;
       border: none;
       box-shadow: inset 0 0 0 2px #3b422e;
     }
-    body.redesign-1[data-theme='dark'] .bonus-time-box {
+    [data-theme='dark'] .bonus-time-box {
       background-color: #3b422e;
       border: none;
       box-shadow: inset 0 0 0 2px #f6e6d9;

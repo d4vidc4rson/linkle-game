@@ -13,7 +13,6 @@ import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag }
 import { GameBoard } from './components/GameBoard';
 import { SandboxPage } from './components/SandboxPage';
 import { BonusSpeedRoundMode } from './components/BonusSpeedRoundMode';
-import { Redesign1Mode } from './components/Redesign1Mode';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from './constants';
 
 const App = () => {
@@ -326,7 +325,6 @@ const Root = () => {
                 <Route path="/sandbox" element={<SandboxPage />} />
                 <Route path="/sandbox/infinite" element={<RegularMode />} />
                 <Route path="/sandbox/bonusspeedround" element={<BonusSpeedRoundMode />} />
-                <Route path="/sandbox/redesign1" element={<Redesign1Mode />} />
             </Routes>
             <Analytics />
         </BrowserRouter>

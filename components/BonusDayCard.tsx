@@ -8,12 +8,8 @@ interface BonusDayCardProps {
     date: Date;
 }
 
-// Helper to get the correct bonus logo based on redesign mode and theme
+// Helper to get the correct bonus logo based on theme
 const getBonusLogoSrc = (): string => {
-    const isRedesign1 = document.body.classList.contains('redesign-1');
-    if (!isRedesign1) {
-        return '/bonus-speed-round-logo.svg';
-    }
     const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
     return isDarkMode ? '/bonus-speed-round-logo-dark.svg' : '/bonus-speed-round-logo-light.svg';
 };

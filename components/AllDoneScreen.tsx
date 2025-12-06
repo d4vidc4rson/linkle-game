@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import type { PlayerData, DailyResult, Theme, DaySummary } from '../types';
-import { formatDateKey, getPuzzlesForDateFromSchedule } from '../dailySchedule';
+import { formatDateKey, getPuzzlesForDateFromSchedule, SCHEDULE_EPOCH, calculatePuzzleIndicesForDate } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { DayCarousel } from './DayCarousel';
 import { ShareResults } from './ShareResults';
@@ -189,28 +189,36 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
         const viewDate = new Date(date);
         viewDate.setHours(0, 0, 0, 0);
         
-        // Generate dates in chronological order (oldest to newest)
-        // Start from 14 days before the viewed date, up to today
-        const startDate = new Date(viewDate);
-        startDate.setDate(startDate.getDate() - 14);
-        startDate.setHours(0, 0, 0, 0);
+        // HARDCODED epoch date - November 9, 2025 - the first puzzle day
+        const epochDate = new Date(2025, 10, 9); // Month is 0-indexed, so 10 = November
+        epochDate.setHours(0, 0, 0, 0);
         
         const dates: Date[] = [];
-        const currentDate = new Date(startDate);
-        while (currentDate <= actualToday) {
+        const currentDate = new Date(epochDate);
+        
+        // Safety limit: max 1000 days to prevent infinite loops
+        const MAX_DAYS = 1000;
+        let dayCount = 0;
+        
+        while (currentDate <= actualToday && dayCount < MAX_DAYS) {
             dates.push(new Date(currentDate));
             currentDate.setDate(currentDate.getDate() + 1);
+            dayCount++;
         }
         
         // Reverse to show newest (today) first, oldest last
-        const reversedDates = dates.reverse();
+        const reversedDates = [...dates].reverse(); // Use spread to avoid mutating original
         
         const summaries: DaySummary[] = [];
         
         reversedDates.forEach((d) => {
-            // Only include dates that have puzzles in the schedule
-            const dayPuzzleIndices = getPuzzlesForDateFromSchedule(schedule, d);
-            if (!dayPuzzleIndices) return;
+            // Skip any dates before the epoch (November 9, 2025) - safety guard
+            const epochDate = new Date(2025, 10, 9); // Hardcoded as backup for timezone/module issues
+            epochDate.setHours(0, 0, 0, 0);
+            if (d < epochDate) return;
+            
+            // Get puzzle indices - first try schedule, then fall back to dynamic calculation
+            const dayPuzzleIndices = getPuzzlesForDateFromSchedule(schedule, d) || calculatePuzzleIndicesForDate(d);
 
             const dateKey = formatDateKey(d);
             // Compare against actual today, not the viewed date
@@ -415,7 +423,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                     <ShareResults
                         date={shareDate}
                         dailyResults={playerData.dailyResults}
-                        puzzleIndices={getPuzzlesForDateFromSchedule(schedule, shareDate)}
+                        puzzleIndices={getPuzzlesForDateFromSchedule(schedule, shareDate) || calculatePuzzleIndicesForDate(shareDate)}
                         schedule={schedule}
                         onClose={() => setShowShareModal(false)}
                     />

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useCallback } from 'react';
 import type { DailySchedule } from '../types';
-import { DEFAULT_DAILY_SCHEDULE, generateDailySchedule, formatDateKey, getPuzzlesForDateFromSchedule } from '../dailySchedule';
+import { DEFAULT_DAILY_SCHEDULE, generateDailySchedule, formatDateKey, getPuzzlesForDateFromSchedule, calculatePuzzleIndicesForDate } from '../dailySchedule';
 
 // Firebase services from window
 declare const window: any;
@@ -48,7 +48,14 @@ export const useDailySchedule = () => {
     }, []);
 
     const getPuzzlesForDate = useCallback((date: Date) => {
-        return getPuzzlesForDateFromSchedule(schedule, date);
+        // First try to get from Firebase schedule
+        const scheduledPuzzles = getPuzzlesForDateFromSchedule(schedule, date);
+        if (scheduledPuzzles) {
+            return scheduledPuzzles;
+        }
+        // Fallback: calculate dynamically using modulo cycling
+        // This ensures the game continues indefinitely without manual schedule updates
+        return calculatePuzzleIndicesForDate(date);
     }, [schedule]);
 
     useEffect(() => {

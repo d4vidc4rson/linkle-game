@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { useAnalytics } from '../hooks/useAnalytics';
 import { useDailySchedule } from '../hooks/useDailySchedule';
 import { useDailyGameLogic, type DailyPuzzleDifficulty } from '../hooks/useDailyGameLogic';
 import { useBodyClasses } from '../hooks/useBodyClasses';
@@ -103,6 +104,14 @@ export const BonusSpeedRoundMode = () => {
         saveGameState,
     } = useAuth();
 
+    // Analytics tracking
+    const {
+        trackPuzzleStarted,
+        trackPuzzleCompleted,
+        trackSignupPromptShown,
+        trackSignupCompleted,
+    } = useAnalytics(user);
+
     // Load existing results for today
     const dateKey = formatDateKey(targetDate);
     const existingResults = playerData.dailyResults?.[dateKey] || {};
@@ -125,6 +134,9 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handlePuzzleComplete = (result: DailyResult, puzzleType: DailyPuzzleDifficulty) => {
+        // Track puzzle completion for analytics
+        trackPuzzleCompleted(puzzleType, result.solved);
+        
         setPuzzleResults(prev => ({
             ...prev,
             [puzzleType]: result,
@@ -147,6 +159,17 @@ export const BonusSpeedRoundMode = () => {
     const handleAllPuzzlesComplete = () => {
         setView('allDone');
     };
+
+    // Track puzzle started when entering playing view
+    const prevViewRef = useRef<DailyModeView>('start');
+    useEffect(() => {
+        if (view === 'playing' && prevViewRef.current !== 'playing') {
+            // Track that a puzzle was started
+            const difficulty = isBonusRound ? 'bonus' : currentPuzzleType;
+            trackPuzzleStarted(difficulty);
+        }
+        prevViewRef.current = view;
+    }, [view, currentPuzzleType, isBonusRound, trackPuzzleStarted]);
 
     const {
         gameState,
@@ -231,6 +254,8 @@ export const BonusSpeedRoundMode = () => {
         // IMPORTANT: Wait for dataReady before making routing decisions
         // This ensures Firebase data has been fetched and merged
         if (!prevUserRef.current && user && dataReady) {
+            // Track signup completion for analytics
+            trackSignupCompleted();
             // Always go to start screen on login - it will show the right button
             // (PLAY if not played, VIEW STATS if already played)
             setView('start');
@@ -240,7 +265,7 @@ export const BonusSpeedRoundMode = () => {
         if (dataReady || !user) {
             prevUserRef.current = user;
         }
-    }, [user, dataReady, playerData.dailyResults, targetDate, view]);
+    }, [user, dataReady, playerData.dailyResults, targetDate, view, trackSignupCompleted]);
 
     // Note: We no longer auto-redirect to allDone when puzzles are solved.
     // Instead, the start screen shows "VIEW STATS" button for users who have already played,
@@ -258,6 +283,9 @@ export const BonusSpeedRoundMode = () => {
             // Capture current timeRemaining value
             const currentTimeRemaining = timeRemaining;
             const isCorrect = JSON.stringify(bonusBoardState) === JSON.stringify(bonusPuzzle.solution);
+            
+            // Track bonus puzzle completion for analytics
+            trackPuzzleCompleted('bonus', isCorrect);
             // Calculate time used: timer is 60 seconds, so timeUsed = 60 - timeRemaining
             // Or use actual elapsed time if bonusStartTime is available (more accurate)
             const timeUsed = bonusStartTime 
@@ -271,6 +299,7 @@ export const BonusSpeedRoundMode = () => {
             const updatedPlayerData = {
                 ...playerData,
                 totalScore: playerData.totalScore + 1000,
+                lastPlayedDate: new Date().toISOString(),
             };
             
             // Save bonus result
@@ -302,6 +331,7 @@ export const BonusSpeedRoundMode = () => {
             const updatedPlayerData = {
                 ...playerData,
                 currentStreak: 0,
+                lastPlayedDate: new Date().toISOString(),
             };
             
             // Save bonus result
@@ -340,7 +370,7 @@ export const BonusSpeedRoundMode = () => {
             console.error('Error in handleBonusSubmit:', error);
             setErrorMessage('An error occurred while submitting the bonus puzzle.');
         }
-    }, [bonusPuzzle, bonusBoardState, timeRemaining, bonusStartTime, targetDate, playerData, setPlayerData, saveGameState, setGameState, setPuzzleResults, setBonusSolvedStatus, setBonusWinMessage, setErrorMessage]);
+    }, [bonusPuzzle, bonusBoardState, timeRemaining, bonusStartTime, targetDate, playerData, setPlayerData, saveGameState, setGameState, setPuzzleResults, setBonusSolvedStatus, setBonusWinMessage, setErrorMessage, trackPuzzleCompleted]);
 
     // Timer logic for bonus round - updates every 100ms for smooth overlay animation
     useEffect(() => {
@@ -520,6 +550,8 @@ export const BonusSpeedRoundMode = () => {
     const handleShowAuth = (mode?: AuthMode) => {
         setAuthModalMode(mode || 'signup');
         setShowAuthModal(true);
+        // Track signup prompt shown for analytics
+        trackSignupPromptShown();
     };
 
     const handleIntroContinue = () => {

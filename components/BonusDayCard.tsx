@@ -6,6 +6,8 @@ import { CloseIcon } from './Icons';
 interface BonusDayCardProps {
     result: DailyResult;
     date: Date;
+    onShareClicked?: () => void;
+    onShareCopied?: () => void;
 }
 
 // Helper to get the correct bonus logo based on theme
@@ -27,7 +29,7 @@ const TILE_CENTERS = [
     { x: 274, y: 273 }, // Row 3, Col 3
 ];
 
-export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
+export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date, onShareClicked, onShareCopied }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [copied, setCopied] = useState(false);
     const [logoSrc, setLogoSrc] = useState(getBonusLogoSrc);
@@ -79,6 +81,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
 
     const handleShare = () => {
         setShowShareModal(true);
+        onShareClicked?.();
     };
 
     const handleCopy = async () => {
@@ -87,6 +90,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
             try {
                 await navigator.clipboard.writeText(shareText);
                 setCopied(true);
+                onShareCopied?.();
                 setTimeout(() => {
                     setCopied(false);
                     setShowShareModal(false);
@@ -103,6 +107,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date }) => {
             try {
                 document.execCommand('copy');
                 setCopied(true);
+                onShareCopied?.();
                 setTimeout(() => {
                     setCopied(false);
                     setShowShareModal(false);

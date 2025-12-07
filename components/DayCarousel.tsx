@@ -10,6 +10,8 @@ interface DayCarouselProps {
     initialIndex?: number;
     onShare?: (date: Date) => void;
     onPlay?: (date: Date) => void;
+    onBonusShareClicked?: (date: Date) => void;
+    onBonusShareCopied?: (date: Date) => void;
 }
 
 export const DayCarousel: React.FC<DayCarouselProps> = ({
@@ -18,6 +20,8 @@ export const DayCarousel: React.FC<DayCarouselProps> = ({
     initialIndex = 0,
     onShare,
     onPlay,
+    onBonusShareClicked,
+    onBonusShareCopied,
 }) => {
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -102,6 +106,8 @@ export const DayCarousel: React.FC<DayCarouselProps> = ({
                                 <BonusDayCard 
                                     result={day.results?.bonus!}
                                     date={day.date}
+                                    onShareClicked={onBonusShareClicked ? () => onBonusShareClicked(day.date) : undefined}
+                                    onShareCopied={onBonusShareCopied ? () => onBonusShareCopied(day.date) : undefined}
                                 />
                             </div>
                         );

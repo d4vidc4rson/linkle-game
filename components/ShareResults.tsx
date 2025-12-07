@@ -11,6 +11,7 @@ interface ShareResultsProps {
     puzzleIndices: { easy: number; hard: number; impossible: number } | null;
     schedule: DailySchedule | null;
     onClose: () => void;
+    onCopy?: () => void;
 }
 
 export const ShareResults: React.FC<ShareResultsProps> = ({
@@ -19,6 +20,7 @@ export const ShareResults: React.FC<ShareResultsProps> = ({
     puzzleIndices,
     schedule,
     onClose,
+    onCopy,
 }) => {
     const [copied, setCopied] = useState(false);
     
@@ -35,6 +37,7 @@ export const ShareResults: React.FC<ShareResultsProps> = ({
         const success = await copyToClipboard(shareText);
         if (success) {
             setCopied(true);
+            onCopy?.(); // Track the copy action
             setTimeout(() => {
                 setCopied(false);
                 onClose();

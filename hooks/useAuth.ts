@@ -99,10 +99,12 @@ export const useAuth = () => {
                 
                 // "First Play Wins" logic: Merge per-puzzle, not per-day
                 // This preserves local progress while respecting first play for each puzzle
+                let existingCreatedAt: string | null = null;
                 try {
                     const cloudDoc = await getDoc(doc(db, "users", user.uid));
                     if (cloudDoc.exists()) {
-                        const cloudData = cloudDoc.data() as Partial<PlayerData>;
+                        const cloudData = cloudDoc.data() as any;
+                        existingCreatedAt = cloudData.createdAt || null;
                         const cloudDailyResults = cloudData.dailyResults || {};
                         const localDailyResults = dataToSave.dailyResults || {};
                         
@@ -132,6 +134,22 @@ export const useAuth = () => {
                     // If we can't fetch cloud data, proceed with save anyway
                     console.warn("Could not fetch cloud data for first-play-wins check:", fetchError);
                 }
+                
+                // Include user profile info for admin dashboard visibility
+                if (user.email) {
+                    (dataToSave as any).email = user.email;
+                }
+                if (user.displayName) {
+                    (dataToSave as any).displayName = user.displayName;
+                }
+                
+                // Add createdAt timestamp for new users (only if not already set)
+                if (!existingCreatedAt) {
+                    (dataToSave as any).createdAt = new Date().toISOString();
+                }
+                
+                // Always update the updatedAt timestamp
+                (dataToSave as any).updatedAt = new Date().toISOString();
                 
                 await setDoc(doc(db, "users", user.uid), dataToSave, { merge: true });
             } else {
@@ -245,10 +263,25 @@ export const useAuth = () => {
                         };
 
                     } else {
+                        // New user - create their document with profile info
                         finalPlayerData = localData;
                     }
 
                     await saveGameState(finalPlayerData);
+                    
+                    // Always update profile info on login using currentUser directly
+                    // This ensures email/displayName are saved even for existing users who logged in before this feature
+                    try {
+                        const profileUpdate: Record<string, any> = {};
+                        if (currentUser.email) profileUpdate.email = currentUser.email;
+                        if (currentUser.displayName) profileUpdate.displayName = currentUser.displayName;
+                        if (Object.keys(profileUpdate).length > 0) {
+                            await setDoc(doc(db, "users", currentUser.uid), profileUpdate, { merge: true });
+                        }
+                    } catch (profileError) {
+                        console.warn("Could not update user profile info:", profileError);
+                    }
+                    
                     localStorage.removeItem('linklePlayerData');
                     setPlayerData(finalPlayerData);
                 } else {

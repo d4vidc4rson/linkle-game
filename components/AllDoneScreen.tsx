@@ -8,6 +8,7 @@ import { ShareResults } from './ShareResults';
 import { SignUpSheet } from './SignUpSheet';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
 import { UserAvatar } from './GameUI';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 interface AllDoneScreenProps {
     date: Date;
@@ -113,6 +114,9 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
     const [shareDate, setShareDate] = useState<Date>(date);
     const [showSignUpSheet, setShowSignUpSheet] = useState(false);
     const hasShownSignUpSheetRef = useRef(false);
+    
+    // Analytics tracking
+    const { trackShareClicked, trackShareCopied } = useAnalytics(user);
     
     // Update shareDate when date prop changes (e.g., when viewing a different date's All Done screen)
     useEffect(() => {
@@ -362,12 +366,15 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                             onShare={(d) => {
                                 setShareDate(d);
                                 setShowShareModal(true);
+                                trackShareClicked(d);
                             }}
                             onPlay={(d) => {
                                 if (onPlayDate) {
                                     onPlayDate(d);
                                 }
                             }}
+                            onBonusShareClicked={(d) => trackShareClicked(d)}
+                            onBonusShareCopied={(d) => trackShareCopied(d)}
                         />
                     </section>
 
@@ -426,6 +433,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         puzzleIndices={getPuzzlesForDateFromSchedule(schedule, shareDate) || calculatePuzzleIndicesForDate(shareDate)}
                         schedule={schedule}
                         onClose={() => setShowShareModal(false)}
+                        onCopy={() => trackShareCopied(shareDate)}
                     />
                 )}
                 

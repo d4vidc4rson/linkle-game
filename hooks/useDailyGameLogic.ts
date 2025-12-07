@@ -473,6 +473,7 @@ export const useDailyGameLogic = (
             impossibleSolved: difficultyCounts.impossible,
             badges: newBadges,
             dailyResults,
+            lastPlayedDate: new Date().toISOString(),
         };
         
         // Set solved flag BEFORE updating playerData to prevent reload when useEffect runs
@@ -569,6 +570,7 @@ export const useDailyGameLogic = (
                 consecutivePerfects: 0,
                 badges: newBadges,
                 dailyResults,
+                lastPlayedDate: new Date().toISOString(),
             };
             
             // Set solved flag BEFORE updating playerData to prevent reload when useEffect runs

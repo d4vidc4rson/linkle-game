@@ -614,27 +614,75 @@ const PlayerDetailModal: React.FC<{
     );
 };
 
+// Helper function to calculate player stats from dailyResults
+const calculatePlayerStats = (playerData: PlayerData): { played: number; solved: number; winRate: number } => {
+    if (!playerData.dailyResults) return { played: 0, solved: 0, winRate: 0 };
+    
+    let played = 0;
+    let solved = 0;
+    
+    Object.values(playerData.dailyResults).forEach((dayResult: any) => {
+        if (dayResult?.easy) {
+            played++;
+            if (dayResult.easy.solved) solved++;
+        }
+        if (dayResult?.hard) {
+            played++;
+            if (dayResult.hard.solved) solved++;
+        }
+        if (dayResult?.impossible) {
+            played++;
+            if (dayResult.impossible.solved) solved++;
+        }
+    });
+    
+    const winRate = played > 0 ? Math.round((solved / played) * 100) : 0;
+    return { played, solved, winRate };
+};
+
+// Sort type for Players tab
+type PlayerSortBy = 'score' | 'currentStreak' | 'maxStreak' | 'solved' | 'played' | 'winRate' | 'lastPlayed' | 'name';
+
 // Players Tab Component
 const PlayersTab: React.FC<{ 
     players: PlayerWithMeta[];
     searchPlayers: (query: string) => PlayerWithMeta[];
 }> = ({ players, searchPlayers }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState<'score' | 'streak' | 'name'>('score');
+    const [sortBy, setSortBy] = useState<PlayerSortBy>('score');
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerWithMeta | null>(null);
 
     const filteredPlayers = useMemo(() => {
         let result = searchQuery ? searchPlayers(searchQuery) : players;
         
         return [...result].sort((a, b) => {
-            if (sortBy === 'score') {
-                return (b.playerData.totalScore || 0) - (a.playerData.totalScore || 0);
-            } else if (sortBy === 'streak') {
-                return (b.playerData.currentStreak || 0) - (a.playerData.currentStreak || 0);
-            } else {
-                const nameA = a.displayName || a.email || '';
-                const nameB = b.displayName || b.email || '';
-                return nameA.localeCompare(nameB);
+            const statsA = calculatePlayerStats(a.playerData);
+            const statsB = calculatePlayerStats(b.playerData);
+            const lastPlayedA = getLastPlayedFromResults(a.playerData);
+            const lastPlayedB = getLastPlayedFromResults(b.playerData);
+            
+            switch (sortBy) {
+                case 'score':
+                    return (b.playerData.totalScore || 0) - (a.playerData.totalScore || 0);
+                case 'currentStreak':
+                    return (b.playerData.currentStreak || 0) - (a.playerData.currentStreak || 0);
+                case 'maxStreak':
+                    return (b.playerData.maxStreak || 0) - (a.playerData.maxStreak || 0);
+                case 'solved':
+                    return (b.playerData.totalSolved || 0) - (a.playerData.totalSolved || 0);
+                case 'played':
+                    return statsB.played - statsA.played;
+                case 'winRate':
+                    return statsB.winRate - statsA.winRate;
+                case 'lastPlayed':
+                    const dateA = lastPlayedA ? new Date(lastPlayedA).getTime() : 0;
+                    const dateB = lastPlayedB ? new Date(lastPlayedB).getTime() : 0;
+                    return dateB - dateA;
+                case 'name':
+                default:
+                    const nameA = a.displayName || a.email || '';
+                    const nameB = b.displayName || b.email || '';
+                    return nameA.localeCompare(nameB);
             }
         });
     }, [players, searchQuery, sortBy, searchPlayers]);
@@ -651,11 +699,16 @@ const PlayersTab: React.FC<{
                 />
                 <select 
                     value={sortBy} 
-                    onChange={e => setSortBy(e.target.value as any)}
+                    onChange={e => setSortBy(e.target.value as PlayerSortBy)}
                     className="admin-sort-select"
                 >
                     <option value="score">Sort by Score</option>
-                    <option value="streak">Sort by Streak</option>
+                    <option value="played">Sort by Played</option>
+                    <option value="winRate">Sort by Win %</option>
+                    <option value="currentStreak">Sort by Current Streak</option>
+                    <option value="maxStreak">Sort by Max Streak</option>
+                    <option value="solved">Sort by Solved</option>
+                    <option value="lastPlayed">Sort by Last Played</option>
                     <option value="name">Sort by Name</option>
                 </select>
             </div>
@@ -664,30 +717,39 @@ const PlayersTab: React.FC<{
                 Showing {filteredPlayers.length} of {players.length} players
             </div>
 
-            <div className="admin-players-table">
+            <div className="admin-players-table admin-players-table-wide">
                 <div className="admin-players-header">
                     <div className="admin-col-name">Player</div>
                     <div className="admin-col-score">Score</div>
-                    <div className="admin-col-streak">Streak</div>
+                    <div className="admin-col-played">Played</div>
+                    <div className="admin-col-winrate">Win %</div>
+                    <div className="admin-col-streak">Current Streak</div>
+                    <div className="admin-col-maxstreak">Max Streak</div>
                     <div className="admin-col-solved">Solved</div>
                     <div className="admin-col-last">Last Played</div>
                 </div>
-                {filteredPlayers.map(player => (
-                    <div 
-                        key={player.uid} 
-                        className="admin-player-row"
-                        onClick={() => setSelectedPlayer(player)}
-                    >
-                        <div className="admin-col-name">
-                            <div className="admin-player-name">{player.displayName || 'Anonymous'}</div>
-                            <div className="admin-player-email-small">{player.email || player.uid.slice(0, 8)}</div>
+                {filteredPlayers.map(player => {
+                    const stats = calculatePlayerStats(player.playerData);
+                    return (
+                        <div 
+                            key={player.uid} 
+                            className="admin-player-row"
+                            onClick={() => setSelectedPlayer(player)}
+                        >
+                            <div className="admin-col-name">
+                                <div className="admin-player-name">{player.displayName || player.email || 'Anonymous'}</div>
+                                <div className="admin-player-email-small">{player.email || player.uid.slice(0, 8)}</div>
+                            </div>
+                            <div className="admin-col-score">{player.playerData.totalScore || 0}</div>
+                            <div className="admin-col-played">{stats.played}</div>
+                            <div className="admin-col-winrate">{stats.winRate}%</div>
+                            <div className="admin-col-streak">{player.playerData.currentStreak || 0}</div>
+                            <div className="admin-col-maxstreak">{player.playerData.maxStreak || 0}</div>
+                            <div className="admin-col-solved">{player.playerData.totalSolved || 0}</div>
+                            <div className="admin-col-last">{formatLastPlayed(getLastPlayedFromResults(player.playerData))}</div>
                         </div>
-                        <div className="admin-col-score">{player.playerData.totalScore || 0}</div>
-                        <div className="admin-col-streak">{player.playerData.currentStreak || 0}</div>
-                        <div className="admin-col-solved">{player.playerData.totalSolved || 0}</div>
-                        <div className="admin-col-last">{formatLastPlayed(getLastPlayedFromResults(player.playerData))}</div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {selectedPlayer && (
@@ -710,21 +772,18 @@ const LeaderboardTab: React.FC<{
         <div className="admin-leaderboard-tab">
             <h2>🏆 Top 25 Players</h2>
             
-            <div className="admin-leaderboard-table">
+            <div className="admin-leaderboard-table admin-leaderboard-table-wide">
                 <div className="admin-leaderboard-header">
                     <div className="admin-lb-col-rank">Rank</div>
                     <div className="admin-lb-col-name">Player</div>
                     <div className="admin-lb-col-score">Score</div>
-                    <div className="admin-lb-col-streak">Streak</div>
+                    <div className="admin-lb-col-played">Played</div>
+                    <div className="admin-lb-col-streak">Current Streak</div>
+                    <div className="admin-lb-col-maxstreak">Max Streak</div>
                     <div className="admin-lb-col-winrate">Win %</div>
                 </div>
                 {leaderboard.map((player, index) => {
-                    const totalPlayed = (player.playerData.easySolved || 0) + 
-                                       (player.playerData.hardSolved || 0) + 
-                                       (player.playerData.impossibleSolved || 0);
-                    const winRate = totalPlayed > 0 
-                        ? Math.round((player.playerData.totalSolved || 0) / totalPlayed * 100)
-                        : 0;
+                    const stats = calculatePlayerStats(player.playerData);
                     
                     return (
                         <div key={player.uid} className={`admin-leaderboard-row ${index < 3 ? 'admin-top-three' : ''}`}>
@@ -738,8 +797,10 @@ const LeaderboardTab: React.FC<{
                                 {player.displayName || player.email || 'Anonymous'}
                             </div>
                             <div className="admin-lb-col-score">{player.playerData.totalScore || 0}</div>
+                            <div className="admin-lb-col-played">{stats.played}</div>
                             <div className="admin-lb-col-streak">🔥 {player.playerData.currentStreak || 0}</div>
-                            <div className="admin-lb-col-winrate">{winRate}%</div>
+                            <div className="admin-lb-col-maxstreak">🏆 {player.playerData.maxStreak || 0}</div>
+                            <div className="admin-lb-col-winrate">{stats.winRate}%</div>
                         </div>
                     );
                 })}

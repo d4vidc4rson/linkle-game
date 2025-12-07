@@ -5034,12 +5034,12 @@
     
     .admin-players-header {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-      gap: 1rem;
+      grid-template-columns: 2fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 1.2fr;
+      gap: 0.5rem;
       padding: 1rem;
       background: rgba(0,0,0,0.05);
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.8rem;
     }
     
     .theme-dark .admin-players-header {
@@ -5048,12 +5048,13 @@
     
     .admin-player-row {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-      gap: 1rem;
+      grid-template-columns: 2fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 1.2fr;
+      gap: 0.5rem;
       padding: 1rem;
       border-top: 1px solid rgba(0,0,0,0.05);
       cursor: pointer;
       transition: background 0.2s;
+      font-size: 0.9rem;
     }
     
     .theme-dark .admin-player-row {
@@ -5263,10 +5264,11 @@
     
     .admin-leaderboard-header {
       display: grid;
-      grid-template-columns: 60px 2fr 1fr 1fr 1fr;
-      gap: 1rem;
+      grid-template-columns: 50px 2fr 1fr 0.8fr 1fr 1fr 0.8fr;
+      gap: 0.5rem;
       padding: 1rem;
       background: rgba(0,0,0,0.05);
+      font-size: 0.85rem;
       font-weight: 600;
       font-size: 0.875rem;
     }
@@ -5277,10 +5279,11 @@
     
     .admin-leaderboard-row {
       display: grid;
-      grid-template-columns: 60px 2fr 1fr 1fr 1fr;
-      gap: 1rem;
+      grid-template-columns: 50px 2fr 1fr 0.8fr 1fr 1fr 0.8fr;
+      gap: 0.5rem;
       padding: 1rem;
       border-top: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.9rem;
     }
     
     .theme-dark .admin-leaderboard-row {
@@ -5531,9 +5534,11 @@
       
       .admin-players-header,
       .admin-player-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
       }
       
+      .admin-col-played,
+      .admin-col-maxstreak,
       .admin-col-solved,
       .admin-col-last {
         display: none;
@@ -5541,10 +5546,11 @@
       
       .admin-leaderboard-header,
       .admin-leaderboard-row {
-        grid-template-columns: 50px 1fr 1fr;
+        grid-template-columns: 40px 1fr 1fr 1fr;
       }
       
-      .admin-lb-col-streak,
+      .admin-lb-col-played,
+      .admin-lb-col-maxstreak,
       .admin-lb-col-winrate {
         display: none;
       }
@@ -5557,6 +5563,35 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+      }
+    }
+
+    /* Medium screens - Admin Dashboard */
+    @media (min-width: 900px) {
+      .admin-players-header,
+      .admin-player-row {
+        grid-template-columns: 2fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr 1.2fr;
+      }
+      
+      .admin-col-played,
+      .admin-col-maxstreak,
+      .admin-col-last {
+        display: block;
+      }
+      
+      .admin-col-solved {
+        display: none;
+      }
+      
+      .admin-leaderboard-header,
+      .admin-leaderboard-row {
+        grid-template-columns: 50px 2fr 1fr 0.8fr 1fr 1fr 0.8fr;
+      }
+      
+      .admin-lb-col-played,
+      .admin-lb-col-maxstreak,
+      .admin-lb-col-winrate {
+        display: block;
       }
     }
 
@@ -5586,12 +5621,25 @@
       
       .admin-players-header,
       .admin-player-row {
-        grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 1.2fr;
+      }
+      
+      .admin-col-played,
+      .admin-col-maxstreak,
+      .admin-col-solved,
+      .admin-col-last {
+        display: block;
       }
       
       .admin-leaderboard-header,
       .admin-leaderboard-row {
-        grid-template-columns: 60px 2fr 1fr 1fr 1fr;
+        grid-template-columns: 60px 2fr 1fr 0.8fr 1fr 1fr 0.8fr;
+      }
+      
+      .admin-lb-col-played,
+      .admin-lb-col-maxstreak,
+      .admin-lb-col-winrate {
+        display: block;
       }
     }
 
@@ -5611,10 +5659,15 @@
       }
       
       .admin-players-header,
-      .admin-player-row,
+      .admin-player-row {
+        grid-template-columns: 2.5fr 1fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 1.5fr;
+        gap: 1rem;
+      }
+      
       .admin-leaderboard-header,
       .admin-leaderboard-row {
-        gap: 2rem;
+        grid-template-columns: 70px 2.5fr 1fr 0.8fr 1fr 1fr 0.8fr;
+        gap: 1rem;
         padding: 1.25rem 1.5rem;
       }
       

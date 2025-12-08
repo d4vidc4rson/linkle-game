@@ -4973,6 +4973,299 @@
       opacity: 0.6;
     }
 
+    /* Anonymous Tab */
+    .admin-anonymous-tab h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .admin-anonymous-tab h3 {
+      font-size: 1.1rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .theme-dark .admin-anonymous-tab h3 {
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    
+    .admin-engagement-breakdown {
+      padding: 1rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+    }
+    
+    .theme-dark .admin-engagement-breakdown {
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .admin-engagement-bar {
+      display: flex;
+      gap: 4px;
+      min-height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .admin-engagement-segment {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.75rem;
+      min-width: 80px;
+      border-radius: 8px;
+    }
+    
+    .admin-engagement-segment.one-puzzle {
+      background: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+      color: #7f1d1d;
+    }
+    
+    .admin-engagement-segment.two-to-five {
+      background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+      color: #78350f;
+    }
+    
+    .admin-engagement-segment.six-plus {
+      background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+      color: #14532d;
+    }
+    
+    .admin-engagement-count {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .admin-engagement-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    
+    .admin-conversion-comparison {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+    }
+    
+    .theme-dark .admin-conversion-comparison {
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .admin-comparison-card {
+      text-align: center;
+      padding: 1rem;
+      flex: 1;
+      max-width: 200px;
+    }
+    
+    .admin-comparison-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+    
+    .admin-comparison-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+    
+    .admin-comparison-sub {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-top: 0.25rem;
+    }
+    
+    .admin-comparison-vs {
+      font-size: 1rem;
+      font-weight: 700;
+      opacity: 0.4;
+    }
+    
+    .admin-anonymous-table {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .theme-dark .admin-anonymous-table {
+      border-color: rgba(255,255,255,0.1);
+    }
+    
+    .admin-anonymous-header {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 0.8fr 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(0,0,0,0.05);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .theme-dark .admin-anonymous-header {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .admin-anonymous-row {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 0.8fr 1fr 1fr;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.875rem;
+    }
+    
+    .theme-dark .admin-anonymous-row {
+      border-top-color: rgba(255,255,255,0.05);
+    }
+    
+    .admin-anonymous-row.power-user {
+      background: linear-gradient(90deg, rgba(251, 191, 36, 0.1) 0%, transparent 50%);
+    }
+    
+    .admin-anonymous-row.converted {
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+    }
+    
+    .admin-metric-card.highlight-green {
+      border: 2px solid rgba(34, 197, 94, 0.3);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, transparent 100%);
+    }
+    
+    .admin-metric-card.highlight-green .admin-metric-value {
+      color: #22c55e;
+    }
+    
+    .theme-dark .admin-metric-card.highlight-green .admin-metric-value {
+      color: #4ade80;
+    }
+    
+    .admin-anon-col-converted {
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    
+    .admin-anon-col-id {
+      font-family: monospace;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-anon-col-puzzles,
+    .admin-anon-col-winrate {
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .admin-anon-col-first,
+    .admin-anon-col-last {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+    
+    .admin-toggle-btn {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .theme-dark .admin-toggle-btn {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+    }
+    
+    .admin-toggle-btn:hover {
+      background: rgba(0,0,0,0.1);
+    }
+    
+    .theme-dark .admin-toggle-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .admin-no-data {
+      padding: 2rem;
+      text-align: center;
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    
+    .theme-dark .admin-no-data {
+      background: rgba(255,255,255,0.03);
+    }
+    
+    /* Mobile responsive for Anonymous tab */
+    @media (max-width: 600px) {
+      .admin-engagement-bar {
+        flex-direction: column;
+      }
+      
+      .admin-engagement-segment {
+        min-width: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+      }
+      
+      .admin-engagement-count {
+        font-size: 1.25rem;
+      }
+      
+      .admin-conversion-comparison {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .admin-comparison-vs {
+        display: none;
+      }
+      
+      .admin-comparison-card {
+        max-width: none;
+        width: 100%;
+        padding: 0.75rem;
+      }
+      
+      .admin-comparison-value {
+        font-size: 1.5rem;
+      }
+      
+      .admin-anonymous-header,
+      .admin-anonymous-row {
+        grid-template-columns: 1fr 0.6fr 0.6fr;
+      }
+      
+      .admin-anon-col-first,
+      .admin-anon-col-last,
+      .admin-anon-col-converted {
+        display: none;
+      }
+      
+      .admin-anonymous-header .admin-anon-col-first,
+      .admin-anonymous-header .admin-anon-col-last,
+      .admin-anonymous-header .admin-anon-col-converted {
+        display: none;
+      }
+    }
+
     /* Players Tab */
     .admin-players-controls {
       display: flex;

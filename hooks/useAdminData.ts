@@ -68,6 +68,53 @@ export interface ConversionMetrics {
     shareCopyRate: number; // % of share clicks that led to copy
 }
 
+// Anonymous visitor data from analytics events
+export interface AnonymousVisitor {
+    visitorId: string;
+    puzzlesPlayed: number;
+    puzzlesSolved: number;
+    winRate: number;
+    firstSeen: string;
+    lastSeen: string;
+    convertedToSignup: boolean;
+}
+
+export interface AnonymousMetrics {
+    // Aggregate stats for UNCONVERTED anonymous visitors
+    totalAnonymousVisitors: number;
+    totalAnonymousPuzzlesPlayed: number;
+    totalAnonymousPuzzlesSolved: number;
+    anonymousWinRate: number;
+    avgPuzzlesPerAnonymousVisitor: number;
+    
+    // Engagement breakdown (unconverted only)
+    visitorsWithOnePuzzle: number;
+    visitorsWith2to5Puzzles: number;
+    visitorsWith6PlusPuzzles: number;
+    
+    // Conversion comparison
+    avgPuzzlesBeforeSignup: number;
+    avgPuzzlesForNonConverters: number; // Avg for those who played 3+ but didn't sign up
+    
+    // Power users (engaged but unconverted)
+    powerUsers: AnonymousVisitor[]; // Visitors with 5+ puzzles who haven't signed up
+    
+    // All anonymous visitors for detailed view (unconverted only)
+    allAnonymousVisitors: AnonymousVisitor[];
+    
+    // ALL ANONYMOUS ACTIVITY (including those who later signed up)
+    allActivity: {
+        totalVisitors: number;           // All visitors who played while anonymous
+        totalPuzzlesPlayed: number;      // All puzzles played while anonymous
+        totalPuzzlesSolved: number;
+        winRate: number;
+        avgPuzzlesPerVisitor: number;
+        convertedCount: number;          // How many eventually signed up
+        conversionRate: number;          // % who signed up
+        visitors: AnonymousVisitor[];    // All visitors with anonymous activity
+    };
+}
+
 export interface DailyDataPoint {
     date: string;
     displayDate: string;
@@ -534,6 +581,144 @@ export const useAdminData = (user: any) => {
         return dates.map(date => dataByDate[date]);
     }, [players]);
 
+    // Calculate anonymous visitor metrics from analytics events
+    const calculateAnonymousMetrics = useCallback((): AnonymousMetrics => {
+        // Group events by visitorId
+        const visitorData: Record<string, {
+            visitorId: string;
+            puzzlesStarted: number;
+            puzzlesCompleted: number;
+            puzzlesSolved: number;
+            firstSeen: string;
+            lastSeen: string;
+            signedUp: boolean;
+        }> = {};
+        
+        // Get visitor IDs that eventually signed up
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Process all puzzle events (focus on anonymous activity)
+        analyticsEvents.forEach(event => {
+            const vid = event.visitorId;
+            if (!vid) return;
+            
+            if (!visitorData[vid]) {
+                visitorData[vid] = {
+                    visitorId: vid,
+                    puzzlesStarted: 0,
+                    puzzlesCompleted: 0,
+                    puzzlesSolved: 0,
+                    firstSeen: event.timestamp,
+                    lastSeen: event.timestamp,
+                    signedUp: signedUpVisitorIds.has(vid),
+                };
+            }
+            
+            const visitor = visitorData[vid];
+            
+            // Update timestamps
+            if (event.timestamp < visitor.firstSeen) visitor.firstSeen = event.timestamp;
+            if (event.timestamp > visitor.lastSeen) visitor.lastSeen = event.timestamp;
+            
+            // Count events (only when anonymous)
+            if (event.isAnonymous) {
+                if (event.event === 'puzzle_started') visitor.puzzlesStarted++;
+                if (event.event === 'puzzle_completed') {
+                    visitor.puzzlesCompleted++;
+                    if (event.solved) visitor.puzzlesSolved++;
+                }
+            }
+        });
+        
+        // Convert to array and filter to anonymous players only (those who played while anonymous)
+        const allVisitors = Object.values(visitorData).filter(v => v.puzzlesCompleted > 0);
+        const anonymousVisitors = allVisitors.filter(v => !v.signedUp);
+        
+        // Build AnonymousVisitor objects
+        const buildVisitor = (v: typeof visitorData[string]): AnonymousVisitor => ({
+            visitorId: v.visitorId,
+            puzzlesPlayed: v.puzzlesCompleted,
+            puzzlesSolved: v.puzzlesSolved,
+            winRate: v.puzzlesCompleted > 0 ? Math.round((v.puzzlesSolved / v.puzzlesCompleted) * 100) : 0,
+            firstSeen: v.firstSeen,
+            lastSeen: v.lastSeen,
+            convertedToSignup: v.signedUp,
+        });
+        
+        const anonymousVisitorList = anonymousVisitors.map(buildVisitor);
+        const allVisitorList = allVisitors.map(buildVisitor);
+        
+        // Aggregate stats for anonymous users
+        const totalAnonymousPuzzlesPlayed = anonymousVisitors.reduce((sum, v) => sum + v.puzzlesCompleted, 0);
+        const totalAnonymousPuzzlesSolved = anonymousVisitors.reduce((sum, v) => sum + v.puzzlesSolved, 0);
+        
+        // Engagement breakdown
+        const visitorsWithOnePuzzle = anonymousVisitors.filter(v => v.puzzlesCompleted === 1).length;
+        const visitorsWith2to5Puzzles = anonymousVisitors.filter(v => v.puzzlesCompleted >= 2 && v.puzzlesCompleted <= 5).length;
+        const visitorsWith6PlusPuzzles = anonymousVisitors.filter(v => v.puzzlesCompleted >= 6).length;
+        
+        // Avg puzzles for converters (from signup events)
+        const signupEvents = analyticsEvents.filter(e => e.event === 'signup_completed' && e.puzzlesPlayedBefore != null);
+        const avgPuzzlesBeforeSignup = signupEvents.length > 0
+            ? Math.round((signupEvents.reduce((sum, e) => sum + (e.puzzlesPlayedBefore || 0), 0) / signupEvents.length) * 10) / 10
+            : 0;
+        
+        // Avg puzzles for non-converters who played 3+
+        const nonConverters3Plus = anonymousVisitors.filter(v => v.puzzlesCompleted >= 3);
+        const avgPuzzlesForNonConverters = nonConverters3Plus.length > 0
+            ? Math.round((nonConverters3Plus.reduce((sum, v) => sum + v.puzzlesCompleted, 0) / nonConverters3Plus.length) * 10) / 10
+            : 0;
+        
+        // Power users: 5+ puzzles, not signed up, sorted by puzzles played
+        const powerUsers = anonymousVisitorList
+            .filter(v => v.puzzlesPlayed >= 5 && !v.convertedToSignup)
+            .sort((a, b) => b.puzzlesPlayed - a.puzzlesPlayed);
+        
+        // ALL ACTIVITY metrics (including converters)
+        const allActivityTotalPuzzles = allVisitors.reduce((sum, v) => sum + v.puzzlesCompleted, 0);
+        const allActivityTotalSolved = allVisitors.reduce((sum, v) => sum + v.puzzlesSolved, 0);
+        const convertedCount = allVisitors.filter(v => v.signedUp).length;
+        
+        return {
+            totalAnonymousVisitors: anonymousVisitors.length,
+            totalAnonymousPuzzlesPlayed,
+            totalAnonymousPuzzlesSolved,
+            anonymousWinRate: totalAnonymousPuzzlesPlayed > 0 
+                ? Math.round((totalAnonymousPuzzlesSolved / totalAnonymousPuzzlesPlayed) * 100) 
+                : 0,
+            avgPuzzlesPerAnonymousVisitor: anonymousVisitors.length > 0
+                ? Math.round((totalAnonymousPuzzlesPlayed / anonymousVisitors.length) * 10) / 10
+                : 0,
+            visitorsWithOnePuzzle,
+            visitorsWith2to5Puzzles,
+            visitorsWith6PlusPuzzles,
+            avgPuzzlesBeforeSignup,
+            avgPuzzlesForNonConverters,
+            powerUsers,
+            allAnonymousVisitors: anonymousVisitorList.sort((a, b) => b.puzzlesPlayed - a.puzzlesPlayed),
+            allActivity: {
+                totalVisitors: allVisitors.length,
+                totalPuzzlesPlayed: allActivityTotalPuzzles,
+                totalPuzzlesSolved: allActivityTotalSolved,
+                winRate: allActivityTotalPuzzles > 0 
+                    ? Math.round((allActivityTotalSolved / allActivityTotalPuzzles) * 100) 
+                    : 0,
+                avgPuzzlesPerVisitor: allVisitors.length > 0
+                    ? Math.round((allActivityTotalPuzzles / allVisitors.length) * 10) / 10
+                    : 0,
+                convertedCount,
+                conversionRate: allVisitors.length > 0
+                    ? Math.round((convertedCount / allVisitors.length) * 100)
+                    : 0,
+                visitors: allVisitorList.sort((a, b) => b.puzzlesPlayed - a.puzzlesPlayed),
+            },
+        };
+    }, [analyticsEvents]);
+
     return {
         players,
         loading,
@@ -543,6 +728,7 @@ export const useAdminData = (user: any) => {
         calculateMetrics,
         calculateHistoricalMetrics,
         calculateConversionMetrics,
+        calculateAnonymousMetrics,
         getLeaderboard,
         searchPlayers,
     };

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import type { Theme } from '../types';
@@ -10,7 +10,7 @@ import type { Theme } from '../types';
 declare const window: any;
 const { auth, GoogleAuthProvider, signInWithPopup } = window.firebase || {};
 
-type AdminTab = 'metrics' | 'players' | 'leaderboard';
+type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous';
 
 // Helper to parse date key (YYYY-MM-DD) as local date, not UTC
 const parseDateKeyAsLocal = (dateKey: string): Date => {
@@ -812,6 +812,192 @@ const LeaderboardTab: React.FC<{
     );
 };
 
+// Helper function to format relative dates for anonymous visitors
+const formatAnonymousDate = (dateString: string): string => {
+    try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Today';
+        if (diffDays === 1) return 'Yesterday';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    } catch {
+        return 'Unknown';
+    }
+};
+
+// Anonymous Tab Component
+const AnonymousTab: React.FC<{
+    metrics: AnonymousMetrics;
+}> = ({ metrics }) => {
+    const [showAllVisitors, setShowAllVisitors] = useState(false);
+    
+    return (
+        <div className="admin-anonymous-tab">
+            <h2>👻 Anonymous Player Insights</h2>
+            <p className="admin-metrics-hint">Track engagement from players who haven't signed up yet</p>
+            
+            {/* Aggregate Stats - Unconverted Only */}
+            <h3>🚫 Unconverted Anonymous Visitors</h3>
+            <p className="admin-metrics-hint">Visitors who played but have NOT signed up yet</p>
+            <div className="admin-metrics-grid">
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.totalAnonymousVisitors}</div>
+                    <div className="admin-metric-label">Anonymous Visitors</div>
+                    <div className="admin-metric-sub">who played puzzles</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.totalAnonymousPuzzlesPlayed}</div>
+                    <div className="admin-metric-label">Puzzles Played</div>
+                    <div className="admin-metric-sub">by anonymous users</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.anonymousWinRate}%</div>
+                    <div className="admin-metric-label">Win Rate</div>
+                    <div className="admin-metric-sub">anonymous users</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.avgPuzzlesPerAnonymousVisitor}</div>
+                    <div className="admin-metric-label">Avg Puzzles</div>
+                    <div className="admin-metric-sub">per anonymous visitor</div>
+                </div>
+            </div>
+            
+            {/* Engagement Breakdown */}
+            <h3>📊 Engagement Breakdown</h3>
+            <div className="admin-engagement-breakdown">
+                <div className="admin-engagement-bar">
+                    <div className="admin-engagement-segment one-puzzle" 
+                         style={{ flex: metrics.visitorsWithOnePuzzle || 1 }}>
+                        <span className="admin-engagement-count">{metrics.visitorsWithOnePuzzle}</span>
+                        <span className="admin-engagement-label">1 puzzle</span>
+                    </div>
+                    <div className="admin-engagement-segment two-to-five" 
+                         style={{ flex: metrics.visitorsWith2to5Puzzles || 1 }}>
+                        <span className="admin-engagement-count">{metrics.visitorsWith2to5Puzzles}</span>
+                        <span className="admin-engagement-label">2-5 puzzles</span>
+                    </div>
+                    <div className="admin-engagement-segment six-plus" 
+                         style={{ flex: metrics.visitorsWith6PlusPuzzles || 1 }}>
+                        <span className="admin-engagement-count">{metrics.visitorsWith6PlusPuzzles}</span>
+                        <span className="admin-engagement-label">6+ puzzles</span>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Conversion Comparison */}
+            <h3>🔄 Conversion Comparison</h3>
+            <div className="admin-conversion-comparison">
+                <div className="admin-comparison-card">
+                    <div className="admin-comparison-value">{metrics.avgPuzzlesBeforeSignup}</div>
+                    <div className="admin-comparison-label">Avg puzzles before signup</div>
+                    <div className="admin-comparison-sub">for users who converted</div>
+                </div>
+                <div className="admin-comparison-vs">vs</div>
+                <div className="admin-comparison-card">
+                    <div className="admin-comparison-value">{metrics.avgPuzzlesForNonConverters}</div>
+                    <div className="admin-comparison-label">Avg puzzles for non-converters</div>
+                    <div className="admin-comparison-sub">who played 3+ puzzles</div>
+                </div>
+            </div>
+            
+            {/* Power Users */}
+            <h3>⚡ Power Users (Engaged but Unconverted)</h3>
+            <p className="admin-metrics-hint">Visitors who played 5+ puzzles but haven't signed up - potential converts!</p>
+            
+            {metrics.powerUsers.length > 0 ? (
+                <div className="admin-anonymous-table">
+                    <div className="admin-anonymous-header">
+                        <div className="admin-anon-col-id">Visitor ID</div>
+                        <div className="admin-anon-col-puzzles">Played</div>
+                        <div className="admin-anon-col-winrate">Win %</div>
+                        <div className="admin-anon-col-first">First Seen</div>
+                        <div className="admin-anon-col-last">Last Seen</div>
+                    </div>
+                    {metrics.powerUsers.slice(0, 10).map(visitor => (
+                        <div key={visitor.visitorId} className="admin-anonymous-row power-user">
+                            <div className="admin-anon-col-id">{visitor.visitorId.slice(0, 12)}...</div>
+                            <div className="admin-anon-col-puzzles">{visitor.puzzlesPlayed}</div>
+                            <div className="admin-anon-col-winrate">{visitor.winRate}%</div>
+                            <div className="admin-anon-col-first">{formatAnonymousDate(visitor.firstSeen)}</div>
+                            <div className="admin-anon-col-last">{formatAnonymousDate(visitor.lastSeen)}</div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="admin-no-data">No power users yet. Check back as more people play!</div>
+            )}
+            
+            {/* ALL Anonymous Activity (including converters) */}
+            <h3>📈 All Anonymous Activity</h3>
+            <p className="admin-metrics-hint">All puzzle activity from visitors while they were anonymous (includes those who later signed up)</p>
+            
+            <div className="admin-metrics-grid">
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.allActivity.totalVisitors}</div>
+                    <div className="admin-metric-label">Total Visitors</div>
+                    <div className="admin-metric-sub">who played while anonymous</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.allActivity.totalPuzzlesPlayed}</div>
+                    <div className="admin-metric-label">Puzzles Played</div>
+                    <div className="admin-metric-sub">while anonymous</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.allActivity.winRate}%</div>
+                    <div className="admin-metric-label">Win Rate</div>
+                    <div className="admin-metric-sub">anonymous sessions</div>
+                </div>
+                <div className="admin-metric-card highlight-green">
+                    <div className="admin-metric-value">{metrics.allActivity.convertedCount}</div>
+                    <div className="admin-metric-label">Converted</div>
+                    <div className="admin-metric-sub">{metrics.allActivity.conversionRate}% signed up</div>
+                </div>
+            </div>
+            
+            {/* All Visitors Table (including converters) */}
+            <button 
+                className="admin-toggle-btn"
+                onClick={() => setShowAllVisitors(!showAllVisitors)}
+                style={{ marginTop: '1rem' }}
+            >
+                {showAllVisitors ? 'Hide' : 'Show'} all {metrics.allActivity.visitors.length} visitors
+            </button>
+            
+            {showAllVisitors && metrics.allActivity.visitors.length > 0 && (
+                <div className="admin-anonymous-table" style={{ marginTop: '0.5rem' }}>
+                    <div className="admin-anonymous-header">
+                        <div className="admin-anon-col-id">Visitor ID</div>
+                        <div className="admin-anon-col-puzzles">Played</div>
+                        <div className="admin-anon-col-winrate">Win %</div>
+                        <div className="admin-anon-col-first">First Seen</div>
+                        <div className="admin-anon-col-converted">Converted?</div>
+                    </div>
+                    {metrics.allActivity.visitors.map(visitor => (
+                        <div key={visitor.visitorId} className={`admin-anonymous-row ${visitor.convertedToSignup ? 'converted' : ''}`}>
+                            <div className="admin-anon-col-id">{visitor.visitorId.slice(0, 12)}...</div>
+                            <div className="admin-anon-col-puzzles">{visitor.puzzlesPlayed}</div>
+                            <div className="admin-anon-col-winrate">{visitor.winRate}%</div>
+                            <div className="admin-anon-col-first">{formatAnonymousDate(visitor.firstSeen)}</div>
+                            <div className="admin-anon-col-converted">{visitor.convertedToSignup ? '✅ Yes' : '—'}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            
+            {metrics.allActivity.totalVisitors === 0 && (
+                <div className="admin-no-data">
+                    No anonymous visitor data yet. Data will appear as people play without signing up.
+                </div>
+            )}
+        </div>
+    );
+};
+
 // Main Admin Dashboard Component
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
@@ -828,6 +1014,7 @@ export const AdminDashboard: React.FC = () => {
         calculateMetrics,
         calculateHistoricalMetrics,
         calculateConversionMetrics,
+        calculateAnonymousMetrics,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -841,6 +1028,10 @@ export const AdminDashboard: React.FC = () => {
     const conversionMetrics = useMemo(
         () => calculateConversionMetrics('28days'),
         [calculateConversionMetrics]
+    );
+    const anonymousMetrics = useMemo(
+        () => calculateAnonymousMetrics(),
+        [calculateAnonymousMetrics]
     );
 
     const handleMetricClick = (metricType: MetricType, title: string) => {
@@ -949,6 +1140,12 @@ export const AdminDashboard: React.FC = () => {
                 >
                     🏆 Leaderboard
                 </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'anonymous' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('anonymous')}
+                >
+                    👻 Anonymous
+                </button>
             </nav>
 
             <main className="admin-content">
@@ -972,6 +1169,9 @@ export const AdminDashboard: React.FC = () => {
                         )}
                         {activeTab === 'leaderboard' && (
                             <LeaderboardTab getLeaderboard={getLeaderboard} />
+                        )}
+                        {activeTab === 'anonymous' && (
+                            <AnonymousTab metrics={anonymousMetrics} />
                         )}
                     </>
                 )}

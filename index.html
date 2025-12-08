@@ -5071,10 +5071,25 @@
     
     .admin-player-name {
       font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .admin-col-name {
+      min-width: 0;
+      overflow: hidden;
+    }
+    
+    .admin-col-last {
+      text-align: right;
     }
     
     .admin-player-email-small {
       font-size: 0.75rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       opacity: 0.6;
     }
 
@@ -5301,11 +5316,20 @@
     
     .admin-lb-col-name {
       font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
     }
     
     .admin-lb-col-score {
       font-weight: 700;
       color: #9eef80;
+      text-align: right;
+    }
+    
+    .admin-lb-col-winrate {
+      text-align: right;
     }
     
     .theme-light .admin-lb-col-score {
@@ -5532,27 +5556,47 @@
         gap: 0.5rem;
       }
       
+      /* Players tab mobile: Only Player and Last Played */
       .admin-players-header,
       .admin-player-row {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
       }
       
+      .admin-col-score,
       .admin-col-played,
+      .admin-col-winrate,
+      .admin-col-streak,
       .admin-col-maxstreak,
-      .admin-col-solved,
-      .admin-col-last {
+      .admin-col-solved {
         display: none;
       }
       
+      .admin-col-last {
+        display: block;
+      }
+      
+      /* Leaderboard tab mobile: Only Rank, Player, Score, Win % */
       .admin-leaderboard-header,
       .admin-leaderboard-row {
-        grid-template-columns: 40px 1fr 1fr 1fr;
+        grid-template-columns: 32px 2fr 1fr 1fr;
+      }
+      
+      .admin-leaderboard-header .admin-lb-col-rank {
+        font-size: 0.7rem;
+      }
+      
+      .admin-lb-col-rank {
+        font-size: 1rem;
       }
       
       .admin-lb-col-played,
-      .admin-lb-col-maxstreak,
-      .admin-lb-col-winrate {
+      .admin-lb-col-streak,
+      .admin-lb-col-maxstreak {
         display: none;
+      }
+      
+      .admin-lb-col-winrate {
+        display: block;
       }
       
       .admin-player-stats-grid {

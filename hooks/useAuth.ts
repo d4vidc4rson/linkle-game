@@ -197,26 +197,8 @@ export const useAuth = () => {
 
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             const currentUid = currentUser ? currentUser.uid : null;
-            const isReturningUser = currentUid === lastUserUidRef.current;
-            
-            // Always update user state
-            setUser(currentUser);
-            
-            // For returning users (same UID), still sync profile but skip full data merge
-            if (isReturningUser) {
-                // Sync profile info for returning users who already have their data loaded
-                if (currentUser?.email) {
-                    try {
-                        await setDoc(doc(db, "users", currentUser.uid), { 
-                            email: currentUser.email,
-                            displayName: currentUser.displayName || null,
-                            updatedAt: new Date().toISOString()
-                        }, { merge: true });
-                        console.log('[Auth] Profile synced for returning user:', currentUser.email);
-                    } catch (err) {
-                        console.warn('[Auth] Failed to sync profile for returning user:', err);
-                    }
-                }
+            if (currentUid === lastUserUidRef.current) {
+                setUser(currentUser);
                 setAuthLoading(false);
                 return;
             }

@@ -136,8 +136,19 @@ export const useAuth = () => {
                 }
                 
                 // Include user profile info for admin dashboard visibility
+                // DEBUG: Log user info to diagnose email not being saved
+                console.log('[saveGameState] User object:', {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    emailVerified: user.emailVerified,
+                });
+                
                 if (user.email) {
                     (dataToSave as any).email = user.email;
+                    console.log('[saveGameState] Email will be saved:', user.email);
+                } else {
+                    console.warn('[saveGameState] WARNING: user.email is falsy!', user.email);
                 }
                 if (user.displayName) {
                     (dataToSave as any).displayName = user.displayName;
@@ -151,7 +162,17 @@ export const useAuth = () => {
                 // Always update the updatedAt timestamp
                 (dataToSave as any).updatedAt = new Date().toISOString();
                 
+                // DEBUG: Log what we're about to save
+                console.log('[saveGameState] Saving to Firestore:', {
+                    uid: user.uid,
+                    hasEmail: !!(dataToSave as any).email,
+                    email: (dataToSave as any).email,
+                    hasDisplayName: !!(dataToSave as any).displayName,
+                    updatedAt: (dataToSave as any).updatedAt,
+                });
+                
                 await setDoc(doc(db, "users", user.uid), dataToSave, { merge: true });
+                console.log('[saveGameState] Save successful for user:', user.uid);
             } else {
                 localStorage.setItem('linklePlayerData', JSON.stringify(data));
             }
@@ -176,8 +197,26 @@ export const useAuth = () => {
 
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             const currentUid = currentUser ? currentUser.uid : null;
-            if (currentUid === lastUserUidRef.current) {
-                setUser(currentUser);
+            const isReturningUser = currentUid === lastUserUidRef.current;
+            
+            // Always update user state
+            setUser(currentUser);
+            
+            // For returning users (same UID), still sync profile but skip full data merge
+            if (isReturningUser) {
+                // Sync profile info for returning users who already have their data loaded
+                if (currentUser?.email) {
+                    try {
+                        await setDoc(doc(db, "users", currentUser.uid), { 
+                            email: currentUser.email,
+                            displayName: currentUser.displayName || null,
+                            updatedAt: new Date().toISOString()
+                        }, { merge: true });
+                        console.log('[Auth] Profile synced for returning user:', currentUser.email);
+                    } catch (err) {
+                        console.warn('[Auth] Failed to sync profile for returning user:', err);
+                    }
+                }
                 setAuthLoading(false);
                 return;
             }

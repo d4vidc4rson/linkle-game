@@ -649,7 +649,7 @@ const PlayersTab: React.FC<{
     searchPlayers: (query: string) => PlayerWithMeta[];
 }> = ({ players, searchPlayers }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState<PlayerSortBy>('score');
+    const [sortBy, setSortBy] = useState<PlayerSortBy>('lastPlayed');
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerWithMeta | null>(null);
 
     const filteredPlayers = useMemo(() => {

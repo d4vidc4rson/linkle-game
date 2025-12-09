@@ -125,7 +125,7 @@ export const DayCarousel: React.FC<DayCarouselProps> = ({
                                 day={day}
                                 theme={theme}
                                 onShare={day.mode === 'summary' && onShare ? () => onShare(day.date) : undefined}
-                                onPlay={day.mode === 'playable' && onPlay ? () => onPlay(day.date) : undefined}
+                                onPlay={(day.mode === 'playable' || day.mode === 'partial') && onPlay ? () => onPlay(day.date) : undefined}
                             />
                         </div>
                     );

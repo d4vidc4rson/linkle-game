@@ -72,20 +72,22 @@ export interface PlayerData {
     impossiblePerfects: number;
     consecutivePerfects: number;
     maxStreak?: number; // Maximum streak achieved
+    dayStreak?: number; // Consecutive days played (Wordle-style)
     dailyResults?: DailyResults; // Daily puzzle results
 }
 
 // Day summary for carousel
-export type DaySummaryMode = 'summary' | 'playable' | 'bonus';
+export type DaySummaryMode = 'summary' | 'playable' | 'partial' | 'bonus';
 
 export interface DaySummary {
     id: string;
     dateLabel: string; // "Today, November 15"
-    mode: DaySummaryMode; // summary card vs "old puzzle play" card
+    mode: DaySummaryMode; // summary card vs "old puzzle play" card vs partial completion
     easy: { label: string; result: string; words: string[] };
     hard: { label: string; result: string; words: string[] };
     impossible: { label: string; result: string; words: string[] };
     date: Date;
+    completedCount?: number; // 0-3, how many puzzles attempted
     results?: {
         easy?: DailyResult;
         hard?: DailyResult;

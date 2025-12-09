@@ -364,6 +364,14 @@ export const useDailyGameLogic = (
         // Check if this is a replay (already has results for this puzzle type)
         const dateKey = formatDateKey(targetDate);
         const dailyResults = { ...(playerData.dailyResults || {}) };
+        
+        // Check if this is the first puzzle of TODAY (for day streak tracking)
+        const today = new Date();
+        const todayKey = formatDateKey(today);
+        const isToday = dateKey === todayKey;
+        const hadResultsForToday = dailyResults[todayKey] && Object.keys(dailyResults[todayKey]).length > 0;
+        const isFirstPuzzleOfDay = isToday && !hadResultsForToday;
+        
         if (!dailyResults[dateKey]) {
             dailyResults[dateKey] = {};
         }
@@ -401,6 +409,11 @@ export const useDailyGameLogic = (
         // Regular mode: update stats and badges
         const newStreak = playerData.currentStreak + 1;
         const newMaxStreak = Math.max(newStreak, playerData.maxStreak || 0);
+        
+        // Day streak: only increment on first puzzle of today
+        const currentDayStreak = playerData.dayStreak || 0;
+        const newDayStreak = isFirstPuzzleOfDay ? currentDayStreak + 1 : currentDayStreak;
+        const newMaxDayStreak = Math.max(newDayStreak, newMaxStreak); // Use same maxStreak field for simplicity
         const newTotalSolvedCount = playerData.totalSolved + 1;
         const newPerfectCount = playerData.perfectScores + (isPerfect ? 1 : 0);
         const newConsecutivePerfects = isPerfect ? (playerData.consecutivePerfects || 0) + 1 : 0;
@@ -463,7 +476,8 @@ export const useDailyGameLogic = (
             ...playerData,
             totalScore: newTotalScore,
             currentStreak: newStreak,
-            maxStreak: newMaxStreak,
+            maxStreak: newMaxDayStreak, // Track max of day streaks
+            dayStreak: newDayStreak,
             totalSolved: newTotalSolvedCount,
             perfectScores: newPerfectCount,
             consecutivePerfects: newConsecutivePerfects,
@@ -520,6 +534,14 @@ export const useDailyGameLogic = (
             // Check if this is a replay (already has results for this puzzle type)
             const dateKey = formatDateKey(targetDate);
             const dailyResults = { ...(playerData.dailyResults || {}) };
+            
+            // Check if this is the first puzzle of TODAY (for day streak tracking)
+            const today = new Date();
+            const todayKey = formatDateKey(today);
+            const isToday = dateKey === todayKey;
+            const hadResultsForToday = dailyResults[todayKey] && Object.keys(dailyResults[todayKey]).length > 0;
+            const isFirstPuzzleOfDay = isToday && !hadResultsForToday;
+            
             if (!dailyResults[dateKey]) {
                 dailyResults[dateKey] = {};
             }
@@ -556,7 +578,7 @@ export const useDailyGameLogic = (
             dailyResults[dateKey][currentPuzzleType] = dailyResult;
             onPuzzleComplete(dailyResult, currentPuzzleType);
             
-            // Regular mode: update badges (reset streak)
+            // Regular mode: update badges (reset puzzle streak, but keep day streak)
             const newBadges = playerData.badges.map(badge => {
                 if (badge.id.startsWith('streak') || badge.id === 'perfectStreak3') {
                     return { ...badge, progress: 0 };
@@ -564,9 +586,16 @@ export const useDailyGameLogic = (
                 return badge;
             });
             
+            // Day streak: increment on first puzzle of today (even on loss - they still played!)
+            const currentDayStreak = playerData.dayStreak || 0;
+            const newDayStreak = isFirstPuzzleOfDay ? currentDayStreak + 1 : currentDayStreak;
+            const newMaxStreak = Math.max(newDayStreak, playerData.maxStreak || 0);
+            
             const newPlayerData = {
                 ...playerData,
-                currentStreak: 0,
+                currentStreak: 0, // Reset puzzle win streak
+                dayStreak: newDayStreak, // Keep day streak (they played today!)
+                maxStreak: newMaxStreak,
                 consecutivePerfects: 0,
                 badges: newBadges,
                 dailyResults,

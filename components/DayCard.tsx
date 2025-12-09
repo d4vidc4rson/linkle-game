@@ -166,13 +166,61 @@ const Section = ({ title, result, words, results, puzzleIndices, difficulty }: {
     );
 };
 
+// Progress dots component for partial completion
+const ProgressDots = ({ completedCount }: { completedCount: number }) => {
+    return (
+        <div className="day-card-progress-dots">
+            <span className={`progress-dot ${completedCount >= 1 ? 'filled' : ''}`} />
+            <span className={`progress-dot ${completedCount >= 2 ? 'filled' : ''}`} />
+            <span className={`progress-dot ${completedCount >= 3 ? 'filled' : ''}`} />
+        </div>
+    );
+};
+
 export const DayCard: React.FC<DayCardProps> = ({
     day,
     theme,
     onShare,
     onPlay,
 }) => {
-    const { dateLabel, mode, easy, hard, impossible, results, puzzleIndices } = day;
+    const { dateLabel, mode, easy, hard, impossible, results, puzzleIndices, completedCount = 0 } = day;
+    
+    if (mode === 'partial') {
+        // Partial completion version (logomark + progress dots + CONTINUE button)
+        return (
+            <article className="day-card day-card-partial">
+                <div className="day-card-header-playable">
+                    {dateLabel}
+                </div>
+                <div className="day-card-large-grid-container">
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 123 123"
+                        className="day-card-logomark-img"
+                        preserveAspectRatio="xMidYMid meet"
+                    >
+                        <rect x="0" y="0" width="123" height="123" rx="8.18" ry="8.18" fill="#3b422e" />
+                        {/* Row 1 */}
+                        <rect x="6" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        <rect x="44" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        {/* Row 2 */}
+                        <rect x="6" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        <rect x="83" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        {/* Row 3 */}
+                        <rect x="6" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        <rect x="83" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                        <rect x="44" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
+                    </svg>
+                </div>
+                <ProgressDots completedCount={completedCount} />
+                <button className="day-card-play-button" onClick={onPlay}>
+                    CONTINUE
+                </button>
+            </article>
+        );
+    }
     
     if (mode === 'playable') {
         // "old puzzle play" version (logomark + PLAY button)

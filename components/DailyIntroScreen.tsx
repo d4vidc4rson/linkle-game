@@ -12,6 +12,7 @@ interface DailyIntroScreenProps {
     user?: any;
     playerData?: PlayerData;
     streakWasReset?: boolean;
+    dayStreakWasReset?: boolean;
     mode?: 'play' | 'stats'; // 'play' = normal intro, 'stats' = shorter transition to stats
 }
 
@@ -23,6 +24,7 @@ export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({
     user = null,
     playerData,
     streakWasReset = false,
+    dayStreakWasReset = false,
     mode = 'play'
 }) => {
     const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -47,9 +49,10 @@ export const DailyIntroScreen: React.FC<DailyIntroScreenProps> = ({
             playerData,
             user,
             streakWasReset,
+            dayStreakWasReset,
             allSolved
         });
-    }, [playerData, user, streakWasReset, allSolved, mode]);
+    }, [playerData, user, streakWasReset, dayStreakWasReset, allSolved, mode]);
 
     useEffect(() => {
         // Stats mode: faster animation (~2 seconds total)

@@ -50,6 +50,7 @@ export const defaultPlayerData: PlayerData = {
     impossiblePerfects: 0,
     consecutivePerfects: 0,
     maxStreak: 0,
+    dayStreak: 0,
     dailyResults: {},
 };
 

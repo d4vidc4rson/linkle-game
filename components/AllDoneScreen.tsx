@@ -229,9 +229,21 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
             const isToday = d.toDateString() === actualToday.toDateString();
             const dayResults = playerData.dailyResults?.[dateKey];
             
-            // Determine mode: 'summary' if all puzzles completed, 'playable' otherwise
-            const allCompleted = dayResults?.easy && dayResults?.hard && dayResults?.impossible;
-            const mode: 'summary' | 'playable' = allCompleted ? 'summary' : 'playable';
+            // Count how many puzzles were attempted
+            const completedCount = [dayResults?.easy, dayResults?.hard, dayResults?.impossible].filter(Boolean).length;
+            
+            // Determine mode:
+            // 'summary' = all 3 attempted
+            // 'partial' = 1 or 2 attempted
+            // 'playable' = 0 attempted
+            let mode: 'summary' | 'partial' | 'playable';
+            if (completedCount === 3) {
+                mode = 'summary';
+            } else if (completedCount > 0) {
+                mode = 'partial';
+            } else {
+                mode = 'playable';
+            }
         
             // Format date label
             const dayName = d.toLocaleDateString('en-US', { weekday: 'long' });
@@ -252,6 +264,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                 id: dateKey,
                 dateLabel,
                 mode,
+                completedCount,
                 easy: {
                     label: 'Easy',
                     result: easyResult,

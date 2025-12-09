@@ -280,6 +280,7 @@ export const useAuth = () => {
                             playedPuzzleIndices: [...new Set([...(localData.playedPuzzleIndices || []), ...(saneRemoteData.playedPuzzleIndices || [])])],
                             badges: mergedBadges,
                             maxStreak: Math.max(localData.maxStreak || 0, saneRemoteData.maxStreak || 0),
+                            dayStreak: Math.max(localData.dayStreak || 0, saneRemoteData.dayStreak || 0),
                             dailyResults: mergedDailyResults,
                         };
 

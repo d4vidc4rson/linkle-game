@@ -3503,6 +3503,77 @@
       transform: translateY(calc(var(--shadow-depth) * -1));
     }
 
+    /* Partial completion card styles */
+    .day-card-partial {
+      padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 5.7624) calc(var(--grid-unit) * 3);
+      background-color: #C8B8EF;
+      border: 2px solid #2E2E2E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      min-height: fit-content;
+      position: relative;
+    }
+
+    body[data-theme='dark'] .day-card-partial {
+      background-color: #3b422e;
+      border: none;
+      box-shadow: inset 0 0 0 2px #f6e6d9;
+    }
+
+    /* Badge for partial completion */
+    .day-card-badge {
+      position: absolute;
+      top: calc(var(--grid-unit) * 1.5);
+      right: calc(var(--grid-unit) * 1.5);
+      background-color: #3b422e;
+      color: #f6e6d9;
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25em 0.6em;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    body[data-theme='dark'] .day-card-badge {
+      background-color: #f6e6d9;
+      color: #3b422e;
+    }
+
+    /* Progress dots for partial completion */
+    .day-card-progress-dots {
+      display: flex;
+      gap: 0.5em;
+      justify-content: center;
+      margin-bottom: calc(var(--grid-unit) * 2);
+    }
+
+    .progress-dot {
+      width: 0.75em;
+      height: 0.75em;
+      border-radius: 50%;
+      background-color: rgba(62, 66, 46, 0.3);
+      border: 2px solid #3b422e;
+    }
+
+    .progress-dot.filled {
+      background-color: #9eef80;
+      border-color: #3b422e;
+    }
+
+    body[data-theme='dark'] .progress-dot {
+      background-color: rgba(246, 230, 217, 0.2);
+      border-color: #f6e6d9;
+    }
+
+    body[data-theme='dark'] .progress-dot.filled {
+      background-color: #9eef80;
+      border-color: #f6e6d9;
+    }
+
     @media (min-width: 768px) {
       .day-card {
         height: 29em; /* Taller height for tablet/desktop (reduced by 48px total) */
@@ -3579,7 +3650,8 @@
         height: 1em; /* Match mobile proportions (16px/16px=1) */
       }
 
-      .day-card-playable {
+      .day-card-playable,
+      .day-card-partial {
         padding: 0.75em 1.5em 0.75em 1.5em; /* Equal top/bottom padding */
         gap: 0;
         justify-content: center; /* Center all content vertically as a group */
@@ -3595,6 +3667,15 @@
         left: 0;
         right: 0;
         text-align: center;
+      }
+
+      .day-card-badge {
+        top: 0.75em;
+        right: 0.75em;
+      }
+
+      .day-card-progress-dots {
+        margin-bottom: 0.75em;
       }
 
       .day-card-large-grid-container {
@@ -4266,6 +4347,18 @@
       box-shadow: inset 0 0 0 2px #3b422e;
     }
     [data-theme='dark'] .day-card-playable {
+      background-color: #3b422e;
+      border: none;
+      box-shadow: inset 0 0 0 2px #f6e6d9;
+    }
+
+    /* Day card partial background with contrasting stroke */
+    .day-card-partial {
+      background-color: #f6e6d9;
+      border: none;
+      box-shadow: inset 0 0 0 2px #3b422e;
+    }
+    [data-theme='dark'] .day-card-partial {
       background-color: #3b422e;
       border: none;
       box-shadow: inset 0 0 0 2px #f6e6d9;

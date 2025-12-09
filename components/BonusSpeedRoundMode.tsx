@@ -85,6 +85,7 @@ export const BonusSpeedRoundMode = () => {
     const [bonusTriesLeft, setBonusTriesLeft] = useState(1);
     const [bonusFeedback, setBonusFeedback] = useState('');
     const [streakWasReset, setStreakWasReset] = useState(false);
+    const [dayStreakWasReset, setDayStreakWasReset] = useState(false);
     const [introMode, setIntroMode] = useState<IntroMode>('play');
 
     // Track previous user for login detection
@@ -221,23 +222,30 @@ export const BonusSpeedRoundMode = () => {
     }, []);
 
     // Phase 0: Wordle-style streak reset check on entering daily mode
-    // Check if streak should be reset due to missed days
+    // Check if both day streak and puzzle streak should be reset due to missed days
     useEffect(() => {
         if (authLoading) return; // Wait for auth to load
         
-        const { shouldReset } = checkStreakReset(playerData.lastPlayedDate);
+        const resetInfo = checkStreakReset(playerData.lastPlayedDate);
         
-        if (shouldReset && playerData.currentStreak > 0) {
-            // Reset streak to 0 due to missed day
+        // Check if any streaks need to be reset
+        const needsPuzzleStreakReset = resetInfo.shouldResetPuzzleStreak && playerData.currentStreak > 0;
+        const needsDayStreakReset = resetInfo.shouldResetDayStreak && (playerData.dayStreak || 0) > 0;
+        
+        if (needsPuzzleStreakReset || needsDayStreakReset) {
+            // Reset streaks due to missed day
             const updatedPlayerData = {
                 ...playerData,
-                currentStreak: 0,
+                currentStreak: needsPuzzleStreakReset ? 0 : playerData.currentStreak,
+                dayStreak: needsDayStreakReset ? 0 : (playerData.dayStreak || 0),
             };
             setPlayerData(updatedPlayerData);
             saveGameState(updatedPlayerData);
-            setStreakWasReset(true);
+            setStreakWasReset(needsPuzzleStreakReset);
+            setDayStreakWasReset(needsDayStreakReset);
         } else {
             setStreakWasReset(false);
+            setDayStreakWasReset(false);
         }
     }, [authLoading]); // Only run once when auth loads
 
@@ -785,11 +793,12 @@ export const BonusSpeedRoundMode = () => {
                     date={targetDate}
                     theme={theme}
                     onContinue={handleIntroContinue}
-                    allSolved={!!(puzzleResults.easy && puzzleResults.hard && puzzleResults.impossible)}
+                    allSolved={!!(puzzleResults.easy?.solved && puzzleResults.hard?.solved && puzzleResults.impossible?.solved)}
                     mode={introMode}
                     user={user}
                     playerData={playerData}
                     streakWasReset={streakWasReset}
+                    dayStreakWasReset={dayStreakWasReset}
                 />
             </>
         );
@@ -823,6 +832,7 @@ export const BonusSpeedRoundMode = () => {
                 {showLogoutModal && <LogoutModal 
                     onLogout={async () => {
                         await handleLogout();
+                        setTargetDate(new Date()); // Reset to today on logout
                         setView('start');
                         setShowLogoutModal(false);
                     }} 
@@ -891,6 +901,7 @@ export const BonusSpeedRoundMode = () => {
             {showLogoutModal && <LogoutModal 
                 onLogout={async () => {
                     await handleLogout();
+                    setTargetDate(new Date()); // Reset to today on logout
                     setView('start');
                     setShowLogoutModal(false);
                 }} 

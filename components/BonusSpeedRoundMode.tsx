@@ -111,7 +111,7 @@ export const BonusSpeedRoundMode = () => {
         trackPuzzleCompleted,
         trackSignupPromptShown,
         trackSignupCompleted,
-    } = useAnalytics(user);
+    } = useAnalytics();
 
     // Load existing results for today
     const dateKey = formatDateKey(targetDate);

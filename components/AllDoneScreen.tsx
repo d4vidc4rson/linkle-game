@@ -116,7 +116,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
     const hasShownSignUpSheetRef = useRef(false);
     
     // Analytics tracking
-    const { trackShareClicked, trackShareCopied } = useAnalytics(user);
+    const { trackShareClicked, trackShareCopied } = useAnalytics();
     
     // Update shareDate when date prop changes (e.g., when viewing a different date's All Done screen)
     useEffect(() => {

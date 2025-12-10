@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 // Firebase services from window
 declare const window: any;
-const { db, collection, addDoc, doc, setDoc, getDoc } = window.firebase || {};
+const { db, collection, addDoc, doc, setDoc, getDoc, auth } = window.firebase || {};
 
 // Session ID - unique per browser session, stored in sessionStorage
 const getSessionId = (): string => {
@@ -67,7 +67,7 @@ interface EventData {
     shareDate?: string; // Date of puzzle being shared (YYYY-MM-DD)
 }
 
-export const useAnalytics = (user: any) => {
+export const useAnalytics = () => {
     const sessionStartedRef = useRef(false);
     const sessionId = getSessionId();
     const visitorId = getVisitorId();
@@ -81,6 +81,10 @@ export const useAnalytics = (user: any) => {
             return;
         }
 
+        // Check Firebase auth state directly at log time (not from React state)
+        // This ensures we always get the real-time auth status, avoiding stale closures
+        const currentUser = auth?.currentUser;
+        
         const now = new Date();
         const eventData: EventData = {
             sessionId,
@@ -88,8 +92,8 @@ export const useAnalytics = (user: any) => {
             timestamp: now.toISOString(),
             date: now.toISOString().split('T')[0],
             event,
-            isAnonymous: !user,
-            userId: user?.uid || undefined,
+            isAnonymous: !currentUser,
+            ...(currentUser?.uid && { userId: currentUser.uid }),
             ...extraData,
         };
 
@@ -98,7 +102,7 @@ export const useAnalytics = (user: any) => {
         } catch (error) {
             console.warn('Analytics: Failed to log event', event, error);
         }
-    }, [sessionId, visitorId, user]);
+    }, [sessionId, visitorId]);
 
     // Log session start once per session
     useEffect(() => {

@@ -975,6 +975,7 @@ const AnonymousTab: React.FC<{
                         <div className="admin-anon-col-puzzles">Played</div>
                         <div className="admin-anon-col-winrate">Win %</div>
                         <div className="admin-anon-col-first">First Seen</div>
+                        <div className="admin-anon-col-last">Last Played</div>
                         <div className="admin-anon-col-converted">Converted?</div>
                     </div>
                     {metrics.allActivity.visitors.map(visitor => (
@@ -983,6 +984,7 @@ const AnonymousTab: React.FC<{
                             <div className="admin-anon-col-puzzles">{visitor.puzzlesPlayed}</div>
                             <div className="admin-anon-col-winrate">{visitor.winRate}%</div>
                             <div className="admin-anon-col-first">{formatAnonymousDate(visitor.firstSeen)}</div>
+                            <div className="admin-anon-col-last">{formatAnonymousDate(visitor.lastSeen)}</div>
                             <div className="admin-anon-col-converted">{visitor.convertedToSignup ? '✅ Yes' : '—'}</div>
                         </div>
                     ))}

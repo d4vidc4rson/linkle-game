@@ -639,7 +639,7 @@ export const BonusSpeedRoundMode = () => {
             setBonusBoardState(shuffleArray([...selectedPuzzle.solution]));
             setBonusLockedSlots(Array(9).fill(false));
             setBonusTriesLeft(1); // Only 1 try for bonus round
-            setBonusFeedback('30 seconds! Solve it fast!');
+            setBonusFeedback('60 seconds! Solve it fast!');
                     // Note: finalNarrative is handled in ExplanationModal rendering using bonusPuzzle?.narrative
                     setBonusSolvedStatus(null); // Reset bonus status
                     setBonusWinMessage(''); // Reset bonus message

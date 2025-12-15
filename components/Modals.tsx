@@ -397,7 +397,9 @@ export const NewPlayerModal = ({ onClose }: { onClose: () => void }) => (
         <div className="modal-content new-player-modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
             <h2>You're new here!</h2>
-            <p>Here's how you play the game: Drag and drop the word tiles into the best order. And yes, there is an order. We're rooting for you.</p>
+            <p>Here's how to play the game:</p>
+            <p>Drag and drop the word tiles into the best order. And yes, there is a BEST order.</p>
+            <p>We're rooting for you.</p>
             <button className="button" onClick={onClose}><span>Got it!</span></button>
         </div>
     </div>

@@ -7,7 +7,7 @@ import { useDailyGameLogic, type DailyPuzzleDifficulty } from '../hooks/useDaily
 import { useBodyClasses } from '../hooks/useBodyClasses';
 import type { Theme, GameState, DailyResult, AuthMode, DragState } from '../types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
-import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './Modals';
+import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal, NewPlayerModal } from './Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots } from './GameUI';
 import { GameBoard } from './GameBoard';
 import { DailyStartScreen } from './DailyStartScreen';
@@ -87,6 +87,7 @@ export const BonusSpeedRoundMode = () => {
     const [streakWasReset, setStreakWasReset] = useState(false);
     const [dayStreakWasReset, setDayStreakWasReset] = useState(false);
     const [introMode, setIntroMode] = useState<IntroMode>('play');
+    const [showNewPlayerModal, setShowNewPlayerModal] = useState(false);
 
     // Track previous user for login detection
     const prevUserRef = useRef<any>(undefined);
@@ -220,6 +221,21 @@ export const BonusSpeedRoundMode = () => {
         setTheme(initialTheme);
         document.body.dataset.theme = initialTheme;
     }, []);
+
+    // New player tutorial modal - show on first puzzle view
+    useEffect(() => {
+        if (view === 'playing' && gameState === 'playing') {
+            const hasSeenTutorial = localStorage.getItem('linkle_has_seen_tutorial');
+            if (!hasSeenTutorial) {
+                setShowNewPlayerModal(true);
+            }
+        }
+    }, [view, gameState]);
+
+    const handleCloseNewPlayerModal = () => {
+        localStorage.setItem('linkle_has_seen_tutorial', 'true');
+        setShowNewPlayerModal(false);
+    };
 
     // Phase 0: Wordle-style streak reset check on entering daily mode
     // Check if both day streak and puzzle streak should be reset due to missed days
@@ -907,6 +923,7 @@ export const BonusSpeedRoundMode = () => {
                 }} 
                 onClose={() => setShowLogoutModal(false)} 
             />}
+            {showNewPlayerModal && <NewPlayerModal onClose={handleCloseNewPlayerModal} />}
 
             <div className="app-wrapper daily-mode-wrapper bonus-speed-round-mode">
                 <div className="top-bar-container">

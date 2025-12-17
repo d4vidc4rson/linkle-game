@@ -195,7 +195,31 @@ const MetricsTab: React.FC<{
                             ? Math.round((metrics.dailyActiveUsers / metrics.totalUsers) * 100) 
                             : 0}%
                     </div>
-                    <div className="admin-metric-label">Stickiness</div>
+                    <div className="admin-metric-label">Daily Stickiness</div>
+                    <div className="admin-metric-chart-icon">📈</div>
+                </div>
+                <div 
+                    className="admin-metric-card admin-metric-clickable admin-metric-stickiness"
+                    onClick={() => onMetricClick('stickiness', 'Stickiness (Retention)')}
+                >
+                    <div className="admin-metric-value">
+                        {metrics.totalUsers > 0 
+                            ? Math.round((metrics.weeklyActiveUsers / metrics.totalUsers) * 100) 
+                            : 0}%
+                    </div>
+                    <div className="admin-metric-label">Weekly Stickiness</div>
+                    <div className="admin-metric-chart-icon">📈</div>
+                </div>
+                <div 
+                    className="admin-metric-card admin-metric-clickable admin-metric-stickiness"
+                    onClick={() => onMetricClick('stickiness', 'Stickiness (Retention)')}
+                >
+                    <div className="admin-metric-value">
+                        {metrics.totalUsers > 0 
+                            ? Math.round((metrics.monthlyActiveUsers / metrics.totalUsers) * 100) 
+                            : 0}%
+                    </div>
+                    <div className="admin-metric-label">Monthly Stickiness</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
             </div>

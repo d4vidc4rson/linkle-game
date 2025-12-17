@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useCallback } from 'react';
 import type { PlayerData } from '../types';
+import { formatDateKey } from '../dailySchedule';
 
 // Firebase services from window
 declare const window: any;
@@ -21,6 +22,7 @@ export interface AggregateMetrics {
     totalUsers: number;
     dailyActiveUsers: number;
     weeklyActiveUsers: number;
+    monthlyActiveUsers: number;
     averageStreak: number;
     streakDistribution: {
         '1-3': number;
@@ -290,14 +292,19 @@ export const useAdminData = (user: any) => {
     const calculateMetrics = useCallback((): AggregateMetrics => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const todayStr = today.toISOString().split('T')[0];
+        const todayStr = formatDateKey(today);
         
         const weekAgo = new Date(today);
         weekAgo.setDate(weekAgo.getDate() - 7);
-        const weekAgoStr = weekAgo.toISOString().split('T')[0];
+        const weekAgoStr = formatDateKey(weekAgo);
+
+        const monthAgo = new Date(today);
+        monthAgo.setDate(monthAgo.getDate() - 30);
+        const monthAgoStr = formatDateKey(monthAgo);
 
         let dailyActive = 0;
         let weeklyActive = 0;
+        let monthlyActive = 0;
         let totalStreak = 0;
         const streakDist = { '1-3': 0, '4-7': 0, '8-14': 0, '15+': 0 };
         const completionRates = {
@@ -320,10 +327,11 @@ export const useAdminData = (user: any) => {
             const { playerData } = player;
             const dailyResults = playerData.dailyResults || {};
             
-            // Check daily/weekly active based on actual activity in dailyResults
+            // Check daily/weekly/monthly active based on actual activity in dailyResults
             // This is more accurate than relying on lastPlayedDate which may not be set
             let isActiveToday = false;
             let isActiveThisWeek = false;
+            let isActiveThisMonth = false;
             
             for (const dateKey of Object.keys(dailyResults)) {
                 const dayResult = dailyResults[dateKey];
@@ -332,14 +340,19 @@ export const useAdminData = (user: any) => {
                     if (dateKey === todayStr) {
                         isActiveToday = true;
                         isActiveThisWeek = true;
+                        isActiveThisMonth = true;
                     } else if (dateKey >= weekAgoStr) {
                         isActiveThisWeek = true;
+                        isActiveThisMonth = true;
+                    } else if (dateKey >= monthAgoStr) {
+                        isActiveThisMonth = true;
                     }
                 }
             }
             
             if (isActiveToday) dailyActive++;
             if (isActiveThisWeek) weeklyActive++;
+            if (isActiveThisMonth) monthlyActive++;
 
             // Streak distribution
             const streak = playerData.currentStreak || 0;
@@ -408,6 +421,7 @@ export const useAdminData = (user: any) => {
             totalUsers: players.length,
             dailyActiveUsers: dailyActive,
             weeklyActiveUsers: weeklyActive,
+            monthlyActiveUsers: monthlyActive,
             averageStreak: players.length > 0 ? Math.round((totalStreak / players.length) * 10) / 10 : 0,
             streakDistribution: streakDist,
             completionRates,

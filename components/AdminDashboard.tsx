@@ -117,13 +117,19 @@ const getHourFromDate = (dateString: string): number => {
     }
 };
 
+// Toggle type for Engagement Metrics
+type EngagementUserType = 'signedUp' | 'anonymous';
+
 // Metrics Tab Component
 const MetricsTab: React.FC<{ 
     metrics: AggregateMetrics;
+    anonymousMetrics: AnonymousMetrics;
     conversionMetrics: ConversionMetrics;
     players: PlayerWithMeta[];
-    onMetricClick: (metricType: MetricType, title: string) => void;
-}> = ({ metrics, conversionMetrics, players, onMetricClick }) => {
+    onMetricClick: (metricType: MetricType, title: string, isAnonymous?: boolean) => void;
+}> = ({ metrics, anonymousMetrics, conversionMetrics, players, onMetricClick }) => {
+    const [engagementUserType, setEngagementUserType] = useState<EngagementUserType>('signedUp');
+    
     const easyWinRate = metrics.completionRates.easy.attempted > 0 
         ? Math.round((metrics.completionRates.easy.solved / metrics.completionRates.easy.attempted) * 100) 
         : 0;
@@ -144,81 +150,115 @@ const MetricsTab: React.FC<{
         ? Math.round((metrics.completionRates.impossible.perfect / metrics.completionRates.impossible.solved) * 100)
         : 0;
 
+    // Compute values based on toggle
+    const isAnonymous = engagementUserType === 'anonymous';
+    
+    const totalUsers = isAnonymous 
+        ? anonymousMetrics.totalAnonymousVisitors 
+        : metrics.totalUsers;
+    const dailyActive = isAnonymous 
+        ? anonymousMetrics.dailyActiveAnonymous 
+        : metrics.dailyActiveUsers;
+    const weeklyActive = isAnonymous 
+        ? anonymousMetrics.weeklyActiveAnonymous 
+        : metrics.weeklyActiveUsers;
+    const monthlyActive = isAnonymous 
+        ? anonymousMetrics.monthlyActiveAnonymous 
+        : metrics.monthlyActiveUsers;
+    const puzzlesPlayed = isAnonymous 
+        ? anonymousMetrics.totalAnonymousPuzzlesPlayed 
+        : metrics.totalPuzzlesPlayed;
+    const puzzlesSolved = isAnonymous 
+        ? anonymousMetrics.totalAnonymousPuzzlesSolved 
+        : metrics.totalPuzzlesSolved;
+    const winRate = isAnonymous 
+        ? anonymousMetrics.anonymousWinRate 
+        : (metrics.totalPuzzlesPlayed > 0 
+            ? Math.round((metrics.totalPuzzlesSolved / metrics.totalPuzzlesPlayed) * 100) 
+            : 0);
+    
+    const dailyStickiness = totalUsers > 0 ? Math.round((dailyActive / totalUsers) * 100) : 0;
+    const weeklyStickiness = totalUsers > 0 ? Math.round((weeklyActive / totalUsers) * 100) : 0;
+    const monthlyStickiness = totalUsers > 0 ? Math.round((monthlyActive / totalUsers) * 100) : 0;
+
     return (
         <div className="admin-metrics-tab">
-            <h2>Engagement Metrics</h2>
-            <p className="admin-metrics-hint">Click any metric to view historical chart</p>
+            <div className="admin-engagement-header">
+                <h2>Engagement Metrics</h2>
+                <div className="admin-user-type-toggle">
+                    <button 
+                        className={`admin-toggle-option ${engagementUserType === 'signedUp' ? 'active' : ''}`}
+                        onClick={() => setEngagementUserType('signedUp')}
+                    >
+                        Signed Up
+                    </button>
+                    <button 
+                        className={`admin-toggle-option ${engagementUserType === 'anonymous' ? 'active' : ''}`}
+                        onClick={() => setEngagementUserType('anonymous')}
+                    >
+                        Anonymous
+                    </button>
+                </div>
+            </div>
+            <p className="admin-metrics-hint">
+                Click any metric to view historical chart
+                {isAnonymous && ' • Showing anonymous visitors who haven\'t signed up yet'}
+            </p>
             
             <div className="admin-metrics-grid">
                 <div 
                     className="admin-metric-card admin-metric-clickable"
-                    onClick={() => onMetricClick('totalUsers', 'Total Users')}
+                    onClick={() => onMetricClick('totalUsers', isAnonymous ? 'Total Visitors' : 'Total Users', isAnonymous)}
                 >
-                    <div className="admin-metric-value">{metrics.totalUsers}</div>
-                    <div className="admin-metric-label">Total Users</div>
+                    <div className="admin-metric-value">{totalUsers}</div>
+                    <div className="admin-metric-label">{isAnonymous ? 'Visitors' : 'Total Users'}</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
                 <div 
                     className="admin-metric-card admin-metric-clickable"
-                    onClick={() => onMetricClick('dau', 'Daily Active Users')}
+                    onClick={() => onMetricClick('dau', isAnonymous ? 'Daily Active Visitors' : 'Daily Active Users', isAnonymous)}
                 >
-                    <div className="admin-metric-value">{metrics.dailyActiveUsers}</div>
+                    <div className="admin-metric-value">{dailyActive}</div>
                     <div className="admin-metric-label">Daily Active</div>
                     <div className="admin-metric-chart-icon">📊</div>
                 </div>
                 <div 
                     className="admin-metric-card admin-metric-clickable"
-                    onClick={() => onMetricClick('puzzlesPlayed', 'Puzzles Played')}
+                    onClick={() => onMetricClick('puzzlesPlayed', isAnonymous ? 'Puzzles Played (Anonymous)' : 'Puzzles Played', isAnonymous)}
                 >
-                    <div className="admin-metric-value">{metrics.totalPuzzlesPlayed}</div>
+                    <div className="admin-metric-value">{puzzlesPlayed}</div>
                     <div className="admin-metric-label">Puzzles Played</div>
                     <div className="admin-metric-chart-icon">📊</div>
                 </div>
                 <div 
                     className="admin-metric-card admin-metric-clickable"
-                    onClick={() => onMetricClick('winRate', 'Win Rate')}
+                    onClick={() => onMetricClick('winRate', isAnonymous ? 'Win Rate (Anonymous)' : 'Win Rate', isAnonymous)}
                 >
-                    <div className="admin-metric-value">
-                        {metrics.totalPuzzlesPlayed > 0 
-                            ? Math.round((metrics.totalPuzzlesSolved / metrics.totalPuzzlesPlayed) * 100) 
-                            : 0}%
-                    </div>
+                    <div className="admin-metric-value">{winRate}%</div>
                     <div className="admin-metric-label">Win Rate</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
                 <div 
-                    className="admin-metric-card admin-metric-clickable admin-metric-stickiness"
-                    onClick={() => onMetricClick('stickiness', 'Stickiness (Retention)')}
+                    className="admin-metric-card admin-metric-stickiness admin-metric-clickable"
+                    onClick={() => onMetricClick('stickiness', isAnonymous ? 'Stickiness (Anonymous)' : 'Stickiness (Retention)', isAnonymous)}
                 >
-                    <div className="admin-metric-value">
-                        {metrics.totalUsers > 0 
-                            ? Math.round((metrics.dailyActiveUsers / metrics.totalUsers) * 100) 
-                            : 0}%
-                    </div>
+                    <div className="admin-metric-value">{dailyStickiness}%</div>
                     <div className="admin-metric-label">Daily Stickiness</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
                 <div 
-                    className="admin-metric-card admin-metric-clickable admin-metric-stickiness"
-                    onClick={() => onMetricClick('stickiness', 'Stickiness (Retention)')}
+                    className="admin-metric-card admin-metric-stickiness admin-metric-clickable"
+                    onClick={() => onMetricClick('stickiness', isAnonymous ? 'Stickiness (Anonymous)' : 'Stickiness (Retention)', isAnonymous)}
                 >
-                    <div className="admin-metric-value">
-                        {metrics.totalUsers > 0 
-                            ? Math.round((metrics.weeklyActiveUsers / metrics.totalUsers) * 100) 
-                            : 0}%
-                    </div>
+                    <div className="admin-metric-value">{weeklyStickiness}%</div>
                     <div className="admin-metric-label">Weekly Stickiness</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
                 <div 
-                    className="admin-metric-card admin-metric-clickable admin-metric-stickiness"
-                    onClick={() => onMetricClick('stickiness', 'Stickiness (Retention)')}
+                    className="admin-metric-card admin-metric-stickiness admin-metric-clickable"
+                    onClick={() => onMetricClick('stickiness', isAnonymous ? 'Stickiness (Anonymous)' : 'Stickiness (Retention)', isAnonymous)}
                 >
-                    <div className="admin-metric-value">
-                        {metrics.totalUsers > 0 
-                            ? Math.round((metrics.monthlyActiveUsers / metrics.totalUsers) * 100) 
-                            : 0}%
-                    </div>
+                    <div className="admin-metric-value">{monthlyStickiness}%</div>
                     <div className="admin-metric-label">Monthly Stickiness</div>
                     <div className="admin-metric-chart-icon">📈</div>
                 </div>
@@ -1028,7 +1068,7 @@ const AnonymousTab: React.FC<{
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
     const [theme, setTheme] = useState<Theme>('light');
-    const [selectedMetric, setSelectedMetric] = useState<{ type: MetricType; title: string } | null>(null);
+    const [selectedMetric, setSelectedMetric] = useState<{ type: MetricType; title: string; isAnonymous: boolean } | null>(null);
     const [chartTimeRange, setChartTimeRange] = useState<TimeRange>('7days');
     
     const { user, authLoading } = useAuth();
@@ -1039,6 +1079,7 @@ export const AdminDashboard: React.FC = () => {
         isAdmin, 
         calculateMetrics,
         calculateHistoricalMetrics,
+        calculateAnonymousHistoricalMetrics,
         calculateConversionMetrics,
         calculateAnonymousMetrics,
         getLeaderboard,
@@ -1051,6 +1092,10 @@ export const AdminDashboard: React.FC = () => {
         () => calculateHistoricalMetrics(chartTimeRange), 
         [calculateHistoricalMetrics, chartTimeRange, players]
     );
+    const anonymousHistoricalData = useMemo(
+        () => calculateAnonymousHistoricalMetrics(chartTimeRange),
+        [calculateAnonymousHistoricalMetrics, chartTimeRange]
+    );
     const conversionMetrics = useMemo(
         () => calculateConversionMetrics('28days'),
         [calculateConversionMetrics]
@@ -1060,8 +1105,8 @@ export const AdminDashboard: React.FC = () => {
         [calculateAnonymousMetrics]
     );
 
-    const handleMetricClick = (metricType: MetricType, title: string) => {
-        setSelectedMetric({ type: metricType, title });
+    const handleMetricClick = (metricType: MetricType, title: string, isAnonymous: boolean = false) => {
+        setSelectedMetric({ type: metricType, title, isAnonymous });
     };
 
     // Toggle theme
@@ -1182,6 +1227,7 @@ export const AdminDashboard: React.FC = () => {
                         {activeTab === 'metrics' && (
                             <MetricsTab 
                                 metrics={metrics}
+                                anonymousMetrics={anonymousMetrics}
                                 conversionMetrics={conversionMetrics}
                                 players={players}
                                 onMetricClick={handleMetricClick}
@@ -1208,7 +1254,7 @@ export const AdminDashboard: React.FC = () => {
                 <MetricChart
                     title={selectedMetric.title}
                     metricType={selectedMetric.type}
-                    data={historicalData}
+                    data={selectedMetric.isAnonymous ? anonymousHistoricalData : historicalData}
                     timeRange={chartTimeRange}
                     onTimeRangeChange={setChartTimeRange}
                     onClose={() => setSelectedMetric(null)}

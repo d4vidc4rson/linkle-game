@@ -4683,6 +4683,65 @@
       margin-top: 0.25rem;
     }
 
+    /* Engagement Header with Toggle */
+    .admin-engagement-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .admin-engagement-header h2 {
+      margin: 0;
+    }
+    
+    .admin-user-type-toggle {
+      display: flex;
+      background: rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+    }
+    
+    .theme-dark .admin-user-type-toggle {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .admin-toggle-option {
+      padding: 6px 16px;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      opacity: 0.7;
+    }
+    
+    .admin-toggle-option:hover {
+      opacity: 1;
+      background: rgba(0,0,0,0.05);
+    }
+    
+    .theme-dark .admin-toggle-option:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .admin-toggle-option.active {
+      background: #9eef80;
+      color: #1a1a2e;
+      opacity: 1;
+    }
+    
+    .theme-light .admin-toggle-option.active {
+      background: #331922;
+      color: #fff;
+    }
+
     /* Streak Distribution */
     .admin-streak-distribution {
       display: flex;

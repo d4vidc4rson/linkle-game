@@ -89,6 +89,11 @@ export interface AnonymousMetrics {
     anonymousWinRate: number;
     avgPuzzlesPerAnonymousVisitor: number;
     
+    // Active user counts (for engagement metrics toggle)
+    dailyActiveAnonymous: number;   // Visitors who played today
+    weeklyActiveAnonymous: number;  // Visitors who played within 7 days
+    monthlyActiveAnonymous: number; // Visitors who played within 30 days
+    
     // Engagement breakdown (unconverted only)
     visitorsWithOnePuzzle: number;
     visitorsWith2to5Puzzles: number;
@@ -595,6 +600,136 @@ export const useAdminData = (user: any) => {
         return dates.map(date => dataByDate[date]);
     }, [players]);
 
+    // Calculate historical metrics for anonymous users from analytics events
+    const calculateAnonymousHistoricalMetrics = useCallback((timeRange: TimeRange): DailyDataPoint[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Determine date range
+        let daysToShow: number;
+        switch (timeRange) {
+            case 'today': daysToShow = 1; break;
+            case '7days': daysToShow = 7; break;
+            case '14days': daysToShow = 14; break;
+            case '28days': daysToShow = 28; break;
+            case 'all': daysToShow = 365; break;
+            default: daysToShow = 7;
+        }
+        
+        // Generate array of dates
+        const dates: string[] = [];
+        for (let i = daysToShow - 1; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            dates.push(d.toISOString().split('T')[0]);
+        }
+        
+        // Initialize data for each date
+        const dataByDate: Record<string, DailyDataPoint> = {};
+        dates.forEach(date => {
+            const d = new Date(date);
+            dataByDate[date] = {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                dau: 0,
+                puzzlesPlayed: 0,
+                puzzlesSolved: 0,
+                winRate: 0,
+                newSignups: 0,
+                cumulativeUsers: 0,
+                stickiness: 0,
+            };
+        });
+        
+        // Get visitor IDs that eventually signed up (to exclude them)
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Track unique visitors per date and cumulative visitors
+        const visitorsPerDate: Record<string, Set<string>> = {};
+        const allVisitorsByDate: Record<string, Set<string>> = {}; // Cumulative
+        dates.forEach(date => {
+            visitorsPerDate[date] = new Set();
+            allVisitorsByDate[date] = new Set();
+        });
+        
+        // Process analytics events for anonymous users only
+        analyticsEvents.forEach(event => {
+            const vid = event.visitorId;
+            if (!vid || !event.isAnonymous) return;
+            
+            // Exclude visitors who later signed up
+            if (signedUpVisitorIds.has(vid)) return;
+            
+            const eventDate = event.date || event.timestamp?.split('T')[0];
+            if (!eventDate || !dataByDate[eventDate]) return;
+            
+            // Track active visitors per date
+            if (event.event === 'puzzle_completed') {
+                visitorsPerDate[eventDate].add(vid);
+                dataByDate[eventDate].puzzlesPlayed++;
+                if (event.solved) {
+                    dataByDate[eventDate].puzzlesSolved++;
+                }
+            }
+        });
+        
+        // Track first seen date for each anonymous visitor (for cumulative count)
+        const visitorFirstSeen: Record<string, string> = {};
+        analyticsEvents.forEach(event => {
+            const vid = event.visitorId;
+            if (!vid || !event.isAnonymous) return;
+            if (signedUpVisitorIds.has(vid)) return;
+            
+            const eventDate = event.date || event.timestamp?.split('T')[0];
+            if (!eventDate) return;
+            
+            if (event.event === 'puzzle_completed') {
+                if (!visitorFirstSeen[vid] || eventDate < visitorFirstSeen[vid]) {
+                    visitorFirstSeen[vid] = eventDate;
+                }
+            }
+        });
+        
+        // Calculate cumulative visitors and new visitors per date
+        let cumulativeVisitors = 0;
+        
+        // Count visitors who were first seen before the date range
+        Object.entries(visitorFirstSeen).forEach(([vid, firstDate]) => {
+            if (firstDate < dates[0]) {
+                cumulativeVisitors++;
+            }
+        });
+        
+        dates.forEach(date => {
+            // Count new visitors on this date
+            const newVisitors = Object.entries(visitorFirstSeen)
+                .filter(([vid, firstDate]) => firstDate === date)
+                .length;
+            
+            dataByDate[date].newSignups = newVisitors; // Using newSignups field for "new visitors"
+            cumulativeVisitors += newVisitors;
+            dataByDate[date].cumulativeUsers = cumulativeVisitors;
+            
+            // DAU = unique visitors who completed puzzles on this date
+            dataByDate[date].dau = visitorsPerDate[date].size;
+            
+            // Calculate win rate
+            const played = dataByDate[date].puzzlesPlayed;
+            const solved = dataByDate[date].puzzlesSolved;
+            dataByDate[date].winRate = played > 0 ? Math.round((solved / played) * 100) : 0;
+            
+            // Calculate stickiness (DAU / Total Visitors %)
+            const dau = dataByDate[date].dau;
+            dataByDate[date].stickiness = cumulativeVisitors > 0 ? Math.round((dau / cumulativeVisitors) * 100) : 0;
+        });
+        
+        return dates.map(date => dataByDate[date]);
+    }, [analyticsEvents]);
+
     // Calculate anonymous visitor metrics from analytics events
     const calculateAnonymousMetrics = useCallback((): AnonymousMetrics => {
         // Group events by visitorId
@@ -670,6 +805,37 @@ export const useAdminData = (user: any) => {
         const totalAnonymousPuzzlesPlayed = anonymousVisitors.reduce((sum, v) => sum + v.puzzlesCompleted, 0);
         const totalAnonymousPuzzlesSolved = anonymousVisitors.reduce((sum, v) => sum + v.puzzlesSolved, 0);
         
+        // Calculate DAU/WAU/MAU for anonymous users based on lastSeen
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayStr = today.toISOString().split('T')[0];
+        
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        const weekAgoStr = weekAgo.toISOString().split('T')[0];
+        
+        const monthAgo = new Date(today);
+        monthAgo.setDate(monthAgo.getDate() - 30);
+        const monthAgoStr = monthAgo.toISOString().split('T')[0];
+        
+        let dailyActiveAnonymous = 0;
+        let weeklyActiveAnonymous = 0;
+        let monthlyActiveAnonymous = 0;
+        
+        anonymousVisitors.forEach(v => {
+            const lastSeenDate = v.lastSeen.split('T')[0];
+            if (lastSeenDate >= todayStr) {
+                dailyActiveAnonymous++;
+                weeklyActiveAnonymous++;
+                monthlyActiveAnonymous++;
+            } else if (lastSeenDate >= weekAgoStr) {
+                weeklyActiveAnonymous++;
+                monthlyActiveAnonymous++;
+            } else if (lastSeenDate >= monthAgoStr) {
+                monthlyActiveAnonymous++;
+            }
+        });
+        
         // Engagement breakdown
         const visitorsWithOnePuzzle = anonymousVisitors.filter(v => v.puzzlesCompleted === 1).length;
         const visitorsWith2to5Puzzles = anonymousVisitors.filter(v => v.puzzlesCompleted >= 2 && v.puzzlesCompleted <= 5).length;
@@ -707,6 +873,9 @@ export const useAdminData = (user: any) => {
             avgPuzzlesPerAnonymousVisitor: anonymousVisitors.length > 0
                 ? Math.round((totalAnonymousPuzzlesPlayed / anonymousVisitors.length) * 10) / 10
                 : 0,
+            dailyActiveAnonymous,
+            weeklyActiveAnonymous,
+            monthlyActiveAnonymous,
             visitorsWithOnePuzzle,
             visitorsWith2to5Puzzles,
             visitorsWith6PlusPuzzles,
@@ -741,6 +910,7 @@ export const useAdminData = (user: any) => {
         fetchPlayers,
         calculateMetrics,
         calculateHistoricalMetrics,
+        calculateAnonymousHistoricalMetrics,
         calculateConversionMetrics,
         calculateAnonymousMetrics,
         getLeaderboard,

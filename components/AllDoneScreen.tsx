@@ -339,7 +339,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
-                                <button className="auth-button" onClick={onShowAuth}><span>Sign-Up / In</span></button>
+                                <button className="auth-button" onClick={onShowAuth}><span>Log In</span></button>
                             )}
                         </div>
                     </div>
@@ -472,7 +472,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
-                                <button className="auth-button" onClick={onShowAuth}><span>Sign-Up / In</span></button>
+                                <button className="auth-button" onClick={onShowAuth}><span>Log In</span></button>
                             )}
                         </div>
                     </div>

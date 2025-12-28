@@ -288,7 +288,7 @@ const App = () => {
                                     <UserAvatar displayName={user.displayName || 'Player'} theme={theme} />
                                 </button>
                             ) : (
-                                <button className="auth-button" onClick={() => setShowAuthModal(true)}><span>Sign-Up / In</span></button>
+                                <button className="auth-button" onClick={() => setShowAuthModal(true)}><span>Log In</span></button>
                             )}
                         </div>
                     </div>

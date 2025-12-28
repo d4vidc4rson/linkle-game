@@ -67,10 +67,7 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({
                             <button className="button" onClick={handlePlay}><span>Play</span></button>
                         )}
                         {!user && (
-                            <>
-                                <button className="button button-outline" onClick={() => onShowAuth('login')}><span>Login</span></button>
-                                <button className="button button-signup" onClick={() => onShowAuth('signup')}><span>Sign-Up</span></button>
-                            </>
+                            <button className="button button-outline" onClick={() => onShowAuth('login')}><span>Login</span></button>
                         )}
                     </div>
                 </div>

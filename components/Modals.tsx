@@ -68,7 +68,7 @@ export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlo
                     <div className="badge-signup-prompt">
                         <p className="badge-signup-text">Create an account to save this badge.</p>
                         <button className="button" onClick={handleSignUp}>
-                            <span>Sign Up</span>
+                            <span>SAVE MY PROGRESS</span>
                         </button>
                     </div>
                 ) : (
@@ -107,7 +107,7 @@ const BadgeDetailModal = ({ badge, onClose, user, onShowAuth }: BadgeDetailModal
                     <div className="badge-signup-prompt">
                         <p className="badge-signup-text">Create an account to save this badge.</p>
                         <button className="button" onClick={handleSignUp}>
-                            <span>Sign Up</span>
+                            <span>SAVE MY PROGRESS</span>
                         </button>
                     </div>
                 ) : (
@@ -347,13 +347,21 @@ export const AuthModal = ({ onClose, initialMode = 'signup' }: { onClose: () => 
         }
     };
 
+    // Context-appropriate messaging based on mode
+    const header = mode === 'login' ? 'Welcome Back' : 'Save Your Progress';
+    const subtext = mode === 'login' 
+        ? 'Log in to continue tracking your stats and badges.'
+        : 'Save your progress, track your stats, and earn badges by creating an account.';
+    const togglePrompt = mode === 'login' ? "Don't have an account? " : "Already have an account? ";
+    const toggleLabel = mode === 'login' ? 'Create one' : 'Log in';
+
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content auth-modal" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
                 <div className="logo"><span className="logo-bold">dumbify</span><span className="logo-regular">games</span></div>
-                <h2>Log in or create an account</h2>
-                <p className="auth-prompt">Save your progress, track your stats, and earn badges by creating an account.</p>
+                <h2>{header}</h2>
+                <p className="auth-prompt">{subtext}</p>
                 <form onSubmit={handleEmailAuth}>
                     <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
@@ -368,9 +376,9 @@ export const AuthModal = ({ onClose, initialMode = 'signup' }: { onClose: () => 
                     <span>Continue with Google</span>
                 </button>
                 <div className="toggle-auth">
-                    {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
+                    {togglePrompt}
                     <button onClick={() => setMode(m => m === 'login' ? 'signup' : 'login')}>
-                        <span>{mode === 'login' ? 'Sign up' : 'Log in'}</span>
+                        <span>{toggleLabel}</span>
                     </button>
                 </div>
             </div>

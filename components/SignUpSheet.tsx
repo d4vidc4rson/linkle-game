@@ -118,7 +118,7 @@ export const SignUpSheet: React.FC<SignUpSheetProps> = ({
                 
                 <div className="signup-sheet-actions">
                     <button className="button signup-sheet-signup-button" onClick={handleSignUp}>
-                        <span>Sign Up</span>
+                        <span>SAVE MY PROGRESS</span>
                     </button>
                     <button className="signup-sheet-later-button" onClick={handleClose}>
                         Maybe Later

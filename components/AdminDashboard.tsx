@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import type { Theme } from '../types';
@@ -10,7 +10,7 @@ import type { Theme } from '../types';
 declare const window: any;
 const { auth, GoogleAuthProvider, signInWithPopup } = window.firebase || {};
 
-type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous';
+type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights';
 
 // Helper to parse date key (YYYY-MM-DD) as local date, not UTC
 const parseDateKeyAsLocal = (dateKey: string): Date => {
@@ -1064,6 +1064,381 @@ const AnonymousTab: React.FC<{
     );
 };
 
+// Retention Tab Component
+const RetentionTab: React.FC<{
+    metrics: RetentionMetrics;
+}> = ({ metrics }) => {
+    // Color coding for retention percentages
+    const getRetentionColor = (percent: number): string => {
+        if (percent >= 40) return '#22c55e'; // Green - excellent
+        if (percent >= 25) return '#84cc16'; // Lime - good
+        if (percent >= 15) return '#eab308'; // Yellow - okay
+        if (percent >= 5) return '#f97316'; // Orange - concerning
+        return '#ef4444'; // Red - needs attention
+    };
+
+    return (
+        <div className="admin-tab-content">
+            <h2>Player Retention Analysis</h2>
+            <p className="admin-section-subtitle">
+                Track how well players return after their first play session.
+            </p>
+
+            {/* Overall Retention Summary */}
+            <div className="admin-retention-summary">
+                <div className="admin-retention-stat">
+                    <div className="admin-retention-value" style={{ color: getRetentionColor(metrics.overallD1) }}>
+                        {metrics.overallD1}%
+                    </div>
+                    <div className="admin-retention-label">D1 Retention</div>
+                    <div className="admin-retention-sub">Next day return</div>
+                </div>
+                <div className="admin-retention-stat">
+                    <div className="admin-retention-value" style={{ color: getRetentionColor(metrics.overallD7) }}>
+                        {metrics.overallD7}%
+                    </div>
+                    <div className="admin-retention-label">D7 Retention</div>
+                    <div className="admin-retention-sub">Week 1 return</div>
+                </div>
+                <div className="admin-retention-stat">
+                    <div className="admin-retention-value" style={{ color: getRetentionColor(metrics.overallD28) }}>
+                        {metrics.overallD28}%
+                    </div>
+                    <div className="admin-retention-label">D28 Retention</div>
+                    <div className="admin-retention-sub">Month 1 return</div>
+                </div>
+                <div className="admin-retention-stat">
+                    <div className="admin-retention-value">{metrics.totalNewPlayers}</div>
+                    <div className="admin-retention-label">Total Players</div>
+                    <div className="admin-retention-sub">All time</div>
+                </div>
+            </div>
+
+            {/* Insights Row */}
+            <div className="admin-retention-insights">
+                <div className="admin-insight-card">
+                    <div className="admin-insight-icon">🔥</div>
+                    <div className="admin-insight-content">
+                        <div className="admin-insight-value">{metrics.streakPlayers}</div>
+                        <div className="admin-insight-label">Streak Players</div>
+                        <div className="admin-insight-desc">
+                            {metrics.streakPlayerPercent}% played 3+ consecutive days
+                        </div>
+                    </div>
+                </div>
+                <div className="admin-insight-card">
+                    <div className="admin-insight-icon">🎯</div>
+                    <div className="admin-insight-content">
+                        <div className="admin-insight-value">{metrics.avgPuzzlesBeforeReturn}</div>
+                        <div className="admin-insight-label">Avg Puzzles Before Return</div>
+                        <div className="admin-insight-desc">
+                            Puzzles played on first day by returners
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Cohort Table */}
+            <div className="admin-section">
+                <h3>Weekly Cohort Analysis</h3>
+                <p className="admin-section-desc">
+                    Retention rates by week of first play. D1 = returned next day, D7 = returned within week 1, D28 = returned within month.
+                </p>
+                
+                {metrics.cohorts.length > 0 ? (
+                    <div className="admin-cohort-table">
+                        <div className="admin-cohort-header">
+                            <div className="admin-cohort-col-week">Week</div>
+                            <div className="admin-cohort-col-new">New Players</div>
+                            <div className="admin-cohort-col-d1">D1</div>
+                            <div className="admin-cohort-col-d7">D7</div>
+                            <div className="admin-cohort-col-d28">D28</div>
+                        </div>
+                        {metrics.cohorts.map((cohort) => (
+                            <div key={cohort.weekStart} className="admin-cohort-row">
+                                <div className="admin-cohort-col-week">{cohort.weekLabel}</div>
+                                <div className="admin-cohort-col-new">{cohort.newPlayers}</div>
+                                <div className="admin-cohort-col-d1">
+                                    <span 
+                                        className="admin-retention-badge"
+                                        style={{ backgroundColor: getRetentionColor(cohort.d1Retained) }}
+                                    >
+                                        {cohort.d1Retained}%
+                                    </span>
+                                    <span className="admin-cohort-count">({cohort.d1Count})</span>
+                                </div>
+                                <div className="admin-cohort-col-d7">
+                                    <span 
+                                        className="admin-retention-badge"
+                                        style={{ backgroundColor: getRetentionColor(cohort.d7Retained) }}
+                                    >
+                                        {cohort.d7Retained}%
+                                    </span>
+                                    <span className="admin-cohort-count">({cohort.d7Count})</span>
+                                </div>
+                                <div className="admin-cohort-col-d28">
+                                    <span 
+                                        className="admin-retention-badge"
+                                        style={{ backgroundColor: getRetentionColor(cohort.d28Retained) }}
+                                    >
+                                        {cohort.d28Retained}%
+                                    </span>
+                                    <span className="admin-cohort-count">({cohort.d28Count})</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="admin-no-data">
+                        No cohort data available yet. Data will appear as players complete puzzles.
+                    </div>
+                )}
+            </div>
+
+            {/* Interpretation Guide */}
+            <div className="admin-retention-guide">
+                <h4>How to Read This Data</h4>
+                <ul>
+                    <li><strong>D1 Retention:</strong> Did they come back the very next day? High D1 = strong initial hook.</li>
+                    <li><strong>D7 Retention:</strong> Did they return within the first week? Shows habit formation potential.</li>
+                    <li><strong>D28 Retention:</strong> Long-term stickiness. High D28 = truly engaged players.</li>
+                    <li><strong>Streak Players:</strong> Players who played 3+ days in a row - your most engaged cohort.</li>
+                </ul>
+                <p className="admin-retention-benchmarks">
+                    <strong>Benchmarks:</strong> Casual games typically see D1: 20-30%, D7: 10-20%, D28: 5-10%. 
+                    Daily puzzle games like Wordle can see higher due to FOMO mechanics.
+                </p>
+            </div>
+        </div>
+    );
+};
+
+// Insights Tab Component - Puzzle Quality, Engagement, Feature Usage
+const InsightsTab: React.FC<{
+    puzzleQuality: PuzzleQualityMetrics;
+    engagement: EngagementMetrics;
+    featureUsage: FeatureUsageMetrics;
+}> = ({ puzzleQuality, engagement, featureUsage }) => {
+    // Format time in mm:ss
+    const formatTime = (seconds: number): string => {
+        if (seconds === 0) return '—';
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${String(secs).padStart(2, '0')}`;
+    };
+
+    return (
+        <div className="admin-insights-tab">
+            {/* Panel 1: Puzzle Quality */}
+            <section className="admin-insights-panel">
+                <h2>🧩 Puzzle Quality</h2>
+                <p className="admin-metrics-hint">
+                    Identify which puzzles are too hard/easy, cause frustration, or delight players.
+                </p>
+
+                <h3>Performance by Difficulty</h3>
+                {puzzleQuality.byDifficulty.length > 0 ? (
+                    <div className="admin-puzzle-quality-table">
+                        <div className="admin-pq-header">
+                            <div className="admin-pq-col-diff">Difficulty</div>
+                            <div className="admin-pq-col-plays">Plays</div>
+                            <div className="admin-pq-col-solve">Solve Rate</div>
+                            <div className="admin-pq-col-moves">Avg Moves</div>
+                            <div className="admin-pq-col-time">Avg Time</div>
+                        </div>
+                        {puzzleQuality.byDifficulty.map((stat) => (
+                            <div key={stat.difficulty} className="admin-pq-row">
+                                <div className="admin-pq-col-diff">
+                                    <span className={`admin-diff-badge admin-diff-${stat.difficulty.toLowerCase()}`}>
+                                        {stat.difficulty}
+                                    </span>
+                                </div>
+                                <div className="admin-pq-col-plays">{stat.totalPlays}</div>
+                                <div className="admin-pq-col-solve">
+                                    <span className={`admin-rate-badge ${stat.solveRate >= 70 ? 'good' : stat.solveRate >= 50 ? 'ok' : 'low'}`}>
+                                        {stat.solveRate}%
+                                    </span>
+                                </div>
+                                <div className="admin-pq-col-moves">{stat.avgMoves || '—'}</div>
+                                <div className="admin-pq-col-time">{formatTime(stat.avgTimeSeconds)}</div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="admin-no-data">No puzzle completion data yet.</div>
+                )}
+
+                <div className="admin-puzzle-lists">
+                    <div className="admin-puzzle-list">
+                        <h4>😤 Struggle Puzzles</h4>
+                        <p className="admin-list-hint">High moves + low solve rate</p>
+                        {puzzleQuality.strugglePuzzles.length > 0 ? (
+                            <ul className="admin-puzzle-items">
+                                {puzzleQuality.strugglePuzzles.map((p) => (
+                                    <li key={p.puzzleId} className="admin-puzzle-item struggle">
+                                        <span className="admin-puzzle-id">#{p.puzzleId}</span>
+                                        <span className="admin-puzzle-diff">{p.difficulty}</span>
+                                        <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
+                                        <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="admin-no-items">No struggle puzzles identified</p>
+                        )}
+                    </div>
+                    <div className="admin-puzzle-list">
+                        <h4>😊 Satisfying Puzzles</h4>
+                        <p className="admin-list-hint">High solve rate + low moves</p>
+                        {puzzleQuality.satisfyingPuzzles.length > 0 ? (
+                            <ul className="admin-puzzle-items">
+                                {puzzleQuality.satisfyingPuzzles.map((p) => (
+                                    <li key={p.puzzleId} className="admin-puzzle-item satisfying">
+                                        <span className="admin-puzzle-id">#{p.puzzleId}</span>
+                                        <span className="admin-puzzle-diff">{p.difficulty}</span>
+                                        <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
+                                        <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="admin-no-items">No satisfying puzzles identified</p>
+                        )}
+                    </div>
+                </div>
+                <p className="admin-analyzed-count">Analyzed {puzzleQuality.totalPuzzlesAnalyzed} puzzles with 3+ plays</p>
+            </section>
+
+            {/* Panel 2: Engagement Metrics */}
+            <section className="admin-insights-panel">
+                <h2>💡 Engagement Metrics</h2>
+                <p className="admin-metrics-hint">
+                    Measure player curiosity and feature discovery.
+                </p>
+
+                <div className="admin-engagement-grid">
+                    <div className="admin-engagement-card">
+                        <div className="admin-engagement-value">{engagement.explanationViewRate}%</div>
+                        <div className="admin-engagement-label">Explanation View Rate</div>
+                        <div className="admin-engagement-sub">
+                            {engagement.explanationViews} of {engagement.totalSolves} solves
+                        </div>
+                    </div>
+                    <div className="admin-engagement-card">
+                        <div className="admin-engagement-value">{engagement.badgeViewsPerPlayer}</div>
+                        <div className="admin-engagement-label">Badge Views per Player</div>
+                        <div className="admin-engagement-sub">
+                            {engagement.totalBadgeViews} total views
+                        </div>
+                    </div>
+                    <div className="admin-engagement-card">
+                        <div className="admin-engagement-value">{engagement.bonusParticipationRate}%</div>
+                        <div className="admin-engagement-label">Bonus Round Participation</div>
+                        <div className="admin-engagement-sub">
+                            {engagement.bonusStarts} of {engagement.completedDays} completed days
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Most Viewed Badges</h3>
+                {engagement.topViewedBadges.length > 0 ? (
+                    <div className="admin-badge-table">
+                        <div className="admin-badge-header">
+                            <div className="admin-badge-col-id">Badge</div>
+                            <div className="admin-badge-col-views">Views</div>
+                            <div className="admin-badge-col-unlocks">Unlocks</div>
+                        </div>
+                        {engagement.topViewedBadges.map((badge) => (
+                            <div key={badge.badgeId} className="admin-badge-row">
+                                <div className="admin-badge-col-id">{badge.badgeId}</div>
+                                <div className="admin-badge-col-views">{badge.views}</div>
+                                <div className="admin-badge-col-unlocks">{badge.unlocks}</div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="admin-no-data">No badge view data yet.</div>
+                )}
+            </section>
+
+            {/* Panel 3: Feature Usage */}
+            <section className="admin-insights-panel">
+                <h2>🔧 Feature Usage</h2>
+                <p className="admin-metrics-hint">
+                    Understand how players use optional features.
+                </p>
+
+                <div className="admin-feature-grid">
+                    {/* Archive Usage */}
+                    <div className="admin-feature-section">
+                        <h3>📅 Archive Plays</h3>
+                        <div className="admin-feature-stats">
+                            <div className="admin-feature-stat">
+                                <div className="admin-feature-value">{featureUsage.archivePlays}</div>
+                                <div className="admin-feature-label">Total Plays</div>
+                            </div>
+                            <div className="admin-feature-stat">
+                                <div className="admin-feature-value">{featureUsage.archivePlayersCount}</div>
+                                <div className="admin-feature-label">Players</div>
+                            </div>
+                            <div className="admin-feature-stat">
+                                <div className="admin-feature-value">{featureUsage.avgArchivePlaysPerUser}</div>
+                                <div className="admin-feature-label">Avg per User</div>
+                            </div>
+                        </div>
+
+                        <h4>Days Ago Distribution</h4>
+                        <div className="admin-days-ago-chart">
+                            {Object.entries(featureUsage.daysAgoDistribution).map(([range, count]) => (
+                                <div key={range} className="admin-days-ago-bar">
+                                    <div className="admin-days-ago-label">{range} days</div>
+                                    <div className="admin-days-ago-track">
+                                        <div 
+                                            className="admin-days-ago-fill"
+                                            style={{ 
+                                                width: `${featureUsage.archivePlays > 0 
+                                                    ? (count / featureUsage.archivePlays) * 100 
+                                                    : 0}%` 
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="admin-days-ago-count">{count}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Theme Preference */}
+                    <div className="admin-feature-section">
+                        <h3>🎨 Theme Preference</h3>
+                        <div className="admin-theme-stats">
+                            <div className="admin-theme-bar">
+                                <div 
+                                    className="admin-theme-segment light"
+                                    style={{ flex: featureUsage.themePreferencePercent.light }}
+                                >
+                                    ☀️ {featureUsage.themePreferencePercent.light}%
+                                </div>
+                                <div 
+                                    className="admin-theme-segment dark"
+                                    style={{ flex: featureUsage.themePreferencePercent.dark }}
+                                >
+                                    🌙 {featureUsage.themePreferencePercent.dark}%
+                                </div>
+                            </div>
+                            <div className="admin-theme-counts">
+                                <span>Light: {featureUsage.lightModeUsers} users</span>
+                                <span>Dark: {featureUsage.darkModeUsers} users</span>
+                                <span>Toggles: {featureUsage.themeToggleCount}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
 // Main Admin Dashboard Component
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
@@ -1082,6 +1457,10 @@ export const AdminDashboard: React.FC = () => {
         calculateAnonymousHistoricalMetrics,
         calculateConversionMetrics,
         calculateAnonymousMetrics,
+        calculateRetentionMetrics,
+        calculatePuzzleQualityMetrics,
+        calculateEngagementMetrics,
+        calculateFeatureUsageMetrics,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -1103,6 +1482,22 @@ export const AdminDashboard: React.FC = () => {
     const anonymousMetrics = useMemo(
         () => calculateAnonymousMetrics(),
         [calculateAnonymousMetrics]
+    );
+    const retentionMetrics = useMemo(
+        () => calculateRetentionMetrics(),
+        [calculateRetentionMetrics]
+    );
+    const puzzleQualityMetrics = useMemo(
+        () => calculatePuzzleQualityMetrics(),
+        [calculatePuzzleQualityMetrics]
+    );
+    const engagementMetrics = useMemo(
+        () => calculateEngagementMetrics(),
+        [calculateEngagementMetrics]
+    );
+    const featureUsageMetrics = useMemo(
+        () => calculateFeatureUsageMetrics(),
+        [calculateFeatureUsageMetrics]
     );
 
     const handleMetricClick = (metricType: MetricType, title: string, isAnonymous: boolean = false) => {
@@ -1217,6 +1612,18 @@ export const AdminDashboard: React.FC = () => {
                 >
                     👻 Anonymous
                 </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'retention' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('retention')}
+                >
+                    📈 Retention
+                </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'insights' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('insights')}
+                >
+                    🎯 Insights
+                </button>
             </nav>
 
             <main className="admin-content">
@@ -1244,6 +1651,16 @@ export const AdminDashboard: React.FC = () => {
                         )}
                         {activeTab === 'anonymous' && (
                             <AnonymousTab metrics={anonymousMetrics} />
+                        )}
+                        {activeTab === 'retention' && (
+                            <RetentionTab metrics={retentionMetrics} />
+                        )}
+                        {activeTab === 'insights' && (
+                            <InsightsTab 
+                                puzzleQuality={puzzleQualityMetrics}
+                                engagement={engagementMetrics}
+                                featureUsage={featureUsageMetrics}
+                            />
                         )}
                     </>
                 )}

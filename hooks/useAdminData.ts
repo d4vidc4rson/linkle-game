@@ -122,6 +122,89 @@ export interface AnonymousMetrics {
     };
 }
 
+// Retention cohort data for a single week
+export interface RetentionCohort {
+    weekStart: string; // YYYY-MM-DD (Monday of the week)
+    weekLabel: string; // "Dec 2-8" display format
+    newPlayers: number; // Players who first played this week
+    d1Retained: number; // % who returned day after first play
+    d7Retained: number; // % who returned within 7 days
+    d28Retained: number; // % who returned within 28 days
+    d1Count: number; // Absolute count for D1
+    d7Count: number; // Absolute count for D7
+    d28Count: number; // Absolute count for D28
+}
+
+export interface RetentionMetrics {
+    cohorts: RetentionCohort[];
+    overallD1: number; // Overall D1 retention %
+    overallD7: number; // Overall D7 retention %
+    overallD28: number; // Overall D28 retention %
+    totalNewPlayers: number;
+    avgPuzzlesBeforeReturn: number; // Avg puzzles played before first return
+    streakPlayers: number; // Players who played 3+ consecutive days
+    streakPlayerPercent: number;
+}
+
+// Puzzle Quality metrics for Insights tab
+export interface DifficultyStats {
+    difficulty: string;
+    totalPlays: number;
+    solves: number;
+    solveRate: number;
+    avgMoves: number;
+    avgTimeSeconds: number;
+}
+
+export interface PuzzleStats {
+    puzzleId: number;
+    difficulty: string;
+    plays: number;
+    solves: number;
+    solveRate: number;
+    avgMoves: number;
+    avgTimeSeconds: number;
+}
+
+export interface PuzzleQualityMetrics {
+    byDifficulty: DifficultyStats[];
+    strugglePuzzles: PuzzleStats[]; // High moves + low solve rate
+    satisfyingPuzzles: PuzzleStats[]; // Low moves + high solve rate
+    totalPuzzlesAnalyzed: number;
+}
+
+// Engagement metrics for Insights tab
+export interface BadgeEngagement {
+    badgeId: string;
+    views: number;
+    unlocks: number;
+    viewedWhileUnlocked: number; // Views where badge was already unlocked
+}
+
+export interface EngagementMetrics {
+    explanationViewRate: number; // % of solves that viewed explanation
+    explanationViews: number;
+    totalSolves: number;
+    badgeViewsPerPlayer: number;
+    totalBadgeViews: number;
+    topViewedBadges: BadgeEngagement[];
+    bonusParticipationRate: number; // % of completed days that started bonus
+    bonusStarts: number;
+    completedDays: number;
+}
+
+// Feature usage metrics for Insights tab
+export interface FeatureUsageMetrics {
+    archivePlays: number;
+    archivePlayersCount: number;
+    avgArchivePlaysPerUser: number;
+    daysAgoDistribution: Record<string, number>; // "1-7": 10, "8-14": 5, etc.
+    lightModeUsers: number;
+    darkModeUsers: number;
+    themeToggleCount: number;
+    themePreferencePercent: { light: number; dark: number };
+}
+
 export interface DailyDataPoint {
     date: string;
     displayDate: string;
@@ -902,6 +985,418 @@ export const useAdminData = (user: any) => {
         };
     }, [analyticsEvents]);
 
+    // Calculate retention cohort metrics from analytics events
+    const calculateRetentionMetrics = useCallback((): RetentionMetrics => {
+        // Build visitor activity map: visitorId -> { firstSeen, allPlayDates }
+        const visitorActivity: Record<string, { firstSeen: string; playDates: Set<string> }> = {};
+        
+        analyticsEvents
+            .filter(e => e.event === 'puzzle_completed')
+            .forEach(e => {
+                const vid = e.visitorId;
+                const date = e.date;
+                
+                if (!visitorActivity[vid]) {
+                    visitorActivity[vid] = { firstSeen: date, playDates: new Set() };
+                }
+                
+                visitorActivity[vid].playDates.add(date);
+                
+                // Update firstSeen if this date is earlier
+                if (date < visitorActivity[vid].firstSeen) {
+                    visitorActivity[vid].firstSeen = date;
+                }
+            });
+        
+        const visitors = Object.entries(visitorActivity);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayStr = today.toISOString().split('T')[0];
+        
+        // Helper to calculate days between dates
+        const daysBetween = (d1: string, d2: string): number => {
+            const date1 = new Date(d1);
+            const date2 = new Date(d2);
+            return Math.floor((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
+        };
+        
+        // Helper to get Monday of a week
+        const getMonday = (dateStr: string): string => {
+            const date = new Date(dateStr);
+            const day = date.getDay();
+            const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+            date.setDate(diff);
+            return date.toISOString().split('T')[0];
+        };
+        
+        // Helper to format week label
+        const formatWeekLabel = (mondayStr: string): string => {
+            const monday = new Date(mondayStr);
+            const sunday = new Date(monday);
+            sunday.setDate(sunday.getDate() + 6);
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${monthNames[monday.getMonth()]} ${monday.getDate()}-${sunday.getDate()}`;
+        };
+        
+        // Group visitors by week of first play
+        const cohortsByWeek: Record<string, { 
+            visitors: Array<{ firstSeen: string; playDates: Set<string> }>;
+        }> = {};
+        
+        visitors.forEach(([vid, data]) => {
+            const weekStart = getMonday(data.firstSeen);
+            if (!cohortsByWeek[weekStart]) {
+                cohortsByWeek[weekStart] = { visitors: [] };
+            }
+            cohortsByWeek[weekStart].visitors.push(data);
+        });
+        
+        // Calculate retention for each cohort
+        const cohorts: RetentionCohort[] = Object.entries(cohortsByWeek)
+            .sort((a, b) => b[0].localeCompare(a[0])) // Newest first
+            .slice(0, 8) // Last 8 weeks
+            .map(([weekStart, { visitors: cohortVisitors }]) => {
+                let d1Count = 0;
+                let d7Count = 0;
+                let d28Count = 0;
+                
+                cohortVisitors.forEach(visitor => {
+                    const firstPlayDate = visitor.firstSeen;
+                    const playDatesArr = Array.from(visitor.playDates);
+                    
+                    // Check D1: Did they play on day after first play?
+                    const nextDay = new Date(firstPlayDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    const nextDayStr = nextDay.toISOString().split('T')[0];
+                    if (visitor.playDates.has(nextDayStr)) {
+                        d1Count++;
+                    }
+                    
+                    // Check D7: Did they play any day between day 2-7 after first play?
+                    const hasD7Return = playDatesArr.some(date => {
+                        const daysAfter = daysBetween(firstPlayDate, date);
+                        return daysAfter >= 2 && daysAfter <= 7;
+                    });
+                    if (hasD7Return) d7Count++;
+                    
+                    // Check D28: Did they play any day between day 8-28 after first play?
+                    const hasD28Return = playDatesArr.some(date => {
+                        const daysAfter = daysBetween(firstPlayDate, date);
+                        return daysAfter >= 8 && daysAfter <= 28;
+                    });
+                    if (hasD28Return) d28Count++;
+                });
+                
+                const newPlayers = cohortVisitors.length;
+                
+                return {
+                    weekStart,
+                    weekLabel: formatWeekLabel(weekStart),
+                    newPlayers,
+                    d1Retained: newPlayers > 0 ? Math.round((d1Count / newPlayers) * 100) : 0,
+                    d7Retained: newPlayers > 0 ? Math.round((d7Count / newPlayers) * 100) : 0,
+                    d28Retained: newPlayers > 0 ? Math.round((d28Count / newPlayers) * 100) : 0,
+                    d1Count,
+                    d7Count,
+                    d28Count,
+                };
+            });
+        
+        // Calculate overall metrics
+        let totalD1 = 0, totalD7 = 0, totalD28 = 0, totalNew = 0;
+        let totalPuzzlesBeforeReturn = 0, returnVisitorCount = 0;
+        let streakPlayers = 0;
+        
+        visitors.forEach(([vid, data]) => {
+            totalNew++;
+            const firstPlayDate = data.firstSeen;
+            const playDatesArr = Array.from(data.playDates).sort();
+            
+            // D1
+            const nextDay = new Date(firstPlayDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            if (data.playDates.has(nextDay.toISOString().split('T')[0])) totalD1++;
+            
+            // D7
+            if (playDatesArr.some(d => { const days = daysBetween(firstPlayDate, d); return days >= 2 && days <= 7; })) totalD7++;
+            
+            // D28
+            if (playDatesArr.some(d => { const days = daysBetween(firstPlayDate, d); return days >= 8 && days <= 28; })) totalD28++;
+            
+            // Calculate puzzles before first return
+            if (playDatesArr.length > 1) {
+                // Find puzzles played on first day
+                const firstDayPuzzles = analyticsEvents.filter(e => 
+                    e.visitorId === vid && 
+                    e.event === 'puzzle_completed' && 
+                    e.date === firstPlayDate
+                ).length;
+                totalPuzzlesBeforeReturn += firstDayPuzzles;
+                returnVisitorCount++;
+            }
+            
+            // Check for 3+ consecutive days (streak player)
+            if (playDatesArr.length >= 3) {
+                for (let i = 0; i < playDatesArr.length - 2; i++) {
+                    const d1 = new Date(playDatesArr[i]);
+                    const d2 = new Date(playDatesArr[i + 1]);
+                    const d3 = new Date(playDatesArr[i + 2]);
+                    
+                    const diff1 = (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
+                    const diff2 = (d3.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24);
+                    
+                    if (diff1 === 1 && diff2 === 1) {
+                        streakPlayers++;
+                        break;
+                    }
+                }
+            }
+        });
+        
+        return {
+            cohorts,
+            overallD1: totalNew > 0 ? Math.round((totalD1 / totalNew) * 100) : 0,
+            overallD7: totalNew > 0 ? Math.round((totalD7 / totalNew) * 100) : 0,
+            overallD28: totalNew > 0 ? Math.round((totalD28 / totalNew) * 100) : 0,
+            totalNewPlayers: totalNew,
+            avgPuzzlesBeforeReturn: returnVisitorCount > 0 
+                ? Math.round((totalPuzzlesBeforeReturn / returnVisitorCount) * 10) / 10 
+                : 0,
+            streakPlayers,
+            streakPlayerPercent: totalNew > 0 ? Math.round((streakPlayers / totalNew) * 100) : 0,
+        };
+    }, [analyticsEvents]);
+
+    // Calculate Puzzle Quality metrics for Insights tab
+    const calculatePuzzleQualityMetrics = useCallback((): PuzzleQualityMetrics => {
+        const puzzleCompletions = analyticsEvents.filter(e => e.event === 'puzzle_completed');
+        
+        // Aggregate by difficulty
+        const difficultyMap: Record<string, { plays: number; solves: number; totalMoves: number; totalTime: number; movesCount: number; timeCount: number }> = {};
+        
+        // Aggregate by puzzle ID
+        const puzzleMap: Record<number, { difficulty: string; plays: number; solves: number; totalMoves: number; totalTime: number; movesCount: number; timeCount: number }> = {};
+        
+        puzzleCompletions.forEach(e => {
+            const diff = e.difficulty || 'unknown';
+            const puzzleId = e.puzzleId;
+            const solved = e.solved === true;
+            const moves = e.movesCount ?? 0;
+            const time = e.timeSpentSeconds ?? 0;
+            
+            // By difficulty
+            if (!difficultyMap[diff]) {
+                difficultyMap[diff] = { plays: 0, solves: 0, totalMoves: 0, totalTime: 0, movesCount: 0, timeCount: 0 };
+            }
+            difficultyMap[diff].plays++;
+            if (solved) difficultyMap[diff].solves++;
+            if (moves > 0) {
+                difficultyMap[diff].totalMoves += moves;
+                difficultyMap[diff].movesCount++;
+            }
+            if (time > 0) {
+                difficultyMap[diff].totalTime += time;
+                difficultyMap[diff].timeCount++;
+            }
+            
+            // By puzzle ID
+            if (puzzleId !== undefined && puzzleId !== null) {
+                if (!puzzleMap[puzzleId]) {
+                    puzzleMap[puzzleId] = { difficulty: diff, plays: 0, solves: 0, totalMoves: 0, totalTime: 0, movesCount: 0, timeCount: 0 };
+                }
+                puzzleMap[puzzleId].plays++;
+                if (solved) puzzleMap[puzzleId].solves++;
+                if (moves > 0) {
+                    puzzleMap[puzzleId].totalMoves += moves;
+                    puzzleMap[puzzleId].movesCount++;
+                }
+                if (time > 0) {
+                    puzzleMap[puzzleId].totalTime += time;
+                    puzzleMap[puzzleId].timeCount++;
+                }
+            }
+        });
+        
+        // Convert difficulty map to array
+        const byDifficulty: DifficultyStats[] = ['easy', 'hard', 'impossible', 'bonus']
+            .filter(d => difficultyMap[d])
+            .map(d => {
+                const stats = difficultyMap[d];
+                return {
+                    difficulty: d.charAt(0).toUpperCase() + d.slice(1),
+                    totalPlays: stats.plays,
+                    solves: stats.solves,
+                    solveRate: stats.plays > 0 ? Math.round((stats.solves / stats.plays) * 100) : 0,
+                    avgMoves: stats.movesCount > 0 ? Math.round((stats.totalMoves / stats.movesCount) * 10) / 10 : 0,
+                    avgTimeSeconds: stats.timeCount > 0 ? Math.round(stats.totalTime / stats.timeCount) : 0,
+                };
+            });
+        
+        // Convert puzzle map to array with stats
+        const puzzleStats: PuzzleStats[] = Object.entries(puzzleMap)
+            .filter(([_, stats]) => stats.plays >= 3) // Only include puzzles with enough data
+            .map(([id, stats]) => ({
+                puzzleId: parseInt(id),
+                difficulty: stats.difficulty,
+                plays: stats.plays,
+                solves: stats.solves,
+                solveRate: stats.plays > 0 ? Math.round((stats.solves / stats.plays) * 100) : 0,
+                avgMoves: stats.movesCount > 0 ? Math.round((stats.totalMoves / stats.movesCount) * 10) / 10 : 0,
+                avgTimeSeconds: stats.timeCount > 0 ? Math.round(stats.totalTime / stats.timeCount) : 0,
+            }));
+        
+        // Struggle puzzles: low solve rate + high moves (weighted score)
+        const strugglePuzzles = [...puzzleStats]
+            .filter(p => p.solveRate < 80) // Below 80% solve rate
+            .sort((a, b) => {
+                const scoreA = (100 - a.solveRate) + (a.avgMoves * 5);
+                const scoreB = (100 - b.solveRate) + (b.avgMoves * 5);
+                return scoreB - scoreA;
+            })
+            .slice(0, 5);
+        
+        // Satisfying puzzles: high solve rate + low moves
+        const satisfyingPuzzles = [...puzzleStats]
+            .filter(p => p.solveRate >= 70) // At least 70% solve rate
+            .sort((a, b) => {
+                const scoreA = a.solveRate - (a.avgMoves * 3);
+                const scoreB = b.solveRate - (b.avgMoves * 3);
+                return scoreB - scoreA;
+            })
+            .slice(0, 5);
+        
+        return {
+            byDifficulty,
+            strugglePuzzles,
+            satisfyingPuzzles,
+            totalPuzzlesAnalyzed: puzzleStats.length,
+        };
+    }, [analyticsEvents]);
+
+    // Calculate Engagement metrics for Insights tab
+    const calculateEngagementMetrics = useCallback((): EngagementMetrics => {
+        const explanationViews = analyticsEvents.filter(e => e.event === 'explanation_viewed').length;
+        const puzzleSolves = analyticsEvents.filter(e => e.event === 'puzzle_completed' && e.solved === true).length;
+        
+        const badgeViews = analyticsEvents.filter(e => e.event === 'badge_viewed');
+        const badgeUnlocks = analyticsEvents.filter(e => e.event === 'badge_unlocked');
+        const bonusStarts = analyticsEvents.filter(e => e.event === 'bonus_round_started').length;
+        
+        // Count unique visitors who viewed badges
+        const badgeViewers = new Set(badgeViews.map(e => e.visitorId)).size;
+        
+        // Count completed days (all 3 puzzles done in a day)
+        const completedDaysByVisitor: Record<string, Set<string>> = {};
+        analyticsEvents
+            .filter(e => e.event === 'puzzle_completed' && e.difficulty !== 'bonus')
+            .forEach(e => {
+                const vid = e.visitorId;
+                const date = e.date;
+                if (!completedDaysByVisitor[vid]) completedDaysByVisitor[vid] = new Set();
+                completedDaysByVisitor[vid].add(`${date}_${e.difficulty}`);
+            });
+        
+        // Count days where a visitor completed all 3 puzzles
+        let completedDays = 0;
+        Object.values(completedDaysByVisitor).forEach(dateSet => {
+            const dateMap: Record<string, Set<string>> = {};
+            dateSet.forEach(key => {
+                const [date, diff] = key.split('_');
+                if (!dateMap[date]) dateMap[date] = new Set();
+                dateMap[date].add(diff);
+            });
+            Object.values(dateMap).forEach(diffs => {
+                if (diffs.size >= 3) completedDays++;
+            });
+        });
+        
+        // Aggregate badge views by badge ID
+        const badgeEngagementMap: Record<string, { views: number; unlocks: number; viewedWhileUnlocked: number }> = {};
+        badgeViews.forEach(e => {
+            const id = e.badgeId || 'unknown';
+            if (!badgeEngagementMap[id]) badgeEngagementMap[id] = { views: 0, unlocks: 0, viewedWhileUnlocked: 0 };
+            badgeEngagementMap[id].views++;
+            if (e.wasUnlocked) badgeEngagementMap[id].viewedWhileUnlocked++;
+        });
+        badgeUnlocks.forEach(e => {
+            const id = e.badgeId || 'unknown';
+            if (!badgeEngagementMap[id]) badgeEngagementMap[id] = { views: 0, unlocks: 0, viewedWhileUnlocked: 0 };
+            badgeEngagementMap[id].unlocks++;
+        });
+        
+        const topViewedBadges: BadgeEngagement[] = Object.entries(badgeEngagementMap)
+            .map(([id, stats]) => ({ badgeId: id, ...stats }))
+            .sort((a, b) => b.views - a.views)
+            .slice(0, 5);
+        
+        return {
+            explanationViewRate: puzzleSolves > 0 ? Math.round((explanationViews / puzzleSolves) * 100) : 0,
+            explanationViews,
+            totalSolves: puzzleSolves,
+            badgeViewsPerPlayer: badgeViewers > 0 ? Math.round((badgeViews.length / badgeViewers) * 10) / 10 : 0,
+            totalBadgeViews: badgeViews.length,
+            topViewedBadges,
+            bonusParticipationRate: completedDays > 0 ? Math.round((bonusStarts / completedDays) * 100) : 0,
+            bonusStarts,
+            completedDays,
+        };
+    }, [analyticsEvents]);
+
+    // Calculate Feature Usage metrics for Insights tab
+    const calculateFeatureUsageMetrics = useCallback((): FeatureUsageMetrics => {
+        const archiveEvents = analyticsEvents.filter(e => e.event === 'archive_puzzle_started');
+        const themeEvents = analyticsEvents.filter(e => e.event === 'theme_changed');
+        
+        // Archive stats
+        const archivePlayers = new Set(archiveEvents.map(e => e.visitorId));
+        
+        // Days ago distribution
+        const daysAgoDistribution: Record<string, number> = {
+            '1-7': 0,
+            '8-14': 0,
+            '15-30': 0,
+            '30+': 0,
+        };
+        archiveEvents.forEach(e => {
+            const daysAgo = e.daysAgo || 0;
+            if (daysAgo <= 7) daysAgoDistribution['1-7']++;
+            else if (daysAgo <= 14) daysAgoDistribution['8-14']++;
+            else if (daysAgo <= 30) daysAgoDistribution['15-30']++;
+            else daysAgoDistribution['30+']++;
+        });
+        
+        // Theme preference - get last theme change per user
+        const userThemes: Record<string, string> = {};
+        themeEvents.forEach(e => {
+            userThemes[e.visitorId] = e.newTheme;
+        });
+        
+        let lightUsers = 0;
+        let darkUsers = 0;
+        Object.values(userThemes).forEach(theme => {
+            if (theme === 'light') lightUsers++;
+            else if (theme === 'dark') darkUsers++;
+        });
+        
+        const totalThemeUsers = lightUsers + darkUsers;
+        
+        return {
+            archivePlays: archiveEvents.length,
+            archivePlayersCount: archivePlayers.size,
+            avgArchivePlaysPerUser: archivePlayers.size > 0 
+                ? Math.round((archiveEvents.length / archivePlayers.size) * 10) / 10 
+                : 0,
+            daysAgoDistribution,
+            lightModeUsers: lightUsers,
+            darkModeUsers: darkUsers,
+            themeToggleCount: themeEvents.length,
+            themePreferencePercent: {
+                light: totalThemeUsers > 0 ? Math.round((lightUsers / totalThemeUsers) * 100) : 50,
+                dark: totalThemeUsers > 0 ? Math.round((darkUsers / totalThemeUsers) * 100) : 50,
+            },
+        };
+    }, [analyticsEvents]);
+
     return {
         players,
         loading,
@@ -913,6 +1408,10 @@ export const useAdminData = (user: any) => {
         calculateAnonymousHistoricalMetrics,
         calculateConversionMetrics,
         calculateAnonymousMetrics,
+        calculateRetentionMetrics,
+        calculatePuzzleQualityMetrics,
+        calculateEngagementMetrics,
+        calculateFeatureUsageMetrics,
         getLeaderboard,
         searchPlayers,
     };

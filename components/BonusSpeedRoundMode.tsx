@@ -84,6 +84,7 @@ export const BonusSpeedRoundMode = () => {
     const [bonusLockedSlots, setBonusLockedSlots] = useState<boolean[]>(Array(9).fill(false));
     const [bonusTriesLeft, setBonusTriesLeft] = useState(1);
     const [bonusFeedback, setBonusFeedback] = useState('');
+    const [bonusMoveCount, setBonusMoveCount] = useState(0); // Track tile swaps for bonus round analytics
     const [streakWasReset, setStreakWasReset] = useState(false);
     const [dayStreakWasReset, setDayStreakWasReset] = useState(false);
     const [introMode, setIntroMode] = useState<IntroMode>('play');
@@ -112,6 +113,12 @@ export const BonusSpeedRoundMode = () => {
         trackPuzzleCompleted,
         trackSignupPromptShown,
         trackSignupCompleted,
+        trackExplanationViewed,
+        trackBadgeViewed,
+        trackBadgeUnlocked,
+        trackArchivePuzzleStarted,
+        trackBonusRoundStarted,
+        trackThemeChanged,
     } = useAnalytics();
 
     // Load existing results for today
@@ -135,9 +142,16 @@ export const BonusSpeedRoundMode = () => {
         impossible: 0
     };
 
-    const handlePuzzleComplete = (result: DailyResult, puzzleType: DailyPuzzleDifficulty) => {
-        // Track puzzle completion for analytics
-        trackPuzzleCompleted(puzzleType, result.solved);
+    const handlePuzzleComplete = (result: DailyResult, puzzleType: DailyPuzzleDifficulty, puzzleMoveCount: number) => {
+        // Track puzzle completion for analytics with enhanced data
+        const puzzleDate = formatDateKey(targetDate);
+        const puzzleId = safePuzzleIndices[puzzleType];
+        trackPuzzleCompleted(puzzleType, result.solved, {
+            puzzleId,
+            puzzleDate,
+            triesUsed: result.triesUsed,
+            movesCount: puzzleMoveCount,
+        });
         
         setPuzzleResults(prev => ({
             ...prev,
@@ -166,12 +180,14 @@ export const BonusSpeedRoundMode = () => {
     const prevViewRef = useRef<DailyModeView>('start');
     useEffect(() => {
         if (view === 'playing' && prevViewRef.current !== 'playing') {
-            // Track that a puzzle was started
+            // Track that a puzzle was started with enhanced data
             const difficulty = isBonusRound ? 'bonus' : currentPuzzleType;
-            trackPuzzleStarted(difficulty);
+            const puzzleDate = formatDateKey(targetDate);
+            const puzzleId = isBonusRound ? undefined : safePuzzleIndices[currentPuzzleType];
+            trackPuzzleStarted(difficulty, puzzleId, puzzleDate);
         }
         prevViewRef.current = view;
-    }, [view, currentPuzzleType, isBonusRound, trackPuzzleStarted]);
+    }, [view, currentPuzzleType, isBonusRound, trackPuzzleStarted, targetDate, safePuzzleIndices]);
 
     const {
         gameState,
@@ -195,6 +211,7 @@ export const BonusSpeedRoundMode = () => {
         lossAnimationPropertiesRef,
         animateFeedback,
         animateGridShake,
+        moveCount,
         handlePointerDown,
         handleSubmit,
         handleShowExplanation,
@@ -307,9 +324,14 @@ export const BonusSpeedRoundMode = () => {
             // Capture current timeRemaining value
             const currentTimeRemaining = timeRemaining;
             const isCorrect = JSON.stringify(bonusBoardState) === JSON.stringify(bonusPuzzle.solution);
+            const puzzleDate = formatDateKey(targetDate);
             
-            // Track bonus puzzle completion for analytics
-            trackPuzzleCompleted('bonus', isCorrect);
+            // Track bonus puzzle completion for analytics with enhanced data
+            trackPuzzleCompleted('bonus', isCorrect, {
+                puzzleDate,
+                triesUsed: 1, // Bonus round is single attempt
+                movesCount: bonusMoveCount,
+            });
             // Calculate time used: timer is 60 seconds, so timeUsed = 60 - timeRemaining
             // Or use actual elapsed time if bonusStartTime is available (more accurate)
             const timeUsed = bonusStartTime 
@@ -504,6 +526,8 @@ export const BonusSpeedRoundMode = () => {
                         [newBoardState[currentDragIndex], newBoardState[dropIndex]] = [newBoardState[dropIndex], newBoardState[currentDragIndex]];
                         return newBoardState;
                     });
+                    // Track the move for analytics
+                    setBonusMoveCount(prev => prev + 1);
                 }
             }
             
@@ -537,6 +561,7 @@ export const BonusSpeedRoundMode = () => {
         setTheme(newTheme);
         document.body.dataset.theme = newTheme;
         localStorage.setItem('linkleTheme', newTheme);
+        trackThemeChanged(newTheme);
     };
 
     const handleResetToday = () => {
@@ -576,6 +601,14 @@ export const BonusSpeedRoundMode = () => {
         setShowAuthModal(true);
         // Track signup prompt shown for analytics
         trackSignupPromptShown();
+    };
+
+    // Wrapper for handleShowExplanation to add analytics tracking
+    const handleShowExplanationWithTracking = () => {
+        const difficulty = isBonusRound ? 'bonus' : currentPuzzleType;
+        const puzzleDate = formatDateKey(targetDate);
+        trackExplanationViewed(difficulty, puzzleDate);
+        handleShowExplanation();
     };
 
     const handleIntroContinue = () => {
@@ -638,6 +671,9 @@ export const BonusSpeedRoundMode = () => {
             setOverlayHeight(0);
             setOverlayColor('rgba(41, 98, 255, 0.4)'); // Reset to blue
             setGameState('loading');
+            setBonusMoveCount(0); // Reset move count for bonus round
+            // Track bonus round started
+            trackBonusRoundStarted(formatDateKey(targetDate));
         
         // Load bonus puzzle
         setTimeout(() => {
@@ -706,6 +742,22 @@ export const BonusSpeedRoundMode = () => {
                 console.warn(`No puzzles found for date: ${dateKey}`);
             }
             return;
+        }
+        
+        // Track archive puzzle started (for non-today dates)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(date);
+        selectedDate.setHours(0, 0, 0, 0);
+        if (selectedDate.getTime() !== today.getTime()) {
+            // Find first incomplete puzzle or default to easy
+            const dayResults = playerData.dailyResults?.[dateKey];
+            let difficulty: 'easy' | 'hard' | 'impossible' = 'easy';
+            if (!dayResults?.easy) difficulty = 'easy';
+            else if (!dayResults?.hard) difficulty = 'hard';
+            else if (!dayResults?.impossible) difficulty = 'impossible';
+            
+            trackArchivePuzzleStarted(difficulty, dateKey, puzzlesForDate[difficulty]);
         }
         
         // Reset game state to ensure clean start (no solved animations)
@@ -1089,7 +1141,7 @@ export const BonusSpeedRoundMode = () => {
                                         {currentPuzzle && gameState === 'solved' && (
                                             isBonusRound ? (
                                                 <div className="solved-buttons daily-solved-buttons">
-                                                    <button className="button button-outline" onClick={handleShowExplanation}>
+                                                    <button className="button button-outline" onClick={handleShowExplanationWithTracking}>
                                                         <span>Show Linkle</span>
                                                     </button>
                                                     <button className="button button-bonus" onClick={handleShowStats}>
@@ -1101,7 +1153,7 @@ export const BonusSpeedRoundMode = () => {
                                                     isLastPuzzle={isLastPuzzle}
                                                     onNextPuzzle={handleNextPuzzle}
                                                     onShowStats={handleShowStats}
-                                                    onShowExplanation={handleShowExplanation}
+                                                    onShowExplanation={handleShowExplanationWithTracking}
                                                 />
                                             )
                                         )}

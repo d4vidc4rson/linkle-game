@@ -32,7 +32,7 @@ export const useDailyGameLogic = (
     targetDate: Date,
     currentPuzzleType: DailyPuzzleDifficulty,
     puzzleIndices: { easy: number; hard: number; impossible: number } | null,
-    onPuzzleComplete: (result: DailyResult, puzzleType: DailyPuzzleDifficulty) => void,
+    onPuzzleComplete: (result: DailyResult, puzzleType: DailyPuzzleDifficulty, moveCount: number) => void,
     onAllPuzzlesComplete: () => void
 ) => {
     const [gameState, setGameState] = useState<GameState>('loading');
@@ -51,6 +51,7 @@ export const useDailyGameLogic = (
     const [badgePendingOnModalClose, setBadgePendingOnModalClose] = useState<Badge | null>(null);
     const [animateFeedback, setAnimateFeedback] = useState(false);
     const [animateGridShake, setAnimateGridShake] = useState(false);
+    const [moveCount, setMoveCount] = useState(0); // Track tile swaps for analytics
 
     const puzzleStartTimeRef = useRef<number | null>(null);
     const loadedPuzzleRef = useRef<string | null>(null); // Track which puzzle we've loaded to prevent reloads
@@ -224,6 +225,7 @@ export const useDailyGameLogic = (
             setBoardState(shuffleArray([...newPuzzle.solution]));
             setLockedSlots(Array(9).fill(false));
             setTriesLeft(existingResult ? existingResult.triesUsed : initialTries);
+            setMoveCount(0); // Reset move count for new puzzle
             setFeedback('');
             // Don't clear finalNarrative, winMessageBase, winMessageBonus, or solvedStatus if we're reloading an already-solved puzzle
             if (!existingResult) {
@@ -291,6 +293,8 @@ export const useDailyGameLogic = (
                          const newBoardState = [...boardState];
                          [newBoardState[prevDragState.index], newBoardState[dropIndex]] = [newBoardState[dropIndex], newBoardState[prevDragState.index]];
                          setBoardState(newBoardState);
+                         // Track the move for analytics
+                         setMoveCount(prev => prev + 1);
                     }
                 }
                 return { isDragging: false, index: -1, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0 };
@@ -404,7 +408,7 @@ export const useDailyGameLogic = (
         };
         
         dailyResults[dateKey][currentPuzzleType] = dailyResult;
-        onPuzzleComplete(dailyResult, currentPuzzleType);
+        onPuzzleComplete(dailyResult, currentPuzzleType, moveCount);
         
         // Regular mode: update stats and badges
         const newStreak = playerData.currentStreak + 1;
@@ -576,7 +580,7 @@ export const useDailyGameLogic = (
             };
             
             dailyResults[dateKey][currentPuzzleType] = dailyResult;
-            onPuzzleComplete(dailyResult, currentPuzzleType);
+            onPuzzleComplete(dailyResult, currentPuzzleType, moveCount);
             
             // Regular mode: update badges (reset puzzle streak, but keep day streak)
             const newBadges = playerData.badges.map(badge => {
@@ -704,6 +708,7 @@ export const useDailyGameLogic = (
         lossAnimationPropertiesRef,
         animateFeedback,
         animateGridShake,
+        moveCount,
         handlePointerDown,
         handleSubmit,
         handleShowExplanation,

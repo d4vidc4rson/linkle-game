@@ -4,6 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Badge, AuthMode } from '../types';
 import { CloseIcon } from './Icons';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 // --- Firebase Services (for AuthModal) ---
 declare const window: any;
@@ -49,6 +50,13 @@ interface BadgeUnlockModalProps {
 }
 
 export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlockModalProps) => {
+    const { trackBadgeUnlocked } = useAnalytics();
+    
+    // Track badge unlocked when modal is shown
+    useEffect(() => {
+        trackBadgeUnlocked(badge.id, badge.name);
+    }, [badge.id, badge.name, trackBadgeUnlocked]);
+    
     const handleSignUp = () => {
         onClose();
         if (onShowAuth) onShowAuth();
@@ -87,6 +95,13 @@ interface BadgeDetailModalProps {
 }
 
 const BadgeDetailModal = ({ badge, onClose, user, onShowAuth }: BadgeDetailModalProps) => {
+    const { trackBadgeViewed } = useAnalytics();
+    
+    // Track badge viewed when modal is shown
+    useEffect(() => {
+        trackBadgeViewed(badge.id, badge.unlocked);
+    }, [badge.id, badge.unlocked, trackBadgeViewed]);
+    
     const handleSignUp = () => {
         onClose();
         if (onShowAuth) onShowAuth();

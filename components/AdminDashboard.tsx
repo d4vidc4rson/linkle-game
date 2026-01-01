@@ -1,17 +1,30 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import type { Theme } from '../types';
+import {
+    LineChart,
+    Line,
+    BarChart,
+    Bar,
+    ComposedChart,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from 'recharts';
 
 // Firebase services for Google sign-in
 declare const window: any;
 const { auth, GoogleAuthProvider, signInWithPopup } = window.firebase || {};
 
-type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights';
+type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends';
 
 // Helper to parse date key (YYYY-MM-DD) as local date, not UTC
 const parseDateKeyAsLocal = (dateKey: string): Date => {
@@ -1495,12 +1508,293 @@ const InsightsTab: React.FC<{
     );
 };
 
+// Trends Tab Component - Time-series charts for game health
+type TrendsUserFilter = 'all' | 'signedUp' | 'anonymous';
+
+const TrendsTab: React.FC<{
+    historicalData: DailyDataPoint[];
+    retentionData: RetentionMetrics;
+    winRateData: WinRateTrendPoint[];
+    engagementData: EngagementTrendPoint[];
+    timeRange: TimeRange;
+    onTimeRangeChange: (range: TimeRange) => void;
+    userFilter: TrendsUserFilter;
+    onUserFilterChange: (filter: TrendsUserFilter) => void;
+    theme: 'light' | 'dark';
+}> = ({ historicalData, retentionData, winRateData, engagementData, timeRange, onTimeRangeChange, userFilter, onUserFilterChange, theme }) => {
+    const isDark = theme === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+    const textColor = isDark ? '#f0f0f0' : '#331922';
+    
+    const TIME_RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
+        { value: '7days', label: '7 Days' },
+        { value: '14days', label: '14 Days' },
+        { value: '28days', label: '28 Days' },
+        { value: 'all', label: 'All Time' },
+    ];
+    
+    const USER_FILTER_OPTIONS: { value: TrendsUserFilter; label: string }[] = [
+        { value: 'all', label: 'All' },
+        { value: 'signedUp', label: 'Signed Up' },
+        { value: 'anonymous', label: 'Anonymous' },
+    ];
+    
+    const filterHints: Record<TrendsUserFilter, string> = {
+        'all': 'Showing all players (signed-up + anonymous)',
+        'signedUp': 'Showing signed-up users only',
+        'anonymous': 'Showing anonymous visitors only',
+    };
+
+    // Custom tooltip for multi-line charts
+    const MultiLineTooltip = ({ active, payload, label }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="trends-tooltip">
+                    <p className="trends-tooltip-label">{label}</p>
+                    {payload.map((entry: any, idx: number) => (
+                        <p key={idx} className="trends-tooltip-value" style={{ color: entry.color }}>
+                            {entry.name}: {entry.value}{entry.unit || ''}
+                        </p>
+                    ))}
+                </div>
+            );
+        }
+        return null;
+    };
+
+    return (
+        <div className="admin-trends-tab">
+            <div className="admin-trends-header">
+                <h2>📈 Trends Over Time</h2>
+                <div className="admin-trends-controls">
+                    <div className="admin-user-type-toggle">
+                        {USER_FILTER_OPTIONS.map(opt => (
+                            <button
+                                key={opt.value}
+                                className={`admin-toggle-option ${userFilter === opt.value ? 'active' : ''}`}
+                                onClick={() => onUserFilterChange(opt.value)}
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="admin-time-range-selector">
+                        {TIME_RANGE_OPTIONS.map(opt => (
+                            <button
+                                key={opt.value}
+                                className={`admin-time-btn ${timeRange === opt.value ? 'active' : ''}`}
+                                onClick={() => onTimeRangeChange(opt.value)}
+                            >
+                                {opt.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <p className="admin-metrics-hint">
+                {filterHints[userFilter]}
+            </p>
+
+            <div className="admin-trends-grid">
+                {/* Chart 1: DAU + New Players */}
+                <div className="admin-trend-panel">
+                    <h3>👥 DAU + New Players</h3>
+                    <div className="admin-trend-chart">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <ComposedChart data={historicalData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                                <XAxis 
+                                    dataKey="displayDate" 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <YAxis 
+                                    yAxisId="left"
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <YAxis 
+                                    yAxisId="right"
+                                    orientation="right"
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <Tooltip content={<MultiLineTooltip />} />
+                                <Legend />
+                                <Line 
+                                    yAxisId="left"
+                                    type="monotone" 
+                                    dataKey="dau" 
+                                    name="DAU"
+                                    stroke="#22c55e" 
+                                    strokeWidth={2}
+                                    dot={false}
+                                />
+                                <Bar 
+                                    yAxisId="right"
+                                    dataKey="newSignups" 
+                                    name="New Players"
+                                    fill="#6366f1" 
+                                    radius={[2, 2, 0, 0]}
+                                    opacity={0.7}
+                                />
+                            </ComposedChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Chart 2: Retention Trend */}
+                <div className="admin-trend-panel">
+                    <h3>🔄 Retention by Cohort</h3>
+                    <div className="admin-trend-chart">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <LineChart 
+                                data={retentionData.cohorts.slice().reverse()} 
+                                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                                <XAxis 
+                                    dataKey="weekLabel" 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <YAxis 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                    domain={[0, 100]}
+                                    tickFormatter={(v) => `${v}%`}
+                                />
+                                <Tooltip content={<MultiLineTooltip />} />
+                                <Legend />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="d1Retained" 
+                                    name="D1 %"
+                                    stroke="#22c55e" 
+                                    strokeWidth={2}
+                                    dot={{ r: 4 }}
+                                    unit="%"
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="d7Retained" 
+                                    name="D7 %"
+                                    stroke="#f59e0b" 
+                                    strokeWidth={2}
+                                    dot={{ r: 4 }}
+                                    unit="%"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Chart 3: Win Rate by Difficulty */}
+                <div className="admin-trend-panel">
+                    <h3>🎯 Win Rate by Difficulty</h3>
+                    <div className="admin-trend-chart">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <LineChart data={winRateData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                                <XAxis 
+                                    dataKey="displayDate" 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <YAxis 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                    domain={[0, 100]}
+                                    tickFormatter={(v) => `${v}%`}
+                                />
+                                <Tooltip content={<MultiLineTooltip />} />
+                                <Legend />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="easyWinRate" 
+                                    name="Easy"
+                                    stroke="#22c55e" 
+                                    strokeWidth={2}
+                                    dot={false}
+                                    unit="%"
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="hardWinRate" 
+                                    name="Hard"
+                                    stroke="#f59e0b" 
+                                    strokeWidth={2}
+                                    dot={false}
+                                    unit="%"
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="impossibleWinRate" 
+                                    name="Impossible"
+                                    stroke="#ef4444" 
+                                    strokeWidth={2}
+                                    dot={false}
+                                    unit="%"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Chart 4: Engagement Funnel */}
+                <div className="admin-trend-panel">
+                    <h3>🎮 Engagement Funnel</h3>
+                    <div className="admin-trend-chart">
+                        <ResponsiveContainer width="100%" height={250}>
+                            <ComposedChart data={engagementData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                                <XAxis 
+                                    dataKey="displayDate" 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <YAxis 
+                                    tick={{ fill: textColor, fontSize: 11 }}
+                                    tickLine={{ stroke: gridColor }}
+                                />
+                                <Tooltip content={<MultiLineTooltip />} />
+                                <Legend />
+                                <Bar 
+                                    dataKey="puzzlesStarted" 
+                                    name="Started"
+                                    fill="#94a3b8" 
+                                    radius={[2, 2, 0, 0]}
+                                />
+                                <Bar 
+                                    dataKey="puzzlesCompleted" 
+                                    name="Completed"
+                                    fill="#22c55e" 
+                                    radius={[2, 2, 0, 0]}
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="shareClicks" 
+                                    name="Shares"
+                                    stroke="#8b5cf6" 
+                                    strokeWidth={2}
+                                    dot={{ r: 3 }}
+                                />
+                            </ComposedChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // Main Admin Dashboard Component
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
     const [theme, setTheme] = useState<Theme>('light');
     const [selectedMetric, setSelectedMetric] = useState<{ type: MetricType; title: string; isAnonymous: boolean } | null>(null);
     const [chartTimeRange, setChartTimeRange] = useState<TimeRange>('7days');
+    const [trendsUserFilter, setTrendsUserFilter] = useState<'all' | 'signedUp' | 'anonymous'>('all');
     
     const { user, authLoading } = useAuth();
     const { 
@@ -1517,6 +1811,8 @@ export const AdminDashboard: React.FC = () => {
         calculatePuzzleQualityMetrics,
         calculateEngagementMetrics,
         calculateFeatureUsageMetrics,
+        calculateWinRateTrend,
+        calculateEngagementTrend,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -1551,6 +1847,70 @@ export const AdminDashboard: React.FC = () => {
         () => calculateFeatureUsageMetrics(),
         [calculateFeatureUsageMetrics]
     );
+    const winRateTrendData = useMemo(
+        () => calculateWinRateTrend(chartTimeRange, trendsUserFilter),
+        [calculateWinRateTrend, chartTimeRange, trendsUserFilter]
+    );
+    const engagementTrendData = useMemo(
+        () => calculateEngagementTrend(chartTimeRange, trendsUserFilter),
+        [calculateEngagementTrend, chartTimeRange, trendsUserFilter]
+    );
+    
+    // Historical data for trends based on user filter
+    const trendsHistoricalData = useMemo(() => {
+        if (trendsUserFilter === 'anonymous') {
+            return calculateAnonymousHistoricalMetrics(chartTimeRange);
+        } else if (trendsUserFilter === 'signedUp') {
+            return calculateHistoricalMetrics(chartTimeRange);
+        } else {
+            // For 'all', combine both datasets
+            const signedUp = calculateHistoricalMetrics(chartTimeRange);
+            const anonymous = calculateAnonymousHistoricalMetrics(chartTimeRange);
+            
+            // Merge by date
+            const merged: Record<string, DailyDataPoint> = {};
+            signedUp.forEach(d => {
+                merged[d.date] = { ...d };
+            });
+            anonymous.forEach(d => {
+                if (merged[d.date]) {
+                    merged[d.date].dau += d.dau;
+                    merged[d.date].puzzlesPlayed += d.puzzlesPlayed;
+                    merged[d.date].puzzlesSolved += d.puzzlesSolved;
+                    merged[d.date].newSignups += d.newSignups;
+                } else {
+                    merged[d.date] = { ...d };
+                }
+            });
+            
+            // Recalculate win rate for merged data
+            return Object.values(merged)
+                .sort((a, b) => a.date.localeCompare(b.date))
+                .map(d => ({
+                    ...d,
+                    winRate: d.puzzlesPlayed > 0 ? Math.round((d.puzzlesSolved / d.puzzlesPlayed) * 100) : 0,
+                }));
+        }
+    }, [calculateHistoricalMetrics, calculateAnonymousHistoricalMetrics, chartTimeRange, trendsUserFilter]);
+    
+    const retentionMetricsForTrends = useMemo(
+        () => calculateRetentionMetrics(trendsUserFilter),
+        [calculateRetentionMetrics, trendsUserFilter]
+    );
+    
+    // Limit cohorts based on time range for trends display
+    const filteredRetentionData = useMemo(() => {
+        const cohorts = retentionMetricsForTrends.cohorts;
+        let maxCohorts = 8;
+        if (chartTimeRange === '7days') maxCohorts = 2;
+        else if (chartTimeRange === '14days') maxCohorts = 3;
+        else if (chartTimeRange === '28days') maxCohorts = 5;
+        
+        return {
+            ...retentionMetricsForTrends,
+            cohorts: cohorts.slice(0, maxCohorts),
+        };
+    }, [retentionMetricsForTrends, chartTimeRange]);
 
     const handleMetricClick = (metricType: MetricType, title: string, isAnonymous: boolean = false) => {
         setSelectedMetric({ type: metricType, title, isAnonymous });
@@ -1676,6 +2036,12 @@ export const AdminDashboard: React.FC = () => {
                 >
                     🎯 Insights
                 </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'trends' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('trends')}
+                >
+                    📈 Trends
+                </button>
             </nav>
 
             <main className="admin-content">
@@ -1712,6 +2078,19 @@ export const AdminDashboard: React.FC = () => {
                                 puzzleQuality={puzzleQualityMetrics}
                                 engagement={engagementMetrics}
                                 featureUsage={featureUsageMetrics}
+                            />
+                        )}
+                        {activeTab === 'trends' && (
+                            <TrendsTab 
+                                historicalData={trendsHistoricalData}
+                                retentionData={filteredRetentionData}
+                                winRateData={winRateTrendData}
+                                engagementData={engagementTrendData}
+                                timeRange={chartTimeRange}
+                                onTimeRangeChange={setChartTimeRange}
+                                userFilter={trendsUserFilter}
+                                onUserFilterChange={setTrendsUserFilter}
+                                theme={theme}
                             />
                         )}
                     </>

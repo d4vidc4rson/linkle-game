@@ -5721,6 +5721,170 @@
       }
     }
 
+    /* ===== TRENDS TAB STYLES ===== */
+    .admin-trends-tab {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .admin-trends-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .admin-trends-header h2 {
+      margin: 0;
+    }
+    
+    .admin-trends-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .admin-time-range-selector {
+      display: flex;
+      gap: 0.25rem;
+      background: rgba(0,0,0,0.05);
+      padding: 4px;
+      border-radius: 8px;
+    }
+    
+    .theme-dark .admin-time-range-selector {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .admin-time-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: inherit;
+      opacity: 0.7;
+      transition: all 0.2s;
+    }
+    
+    .admin-time-btn:hover {
+      opacity: 1;
+      background: rgba(0,0,0,0.05);
+    }
+    
+    .theme-dark .admin-time-btn:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .admin-time-btn.active {
+      background: #9eef80;
+      color: #1a2e0d;
+      opacity: 1;
+      font-weight: 600;
+    }
+    
+    .theme-dark .admin-time-btn.active {
+      background: #9eef80;
+      color: #1a2e0d;
+    }
+    
+    .admin-trends-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .admin-trend-panel {
+      background: rgba(255,255,255,0.5);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .theme-dark .admin-trend-panel {
+      background: rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.1);
+    }
+    
+    .admin-trend-panel h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    .admin-trend-chart {
+      width: 100%;
+      height: 250px;
+    }
+    
+    /* Trends tooltip */
+    .trends-tooltip {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .theme-dark .trends-tooltip {
+      background: rgba(30,30,40,0.95);
+      border-color: rgba(255,255,255,0.1);
+    }
+    
+    .trends-tooltip-label {
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+    }
+    
+    .trends-tooltip-value {
+      margin: 0.25rem 0;
+      font-size: 0.85rem;
+    }
+    
+    /* Recharts legend styling */
+    .admin-trend-panel .recharts-legend-wrapper {
+      font-size: 0.8rem !important;
+    }
+    
+    .admin-trend-panel .recharts-legend-item-text {
+      color: inherit !important;
+    }
+    
+    /* Mobile responsive for Trends tab */
+    @media (max-width: 900px) {
+      .admin-trends-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .admin-trends-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .admin-time-range-selector {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .admin-time-btn {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem 0.5rem;
+        font-size: 0.8rem;
+      }
+      
+      .admin-trend-chart {
+        height: 200px;
+      }
+    }
+
     /* ===== INSIGHTS TAB STYLES ===== */
     .admin-insights-tab {
       display: flex;

@@ -205,6 +205,28 @@ export interface FeatureUsageMetrics {
     themePreferencePercent: { light: number; dark: number };
 }
 
+// Win rate trend data point for Trends tab
+export interface WinRateTrendPoint {
+    date: string;
+    displayDate: string;
+    easyWinRate: number;
+    hardWinRate: number;
+    impossibleWinRate: number;
+    easyPlayed: number;
+    hardPlayed: number;
+    impossiblePlayed: number;
+}
+
+// Engagement trend data point for Trends tab
+export interface EngagementTrendPoint {
+    date: string;
+    displayDate: string;
+    puzzlesStarted: number;
+    puzzlesCompleted: number;
+    shareClicks: number;
+    completionRate: number;
+}
+
 export interface DailyDataPoint {
     date: string;
     displayDate: string;
@@ -550,23 +572,45 @@ export const useAdminData = (user: any) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        // Determine date range
-        let daysToShow: number;
-        switch (timeRange) {
-            case 'today': daysToShow = 1; break;
-            case '7days': daysToShow = 7; break;
-            case '14days': daysToShow = 14; break;
-            case '28days': daysToShow = 28; break;
-            case 'all': daysToShow = 365; break; // Max 1 year for "all"
-            default: daysToShow = 7;
+        // For "all", find the earliest date with player data
+        let startDate: Date;
+        if (timeRange === 'all') {
+            // Find earliest date from player dailyResults
+            let earliestDate: string | null = null;
+            players.forEach(player => {
+                const results = player.playerData.dailyResults;
+                if (results) {
+                    Object.keys(results).forEach(dateKey => {
+                        if (!earliestDate || dateKey < earliestDate) {
+                            earliestDate = dateKey;
+                        }
+                    });
+                }
+            });
+            
+            if (earliestDate) {
+                startDate = new Date(earliestDate + 'T00:00:00');
+            } else {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7); // Default to 7 days if no data
+            }
+        } else if (timeRange === 'today') {
+            startDate = new Date(today);
+        } else {
+            // Determine date range for fixed periods
+            let daysToShow = 7;
+            if (timeRange === '14days') daysToShow = 14;
+            else if (timeRange === '28days') daysToShow = 28;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
         }
         
-        // Generate array of dates
+        // Generate array of dates from start to today
         const dates: string[] = [];
-        for (let i = daysToShow - 1; i >= 0; i--) {
-            const d = new Date(today);
-            d.setDate(d.getDate() - i);
-            dates.push(d.toISOString().split('T')[0]);
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
         }
         
         // Initialize data for each date
@@ -688,23 +732,33 @@ export const useAdminData = (user: any) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        // Determine date range
-        let daysToShow: number;
-        switch (timeRange) {
-            case 'today': daysToShow = 1; break;
-            case '7days': daysToShow = 7; break;
-            case '14days': daysToShow = 14; break;
-            case '28days': daysToShow = 28; break;
-            case 'all': daysToShow = 365; break;
-            default: daysToShow = 7;
+        // For "all", find the earliest date with analytics data
+        let startDate: Date;
+        if (timeRange === 'all') {
+            const eventsWithDates = analyticsEvents.filter(e => e.date);
+            if (eventsWithDates.length === 0) {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7);
+            } else {
+                const earliestDate = eventsWithDates.reduce((min, e) => e.date < min ? e.date : min, eventsWithDates[0].date);
+                startDate = new Date(earliestDate + 'T00:00:00');
+            }
+        } else if (timeRange === 'today') {
+            startDate = new Date(today);
+        } else {
+            let daysToShow = 7;
+            if (timeRange === '14days') daysToShow = 14;
+            else if (timeRange === '28days') daysToShow = 28;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
         }
         
-        // Generate array of dates
+        // Generate array of dates from start to today
         const dates: string[] = [];
-        for (let i = daysToShow - 1; i >= 0; i--) {
-            const d = new Date(today);
-            d.setDate(d.getDate() - i);
-            dates.push(d.toISOString().split('T')[0]);
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
         }
         
         // Initialize data for each date
@@ -1410,6 +1464,199 @@ export const useAdminData = (user: any) => {
         };
     }, [analyticsEvents]);
 
+    // Calculate win rate trend by difficulty over time for Trends tab
+    // userFilter: 'all' = everyone, 'signedUp' = only signed-up users, 'anonymous' = only never-signed-up users
+    const calculateWinRateTrend = useCallback((timeRange: TimeRange = '28days', userFilter: 'all' | 'signedUp' | 'anonymous' = 'all'): WinRateTrendPoint[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Get visitor IDs that signed up
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Filter events based on user filter
+        const filteredEvents = analyticsEvents.filter(e => {
+            if (e.event !== 'puzzle_completed') return false;
+            const isSignedUp = signedUpVisitorIds.has(e.visitorId);
+            if (userFilter === 'signedUp' && !isSignedUp) return false;
+            if (userFilter === 'anonymous' && isSignedUp) return false;
+            return true;
+        });
+        
+        // For "all", find the earliest date with data
+        let startDate: Date;
+        if (timeRange === 'all') {
+            const puzzleEvents = filteredEvents.filter(e => e.date);
+            if (puzzleEvents.length === 0) {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7); // Default to 7 days if no data
+            } else {
+                const earliestDate = puzzleEvents.reduce((min, e) => e.date < min ? e.date : min, puzzleEvents[0].date);
+                startDate = new Date(earliestDate + 'T00:00:00');
+            }
+        } else {
+            // Determine date range for fixed periods
+            let daysToShow = 28;
+            if (timeRange === '7days') daysToShow = 7;
+            else if (timeRange === '14days') daysToShow = 14;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
+        }
+        
+        // Generate array of all dates from start to today
+        const dates: string[] = [];
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        // Initialize data for each date
+        const dailyStats: Record<string, {
+            easy: { played: number; solved: number };
+            hard: { played: number; solved: number };
+            impossible: { played: number; solved: number };
+        }> = {};
+        
+        dates.forEach(date => {
+            dailyStats[date] = {
+                easy: { played: 0, solved: 0 },
+                hard: { played: 0, solved: 0 },
+                impossible: { played: 0, solved: 0 },
+            };
+        });
+        
+        // Fill in actual data from filtered events
+        filteredEvents
+            .filter(e => dailyStats[e.date])
+            .forEach(e => {
+                const date = e.date;
+                const diff = e.difficulty || 'easy';
+                const solved = e.solved === true;
+                
+                if (diff === 'easy' || diff === 'hard' || diff === 'impossible') {
+                    dailyStats[date][diff].played++;
+                    if (solved) dailyStats[date][diff].solved++;
+                }
+            });
+        
+        // Convert to array sorted by date
+        return dates.map(date => {
+            const stats = dailyStats[date];
+            const d = new Date(date + 'T00:00:00');
+            return {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                easyWinRate: stats.easy.played > 0 
+                    ? Math.round((stats.easy.solved / stats.easy.played) * 100) : 0,
+                hardWinRate: stats.hard.played > 0 
+                    ? Math.round((stats.hard.solved / stats.hard.played) * 100) : 0,
+                impossibleWinRate: stats.impossible.played > 0 
+                    ? Math.round((stats.impossible.solved / stats.impossible.played) * 100) : 0,
+                easyPlayed: stats.easy.played,
+                hardPlayed: stats.hard.played,
+                impossiblePlayed: stats.impossible.played,
+            };
+        });
+    }, [analyticsEvents]);
+
+    // Calculate engagement trend (started, completed, shared) for Trends tab
+    // userFilter: 'all' = everyone, 'signedUp' = only signed-up users, 'anonymous' = only never-signed-up users
+    const calculateEngagementTrend = useCallback((timeRange: TimeRange = '28days', userFilter: 'all' | 'signedUp' | 'anonymous' = 'all'): EngagementTrendPoint[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Get visitor IDs that signed up
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Filter events based on user filter
+        const filterByUser = (e: any) => {
+            const isSignedUp = signedUpVisitorIds.has(e.visitorId);
+            if (userFilter === 'signedUp' && !isSignedUp) return false;
+            if (userFilter === 'anonymous' && isSignedUp) return false;
+            return true;
+        };
+        
+        // For "all", find the earliest date with data
+        let startDate: Date;
+        if (timeRange === 'all') {
+            const relevantEvents = analyticsEvents.filter(e => 
+                (e.event === 'puzzle_started' || e.event === 'puzzle_completed' || e.event === 'share_clicked') && 
+                e.date && filterByUser(e)
+            );
+            if (relevantEvents.length === 0) {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7); // Default to 7 days if no data
+            } else {
+                const earliestDate = relevantEvents.reduce((min, e) => e.date < min ? e.date : min, relevantEvents[0].date);
+                startDate = new Date(earliestDate + 'T00:00:00');
+            }
+        } else {
+            // Determine date range for fixed periods
+            let daysToShow = 28;
+            if (timeRange === '7days') daysToShow = 7;
+            else if (timeRange === '14days') daysToShow = 14;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
+        }
+        
+        // Generate array of all dates from start to today
+        const dates: string[] = [];
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        // Initialize data for each date
+        const dailyStats: Record<string, {
+            started: number;
+            completed: number;
+            shares: number;
+        }> = {};
+        
+        dates.forEach(date => {
+            dailyStats[date] = { started: 0, completed: 0, shares: 0 };
+        });
+        
+        // Fill in actual data from filtered events
+        analyticsEvents
+            .filter(e => dailyStats[e.date] && filterByUser(e))
+            .forEach(e => {
+                const date = e.date;
+                
+                if (e.event === 'puzzle_started') {
+                    dailyStats[date].started++;
+                } else if (e.event === 'puzzle_completed') {
+                    dailyStats[date].completed++;
+                } else if (e.event === 'share_clicked') {
+                    dailyStats[date].shares++;
+                }
+            });
+        
+        // Convert to array sorted by date
+        return dates.map(date => {
+            const stats = dailyStats[date];
+            const d = new Date(date + 'T00:00:00');
+            return {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                puzzlesStarted: stats.started,
+                puzzlesCompleted: stats.completed,
+                shareClicks: stats.shares,
+                completionRate: stats.started > 0 
+                    ? Math.round((stats.completed / stats.started) * 100) : 0,
+            };
+        });
+    }, [analyticsEvents]);
+
     return {
         players,
         loading,
@@ -1425,6 +1672,8 @@ export const useAdminData = (user: any) => {
         calculatePuzzleQualityMetrics,
         calculateEngagementMetrics,
         calculateFeatureUsageMetrics,
+        calculateWinRateTrend,
+        calculateEngagementTrend,
         getLeaderboard,
         searchPlayers,
     };

@@ -4550,6 +4550,28 @@
       opacity: 0.8;
     }
     
+    /* Mobile scrollable tabs */
+    @media (max-width: 768px) {
+      .admin-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 1rem;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+      }
+      
+      .admin-tabs::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+      }
+      
+      .admin-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+    }
+    
     .admin-tab.active {
       opacity: 1;
       border-bottom-color: #9eef80;

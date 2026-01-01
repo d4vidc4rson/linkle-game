@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
+import { PREGENERATED_PUZZLES } from '../puzzles';
 import type { Theme } from '../types';
 
 // Firebase services for Google sign-in
@@ -1064,10 +1065,18 @@ const AnonymousTab: React.FC<{
     );
 };
 
+// Toggle type for Retention tab
+type RetentionUserType = 'all' | 'signedUp' | 'anonymous';
+
 // Retention Tab Component
 const RetentionTab: React.FC<{
-    metrics: RetentionMetrics;
-}> = ({ metrics }) => {
+    calculateRetentionMetrics: (filter: 'all' | 'signedUp' | 'anonymous') => RetentionMetrics;
+}> = ({ calculateRetentionMetrics }) => {
+    const [userFilter, setUserFilter] = useState<RetentionUserType>('all');
+    
+    // Calculate metrics based on current filter
+    const metrics = useMemo(() => calculateRetentionMetrics(userFilter), [calculateRetentionMetrics, userFilter]);
+    
     // Color coding for retention percentages
     const getRetentionColor = (percent: number): string => {
         if (percent >= 40) return '#22c55e'; // Green - excellent
@@ -1076,12 +1085,46 @@ const RetentionTab: React.FC<{
         if (percent >= 5) return '#f97316'; // Orange - concerning
         return '#ef4444'; // Red - needs attention
     };
+    
+    const filterLabels: Record<RetentionUserType, string> = {
+        'all': 'All Players',
+        'signedUp': 'Signed Up',
+        'anonymous': 'Anonymous',
+    };
+    
+    const filterHints: Record<RetentionUserType, string> = {
+        'all': 'Showing retention for all players (signed-up + anonymous)',
+        'signedUp': 'Showing retention for users who have signed up',
+        'anonymous': 'Showing retention for visitors who never signed up',
+    };
 
     return (
         <div className="admin-tab-content">
-            <h2>Player Retention Analysis</h2>
+            <div className="admin-retention-header">
+                <h2>Player Retention Analysis</h2>
+                <div className="admin-user-type-toggle admin-retention-toggle">
+                    <button 
+                        className={`admin-toggle-option ${userFilter === 'all' ? 'active' : ''}`}
+                        onClick={() => setUserFilter('all')}
+                    >
+                        All
+                    </button>
+                    <button 
+                        className={`admin-toggle-option ${userFilter === 'signedUp' ? 'active' : ''}`}
+                        onClick={() => setUserFilter('signedUp')}
+                    >
+                        Signed Up
+                    </button>
+                    <button 
+                        className={`admin-toggle-option ${userFilter === 'anonymous' ? 'active' : ''}`}
+                        onClick={() => setUserFilter('anonymous')}
+                    >
+                        Anonymous
+                    </button>
+                </div>
+            </div>
             <p className="admin-section-subtitle">
-                Track how well players return after their first play session.
+                {filterHints[userFilter]}
             </p>
 
             {/* Overall Retention Summary */}
@@ -1226,6 +1269,13 @@ const InsightsTab: React.FC<{
         const secs = seconds % 60;
         return `${mins}:${String(secs).padStart(2, '0')}`;
     };
+    
+    // Get puzzle words from puzzle index
+    const getPuzzleWords = (puzzleId: number): string => {
+        const puzzle = PREGENERATED_PUZZLES[puzzleId];
+        if (!puzzle) return 'Unknown puzzle';
+        return puzzle.solution.join(' → ');
+    };
 
     return (
         <div className="admin-insights-tab">
@@ -1276,10 +1326,13 @@ const InsightsTab: React.FC<{
                             <ul className="admin-puzzle-items">
                                 {puzzleQuality.strugglePuzzles.map((p) => (
                                     <li key={p.puzzleId} className="admin-puzzle-item struggle">
-                                        <span className="admin-puzzle-id">#{p.puzzleId}</span>
-                                        <span className="admin-puzzle-diff">{p.difficulty}</span>
-                                        <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
-                                        <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                        <div className="admin-puzzle-header">
+                                            <span className="admin-puzzle-id">#{p.puzzleId}</span>
+                                            <span className="admin-puzzle-diff">{p.difficulty}</span>
+                                            <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
+                                            <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                        </div>
+                                        <div className="admin-puzzle-words">{getPuzzleWords(p.puzzleId)}</div>
                                     </li>
                                 ))}
                             </ul>
@@ -1294,10 +1347,13 @@ const InsightsTab: React.FC<{
                             <ul className="admin-puzzle-items">
                                 {puzzleQuality.satisfyingPuzzles.map((p) => (
                                     <li key={p.puzzleId} className="admin-puzzle-item satisfying">
-                                        <span className="admin-puzzle-id">#{p.puzzleId}</span>
-                                        <span className="admin-puzzle-diff">{p.difficulty}</span>
-                                        <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
-                                        <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                        <div className="admin-puzzle-header">
+                                            <span className="admin-puzzle-id">#{p.puzzleId}</span>
+                                            <span className="admin-puzzle-diff">{p.difficulty}</span>
+                                            <span className="admin-puzzle-stat">{p.solveRate}% solve</span>
+                                            <span className="admin-puzzle-stat">{p.avgMoves} moves</span>
+                                        </div>
+                                        <div className="admin-puzzle-words">{getPuzzleWords(p.puzzleId)}</div>
                                     </li>
                                 ))}
                             </ul>
@@ -1483,10 +1539,6 @@ export const AdminDashboard: React.FC = () => {
         () => calculateAnonymousMetrics(),
         [calculateAnonymousMetrics]
     );
-    const retentionMetrics = useMemo(
-        () => calculateRetentionMetrics(),
-        [calculateRetentionMetrics]
-    );
     const puzzleQualityMetrics = useMemo(
         () => calculatePuzzleQualityMetrics(),
         [calculatePuzzleQualityMetrics]
@@ -1653,7 +1705,7 @@ export const AdminDashboard: React.FC = () => {
                             <AnonymousTab metrics={anonymousMetrics} />
                         )}
                         {activeTab === 'retention' && (
-                            <RetentionTab metrics={retentionMetrics} />
+                            <RetentionTab calculateRetentionMetrics={calculateRetentionMetrics} />
                         )}
                         {activeTab === 'insights' && (
                             <InsightsTab 

@@ -986,7 +986,15 @@ export const useAdminData = (user: any) => {
     }, [analyticsEvents]);
 
     // Calculate retention cohort metrics from analytics events
-    const calculateRetentionMetrics = useCallback((): RetentionMetrics => {
+    // userFilter: 'all' = everyone, 'signedUp' = only signed-up users, 'anonymous' = only never-signed-up users
+    const calculateRetentionMetrics = useCallback((userFilter: 'all' | 'signedUp' | 'anonymous' = 'all'): RetentionMetrics => {
+        // Get visitor IDs that signed up (have a signup_completed event)
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
         // Build visitor activity map: visitorId -> { firstSeen, allPlayDates }
         const visitorActivity: Record<string, { firstSeen: string; playDates: Set<string> }> = {};
         
@@ -995,6 +1003,11 @@ export const useAdminData = (user: any) => {
             .forEach(e => {
                 const vid = e.visitorId;
                 const date = e.date;
+                
+                // Apply user filter
+                const isSignedUp = signedUpVisitorIds.has(vid);
+                if (userFilter === 'signedUp' && !isSignedUp) return;
+                if (userFilter === 'anonymous' && isSignedUp) return;
                 
                 if (!visitorActivity[vid]) {
                     visitorActivity[vid] = { firstSeen: date, playDates: new Set() };

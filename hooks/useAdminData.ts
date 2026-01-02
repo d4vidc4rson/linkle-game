@@ -1676,6 +1676,7 @@ export const useAdminData = (user: any) => {
         calculateEngagementTrend,
         getLeaderboard,
         searchPlayers,
+        analyticsEvents, // Expose for CSV export
     };
 };
 

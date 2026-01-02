@@ -4705,6 +4705,67 @@
       margin-top: 0.25rem;
     }
 
+    /* Export Data Section */
+    .admin-export-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(135deg, rgba(158, 239, 128, 0.15), rgba(158, 239, 128, 0.05));
+      border: 2px solid rgba(158, 239, 128, 0.3);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .theme-dark .admin-export-section {
+      background: linear-gradient(135deg, rgba(158, 239, 128, 0.1), rgba(158, 239, 128, 0.03));
+      border-color: rgba(158, 239, 128, 0.2);
+    }
+    
+    .admin-export-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #9eef80;
+      color: #1a2e0d;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    .admin-export-btn:hover {
+      background: #8edd70;
+      transform: translateY(-1px);
+    }
+    
+    .admin-export-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .admin-export-hint {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+    
+    @media (max-width: 600px) {
+      .admin-export-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .admin-export-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
     /* Engagement Header with Toggle */
     .admin-engagement-header {
       display: flex;

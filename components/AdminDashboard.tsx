@@ -134,15 +134,133 @@ const getHourFromDate = (dateString: string): number => {
 // Toggle type for Engagement Metrics
 type EngagementUserType = 'signedUp' | 'anonymous';
 
+// CSV Export Helper Functions
+const downloadCSV = (data: string, filename: string) => {
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+const escapeCSVField = (field: any): string => {
+    if (field === null || field === undefined) return '';
+    const str = String(field);
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
+};
+
+const arrayToCSV = (headers: string[], rows: any[][]): string => {
+    const headerLine = headers.map(escapeCSVField).join(',');
+    const dataLines = rows.map(row => row.map(escapeCSVField).join(','));
+    return [headerLine, ...dataLines].join('\n');
+};
+
 // Metrics Tab Component
 const MetricsTab: React.FC<{ 
     metrics: AggregateMetrics;
     anonymousMetrics: AnonymousMetrics;
     conversionMetrics: ConversionMetrics;
     players: PlayerWithMeta[];
+    analyticsEvents: any[];
     onMetricClick: (metricType: MetricType, title: string, isAnonymous?: boolean) => void;
-}> = ({ metrics, anonymousMetrics, conversionMetrics, players, onMetricClick }) => {
+}> = ({ metrics, anonymousMetrics, conversionMetrics, players, analyticsEvents, onMetricClick }) => {
     const [engagementUserType, setEngagementUserType] = useState<EngagementUserType>('signedUp');
+    const [exporting, setExporting] = useState(false);
+    
+    // Export all data as CSV files
+    const handleExportData = () => {
+        setExporting(true);
+        const timestamp = new Date().toISOString().split('T')[0];
+        
+        try {
+            // 1. Export Player Data
+            const playerHeaders = [
+                'UID', 'Display Name', 'Email', 'Total Score', 'Current Streak', 'Max Streak',
+                'Total Solved', 'Easy Solved', 'Hard Solved', 'Impossible Solved',
+                'Perfect Scores', 'Badges Unlocked', 'Last Played', 'Days Played'
+            ];
+            const playerRows = players.map(p => [
+                p.uid,
+                p.displayName || '',
+                p.email || '',
+                p.playerData.totalScore || 0,
+                p.playerData.currentStreak || 0,
+                p.playerData.maxStreak || 0,
+                p.playerData.totalSolved || 0,
+                p.playerData.easySolved || 0,
+                p.playerData.hardSolved || 0,
+                p.playerData.impossibleSolved || 0,
+                p.playerData.perfectScores || 0,
+                p.playerData.badges?.filter(b => b.unlocked).length || 0,
+                p.playerData.lastPlayedDate || '',
+                Object.keys(p.playerData.dailyResults || {}).length,
+            ]);
+            downloadCSV(arrayToCSV(playerHeaders, playerRows), `linkle-players-${timestamp}.csv`);
+            
+            // 2. Export Analytics Events
+            const eventHeaders = [
+                'Timestamp', 'Date', 'Event', 'Visitor ID', 'Session ID', 'User ID',
+                'Difficulty', 'Solved', 'Puzzle ID', 'Time Spent (s)', 'Moves Count'
+            ];
+            const eventRows = analyticsEvents.map(e => [
+                e.timestamp || '',
+                e.date || '',
+                e.event || '',
+                e.visitorId || '',
+                e.sessionId || '',
+                e.userId || '',
+                e.difficulty || '',
+                e.solved !== undefined ? e.solved : '',
+                e.puzzleId !== undefined ? e.puzzleId : '',
+                e.timeSpentSeconds || '',
+                e.movesCount || '',
+            ]);
+            downloadCSV(arrayToCSV(eventHeaders, eventRows), `linkle-analytics-${timestamp}.csv`);
+            
+            // 3. Export Aggregate Metrics Summary
+            const summaryHeaders = ['Metric', 'Value'];
+            const summaryRows = [
+                ['Export Date', timestamp],
+                ['--- SIGNED UP USERS ---', ''],
+                ['Total Users', metrics.totalUsers],
+                ['Daily Active Users', metrics.dailyActiveUsers],
+                ['Weekly Active Users', metrics.weeklyActiveUsers],
+                ['Monthly Active Users', metrics.monthlyActiveUsers],
+                ['Total Puzzles Played', metrics.totalPuzzlesPlayed],
+                ['Total Puzzles Solved', metrics.totalPuzzlesSolved],
+                ['Overall Win Rate %', metrics.totalPuzzlesPlayed > 0 ? Math.round((metrics.totalPuzzlesSolved / metrics.totalPuzzlesPlayed) * 100) : 0],
+                ['Easy Win Rate %', metrics.completionRates.easy.attempted > 0 ? Math.round((metrics.completionRates.easy.solved / metrics.completionRates.easy.attempted) * 100) : 0],
+                ['Hard Win Rate %', metrics.completionRates.hard.attempted > 0 ? Math.round((metrics.completionRates.hard.solved / metrics.completionRates.hard.attempted) * 100) : 0],
+                ['Impossible Win Rate %', metrics.completionRates.impossible.attempted > 0 ? Math.round((metrics.completionRates.impossible.solved / metrics.completionRates.impossible.attempted) * 100) : 0],
+                ['Bonus Rounds Played', metrics.bonusMetrics.totalPlayed],
+                ['Bonus Completion Rate %', metrics.bonusMetrics.completionRate],
+                ['--- ANONYMOUS USERS ---', ''],
+                ['Anonymous Visitors', anonymousMetrics.totalAnonymousVisitors],
+                ['Anonymous Puzzles Played', anonymousMetrics.totalAnonymousPuzzlesPlayed],
+                ['Anonymous Win Rate %', anonymousMetrics.anonymousWinRate],
+                ['Avg Puzzles Per Anonymous', anonymousMetrics.avgPuzzlesPerAnonymousVisitor],
+                ['--- CONVERSION ---', ''],
+                ['Unique Visitors', conversionMetrics.uniqueVisitors],
+                ['Signups Completed', conversionMetrics.signupsCompleted],
+                ['Avg Puzzles Before Signup', conversionMetrics.avgPuzzlesBeforeSignup],
+                ['Share Click Rate %', conversionMetrics.shareClickRate],
+            ];
+            downloadCSV(arrayToCSV(summaryHeaders, summaryRows), `linkle-summary-${timestamp}.csv`);
+            
+        } catch (error) {
+            console.error('Export failed:', error);
+            alert('Export failed. Check console for details.');
+        } finally {
+            setExporting(false);
+        }
+    };
     
     const easyWinRate = metrics.completionRates.easy.attempted > 0 
         ? Math.round((metrics.completionRates.easy.solved / metrics.completionRates.easy.attempted) * 100) 
@@ -197,6 +315,20 @@ const MetricsTab: React.FC<{
 
     return (
         <div className="admin-metrics-tab">
+            {/* Export Button */}
+            <div className="admin-export-section">
+                <button 
+                    className="admin-export-btn"
+                    onClick={handleExportData}
+                    disabled={exporting}
+                >
+                    {exporting ? '⏳ Exporting...' : '📥 Export All Data (CSV)'}
+                </button>
+                <span className="admin-export-hint">
+                    Downloads 3 files: Players, Analytics Events, Summary Metrics
+                </span>
+            </div>
+            
             <div className="admin-engagement-header">
                 <h2>Engagement Metrics</h2>
                 <div className="admin-user-type-toggle">
@@ -1816,6 +1948,7 @@ export const AdminDashboard: React.FC = () => {
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
+        analyticsEvents,
     } = useAdminData(user);
 
     const metrics = useMemo(() => calculateMetrics(), [calculateMetrics, players]);
@@ -2055,6 +2188,7 @@ export const AdminDashboard: React.FC = () => {
                                 anonymousMetrics={anonymousMetrics}
                                 conversionMetrics={conversionMetrics}
                                 players={players}
+                                analyticsEvents={analyticsEvents}
                                 onMetricClick={handleMetricClick}
                             />
                         )}

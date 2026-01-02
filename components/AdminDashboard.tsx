@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint, GrowthMetrics } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
@@ -24,7 +24,7 @@ import {
 declare const window: any;
 const { auth, GoogleAuthProvider, signInWithPopup } = window.firebase || {};
 
-type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends';
+type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends' | 'growth';
 
 // Helper to parse date key (YYYY-MM-DD) as local date, not UTC
 const parseDateKeyAsLocal = (dateKey: string): Date => {
@@ -1920,6 +1920,408 @@ const TrendsTab: React.FC<{
     );
 };
 
+// Helper component for metric cards in Growth tab
+const GrowthMetricCard: React.FC<{
+    label: string;
+    value: number | string;
+    suffix?: string;
+    delta?: number;
+    deltaType?: 'pp' | 'percent' | 'absolute';
+    target?: number;
+    targetLabel?: string;
+    subline?: string;
+    isNorthStar?: boolean;
+}> = ({ label, value, suffix = '', delta, deltaType = 'pp', target, targetLabel, subline, isNorthStar }) => {
+    const formatDelta = (d: number, type: string) => {
+        const sign = d >= 0 ? '+' : '';
+        if (type === 'pp') return `${sign}${d.toFixed(1)}pp`;
+        if (type === 'percent') return `${sign}${d.toFixed(1)}%`;
+        return `${sign}${d.toFixed(1)}`;
+    };
+    
+    const deltaClass = delta !== undefined 
+        ? (delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'neutral') 
+        : '';
+    
+    // Calculate progress towards target
+    const numValue = typeof value === 'number' ? value : parseFloat(String(value));
+    const progressPercent = target && target > 0 ? Math.min(100, (numValue / target) * 100) : 0;
+    
+    return (
+        <div className={`growth-metric-card ${isNorthStar ? 'north-star' : ''}`}>
+            <div className="metric-label">{label}</div>
+            <div className="metric-value-row">
+                <span className="metric-value">
+                    {typeof value === 'number' ? value.toFixed(1) : value}{suffix}
+                </span>
+                {delta !== undefined && (
+                    <span className={`metric-delta ${deltaClass}`}>
+                        {formatDelta(delta, deltaType)}
+                    </span>
+                )}
+            </div>
+            {target !== undefined && (
+                <div className="metric-target-container">
+                    <div className="metric-target-bar">
+                        <div 
+                            className="metric-target-progress" 
+                            style={{ width: `${progressPercent}%` }}
+                        />
+                        <div 
+                            className="metric-target-line" 
+                            style={{ left: '100%' }}
+                        />
+                    </div>
+                    <div className="metric-target-label">
+                        Target: {target}{suffix} {targetLabel || ''}
+                    </div>
+                </div>
+            )}
+            {subline && <div className="metric-subline">{subline}</div>}
+        </div>
+    );
+};
+
+// Verdict types and calculation for Growth tab
+type VerdictStatus = 'healthy' | 'watch' | 'action';
+interface Verdict {
+    status: VerdictStatus;
+    emoji: string;
+    label: string;
+    description: string;
+}
+
+// Calculate verdicts for each section based on metrics
+const getVerdicts = (m: GrowthMetrics): Record<string, Verdict> => {
+    const verdicts: Record<string, Verdict> = {};
+    
+    // Row 1 - North Star: Returning Players
+    const northStarDelta = m.returningPlayersPercentL7 - m.returningPlayersPercentP7;
+    if (m.returningPlayersPercentL7 >= 25) {
+        verdicts.northStar = { status: 'healthy', emoji: '🟢', label: 'Healthy', description: 'On track! 25%+ players returning.' };
+    } else if (northStarDelta > 0) {
+        verdicts.northStar = { status: 'watch', emoji: '🟡', label: 'Watch', description: `${m.returningPlayersPercentL7.toFixed(0)}% returning (target: 25%), but trending up.` };
+    } else {
+        verdicts.northStar = { status: 'action', emoji: '🔴', label: 'Action Needed', description: `Only ${m.returningPlayersPercentL7.toFixed(0)}% returning and declining. Focus on retention.` };
+    }
+    
+    // Row 2 - Growth Health: Expansion vs Recycling
+    const newVisitorsDelta = ((m.newVisitorsPerDayL7 - m.newVisitorsPerDayP7) / Math.max(m.newVisitorsPerDayP7, 0.1)) * 100;
+    const dauDelta = ((m.dauL7 - m.dauP7) / Math.max(m.dauP7, 0.1)) * 100;
+    
+    if (newVisitorsDelta > 5 && dauDelta > 0) {
+        verdicts.growthHealth = { status: 'healthy', emoji: '🟢', label: 'Expanding', description: 'New visitors and DAU both growing. Healthy expansion.' };
+    } else if (newVisitorsDelta < 0 && dauDelta > 0) {
+        verdicts.growthHealth = { status: 'watch', emoji: '🟡', label: 'Retention-Led', description: 'DAU up but new visitors declining. Need acquisition boost.' };
+    } else if (newVisitorsDelta > 0 && m.returningShareL7 < 50) {
+        verdicts.growthHealth = { status: 'watch', emoji: '🟡', label: 'Leaky Bucket', description: 'Acquiring users but they\'re not coming back.' };
+    } else if (newVisitorsDelta < -10 || dauDelta < -10) {
+        verdicts.growthHealth = { status: 'action', emoji: '🔴', label: 'Declining', description: 'Both acquisition and activity are down. Investigate root cause.' };
+    } else {
+        verdicts.growthHealth = { status: 'watch', emoji: '🟡', label: 'Stable', description: 'Metrics are flat. Look for growth levers.' };
+    }
+    
+    // Row 3 - Activation: Day-0 metrics
+    const avgActivation = (m.day0StartRate + m.day0SolveRate) / 2;
+    if (m.day0StartRate >= 70 && m.day0SolveRate >= 45) {
+        verdicts.activation = { status: 'healthy', emoji: '🟢', label: 'Healthy', description: 'Day-0 experience is converting well.' };
+    } else if (m.day0SolveRate < 35) {
+        verdicts.activation = { status: 'action', emoji: '🔴', label: 'Biggest Leak', description: `Only ${m.day0SolveRate.toFixed(0)}% solve on Day-0 (target: 45%). Your biggest opportunity.` };
+    } else if (m.day0StartRate < 60) {
+        verdicts.activation = { status: 'action', emoji: '🔴', label: 'Low Starts', description: `Only ${m.day0StartRate.toFixed(0)}% start a puzzle on Day-0. Reduce friction.` };
+    } else {
+        verdicts.activation = { status: 'watch', emoji: '🟡', label: 'Room to Improve', description: `Day-0 metrics below target. Focus on first-time experience.` };
+    }
+    
+    // Row 4 - Retention: D1/D7
+    if (m.d1Overall >= 12 && m.d7Overall >= 6) {
+        verdicts.retention = { status: 'healthy', emoji: '🟢', label: 'Healthy', description: 'Retention rates meeting targets.' };
+    } else if (m.d1SignedIn >= 29 && m.d1Overall < 12) {
+        verdicts.retention = { status: 'watch', emoji: '🟡', label: 'Signed-In Strong', description: `Overall D1 ${m.d1Overall.toFixed(0)}% (target: 12%), but signed-in at ${m.d1SignedIn.toFixed(0)}%. Push signups.` };
+    } else if (m.d1Overall < 8) {
+        verdicts.retention = { status: 'action', emoji: '🔴', label: 'Low Retention', description: `D1 at ${m.d1Overall.toFixed(0)}% is below healthy threshold. Improve Day-0 experience.` };
+    } else {
+        verdicts.retention = { status: 'watch', emoji: '🟡', label: 'Watch', description: `D1 ${m.d1Overall.toFixed(0)}% / D7 ${m.d7Overall.toFixed(0)}% — approaching targets.` };
+    }
+    
+    // Row 5 - Engagement: Depth
+    if (m.sessionsPerDauL7 >= 2.0 && m.puzzlesPerDauL7 >= 1.5) {
+        verdicts.engagement = { status: 'healthy', emoji: '🟢', label: 'Healthy', description: 'Users engaging deeply with multiple sessions and puzzles.' };
+    } else if (m.dauMauSignedIn >= 20) {
+        verdicts.engagement = { status: 'healthy', emoji: '🟢', label: 'Daily Loop', description: `${m.dauMauSignedIn.toFixed(0)}% DAU/MAU indicates a healthy daily habit.` };
+    } else if (m.sessionsPerDauL7 < 1.5) {
+        verdicts.engagement = { status: 'watch', emoji: '🟡', label: 'One and Done', description: `Only ${m.sessionsPerDauL7.toFixed(1)} sessions/DAU. Users aren't returning same day.` };
+    } else {
+        verdicts.engagement = { status: 'watch', emoji: '🟡', label: 'Building', description: 'Engagement growing but not yet habitual.' };
+    }
+    
+    // Row 6 - Conversion + Sharing
+    if (m.visitorToSignupL28 >= 8 && m.shareRateL28 >= 3) {
+        verdicts.conversion = { status: 'healthy', emoji: '🟢', label: 'Growth Engine', description: 'Conversion and sharing are fueling growth.' };
+    } else if (m.signupPromptCoverage < 15) {
+        verdicts.conversion = { status: 'action', emoji: '🔴', label: 'Under-Prompting', description: `Only ${m.signupPromptCoverage.toFixed(0)}% see signup prompt (target: 20%). Show it more!` };
+    } else if (m.shareRateL28 < 2) {
+        verdicts.conversion = { status: 'watch', emoji: '🟡', label: 'Low Sharing', description: `Only ${m.shareRateL28.toFixed(1)}% share (target: 3%). Make sharing more rewarding.` };
+    } else if (m.visitorToSignupL28 < 5) {
+        verdicts.conversion = { status: 'watch', emoji: '🟡', label: 'Low Conversion', description: `${m.visitorToSignupL28.toFixed(1)}% signup rate. Improve value prop clarity.` };
+    } else {
+        verdicts.conversion = { status: 'watch', emoji: '🟡', label: 'Progressing', description: 'Conversion metrics improving but not yet at target.' };
+    }
+    
+    return verdicts;
+};
+
+// Verdict Badge Component
+const VerdictBadge: React.FC<{ verdict: Verdict }> = ({ verdict }) => (
+    <div className={`verdict-badge verdict-${verdict.status}`}>
+        <span className="verdict-emoji">{verdict.emoji}</span>
+        <span className="verdict-label">{verdict.label}</span>
+        <span className="verdict-description">{verdict.description}</span>
+    </div>
+);
+
+// Growth Dashboard Tab Component
+const GrowthTab: React.FC<{
+    metrics: GrowthMetrics;
+}> = ({ metrics }) => {
+    const verdicts = getVerdicts(metrics);
+    
+    return (
+        <div className="admin-growth-tab">
+            {/* Row 1 - North Star */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>⭐ North Star</h3>
+                        <VerdictBadge verdict={verdicts.northStar} />
+                    </div>
+                    <p className="growth-row-description">
+                        The single most important metric: are people coming back?
+                    </p>
+                </div>
+                <div className="growth-metrics-grid north-star-grid">
+                    <GrowthMetricCard
+                        label="Returning Players (L7)"
+                        value={metrics.returningPlayersPercentL7}
+                        suffix="%"
+                        delta={metrics.returningPlayersPercentL7 - metrics.returningPlayersPercentP7}
+                        deltaType="pp"
+                        target={25}
+                        targetLabel="(4wk)"
+                        subline={`${metrics.returningPlayersL7} of ${metrics.totalPlayersL7} players played 2+ days`}
+                        isNorthStar
+                    />
+                </div>
+            </div>
+
+            {/* Row 2 - Growth Health */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>📈 Growth Health</h3>
+                        <VerdictBadge verdict={verdicts.growthHealth} />
+                    </div>
+                    <p className="growth-row-description">
+                        Are we expanding or just recycling the same users?
+                    </p>
+                </div>
+                <div className="growth-metrics-grid">
+                    <GrowthMetricCard
+                        label="New Visitors / Day (L7)"
+                        value={metrics.newVisitorsPerDayL7}
+                        suffix=""
+                        delta={((metrics.newVisitorsPerDayL7 - metrics.newVisitorsPerDayP7) / Math.max(metrics.newVisitorsPerDayP7, 0.1)) * 100}
+                        deltaType="percent"
+                        target={30}
+                        subline={`L7: ${metrics.newVisitorsPerDayL7.toFixed(1)} vs P7: ${metrics.newVisitorsPerDayP7.toFixed(1)}`}
+                    />
+                    <GrowthMetricCard
+                        label="DAU (Visitors) L7 avg"
+                        value={metrics.dauL7}
+                        suffix=""
+                        delta={((metrics.dauL7 - metrics.dauP7) / Math.max(metrics.dauP7, 0.1)) * 100}
+                        deltaType="percent"
+                        subline={`L7: ${metrics.dauL7.toFixed(1)} vs P7: ${metrics.dauP7.toFixed(1)}`}
+                    />
+                    <GrowthMetricCard
+                        label="Returning Share of DAU (L7)"
+                        value={metrics.returningShareL7}
+                        suffix="%"
+                        delta={metrics.returningShareL7 - metrics.returningShareP7}
+                        deltaType="pp"
+                        target={65}
+                        subline={`L7: ${metrics.returningShareL7.toFixed(1)}% vs P7: ${metrics.returningShareP7.toFixed(1)}%`}
+                    />
+                </div>
+            </div>
+
+            {/* Row 3 - Activation */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>🚀 Activation</h3>
+                        <VerdictBadge verdict={verdicts.activation} />
+                    </div>
+                    <p className="growth-row-description">
+                        Day-0 experience quality - your biggest leak to fix
+                    </p>
+                </div>
+                <div className="growth-metrics-grid">
+                    <GrowthMetricCard
+                        label="Day-0 Start Rate"
+                        value={metrics.day0StartRate}
+                        suffix="%"
+                        target={70}
+                        subline={`% of new visitors who start ≥1 puzzle`}
+                    />
+                    <GrowthMetricCard
+                        label="Day-0 Solve Rate"
+                        value={metrics.day0SolveRate}
+                        suffix="%"
+                        target={45}
+                        targetLabel="(near-term)"
+                        subline={`% of new visitors who solve ≥1 puzzle`}
+                    />
+                    <GrowthMetricCard
+                        label="Day-0 Depth (3+ puzzles)"
+                        value={metrics.day0DepthRate}
+                        suffix="%"
+                        target={12}
+                        subline={`% of new visitors who start ≥3 puzzles`}
+                    />
+                </div>
+            </div>
+
+            {/* Row 4 - Retention */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>🔄 Retention</h3>
+                        <VerdictBadge verdict={verdicts.retention} />
+                    </div>
+                    <p className="growth-row-description">
+                        The stickiness scoreboard - are players coming back?
+                    </p>
+                </div>
+                <div className="growth-metrics-grid">
+                    <GrowthMetricCard
+                        label="D1 Retention (Overall)"
+                        value={metrics.d1Overall}
+                        suffix="%"
+                        target={12}
+                        targetLabel="(near-term)"
+                        subline={`% of new visitors who return next day`}
+                    />
+                    <GrowthMetricCard
+                        label="D7 Retention (Overall)"
+                        value={metrics.d7Overall}
+                        suffix="%"
+                        target={6}
+                        targetLabel="(near-term)"
+                        subline={`% of new visitors who return 7 days later`}
+                    />
+                    <GrowthMetricCard
+                        label="D1 Retention (Signed-In)"
+                        value={metrics.d1SignedIn}
+                        suffix="%"
+                        target={35}
+                        subline={`Signed-in users only`}
+                    />
+                    <GrowthMetricCard
+                        label="D7 Retention (Signed-In)"
+                        value={metrics.d7SignedIn}
+                        suffix="%"
+                        target={18}
+                        subline={`Signed-in users only`}
+                    />
+                </div>
+            </div>
+
+            {/* Row 5 - Engagement */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>🎮 Engagement</h3>
+                        <VerdictBadge verdict={verdicts.engagement} />
+                    </div>
+                    <p className="growth-row-description">
+                        Are sessions "one and done" or deeper?
+                    </p>
+                </div>
+                <div className="growth-metrics-grid">
+                    <GrowthMetricCard
+                        label="Sessions per DAU (L7)"
+                        value={metrics.sessionsPerDauL7}
+                        suffix=""
+                        target={2.2}
+                        subline={`Higher = users coming back same day`}
+                    />
+                    <GrowthMetricCard
+                        label="Puzzles Started per DAU (L7)"
+                        value={metrics.puzzlesPerDauL7}
+                        suffix=""
+                        target={1.6}
+                        subline={`Higher = users exploring more content`}
+                    />
+                    <GrowthMetricCard
+                        label="DAU/MAU (Signed-In)"
+                        value={metrics.dauMauSignedIn}
+                        suffix="%"
+                        target={20}
+                        targetLabel="(healthy daily loop)"
+                        subline={`${metrics.signedInDau} DAU / ${metrics.signedInMau} MAU`}
+                    />
+                </div>
+            </div>
+
+            {/* Row 6 - Conversion + Sharing */}
+            <div className="growth-row">
+                <div className="growth-row-header">
+                    <div className="growth-row-title-line">
+                        <h3>📣 Conversion + Sharing</h3>
+                        <VerdictBadge verdict={verdicts.conversion} />
+                    </div>
+                    <p className="growth-row-description">
+                        Growth multiplier - turning visitors into advocates
+                    </p>
+                </div>
+                <div className="growth-metrics-grid">
+                    <GrowthMetricCard
+                        label="Visitor → Signup (L28)"
+                        value={metrics.visitorToSignupL28}
+                        suffix="%"
+                        target={8}
+                        targetLabel="(near-term)"
+                        subline={`${metrics.totalSignupsL28} signups / ${metrics.totalVisitorsL28} visitors`}
+                    />
+                    <GrowthMetricCard
+                        label="Signup Prompt Coverage"
+                        value={metrics.signupPromptCoverage}
+                        suffix="%"
+                        target={20}
+                        subline={`% of visitors who see signup prompt`}
+                    />
+                    <GrowthMetricCard
+                        label="Prompt → Signup"
+                        value={metrics.promptToSignup}
+                        suffix="%"
+                        target={60}
+                        subline={`Strong if above 50%`}
+                    />
+                    <GrowthMetricCard
+                        label="Share Rate (L28)"
+                        value={metrics.shareRateL28}
+                        suffix="%"
+                        target={3}
+                        targetLabel="(near-term)"
+                        subline={`${metrics.totalSharersL28} sharers / ${metrics.totalVisitorsL28} visitors`}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // Main Admin Dashboard Component
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
@@ -1945,6 +2347,7 @@ export const AdminDashboard: React.FC = () => {
         calculateFeatureUsageMetrics,
         calculateWinRateTrend,
         calculateEngagementTrend,
+        calculateGrowthMetrics,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -1987,6 +2390,10 @@ export const AdminDashboard: React.FC = () => {
     const engagementTrendData = useMemo(
         () => calculateEngagementTrend(chartTimeRange, trendsUserFilter),
         [calculateEngagementTrend, chartTimeRange, trendsUserFilter]
+    );
+    const growthMetrics = useMemo(
+        () => calculateGrowthMetrics(),
+        [calculateGrowthMetrics]
     );
     
     // Historical data for trends based on user filter
@@ -2175,6 +2582,12 @@ export const AdminDashboard: React.FC = () => {
                 >
                     📈 Trends
                 </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'growth' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('growth')}
+                >
+                    🌱 Growth
+                </button>
             </nav>
 
             <main className="admin-content">
@@ -2226,6 +2639,9 @@ export const AdminDashboard: React.FC = () => {
                                 onUserFilterChange={setTrendsUserFilter}
                                 theme={theme}
                             />
+                        )}
+                        {activeTab === 'growth' && (
+                            <GrowthTab metrics={growthMetrics} />
                         )}
                     </>
                 )}

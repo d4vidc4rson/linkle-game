@@ -239,6 +239,54 @@ export interface DailyDataPoint {
     stickiness: number; // DAU / Total Users %
 }
 
+// Growth Dashboard metrics
+export interface GrowthMetrics {
+    // Row 1 - North Star
+    returningPlayersL7: number;        // Players with 2+ days in L7
+    returningPlayersP7: number;
+    totalPlayersL7: number;
+    totalPlayersP7: number;
+    returningPlayersPercentL7: number;
+    returningPlayersPercentP7: number;
+    
+    // Row 2 - Growth Health  
+    newVisitorsPerDayL7: number;
+    newVisitorsPerDayP7: number;
+    dauL7: number;
+    dauP7: number;
+    returningShareL7: number;          // (DAU - New) / DAU
+    returningShareP7: number;
+    
+    // Row 3 - Activation (Day-0 metrics for L28 new visitors)
+    day0StartRate: number;             // % new visitors who start 1+ puzzle
+    day0SolveRate: number;             // % new visitors who solve 1+ puzzle
+    day0DepthRate: number;             // % new visitors who start 3+ puzzles
+    totalNewVisitorsL28: number;
+    
+    // Row 4 - Retention
+    d1Overall: number;
+    d7Overall: number;
+    d1SignedIn: number;
+    d7SignedIn: number;
+    
+    // Row 5 - Engagement
+    sessionsPerDauL7: number;
+    puzzlesPerDauL7: number;
+    dauMauSignedIn: number;            // Signed-in DAU / MAU
+    signedInDau: number;
+    signedInMau: number;
+    
+    // Row 6 - Conversion + Sharing (L28)
+    visitorToSignupL28: number;
+    signupPromptCoverage: number;      // % visitors who see prompt
+    promptToSignup: number;
+    shareRateL28: number;
+    totalVisitorsL28: number;
+    totalSignupsL28: number;
+    totalPromptsL28: number;
+    totalSharersL28: number;
+}
+
 export const useAdminData = (user: any) => {
     const [players, setPlayers] = useState<PlayerWithMeta[]>([]);
     const [analyticsEvents, setAnalyticsEvents] = useState<any[]>([]);
@@ -1563,6 +1611,333 @@ export const useAdminData = (user: any) => {
         });
     }, [analyticsEvents]);
 
+    // Calculate Growth Dashboard metrics
+    const calculateGrowthMetrics = useCallback((): GrowthMetrics => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayStr = today.toISOString().split('T')[0];
+        
+        // Define time windows
+        const l7Start = new Date(today);
+        l7Start.setDate(l7Start.getDate() - 6); // Last 7 days including today
+        const l7StartStr = l7Start.toISOString().split('T')[0];
+        
+        const p7Start = new Date(today);
+        p7Start.setDate(p7Start.getDate() - 13); // Previous 7 days
+        const p7StartStr = p7Start.toISOString().split('T')[0];
+        const p7EndStr = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        
+        const l28Start = new Date(today);
+        l28Start.setDate(l28Start.getDate() - 27);
+        const l28StartStr = l28Start.toISOString().split('T')[0];
+        
+        // Get visitor IDs that signed up
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Build visitor activity map: visitorId -> { firstSeen, playDates, startedCount, solvedCount per date }
+        const visitorActivity: Record<string, { 
+            firstSeen: string; 
+            playDates: Set<string>;
+            dateStats: Record<string, { started: number; solved: number }>;
+        }> = {};
+        
+        analyticsEvents.forEach(e => {
+            const vid = e.visitorId;
+            if (!vid) return;
+            
+            const date = e.date;
+            if (!date) return;
+            
+            if (!visitorActivity[vid]) {
+                visitorActivity[vid] = { firstSeen: date, playDates: new Set(), dateStats: {} };
+            }
+            
+            if (date < visitorActivity[vid].firstSeen) {
+                visitorActivity[vid].firstSeen = date;
+            }
+            
+            if (!visitorActivity[vid].dateStats[date]) {
+                visitorActivity[vid].dateStats[date] = { started: 0, solved: 0 };
+            }
+            
+            if (e.event === 'puzzle_started') {
+                visitorActivity[vid].dateStats[date].started++;
+            }
+            
+            if (e.event === 'puzzle_completed') {
+                visitorActivity[vid].playDates.add(date);
+                if (e.solved) {
+                    visitorActivity[vid].dateStats[date].solved++;
+                }
+            }
+        });
+        
+        // --- ROW 1: North Star - Returning Players ---
+        // Count visitors with 2+ distinct play days in L7/P7
+        let returningPlayersL7 = 0;
+        let totalPlayersL7 = 0;
+        let returningPlayersP7 = 0;
+        let totalPlayersP7 = 0;
+        
+        Object.values(visitorActivity).forEach(v => {
+            // L7: count days within L7 window
+            const l7Days = Array.from(v.playDates).filter(d => d >= l7StartStr && d <= todayStr);
+            if (l7Days.length > 0) {
+                totalPlayersL7++;
+                if (l7Days.length >= 2) returningPlayersL7++;
+            }
+            
+            // P7: count days within P7 window
+            const p7Days = Array.from(v.playDates).filter(d => d >= p7StartStr && d <= p7EndStr);
+            if (p7Days.length > 0) {
+                totalPlayersP7++;
+                if (p7Days.length >= 2) returningPlayersP7++;
+            }
+        });
+        
+        const returningPlayersPercentL7 = totalPlayersL7 > 0 
+            ? Math.round((returningPlayersL7 / totalPlayersL7) * 1000) / 10 : 0;
+        const returningPlayersPercentP7 = totalPlayersP7 > 0 
+            ? Math.round((returningPlayersP7 / totalPlayersP7) * 1000) / 10 : 0;
+        
+        // --- ROW 2: Growth Health ---
+        // Track daily visitors and new visitors
+        const dailyVisitors: Record<string, Set<string>> = {};
+        const newVisitorsByDate: Record<string, number> = {};
+        
+        // Initialize all dates in L7 and P7
+        for (let i = 0; i < 14; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            const dateStr = d.toISOString().split('T')[0];
+            dailyVisitors[dateStr] = new Set();
+            newVisitorsByDate[dateStr] = 0;
+        }
+        
+        // Count daily active visitors and new visitors
+        Object.entries(visitorActivity).forEach(([vid, v]) => {
+            v.playDates.forEach(date => {
+                if (dailyVisitors[date]) {
+                    dailyVisitors[date].add(vid);
+                }
+            });
+            
+            // Count as new visitor on their first seen date
+            if (newVisitorsByDate[v.firstSeen] !== undefined) {
+                newVisitorsByDate[v.firstSeen]++;
+            }
+        });
+        
+        // Calculate L7 and P7 averages
+        let l7DauSum = 0, l7NewSum = 0, l7Days = 0;
+        let p7DauSum = 0, p7NewSum = 0, p7Days = 0;
+        
+        Object.entries(dailyVisitors).forEach(([date, visitors]) => {
+            if (date >= l7StartStr && date <= todayStr) {
+                l7DauSum += visitors.size;
+                l7NewSum += newVisitorsByDate[date] || 0;
+                l7Days++;
+            } else if (date >= p7StartStr && date <= p7EndStr) {
+                p7DauSum += visitors.size;
+                p7NewSum += newVisitorsByDate[date] || 0;
+                p7Days++;
+            }
+        });
+        
+        const dauL7 = l7Days > 0 ? Math.round((l7DauSum / l7Days) * 10) / 10 : 0;
+        const dauP7 = p7Days > 0 ? Math.round((p7DauSum / p7Days) * 10) / 10 : 0;
+        const newVisitorsPerDayL7 = l7Days > 0 ? Math.round((l7NewSum / l7Days) * 10) / 10 : 0;
+        const newVisitorsPerDayP7 = p7Days > 0 ? Math.round((p7NewSum / p7Days) * 10) / 10 : 0;
+        
+        // Returning share = (DAU - New) / DAU
+        const returningShareL7 = dauL7 > 0 
+            ? Math.round(((dauL7 - newVisitorsPerDayL7) / dauL7) * 1000) / 10 : 0;
+        const returningShareP7 = dauP7 > 0 
+            ? Math.round(((dauP7 - newVisitorsPerDayP7) / dauP7) * 1000) / 10 : 0;
+        
+        // --- ROW 3: Activation (Day-0 metrics) ---
+        // Find new visitors in L28 and check their Day-0 behavior
+        let newVisitorsL28 = 0;
+        let day0Started = 0;
+        let day0Solved = 0;
+        let day0Depth3Plus = 0;
+        
+        Object.values(visitorActivity).forEach(v => {
+            // Only count visitors whose first day is within L28
+            if (v.firstSeen >= l28StartStr && v.firstSeen <= todayStr) {
+                newVisitorsL28++;
+                
+                const day0Stats = v.dateStats[v.firstSeen];
+                if (day0Stats) {
+                    if (day0Stats.started >= 1) day0Started++;
+                    if (day0Stats.solved >= 1) day0Solved++;
+                    if (day0Stats.started >= 3) day0Depth3Plus++;
+                }
+            }
+        });
+        
+        const day0StartRate = newVisitorsL28 > 0 
+            ? Math.round((day0Started / newVisitorsL28) * 1000) / 10 : 0;
+        const day0SolveRate = newVisitorsL28 > 0 
+            ? Math.round((day0Solved / newVisitorsL28) * 1000) / 10 : 0;
+        const day0DepthRate = newVisitorsL28 > 0 
+            ? Math.round((day0Depth3Plus / newVisitorsL28) * 1000) / 10 : 0;
+        
+        // --- ROW 4: Retention ---
+        // D1 and D7 for overall and signed-in users
+        let totalNewOverall = 0, d1ReturnedOverall = 0, d7ReturnedOverall = 0;
+        let totalNewSignedIn = 0, d1ReturnedSignedIn = 0, d7ReturnedSignedIn = 0;
+        
+        Object.entries(visitorActivity).forEach(([vid, v]) => {
+            // Skip if first seen is today (can't measure retention yet)
+            if (v.firstSeen >= todayStr) return;
+            
+            const firstPlayDate = new Date(v.firstSeen + 'T00:00:00');
+            const playDatesArr = Array.from(v.playDates);
+            
+            // Check D1: Did they play the day after first play?
+            const nextDay = new Date(firstPlayDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            const nextDayStr = nextDay.toISOString().split('T')[0];
+            const hasD1 = v.playDates.has(nextDayStr);
+            
+            // Check D7: Did they play exactly 7 days after first play?
+            const day7 = new Date(firstPlayDate);
+            day7.setDate(day7.getDate() + 7);
+            const day7Str = day7.toISOString().split('T')[0];
+            const hasD7 = v.playDates.has(day7Str);
+            
+            // Overall
+            totalNewOverall++;
+            if (hasD1) d1ReturnedOverall++;
+            if (hasD7) d7ReturnedOverall++;
+            
+            // Signed-in only
+            if (signedUpVisitorIds.has(vid)) {
+                totalNewSignedIn++;
+                if (hasD1) d1ReturnedSignedIn++;
+                if (hasD7) d7ReturnedSignedIn++;
+            }
+        });
+        
+        const d1Overall = totalNewOverall > 0 
+            ? Math.round((d1ReturnedOverall / totalNewOverall) * 1000) / 10 : 0;
+        const d7Overall = totalNewOverall > 0 
+            ? Math.round((d7ReturnedOverall / totalNewOverall) * 1000) / 10 : 0;
+        const d1SignedIn = totalNewSignedIn > 0 
+            ? Math.round((d1ReturnedSignedIn / totalNewSignedIn) * 1000) / 10 : 0;
+        const d7SignedIn = totalNewSignedIn > 0 
+            ? Math.round((d7ReturnedSignedIn / totalNewSignedIn) * 1000) / 10 : 0;
+        
+        // --- ROW 5: Engagement ---
+        // Sessions per DAU (L7)
+        const l7Sessions = analyticsEvents.filter(e => 
+            e.event === 'session_start' && 
+            e.date >= l7StartStr && e.date <= todayStr
+        ).length;
+        const sessionsPerDauL7 = l7DauSum > 0 
+            ? Math.round((l7Sessions / l7DauSum) * 100) / 100 : 0;
+        
+        // Puzzles started per DAU (L7)
+        const l7PuzzlesStarted = analyticsEvents.filter(e => 
+            e.event === 'puzzle_started' && 
+            e.date >= l7StartStr && e.date <= todayStr
+        ).length;
+        const puzzlesPerDauL7 = l7DauSum > 0 
+            ? Math.round((l7PuzzlesStarted / l7DauSum) * 100) / 100 : 0;
+        
+        // DAU/MAU for signed-in users
+        const monthAgo = new Date(today);
+        monthAgo.setDate(monthAgo.getDate() - 29);
+        const monthAgoStr = monthAgo.toISOString().split('T')[0];
+        
+        const signedInDauSet = new Set<string>();
+        const signedInMauSet = new Set<string>();
+        
+        analyticsEvents
+            .filter(e => e.event === 'puzzle_completed' && signedUpVisitorIds.has(e.visitorId))
+            .forEach(e => {
+                if (e.date === todayStr) {
+                    signedInDauSet.add(e.visitorId);
+                }
+                if (e.date >= monthAgoStr && e.date <= todayStr) {
+                    signedInMauSet.add(e.visitorId);
+                }
+            });
+        
+        const signedInDau = signedInDauSet.size;
+        const signedInMau = signedInMauSet.size;
+        const dauMauSignedIn = signedInMau > 0 
+            ? Math.round((signedInDau / signedInMau) * 1000) / 10 : 0;
+        
+        // --- ROW 6: Conversion + Sharing (L28) ---
+        const l28Events = analyticsEvents.filter(e => e.date >= l28StartStr && e.date <= todayStr);
+        
+        const visitorsL28 = new Set(l28Events.map(e => e.visitorId)).size;
+        const signupsL28 = l28Events.filter(e => e.event === 'signup_completed').length;
+        const promptsShownL28 = new Set(
+            l28Events.filter(e => e.event === 'signup_prompt_shown').map(e => e.visitorId)
+        ).size;
+        const sharersL28 = new Set(
+            l28Events.filter(e => e.event === 'share_clicked' || e.event === 'share_copied').map(e => e.visitorId)
+        ).size;
+        
+        const visitorToSignupL28 = visitorsL28 > 0 
+            ? Math.round((signupsL28 / visitorsL28) * 1000) / 10 : 0;
+        const signupPromptCoverage = visitorsL28 > 0 
+            ? Math.round((promptsShownL28 / visitorsL28) * 1000) / 10 : 0;
+        const promptToSignup = promptsShownL28 > 0 
+            ? Math.round((signupsL28 / promptsShownL28) * 1000) / 10 : 0;
+        const shareRateL28 = visitorsL28 > 0 
+            ? Math.round((sharersL28 / visitorsL28) * 1000) / 10 : 0;
+        
+        return {
+            // Row 1
+            returningPlayersL7,
+            returningPlayersP7,
+            totalPlayersL7,
+            totalPlayersP7,
+            returningPlayersPercentL7,
+            returningPlayersPercentP7,
+            // Row 2
+            newVisitorsPerDayL7,
+            newVisitorsPerDayP7,
+            dauL7,
+            dauP7,
+            returningShareL7,
+            returningShareP7,
+            // Row 3
+            day0StartRate,
+            day0SolveRate,
+            day0DepthRate,
+            totalNewVisitorsL28: newVisitorsL28,
+            // Row 4
+            d1Overall,
+            d7Overall,
+            d1SignedIn,
+            d7SignedIn,
+            // Row 5
+            sessionsPerDauL7,
+            puzzlesPerDauL7,
+            dauMauSignedIn,
+            signedInDau,
+            signedInMau,
+            // Row 6
+            visitorToSignupL28,
+            signupPromptCoverage,
+            promptToSignup,
+            shareRateL28,
+            totalVisitorsL28: visitorsL28,
+            totalSignupsL28: signupsL28,
+            totalPromptsL28: promptsShownL28,
+            totalSharersL28: sharersL28,
+        };
+    }, [analyticsEvents]);
+
     // Calculate engagement trend (started, completed, shared) for Trends tab
     // userFilter: 'all' = everyone, 'signedUp' = only signed-up users, 'anonymous' = only never-signed-up users
     const calculateEngagementTrend = useCallback((timeRange: TimeRange = '28days', userFilter: 'all' | 'signedUp' | 'anonymous' = 'all'): EngagementTrendPoint[] => {
@@ -1674,6 +2049,7 @@ export const useAdminData = (user: any) => {
         calculateFeatureUsageMetrics,
         calculateWinRateTrend,
         calculateEngagementTrend,
+        calculateGrowthMetrics,
         getLeaderboard,
         searchPlayers,
         analyticsEvents, // Expose for CSV export

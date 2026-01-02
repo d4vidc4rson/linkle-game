@@ -420,10 +420,23 @@ export const NewPlayerModal = ({ onClose }: { onClose: () => void }) => (
         <div className="modal-content new-player-modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
             <h2>You're new here!</h2>
-            <p>Here's how to play the game:</p>
-            <p>Drag and drop the word tiles into the best order. And yes, there is a BEST order.</p>
-            <p>We're rooting for you.</p>
-            <button className="button" onClick={onClose}><span>Got it!</span></button>
+            <p className="new-player-intro">Here's how you play:</p>
+            <p className="new-player-goal">
+                Arrange all words so every pair forms a common phrase or compound word.
+            </p>
+            <div className="new-player-example">
+                <div className="example-row"><span>WILD</span> → <span>WEST</span> → <span>COAST</span> →</div>
+                <div className="example-row"><span>GUARD</span> → <span>DUTY</span> → <span>FREE</span> →</div>
+                <div className="example-row"><span>SPEECH</span> → <span>WRITERS</span> → <span>BLOCK</span></div>
+            </div>
+            <ul className="new-player-rules">
+                <li>Drag tiles to reorder</li>
+                <li>Tap <strong>SUBMIT</strong> when you think you've got it</li>
+                <li>Correct pairs lock in 🔒 — wrong ones don't</li>
+                <li>Limited tries per puzzle!</li>
+            </ul>
+            <p className="new-player-tagline">Good luck — one dumb thing leads to another.</p>
+            <button className="button" onClick={onClose}><span>Let's Go!</span></button>
         </div>
     </div>
 );

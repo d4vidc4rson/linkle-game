@@ -1596,5 +1596,165 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SQUID", "INK", "WELL", "DONE", "DEAL", "FLOW", "STATE", "FARM", "FRESH"],
         narrative: "SQUID INK is used in pasta and other dishes. An INK WELL is a container for writing ink. WELL DONE means thoroughly cooked (or congratulations). A DONE DEAL is a completed agreement. DEAL FLOW is a business term for the rate of investment opportunities. FLOW STATE is the psychology term for being 'in the zone.' STATE FARM is the insurance company ('Like a good neighbor...'). FARM FRESH describes produce straight from the source.",
         difficulty: 'EASY'
+    },
+    {
+        solution: ["SPACE", "COWBOY", "BOOT", "LEG", "DAY", "WALKER", "TEXAS", "TOAST", "MASTER"],
+        narrative: "A SPACE COWBOY is a Steve Miller Band song and an anime (Cowboy Bebop). A COWBOY BOOT is iconic Western footwear. A BOOTLEG is an illegal copy of media. LEG DAY is the dreaded gym day that fitness bros skip. A DAY WALKER is a vampire who can walk in sunlight, like Blade. WALKER, TEXAS Ranger is Chuck Norris's legendary TV series. TEXAS TOAST is thick-sliced garlic bread. A TOASTMASTER is a member of the public speaking organization.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FYRE", "FESTIVAL", "SEASON", "TICKET", "SCALP", "MASSAGE", "PARLOR", "TRICK", "SHOT"],
+        narrative: "FYRE FESTIVAL was the infamous 2017 scam that stranded influencers in the Bahamas. FESTIVAL SEASON is the summer period packed with music events. A SEASON TICKET grants admission to all games or shows. To TICKET SCALP is to resell tickets at inflated prices. A SCALP MASSAGE relieves tension. A MASSAGE PARLOR offers therapeutic (or sometimes illicit) services. A PARLOR TRICK is a simple magic act. A TRICK SHOT is an impressive pool or basketball shot.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SOFT", "LAUNCH", "PARTY", "HARDY", "BOYS", "TOWN", "DRUNK", "TEXT", "WALL"],
+        narrative: "A SOFT LAUNCH is when you subtly introduce a new relationship on social media. A LAUNCH PARTY celebrates a new product or venture. To PARTY HARDY is slang for partying enthusiastically. The HARDY BOYS are the teen detective duo from the classic book series. BOYS TOWN is the famous youth care organization founded in Nebraska. The TOWN DRUNK is the stereotypical village alcoholic. A DRUNK TEXT is an embarrassing message sent while intoxicated. A TEXT WALL is an overwhelming, unbroken block of text.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["TOUCH", "GRASS", "WIDOW", "PEAK", "OIL", "PULL", "QUOTE", "TWEET", "STORM"],
+        narrative: "To TOUCH GRASS is internet slang for 'go outside and touch reality.' A GRASS WIDOW is an old-fashioned term for a woman whose husband is away. A WIDOW'S PEAK is the V-shaped hairline on the forehead. PEAK OIL is the theory that global oil production has or will reach maximum output. OIL PULLING is a wellness trend of swishing oil in your mouth. A PULL QUOTE is an excerpt highlighted in an article. A QUOTE TWEET is sharing someone's tweet with added commentary. A TWEETSTORM is a rapid series of connected tweets on a topic.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DUMPSTER", "FIRE", "SALE", "BARN", "DOOR", "DASH", "CAM", "GIRL", "BOSS"],
+        narrative: "A DUMPSTER FIRE is internet slang for a complete disaster. A FIRE SALE is an urgent sale at steep discounts. A SALE BARN is where livestock are auctioned. A BARN DOOR is a large hinged door on a farm building. DOOR DASH is the food delivery service. A DASH CAM is a dashboard camera in a vehicle. A CAM GIRL is a woman who performs live on webcam for paying viewers. A GIRL BOSS is the controversial term for a female entrepreneur.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STARBUCKS", "LATTE", "ART", "DECO", "RATE", "CARD", "GAME", "FACE", "VALUE"],
+        narrative: "STARBUCKS is a famous coffee chain. A LATTE is a coffee drink. LATTE ART is the decorative patterns made in coffee foam. ART DECO is an artistic style from the 1920s. To DECO RATE is to decorate something. A RATE CARD lists pricing information. A CARD GAME is played with cards. A GAME FACE is a serious expression. FACE VALUE is the apparent worth or literal price printed on something.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["NETFLIX", "ORIGINAL", "RECIPE", "BOX", "SPRING", "WATER", "BOTTLE", "CAP", "OFF"],
+        narrative: "NETFLIX is a streaming service. A NETFLIX ORIGINAL is a show produced exclusively for the platform. An ORIGINAL RECIPE is authentic cooking instructions. A RECIPE BOX stores cooking instructions. A BOX SPRING supports a mattress. SPRING WATER comes from natural springs. A WATER BOTTLE holds drinks. A BOTTLE CAP seals the container. To CAP OFF is to complete something.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MICROSOFT", "WINDOWS", "DOWN", "PAYMENT", "PROCESSOR", "SPEED", "LIMIT", "BREAK", "FAST"],
+        narrative: "MICROSOFT is a software company. MICROSOFT WINDOWS is their operating system. WINDOWS DOWN means lowering car windows. A DOWN PAYMENT is an initial purchase amount. A PAYMENT PROCESSOR handles transactions. A computer has a PROCESSOR SPEED. A SPEED LIMIT regulates traffic. To LIMIT BREAK is to exceed boundaries. BREAKFAST is the morning meal.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["GOOGLE", "CHROME", "DOME", "LIGHT", "BULB", "GARDEN", "PARTY", "FAVOR", "BANK"],
+        narrative: "GOOGLE CHROME is a popular web browser. A CHROME DOME is slang for a bald head. A DOME LIGHT is a ceiling light in a car. A LIGHT BULB produces illumination. A BULB GARDEN is planted with flowering bulbs. A GARDEN PARTY is an outdoor social gathering. A PARTY FAVOR is a small gift given to guests. A FAVOR BANK refers to accumulated social goodwill in relationships.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["REDDIT", "KARMA", "POLICE", "OFFICER", "FRIENDLY", "FIRE", "WOOD", "BEAM", "JOIST"],
+        narrative: "REDDIT KARMA is the point system on the Reddit platform. KARMA POLICE is a song by Radiohead. A POLICE OFFICER enforces the law. OFFICER FRIENDLY is a community policing term. FRIENDLY FIRE is accidental attack on one's own forces. FIREWOOD is wood used for burning. A WOOD BEAM is a structural support made of timber. A BEAM JOIST is a horizontal support member in construction.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["THUNDER", "STORM", "CELLAR", "DOOR", "HINGE", "JOINT", "PAIN", "KILLER", "WHALE"],
+        narrative: "A THUNDER STORM can be loud and intense. A STORM CELLAR is a shelter for severe weather. A CELLAR DOOR leads down to a cellar. A DOOR HINGE lets a door swing. A HINGE JOINT is a joint like a knee or elbow. JOINT PAIN is aching in those areas. A PAIN KILLER relieves pain. A KILLER WHALE is an orca.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LUCKY", "BREAK", "THROUGH", "LINE", "DANCING", "SHOES", "BOX", "SEAT", "BELT"],
+        narrative: "A LUCKY BREAK is a sudden stroke of good fortune. A BREAKTHROUGH is a significant discovery or development. A THROUGH LINE is a consistent theme or plot element. LINE DANCING is a choreographed dance in rows. You wear DANCING SHOES when you go out. A SHOEBOX stores your footwear. A BOX SEAT is a premium seat in a theater. A SEAT BELT is a safety restraint in a car.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["COFFEE", "FILTER", "WATER", "COLOR", "WHEEL", "CHAIR", "MAN", "KIND", "HEART"],
+        narrative: "A COFFEE FILTER is used to brew your morning joe. FILTER WATER is cleaned for drinking. WATERCOLOR is a translucent painting medium. A COLOR WHEEL shows the relationships between different hues. A WHEELCHAIR is used for mobility. A CHAIRMAN is the presiding officer of a meeting. MANKIND refers to the human race. A KIND HEART describes someone with a compassionate nature.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SILVER", "SURFER", "DUDE", "RANCH", "HAND", "CREAM", "PUFF", "PASTRY", "CHEF"],
+        narrative: "The SILVER SURFER is a comic book hero. A SURFER DUDE is a classic beach stereotype. A DUDE RANCH offers a cowboy experience. A RANCH HAND tends to livestock. HAND CREAM moisturizes dry skin. A CREAM PUFF is a sweet treat. PUFF PASTRY is light, flaky dough. A PASTRY CHEF creates desserts.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["RAGE", "BAIT", "CAR", "SICK", "BURN", "BOOK", "TUBE", "SOCK", "HOP"],
+        narrative: "RAGE BAIT is internet content designed to provoke fury for clicks. A BAIT CAR is a police sting vehicle left unlocked to catch thieves. Getting CAR SICK is motion sickness from driving. A SICK BURN is slang for a devastating insult. A BURN BOOK is the infamous slam notebook from 'Mean Girls'. BOOK TUBE is the YouTube community for book reviewers. A TUBE SOCK is the elastic-topped athletic sock. A SOCK HOP was a 1950s school dance where teens removed their shoes to protect the gym floor.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HATE", "CLICK", "FARM", "TEAM", "ROCKET", "SCIENCE", "FAIR", "TRADE", "WAR"],
+        narrative: "A HATE CLICK is when you engage with content you despise. A CLICK FARM uses fake accounts to boost engagement metrics. A FARM TEAM is a minor league affiliate that develops players. TEAM ROCKET is the bumbling villain trio from Pokémon. 'It's not ROCKET SCIENCE' means something isn't complicated. A SCIENCE FAIR displays student experiments. FAIR TRADE ensures ethical sourcing. A TRADE WAR is an economic conflict through tariffs.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["RENT", "FREE", "SPIRIT", "ANIMAL", "CROSSING", "SWORDS", "MAN", "CHILD", "BRIDE"],
+        narrative: "When someone lives RENT FREE in your head, they occupy your thoughts without permission. A FREE SPIRIT lives unconventionally. A SPIRIT ANIMAL is a creature that represents your essence (though appropriated from Indigenous cultures). ANIMAL CROSSING is Nintendo's life-simulation game where you pay off a tanuki's mortgage. CROSSING SWORDS means engaging in conflict—or is the Hulu adult cartoon. A SWORDSMAN is a skilled blade fighter. A MAN CHILD is an adult who refuses to mature. A CHILD BRIDE is a disturbing reality in some parts of the world.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DANK", "MEME", "STOCK", "BROKER", "DEALER", "PLATE", "ARMOR", "PIERCING", "SCREAM"],
+        narrative: "A DANK MEME is an ironic or surreal internet joke appreciated by connoisseurs. A MEME STOCK is a share that goes viral on Reddit, like GameStop. A STOCK BROKER executes trades for clients. A BROKER DEALER both advises and trades securities. A DEALER PLATE is the special license plate used by car dealerships. PLATE ARMOR is medieval full-body protection. ARMOR PIERCING rounds penetrate protective materials. A PIERCING SCREAM is a high-pitched shriek that could shatter glass.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["TRAUMA", "DUMP", "TRUCK", "NUT", "JOB", "FAIR", "SHAKE", "WEIGHT", "ROOM"],
+        narrative: "A TRAUMA DUMP is when someone unloads their emotional baggage without warning. A DUMP TRUCK hauls materials to construction sites. TRUCK NUTS are the crude dangling accessories mounted on trailer hitches. A NUT JOB is slang for a crazy person—or the 2014 animated heist film. A JOB FAIR helps unemployed people find work. A FAIR SHAKE is an honest chance at something. A SHAKE WEIGHT is the infomercial fitness device with suggestive motion. A WEIGHT ROOM is where athletes pump iron.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HORSE", "FLY", "FISHING", "POLE", "VAULT", "DOOR", "STEP", "MOTHER", "LOAD"],
+        narrative: "A HORSE FLY is a large biting insect that torments livestock. FLY FISHING is the angling technique using artificial flies as lures. A FISHING POLE is the rod used to cast a line. POLE VAULT is the track and field event using a flexible pole to clear a bar. A VAULT DOOR is the heavy entrance to a bank's secure storage. A DOORSTEP is the threshold where visitors and packages arrive. A STEPMOTHER is a parent's spouse who is not one's biological parent. To hit the MOTHERLOAD is to discover the richest vein of ore or strike it big.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STEAM", "ROLLER", "DERBY", "HAT", "BOX", "ELDER", "BERRY", "JUICE", "BAR"],
+        narrative: "A STEAMROLLER is a heavy vehicle that compacts road surfaces. ROLLER DERBY is a contact sport where skaters race around an oval track. A DERBY HAT is the bowler-style hat traditionally worn at the Kentucky Derby. A HAT BOX is a circular container for storing fine hats. A BOX ELDER is a fast-growing maple tree native to North America. ELDERBERRY is a dark purple fruit used in syrups and wine. BERRY JUICE is a drink made from crushed berries. A JUICE BAR serves fresh-pressed beverages.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SNAP", "DRAGON", "FLY", "WHEEL", "BARROW", "BOY", "TOY", "POODLE", "SKIRT"],
+        narrative: "A SNAPDRAGON is a colorful flower that opens and closes like a mouth. A DRAGONFLY is an iridescent insect with translucent wings. A FLYWHEEL stores rotational energy in engines. A WHEELBARROW is a cart for hauling garden materials. A BARROW BOY is British slang for a street vendor selling from a wheeled cart. A BOY TOY is slang for an attractive younger man. A TOY POODLE is the smallest variety of the poodle breed. A POODLE SKIRT is the iconic 1950s circle skirt often decorated with a poodle appliqué.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PENNY", "STOCK", "PILE", "DRIVER", "LICENSE", "FEE", "WAIVER", "WIRE", "CUTTER"],
+        narrative: "A PENNY STOCK is a low-priced share typically trading under $5. A STOCKPILE is an accumulated reserve of materials. A PILE DRIVER is construction equipment that hammers posts into the ground. A DRIVER'S LICENSE is the permit allowing you to operate a vehicle. A LICENSE FEE is a charge for obtaining permission or authorization. A FEE WAIVER excuses someone from paying required costs. The WAIVER WIRE is where fantasy sports managers claim dropped players. A WIRE CUTTER is a tool for snipping through cables and fencing.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STEAM", "BATH", "ROBE", "HOOK", "NOSE", "DIVE", "BAR", "GRAPH", "PAPER"],
+        narrative: "A STEAM BATH is a room filled with hot vapor for relaxation. A BATHROBE is the garment worn after bathing. A ROBE HOOK is a wall-mounted fixture for hanging towels and robes. A HOOK NOSE describes a prominently curved nasal bridge. A NOSEDIVE is a steep, sudden plunge downward. A DIVE BAR is a no-frills, unpretentious neighborhood watering hole. A BAR GRAPH displays data using rectangular bars. GRAPH PAPER has a grid of lines for plotting charts and diagrams.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ORANGE", "PEEL", "BACK", "LOG", "JAM", "SESSION", "PLAYER", "COACH", "HOUSE"],
+        narrative: "An ORANGE PEEL is the citrus fruit's outer skin. To PEEL BACK means to uncover or reveal. A BACKLOG is an accumulation of unfinished work. A LOG JAM is a blockage of floating logs or a standstill. A JAM SESSION is an informal gathering of musicians improvising together. A SESSION PLAYER is a hired studio musician. A PLAYER COACH is an athlete who also manages the team. A COACH HOUSE is a small dwelling originally used to store carriages.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PINE", "TREE", "TOP", "GUN", "FIRE", "ESCAPE", "ROUTE", "MAP", "QUEST"],
+        narrative: "A PINE TREE is an evergreen conifer. A TREETOP is the highest branches of a tree. TOP GUN is slang for the best pilot or the famous movie. GUNFIRE is the discharge of firearms. A FIRE ESCAPE is an emergency exit route from a building. An ESCAPE ROUTE is a path to safety. A ROUTE MAP shows directions for a journey. MAPQUEST is the online navigation service.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["WIND", "MILL", "POND", "WEED", "KILLER", "BEE", "STING", "RAY", "GUN"],
+        narrative: "A WINDMILL is a structure that harnesses wind power. A MILL POND is the body of water that powers a mill. PONDWEED is aquatic vegetation that grows in ponds. WEED KILLER is an herbicide that eliminates unwanted plants. A KILLER BEE is an aggressive Africanized honey bee. A BEE STING is the painful injection from a bee's stinger. A STINGRAY is a flat ocean fish with a venomous tail. A RAY GUN is a science fiction weapon that shoots beams of energy.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["JELLY", "FISH", "CAKE", "TIN", "ROOF", "TOP", "KNOT", "HEAD", "STONE"],
+        narrative: "A JELLYFISH is a translucent sea creature with tentacles. A FISH CAKE is a fried patty made of fish and potato. A CAKE TIN is a baking pan for cakes. A TIN ROOF is a metal roofing material. A ROOFTOP is the outer surface of a building's roof. A TOPKNOT is a hairstyle where hair is gathered at the crown. A KNOTHEAD is slang for a foolish person. A HEADSTONE is a grave marker in a cemetery.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CANDLE", "WAX", "PAPER", "CLIP", "ART", "WORK", "BENCH", "MARK", "SHEET"],
+        narrative: "CANDLE WAX is the material that forms a candle. WAX PAPER is coated paper used for food storage. A PAPER CLIP is a bent wire for holding papers together. CLIP ART is ready-made digital images. ARTWORK is a piece of creative visual expression. A WORKBENCH is a sturdy table for crafting or repairs. A BENCHMARK is a standard for comparison. A MARK SHEET is a document recording grades or scores.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TOM", "CRUISE", "SHIP", "FOOLS", "GOLD", "STATUE", "LIBERTY", "BELL", "PEPPER"],
+        narrative: "TOM CRUISE is the iconic Hollywood actor known for blockbuster action films. A CRUISE SHIP is a large vessel designed for pleasure voyages. SHIP OF FOOLS is a classic allegory about society going astray. FOOL'S GOLD is the nickname for pyrite, a mineral mistaken for real gold. A GOLD STATUE is a gleaming metallic sculpture or trophy. The STATUE OF LIBERTY is the iconic monument in New York Harbor. The LIBERTY BELL is the historic symbol of American independence in Philadelphia. A BELL PEPPER is the sweet, crunchy vegetable used in cooking.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["NICOLAS", "CAGE", "FREE", "LOVE", "PARADE", "NAKED", "SHORT", "SUPPLY", "STORE"],
+        narrative: "NICOLAS CAGE is the Academy Award-winning actor known for eccentric roles. CAGE FREE describes eggs from hens not confined to cages. FREE LOVE was the 1960s movement rejecting traditional romantic restrictions. The LOVE PARADE was Berlin's legendary electronic music festival. To PARADE NAKED is to march unclothed, as Lady Godiva famously did through Coventry. A NAKED SHORT is selling shares you haven't borrowed—an illegal trading practice. SHORT SUPPLY means something is scarce or limited. A SUPPLY STORE is a shop selling materials and provisions.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HUSBANDING", "RESOURCES", "HUB", "CAP", "TABLE", "STAKES", "HIGH", "VOLTAGE", "SPIKE"],
+        narrative: "HUSBANDING RESOURCES is the careful management and conservation of assets. A RESOURCES HUB is a central location for accessing materials and information. A HUBCAP is the decorative cover on a car's wheel. A CAP TABLE is a spreadsheet showing equity ownership in a startup. TABLE STAKES are the minimum requirements to participate. When STAKES are HIGH, the risk and reward are significant. HIGH VOLTAGE is dangerous electrical power that can cause serious harm. A VOLTAGE SPIKE is a sudden surge in electrical power that can damage equipment.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

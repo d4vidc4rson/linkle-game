@@ -1756,5 +1756,10 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["HUSBANDING", "RESOURCES", "HUB", "CAP", "TABLE", "STAKES", "HIGH", "VOLTAGE", "SPIKE"],
         narrative: "HUSBANDING RESOURCES is the careful management and conservation of assets. A RESOURCES HUB is a central location for accessing materials and information. A HUBCAP is the decorative cover on a car's wheel. A CAP TABLE is a spreadsheet showing equity ownership in a startup. TABLE STAKES are the minimum requirements to participate. When STAKES are HIGH, the risk and reward are significant. HIGH VOLTAGE is dangerous electrical power that can cause serious harm. A VOLTAGE SPIKE is a sudden surge in electrical power that can damage equipment.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SUMPTUARY", "LAW", "MERCHANT", "BANK", "SHOT", "NOISE", "GATE", "ARRAY", "ANTENNA"],
+        narrative: "A SUMPTUARY LAW was the original 'no flexing' rule—limits on fancy clothes and spending. The LAW MERCHANT was the medieval rulebook for cross-border trade, which eventually feeds into a MERCHANT BANK (finance for big deals). Then we ricochet into the literal: a BANK SHOT bounces off a cushion. In electronics, SHOT NOISE is the jitter from electrons arriving in discrete clumps; audio folks tame that with a NOISE GATE. Chip designers build logic with a GATE ARRAY, and antenna engineers scale that idea into an ARRAY ANTENNA that beams signals directionally.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

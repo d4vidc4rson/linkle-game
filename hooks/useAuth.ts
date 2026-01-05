@@ -88,9 +88,17 @@ export const useAuth = () => {
         return defaultPlayerData;
     }, []);
 
-    const saveGameState = useCallback(async (data: PlayerData): Promise<{ success: boolean; error?: string }> => {
+    // saveGameState accepts an optional overrideUser parameter to fix race condition
+    // during auth state changes (when user state hasn't updated yet)
+    const saveGameState = useCallback(async (
+        data: PlayerData, 
+        overrideUser?: any
+    ): Promise<{ success: boolean; error?: string }> => {
         try {
-            if (user) {
+            // Use overrideUser if provided (during auth flow), otherwise use state
+            const effectiveUser = overrideUser ?? user;
+            
+            if (effectiveUser) {
                 // Create a clean copy to avoid saving Infinity to Firestore
                 const dataToSave = { ...data };
                 if (dataToSave.fastestEasySolve === Infinity) {
@@ -101,7 +109,7 @@ export const useAuth = () => {
                 // This preserves local progress while respecting first play for each puzzle
                 let existingCreatedAt: string | null = null;
                 try {
-                    const cloudDoc = await getDoc(doc(db, "users", user.uid));
+                    const cloudDoc = await getDoc(doc(db, "users", effectiveUser.uid));
                     if (cloudDoc.exists()) {
                         const cloudData = cloudDoc.data() as any;
                         existingCreatedAt = cloudData.createdAt || null;
@@ -136,49 +144,51 @@ export const useAuth = () => {
                 }
                 
                 // Include user profile info for admin dashboard visibility
-                // DEBUG: Log user info to diagnose email not being saved
                 console.log('[saveGameState] User object:', {
-                    uid: user.uid,
-                    email: user.email,
-                    displayName: user.displayName,
-                    emailVerified: user.emailVerified,
+                    uid: effectiveUser.uid,
+                    email: effectiveUser.email,
+                    displayName: effectiveUser.displayName,
+                    emailVerified: effectiveUser.emailVerified,
+                    source: overrideUser ? 'overrideUser (auth flow)' : 'user state',
                 });
                 
-                if (user.email) {
-                    (dataToSave as any).email = user.email;
-                    console.log('[saveGameState] Email will be saved:', user.email);
+                if (effectiveUser.email) {
+                    (dataToSave as any).email = effectiveUser.email;
+                    console.log('[saveGameState] Email will be saved:', effectiveUser.email);
                 } else {
-                    console.warn('[saveGameState] WARNING: user.email is falsy!', user.email);
+                    console.warn('[saveGameState] WARNING: effectiveUser.email is falsy!', effectiveUser.email);
                 }
-                if (user.displayName) {
-                    (dataToSave as any).displayName = user.displayName;
+                if (effectiveUser.displayName) {
+                    (dataToSave as any).displayName = effectiveUser.displayName;
                 }
                 
                 // Add createdAt timestamp for new users (only if not already set)
                 if (!existingCreatedAt) {
                     (dataToSave as any).createdAt = new Date().toISOString();
+                    console.log('[saveGameState] New user - adding createdAt timestamp');
                 }
                 
                 // Always update the updatedAt timestamp
                 (dataToSave as any).updatedAt = new Date().toISOString();
                 
-                // DEBUG: Log what we're about to save
                 console.log('[saveGameState] Saving to Firestore:', {
-                    uid: user.uid,
+                    uid: effectiveUser.uid,
                     hasEmail: !!(dataToSave as any).email,
                     email: (dataToSave as any).email,
                     hasDisplayName: !!(dataToSave as any).displayName,
+                    createdAt: (dataToSave as any).createdAt,
                     updatedAt: (dataToSave as any).updatedAt,
                 });
                 
-                await setDoc(doc(db, "users", user.uid), dataToSave, { merge: true });
-                console.log('[saveGameState] Save successful for user:', user.uid);
+                await setDoc(doc(db, "users", effectiveUser.uid), dataToSave, { merge: true });
+                console.log('[saveGameState] ✅ Save successful for user:', effectiveUser.uid);
             } else {
+                console.log('[saveGameState] No user - saving to localStorage');
                 localStorage.setItem('linklePlayerData', JSON.stringify(data));
             }
             return { success: true };
         } catch (error) {
-            console.error("Failed to save game state:", error);
+            console.error("[saveGameState] ❌ Failed to save game state:", error);
             const errorMessage = error instanceof Error ? error.message : 'Failed to save progress';
             return { success: false, error: errorMessage };
         }
@@ -286,22 +296,35 @@ export const useAuth = () => {
 
                     } else {
                         // New user - create their document with profile info
+                        console.log('[useAuth] New user detected - will create Firestore document');
                         finalPlayerData = localData;
                     }
 
-                    await saveGameState(finalPlayerData);
+                    // CRITICAL: Pass currentUser directly to avoid race condition
+                    // (user state may not have updated yet since setUser is async)
+                    const saveResult = await saveGameState(finalPlayerData, currentUser);
+                    if (!saveResult.success) {
+                        console.error('[useAuth] ❌ Failed to save user document:', saveResult.error);
+                    } else {
+                        console.log('[useAuth] ✅ User document saved successfully');
+                    }
                     
-                    // Always update profile info on login using currentUser directly
-                    // This ensures email/displayName are saved even for existing users who logged in before this feature
+                    // BACKUP: Ensure email/displayName are saved even if saveGameState partially failed
+                    // This is a safety net to prevent "Anonymous" entries in the admin dashboard
                     try {
-                        const profileUpdate: Record<string, any> = {};
+                        const profileUpdate: Record<string, any> = {
+                            updatedAt: new Date().toISOString(),
+                        };
                         if (currentUser.email) profileUpdate.email = currentUser.email;
                         if (currentUser.displayName) profileUpdate.displayName = currentUser.displayName;
-                        if (Object.keys(profileUpdate).length > 0) {
+                        
+                        // Only update if we have at least email or displayName
+                        if (currentUser.email || currentUser.displayName) {
                             await setDoc(doc(db, "users", currentUser.uid), profileUpdate, { merge: true });
+                            console.log('[useAuth] ✅ Backup profile update successful');
                         }
                     } catch (profileError) {
-                        console.warn("Could not update user profile info:", profileError);
+                        console.warn("[useAuth] Could not update user profile info (backup):", profileError);
                     }
                     
                     localStorage.removeItem('linklePlayerData');

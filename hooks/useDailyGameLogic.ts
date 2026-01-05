@@ -418,6 +418,10 @@ export const useDailyGameLogic = (
         const currentDayStreak = playerData.dayStreak || 0;
         const newDayStreak = isFirstPuzzleOfDay ? currentDayStreak + 1 : currentDayStreak;
         const newMaxDayStreak = Math.max(newDayStreak, newMaxStreak); // Use same maxStreak field for simplicity
+        
+        // Also update consecutiveDaysPlayed for badge tracking
+        const currentConsecutiveDays = playerData.consecutiveDaysPlayed || 0;
+        const newConsecutiveDaysPlayed = isFirstPuzzleOfDay ? currentConsecutiveDays + 1 : currentConsecutiveDays;
         const newTotalSolvedCount = playerData.totalSolved + 1;
         const newPerfectCount = playerData.perfectScores + (isPerfect ? 1 : 0);
         const newConsecutivePerfects = isPerfect ? (playerData.consecutivePerfects || 0) + 1 : 0;
@@ -450,7 +454,7 @@ export const useDailyGameLogic = (
             totalSolved: newTotalSolvedCount,
             hardSolved: difficultyCounts.hard,
             impossibleSolved: difficultyCounts.impossible,
-            consecutiveDays: playerData.consecutiveDaysPlayed,
+            consecutiveDays: newConsecutiveDaysPlayed,
             impossiblePerfects: newImpossiblePerfects,
             consecutivePerfects: newConsecutivePerfects,
         });
@@ -482,6 +486,7 @@ export const useDailyGameLogic = (
             currentStreak: newStreak,
             maxStreak: newMaxDayStreak, // Track max of day streaks
             dayStreak: newDayStreak,
+            consecutiveDaysPlayed: newConsecutiveDaysPlayed,
             totalSolved: newTotalSolvedCount,
             perfectScores: newPerfectCount,
             consecutivePerfects: newConsecutivePerfects,
@@ -582,23 +587,45 @@ export const useDailyGameLogic = (
             dailyResults[dateKey][currentPuzzleType] = dailyResult;
             onPuzzleComplete(dailyResult, currentPuzzleType, moveCount);
             
+            // Day streak: increment on first puzzle of today (even on loss - they still played!)
+            const currentDayStreak = playerData.dayStreak || 0;
+            const newDayStreak = isFirstPuzzleOfDay ? currentDayStreak + 1 : currentDayStreak;
+            const newMaxStreak = Math.max(newDayStreak, playerData.maxStreak || 0);
+            
+            // Also update consecutiveDaysPlayed for badge tracking (even on loss - they still played!)
+            const currentConsecutiveDays = playerData.consecutiveDaysPlayed || 0;
+            const newConsecutiveDaysPlayed = isFirstPuzzleOfDay ? currentConsecutiveDays + 1 : currentConsecutiveDays;
+            
             // Regular mode: update badges (reset puzzle streak, but keep day streak)
-            const newBadges = playerData.badges.map(badge => {
+            // First update the daily7 badge progress with the new consecutive days count
+            let newBadges = updateBadgeProgress(playerData.badges, {
+                streak: 0, // Reset streak on loss
+                perfectCount: playerData.perfectScores,
+                totalSolved: playerData.totalSolved,
+                hardSolved: playerData.hardSolved,
+                impossibleSolved: playerData.impossibleSolved,
+                consecutiveDays: newConsecutiveDaysPlayed,
+                impossiblePerfects: playerData.impossiblePerfects,
+                consecutivePerfects: 0, // Reset on loss
+            });
+            
+            // Reset streak-related badges
+            newBadges = newBadges.map(badge => {
                 if (badge.id.startsWith('streak') || badge.id === 'perfectStreak3') {
                     return { ...badge, progress: 0 };
                 }
                 return badge;
             });
             
-            // Day streak: increment on first puzzle of today (even on loss - they still played!)
-            const currentDayStreak = playerData.dayStreak || 0;
-            const newDayStreak = isFirstPuzzleOfDay ? currentDayStreak + 1 : currentDayStreak;
-            const newMaxStreak = Math.max(newDayStreak, playerData.maxStreak || 0);
+            // Check if daily7 badge should be unlocked
+            const progressResult = checkProgressBadges(newBadges);
+            newBadges = progressResult.badges;
             
             const newPlayerData = {
                 ...playerData,
                 currentStreak: 0, // Reset puzzle win streak
                 dayStreak: newDayStreak, // Keep day streak (they played today!)
+                consecutiveDaysPlayed: newConsecutiveDaysPlayed, // Update for badge tracking
                 maxStreak: newMaxStreak,
                 consecutivePerfects: 0,
                 badges: newBadges,

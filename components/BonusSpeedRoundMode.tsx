@@ -239,18 +239,7 @@ export const BonusSpeedRoundMode = () => {
         document.body.dataset.theme = initialTheme;
     }, []);
 
-    // New player tutorial modal - show on first puzzle view
-    useEffect(() => {
-        if (view === 'playing' && gameState === 'playing') {
-            const hasSeenTutorial = localStorage.getItem('linkle_has_seen_tutorial');
-            if (!hasSeenTutorial) {
-                setShowNewPlayerModal(true);
-            }
-        }
-    }, [view, gameState]);
-
     const handleCloseNewPlayerModal = () => {
-        localStorage.setItem('linkle_has_seen_tutorial', 'true');
         setShowNewPlayerModal(false);
     };
 
@@ -1081,6 +1070,15 @@ export const BonusSpeedRoundMode = () => {
                                             }}>
                                                 {dateStr}
                                             </span>
+                                        );
+                                    }
+                                    // Show help button for today's puzzle + new players (< 9 daily completions)
+                                    if ((playerData.gamesPlayed || 0) < 9) {
+                                        return (
+                                            <button className="help-trigger" onClick={() => setShowNewPlayerModal(true)}>
+                                                <span className="help-icon">?</span>
+                                                <span>How to play</span>
+                                            </button>
                                         );
                                     }
                                     return null;

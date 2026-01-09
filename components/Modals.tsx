@@ -419,13 +419,12 @@ export const NewPlayerModal = ({ onClose }: { onClose: () => void }) => (
     <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content new-player-modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
-            <h2>How to Play</h2>
+            <h2>Quick start</h2>
             <p className="new-player-goal">
-                Your goal is to drag and drop 9 word tiles into the best possible order.
+                Drag to make a chain — each word should connect to the next.
             </p>
-            <p className="new-player-hint">Look for word pairings and go from there.</p>
-            <p className="new-player-tagline">We're rooting for you!</p>
-            <button className="button" onClick={onClose}><span>Got it!</span></button>
+            <p className="new-player-hint">Then tap Submit.</p>
+            <button className="button" onClick={onClose}><span>LET'S PLAY</span></button>
         </div>
     </div>
 );

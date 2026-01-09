@@ -13,7 +13,7 @@ export const SignUpSheet: React.FC<SignUpSheetProps> = ({
     onSignUp, 
     onClose, 
     currentStreak = 0,
-    headline = "Nice work!"
+    headline = "Save today's run"
 }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [dragState, setDragState] = useState({ isDragging: false, startY: 0 });
@@ -106,7 +106,7 @@ export const SignUpSheet: React.FC<SignUpSheetProps> = ({
                 
                 <div className="signup-sheet-content">
                     <p className="signup-sheet-value-prop">
-                        Create an account to save your progress, track your stats, and keep your streak alive.
+                        Keep your score, badges, and streak—so tomorrow you pick up where you left off.
                     </p>
                     
                     {currentStreak > 0 && (
@@ -118,7 +118,7 @@ export const SignUpSheet: React.FC<SignUpSheetProps> = ({
                 
                 <div className="signup-sheet-actions">
                     <button className="button signup-sheet-signup-button" onClick={handleSignUp}>
-                        <span>SAVE MY PROGRESS</span>
+                        <span>KEEP MY SCORE</span>
                     </button>
                     <button className="signup-sheet-later-button" onClick={handleClose}>
                         Maybe Later

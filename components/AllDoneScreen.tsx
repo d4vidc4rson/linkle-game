@@ -458,7 +458,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         }}
                         onClose={() => setShowSignUpSheet(false)}
                         currentStreak={playerData.currentStreak}
-                        headline="Nice work!"
+                        headline="Save today's run"
                     />
                 )}
 

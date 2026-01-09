@@ -74,9 +74,9 @@ export const BadgeUnlockModal = ({ badge, onClose, user, onShowAuth }: BadgeUnlo
                 {/* Sign-up prompt for guests - replaces Awesome button */}
                 {!user && onShowAuth ? (
                     <div className="badge-signup-prompt">
-                        <p className="badge-signup-text">Create an account to save this badge.</p>
+                        <p className="badge-signup-text">Save your badges, score, and streak with a free account.</p>
                         <button className="button" onClick={handleSignUp}>
-                            <span>SAVE MY PROGRESS</span>
+                            <span>SAVE THIS BADGE</span>
                         </button>
                     </div>
                 ) : (
@@ -120,9 +120,9 @@ const BadgeDetailModal = ({ badge, onClose, user, onShowAuth }: BadgeDetailModal
                 
                 {showSignUpPrompt ? (
                     <div className="badge-signup-prompt">
-                        <p className="badge-signup-text">Create an account to save this badge.</p>
+                        <p className="badge-signup-text">Save your badges, score, and streak with a free account.</p>
                         <button className="button" onClick={handleSignUp}>
-                            <span>SAVE MY PROGRESS</span>
+                            <span>SAVE THIS BADGE</span>
                         </button>
                     </div>
                 ) : (

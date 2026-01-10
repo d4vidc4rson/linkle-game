@@ -79,6 +79,21 @@ export interface AnonymousVisitor {
     firstSeen: string;
     lastSeen: string;
     convertedToSignup: boolean;
+    estimatedScore: number; // Calculated from puzzle completions (base score only, no streak bonus)
+}
+
+// Score distribution buckets for anonymous visitors
+export interface ScoreDistribution {
+    '1000+': number;
+    '2000+': number;
+    '3000+': number;
+    '4000+': number;
+    '5000+': number;
+    '6000+': number;
+    '7000+': number;
+    '8000+': number;
+    '9000+': number;
+    '10000+': number;
 }
 
 export interface AnonymousMetrics {
@@ -108,6 +123,12 @@ export interface AnonymousMetrics {
     
     // All anonymous visitors for detailed view (unconverted only)
     allAnonymousVisitors: AnonymousVisitor[];
+    
+    // Estimated score distribution (unconverted anonymous visitors only)
+    scoreDistribution: ScoreDistribution;
+    totalEstimatedScore: number; // Sum of all anonymous visitor scores
+    avgEstimatedScore: number;   // Average score per anonymous visitor
+    highScoreVisitors: AnonymousVisitor[]; // Visitors with 1000+ points, sorted by score
     
     // ALL ANONYMOUS ACTIVITY (including those who later signed up)
     allActivity: {
@@ -917,12 +938,34 @@ export const useAdminData = (user: any) => {
 
     // Calculate anonymous visitor metrics from analytics events
     const calculateAnonymousMetrics = useCallback((): AnonymousMetrics => {
+        // Scoring constants (simplified, no streak bonus)
+        const TRIES_PER_DIFFICULTY: Record<string, number> = { 'easy': 4, 'hard': 3, 'impossible': 2 };
+        const POINTS_BY_DIFFICULTY: Record<string, number[]> = {
+            'easy': [0, 50, 75, 100, 125],      // triesLeft: 0→0, 1→50, 2→75, 3→100, 4→125
+            'hard': [0, 150, 200, 250],          // triesLeft: 0→0, 1→150, 2→200, 3→250
+            'impossible': [0, 400, 500],         // triesLeft: 0→0, 1→400, 2→500
+        };
+        
+        // Calculate score for a single puzzle completion
+        const calculatePuzzleScore = (difficulty: string, triesUsed: number | undefined, solved: boolean): number => {
+            if (!solved) return 0;
+            const diff = difficulty?.toLowerCase();
+            if (!TRIES_PER_DIFFICULTY[diff]) return 0;
+            
+            // If triesUsed is not available, use average (2 tries for easy, 1.5 for hard, 1 for impossible)
+            const actualTriesUsed = triesUsed ?? Math.ceil(TRIES_PER_DIFFICULTY[diff] / 2);
+            const triesLeft = Math.max(0, TRIES_PER_DIFFICULTY[diff] - actualTriesUsed);
+            const points = POINTS_BY_DIFFICULTY[diff];
+            return points?.[triesLeft] ?? 0;
+        };
+        
         // Group events by visitorId
         const visitorData: Record<string, {
             visitorId: string;
             puzzlesStarted: number;
             puzzlesCompleted: number;
             puzzlesSolved: number;
+            estimatedScore: number;
             firstSeen: string;
             lastSeen: string;
             signedUp: boolean;
@@ -946,6 +989,7 @@ export const useAdminData = (user: any) => {
                     puzzlesStarted: 0,
                     puzzlesCompleted: 0,
                     puzzlesSolved: 0,
+                    estimatedScore: 0,
                     firstSeen: event.timestamp,
                     lastSeen: event.timestamp,
                     signedUp: signedUpVisitorIds.has(vid),
@@ -963,7 +1007,15 @@ export const useAdminData = (user: any) => {
                 if (event.event === 'puzzle_started') visitor.puzzlesStarted++;
                 if (event.event === 'puzzle_completed') {
                     visitor.puzzlesCompleted++;
-                    if (event.solved) visitor.puzzlesSolved++;
+                    if (event.solved) {
+                        visitor.puzzlesSolved++;
+                        // Calculate and add score for this puzzle
+                        visitor.estimatedScore += calculatePuzzleScore(
+                            event.difficulty,
+                            event.triesUsed,
+                            true
+                        );
+                    }
                 }
             }
         });
@@ -981,6 +1033,7 @@ export const useAdminData = (user: any) => {
             firstSeen: v.firstSeen,
             lastSeen: v.lastSeen,
             convertedToSignup: v.signedUp,
+            estimatedScore: v.estimatedScore,
         });
         
         const anonymousVisitorList = anonymousVisitors.map(buildVisitor);
@@ -1043,6 +1096,37 @@ export const useAdminData = (user: any) => {
             .filter(v => v.puzzlesPlayed >= 5 && !v.convertedToSignup)
             .sort((a, b) => b.puzzlesPlayed - a.puzzlesPlayed);
         
+        // Calculate score distribution for unconverted anonymous visitors
+        const scoreDistribution: ScoreDistribution = {
+            '1000+': 0, '2000+': 0, '3000+': 0, '4000+': 0, '5000+': 0,
+            '6000+': 0, '7000+': 0, '8000+': 0, '9000+': 0, '10000+': 0,
+        };
+        
+        anonymousVisitorList.forEach(v => {
+            const score = v.estimatedScore;
+            if (score >= 10000) scoreDistribution['10000+']++;
+            else if (score >= 9000) scoreDistribution['9000+']++;
+            else if (score >= 8000) scoreDistribution['8000+']++;
+            else if (score >= 7000) scoreDistribution['7000+']++;
+            else if (score >= 6000) scoreDistribution['6000+']++;
+            else if (score >= 5000) scoreDistribution['5000+']++;
+            else if (score >= 4000) scoreDistribution['4000+']++;
+            else if (score >= 3000) scoreDistribution['3000+']++;
+            else if (score >= 2000) scoreDistribution['2000+']++;
+            else if (score >= 1000) scoreDistribution['1000+']++;
+        });
+        
+        // Calculate total and average estimated scores
+        const totalEstimatedScore = anonymousVisitorList.reduce((sum, v) => sum + v.estimatedScore, 0);
+        const avgEstimatedScore = anonymousVisitorList.length > 0
+            ? Math.round(totalEstimatedScore / anonymousVisitorList.length)
+            : 0;
+        
+        // High score visitors: 1000+ points, sorted by score
+        const highScoreVisitors = anonymousVisitorList
+            .filter(v => v.estimatedScore >= 1000)
+            .sort((a, b) => b.estimatedScore - a.estimatedScore);
+        
         // ALL ACTIVITY metrics (including converters)
         const allActivityTotalPuzzles = allVisitors.reduce((sum, v) => sum + v.puzzlesCompleted, 0);
         const allActivityTotalSolved = allVisitors.reduce((sum, v) => sum + v.puzzlesSolved, 0);
@@ -1068,6 +1152,10 @@ export const useAdminData = (user: any) => {
             avgPuzzlesForNonConverters,
             powerUsers,
             allAnonymousVisitors: anonymousVisitorList.sort((a, b) => b.puzzlesPlayed - a.puzzlesPlayed),
+            scoreDistribution,
+            totalEstimatedScore,
+            avgEstimatedScore,
+            highScoreVisitors,
             allActivity: {
                 totalVisitors: allVisitors.length,
                 totalPuzzlesPlayed: allActivityTotalPuzzles,

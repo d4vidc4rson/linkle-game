@@ -1115,6 +1115,99 @@ const AnonymousTab: React.FC<{
                 </div>
             </div>
             
+            {/* Estimated Score Distribution */}
+            <h3>🏆 Estimated Score Distribution</h3>
+            <p className="admin-metrics-hint">
+                Points accumulated by anonymous visitors (base scores only, no streak bonus). 
+                Useful for evaluating a "milestone signup prompt" feature.
+            </p>
+            
+            <div className="admin-score-summary">
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.totalEstimatedScore.toLocaleString()}</div>
+                    <div className="admin-metric-label">Total Points</div>
+                    <div className="admin-metric-sub">all anonymous visitors</div>
+                </div>
+                <div className="admin-metric-card">
+                    <div className="admin-metric-value">{metrics.avgEstimatedScore.toLocaleString()}</div>
+                    <div className="admin-metric-label">Avg Points</div>
+                    <div className="admin-metric-sub">per visitor</div>
+                </div>
+                <div className="admin-metric-card highlight-gold">
+                    <div className="admin-metric-value">{metrics.highScoreVisitors.length}</div>
+                    <div className="admin-metric-label">1,000+ Points</div>
+                    <div className="admin-metric-sub">potential milestone targets</div>
+                </div>
+            </div>
+            
+            <div className="admin-score-distribution-table">
+                <div className="admin-score-dist-header">
+                    <div className="admin-score-dist-col-tier">Point Threshold</div>
+                    <div className="admin-score-dist-col-count">Visitors</div>
+                    <div className="admin-score-dist-col-bar">Distribution</div>
+                </div>
+                {[
+                    { tier: '1,000+', key: '1000+' as const },
+                    { tier: '2,000+', key: '2000+' as const },
+                    { tier: '3,000+', key: '3000+' as const },
+                    { tier: '4,000+', key: '4000+' as const },
+                    { tier: '5,000+', key: '5000+' as const },
+                    { tier: '6,000+', key: '6000+' as const },
+                    { tier: '7,000+', key: '7000+' as const },
+                    { tier: '8,000+', key: '8000+' as const },
+                    { tier: '9,000+', key: '9000+' as const },
+                    { tier: '10,000+', key: '10000+' as const },
+                ].map(({ tier, key }) => {
+                    const count = metrics.scoreDistribution[key];
+                    const maxCount = Math.max(
+                        metrics.scoreDistribution['1000+'],
+                        metrics.scoreDistribution['2000+'],
+                        metrics.scoreDistribution['3000+'],
+                        1
+                    );
+                    const barWidth = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                    return (
+                        <div key={key} className={`admin-score-dist-row ${count > 0 ? 'has-visitors' : ''}`}>
+                            <div className="admin-score-dist-col-tier">{tier}</div>
+                            <div className="admin-score-dist-col-count">{count}</div>
+                            <div className="admin-score-dist-col-bar">
+                                <div 
+                                    className="admin-score-dist-bar-fill" 
+                                    style={{ width: `${barWidth}%` }}
+                                />
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+            
+            {metrics.highScoreVisitors.length > 0 && (
+                <>
+                    <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
+                        🎯 High Score Visitors ({metrics.highScoreVisitors.length})
+                    </h4>
+                    <p className="admin-metrics-hint">Anonymous visitors with 1,000+ estimated points</p>
+                    <div className="admin-anonymous-table">
+                        <div className="admin-anonymous-header">
+                            <div className="admin-anon-col-id">Visitor ID</div>
+                            <div className="admin-anon-col-score">Est. Score</div>
+                            <div className="admin-anon-col-puzzles">Solved</div>
+                            <div className="admin-anon-col-winrate">Win %</div>
+                            <div className="admin-anon-col-last">Last Seen</div>
+                        </div>
+                        {metrics.highScoreVisitors.slice(0, 15).map(visitor => (
+                            <div key={visitor.visitorId} className="admin-anonymous-row high-score">
+                                <div className="admin-anon-col-id">{visitor.visitorId.slice(0, 12)}...</div>
+                                <div className="admin-anon-col-score">{visitor.estimatedScore.toLocaleString()}</div>
+                                <div className="admin-anon-col-puzzles">{visitor.puzzlesSolved}</div>
+                                <div className="admin-anon-col-winrate">{visitor.winRate}%</div>
+                                <div className="admin-anon-col-last">{formatAnonymousDate(visitor.lastSeen)}</div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+            
             {/* Power Users */}
             <h3>⚡ Power Users (Engaged but Unconverted)</h3>
             <p className="admin-metrics-hint">Visitors who played 5+ puzzles but haven't signed up - potential converts!</p>

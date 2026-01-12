@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint, GrowthMetrics } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint, GrowthMetrics, AnonymousDay0DataPoint, GrowthDay0DataPoint } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
@@ -1043,13 +1043,60 @@ const formatAnonymousDate = (dateString: string): string => {
 // Anonymous Tab Component
 const AnonymousTab: React.FC<{
     metrics: AnonymousMetrics;
-}> = ({ metrics }) => {
+    day0Data: AnonymousDay0DataPoint[];
+    onMetricClick: (metricType: MetricType, title: string) => void;
+}> = ({ metrics, day0Data, onMetricClick }) => {
     const [showAllVisitors, setShowAllVisitors] = useState(false);
+    
+    // Calculate aggregate Day-0 metrics from the historical data
+    const day0Aggregates = useMemo(() => {
+        const totalNewVisitors = day0Data.reduce((sum, d) => sum + d.newAnonymousVisitors, 0);
+        const totalDay0Starts = day0Data.reduce((sum, d) => sum + d.day0Starts, 0);
+        const totalDay0Solved = day0Data.reduce((sum, d) => sum + d.day0Solved, 0);
+        const day0SolveRate = totalDay0Starts > 0 
+            ? Math.round((totalDay0Solved / totalDay0Starts) * 100) : 0;
+        return { totalNewVisitors, totalDay0Starts, totalDay0Solved, day0SolveRate };
+    }, [day0Data]);
     
     return (
         <div className="admin-anonymous-tab">
             <h2>👻 Anonymous Player Insights</h2>
             <p className="admin-metrics-hint">Track engagement from players who haven't signed up yet</p>
+            
+            {/* Activation Section - Day-0 Metrics */}
+            <h3>🚀 Activation (Day-0 Metrics)</h3>
+            <p className="admin-metrics-hint">
+                First-day engagement for anonymous visitors • Click any metric to view historical chart
+            </p>
+            <div className="admin-metrics-grid">
+                <div 
+                    className="admin-metric-card admin-metric-clickable"
+                    onClick={() => onMetricClick('day0Starts', 'Anonymous Day-0 Starts')}
+                >
+                    <div className="admin-metric-value">{day0Aggregates.totalDay0Starts}</div>
+                    <div className="admin-metric-label">Day-0 Starts</div>
+                    <div className="admin-metric-sub">started ≥1 puzzle on first day</div>
+                    <div className="admin-metric-chart-icon">📊</div>
+                </div>
+                <div 
+                    className="admin-metric-card admin-metric-clickable"
+                    onClick={() => onMetricClick('day0Solved', 'Anonymous Day-0 Solved')}
+                >
+                    <div className="admin-metric-value">{day0Aggregates.totalDay0Solved}</div>
+                    <div className="admin-metric-label">Day-0 Solved</div>
+                    <div className="admin-metric-sub">solved ≥1 puzzle on first day</div>
+                    <div className="admin-metric-chart-icon">📊</div>
+                </div>
+                <div 
+                    className="admin-metric-card admin-metric-clickable"
+                    onClick={() => onMetricClick('day0SolveRate', 'Day-0 Solve Rate')}
+                >
+                    <div className="admin-metric-value">{day0Aggregates.day0SolveRate}%</div>
+                    <div className="admin-metric-label">Day-0 Solve Rate</div>
+                    <div className="admin-metric-sub">% of starters who solved</div>
+                    <div className="admin-metric-chart-icon">📈</div>
+                </div>
+            </div>
             
             {/* Aggregate Stats - Unconverted Only */}
             <h3>🚫 Unconverted Anonymous Visitors</h3>
@@ -2024,7 +2071,8 @@ const GrowthMetricCard: React.FC<{
     targetLabel?: string;
     subline?: string;
     isNorthStar?: boolean;
-}> = ({ label, value, suffix = '', delta, deltaType = 'pp', target, targetLabel, subline, isNorthStar }) => {
+    onClick?: () => void;
+}> = ({ label, value, suffix = '', delta, deltaType = 'pp', target, targetLabel, subline, isNorthStar, onClick }) => {
     const formatDelta = (d: number, type: string) => {
         const sign = d >= 0 ? '+' : '';
         if (type === 'pp') return `${sign}${d.toFixed(1)}pp`;
@@ -2040,8 +2088,14 @@ const GrowthMetricCard: React.FC<{
     const numValue = typeof value === 'number' ? value : parseFloat(String(value));
     const progressPercent = target && target > 0 ? Math.min(100, (numValue / target) * 100) : 0;
     
+    const isClickable = !!onClick;
+    
     return (
-        <div className={`growth-metric-card ${isNorthStar ? 'north-star' : ''}`}>
+        <div 
+            className={`growth-metric-card ${isNorthStar ? 'north-star' : ''} ${isClickable ? 'clickable' : ''}`}
+            onClick={onClick}
+            style={isClickable ? { cursor: 'pointer' } : undefined}
+        >
             <div className="metric-label">{label}</div>
             <div className="metric-value-row">
                 <span className="metric-value">
@@ -2052,6 +2106,7 @@ const GrowthMetricCard: React.FC<{
                         {formatDelta(delta, deltaType)}
                     </span>
                 )}
+                {isClickable && <span className="admin-metric-chart-icon">📈</span>}
             </div>
             {target !== undefined && (
                 <div className="metric-target-container">
@@ -2176,7 +2231,8 @@ const VerdictBadge: React.FC<{ verdict: Verdict }> = ({ verdict }) => (
 // Growth Dashboard Tab Component
 const GrowthTab: React.FC<{
     metrics: GrowthMetrics;
-}> = ({ metrics }) => {
+    onMetricClick?: (metricType: MetricType, title: string) => void;
+}> = ({ metrics, onMetricClick }) => {
     const verdicts = getVerdicts(metrics);
     
     return (
@@ -2257,6 +2313,7 @@ const GrowthTab: React.FC<{
                     </div>
                     <p className="growth-row-description">
                         Day-0 experience quality - your biggest leak to fix
+                        {onMetricClick && ' • Click any metric to view historical chart'}
                     </p>
                 </div>
                 <div className="growth-metrics-grid">
@@ -2266,6 +2323,7 @@ const GrowthTab: React.FC<{
                         suffix="%"
                         target={70}
                         subline={`% of new visitors who start ≥1 puzzle`}
+                        onClick={onMetricClick ? () => onMetricClick('day0StartRate', 'Day-0 Start Rate') : undefined}
                     />
                     <GrowthMetricCard
                         label="Day-0 Solve Rate"
@@ -2274,6 +2332,7 @@ const GrowthTab: React.FC<{
                         target={45}
                         targetLabel="(near-term)"
                         subline={`% of new visitors who solve ≥1 puzzle`}
+                        onClick={onMetricClick ? () => onMetricClick('day0SolveRate', 'Day-0 Solve Rate') : undefined}
                     />
                     <GrowthMetricCard
                         label="Day-0 Depth (3+ puzzles)"
@@ -2281,6 +2340,7 @@ const GrowthTab: React.FC<{
                         suffix="%"
                         target={12}
                         subline={`% of new visitors who start ≥3 puzzles`}
+                        onClick={onMetricClick ? () => onMetricClick('day0DepthRate', 'Day-0 Depth Rate') : undefined}
                     />
                 </div>
             </div>
@@ -2441,6 +2501,8 @@ export const AdminDashboard: React.FC = () => {
         calculateWinRateTrend,
         calculateEngagementTrend,
         calculateGrowthMetrics,
+        calculateAnonymousDay0HistoricalMetrics,
+        calculateGrowthDay0HistoricalMetrics,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -2463,6 +2525,14 @@ export const AdminDashboard: React.FC = () => {
     const anonymousMetrics = useMemo(
         () => calculateAnonymousMetrics(),
         [calculateAnonymousMetrics]
+    );
+    const anonymousDay0Data = useMemo(
+        () => calculateAnonymousDay0HistoricalMetrics(chartTimeRange),
+        [calculateAnonymousDay0HistoricalMetrics, chartTimeRange]
+    );
+    const growthDay0Data = useMemo(
+        () => calculateGrowthDay0HistoricalMetrics(chartTimeRange),
+        [calculateGrowthDay0HistoricalMetrics, chartTimeRange]
     );
     const puzzleQualityMetrics = useMemo(
         () => calculatePuzzleQualityMetrics(),
@@ -2708,7 +2778,11 @@ export const AdminDashboard: React.FC = () => {
                             <LeaderboardTab getLeaderboard={getLeaderboard} />
                         )}
                         {activeTab === 'anonymous' && (
-                            <AnonymousTab metrics={anonymousMetrics} />
+                            <AnonymousTab 
+                                metrics={anonymousMetrics} 
+                                day0Data={anonymousDay0Data}
+                                onMetricClick={(type, title) => handleMetricClick(type, title, true)}
+                            />
                         )}
                         {activeTab === 'retention' && (
                             <RetentionTab calculateRetentionMetrics={calculateRetentionMetrics} />
@@ -2734,7 +2808,10 @@ export const AdminDashboard: React.FC = () => {
                             />
                         )}
                         {activeTab === 'growth' && (
-                            <GrowthTab metrics={growthMetrics} />
+                            <GrowthTab 
+                                metrics={growthMetrics} 
+                                onMetricClick={(type, title) => handleMetricClick(type, title, false)}
+                            />
                         )}
                     </>
                 )}
@@ -2745,7 +2822,18 @@ export const AdminDashboard: React.FC = () => {
                 <MetricChart
                     title={selectedMetric.title}
                     metricType={selectedMetric.type}
-                    data={selectedMetric.isAnonymous ? anonymousHistoricalData : historicalData}
+                    data={
+                        // Use appropriate data source based on metric type
+                        // Anonymous tab Day-0 metrics (counts)
+                        ['day0Starts', 'day0Solved', 'day0SolveRate'].includes(selectedMetric.type) && selectedMetric.isAnonymous
+                            ? anonymousDay0Data
+                            // Growth tab Day-0 metrics (rates)
+                            : ['day0StartRate', 'day0SolveRate', 'day0DepthRate'].includes(selectedMetric.type)
+                                ? growthDay0Data
+                                : selectedMetric.isAnonymous 
+                                    ? anonymousHistoricalData 
+                                    : historicalData
+                    }
                     timeRange={chartTimeRange}
                     onTimeRangeChange={setChartTimeRange}
                     onClose={() => setSelectedMetric(null)}

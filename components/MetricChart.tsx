@@ -12,14 +12,17 @@ import {
     ResponsiveContainer,
     Legend,
 } from 'recharts';
-import type { DailyDataPoint, TimeRange } from '../hooks/useAdminData';
+import type { DailyDataPoint, TimeRange, AnonymousDay0DataPoint } from '../hooks/useAdminData';
 
-export type MetricType = 'dau' | 'puzzlesPlayed' | 'winRate' | 'newSignups' | 'totalUsers' | 'stickiness';
+export type MetricType = 'dau' | 'puzzlesPlayed' | 'winRate' | 'newSignups' | 'totalUsers' | 'stickiness' | 'day0Starts' | 'day0Solved' | 'day0SolveRate' | 'day0StartRate' | 'day0DepthRate';
+
+// Union type for chart data (supports both regular metrics and Day-0 metrics)
+type ChartDataPoint = DailyDataPoint | AnonymousDay0DataPoint;
 
 interface MetricChartProps {
     title: string;
     metricType: MetricType;
-    data: DailyDataPoint[];
+    data: ChartDataPoint[];
     timeRange: TimeRange;
     onTimeRangeChange: (range: TimeRange) => void;
     onClose: () => void;
@@ -36,7 +39,7 @@ const TIME_RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
 
 const METRIC_CONFIG: Record<MetricType, {
     label: string;
-    dataKey: keyof DailyDataPoint;
+    dataKey: string;
     colorDark: string;
     colorLight: string;
     chartType: 'bar' | 'line';
@@ -83,6 +86,46 @@ const METRIC_CONFIG: Record<MetricType, {
         dataKey: 'stickiness',
         colorDark: '#c084fc',
         colorLight: '#9333ea',
+        chartType: 'line',
+        suffix: '%',
+    },
+    // Anonymous Day-0 Activation metrics (line charts with plot points)
+    day0Starts: {
+        label: 'Day-0 Starts',
+        dataKey: 'day0Starts',
+        colorDark: '#f97316',
+        colorLight: '#ea580c',
+        chartType: 'line',
+    },
+    day0Solved: {
+        label: 'Day-0 Solved',
+        dataKey: 'day0Solved',
+        colorDark: '#22c55e',
+        colorLight: '#16a34a',
+        chartType: 'line',
+    },
+    day0SolveRate: {
+        label: 'Day-0 Solve Rate',
+        dataKey: 'day0SolveRate',
+        colorDark: '#a855f7',
+        colorLight: '#9333ea',
+        chartType: 'line',
+        suffix: '%',
+    },
+    // Growth Dashboard Day-0 Activation metrics
+    day0StartRate: {
+        label: 'Day-0 Start Rate',
+        dataKey: 'day0StartRate',
+        colorDark: '#f97316',
+        colorLight: '#ea580c',
+        chartType: 'line',
+        suffix: '%',
+    },
+    day0DepthRate: {
+        label: 'Day-0 Depth Rate',
+        dataKey: 'day0DepthRate',
+        colorDark: '#6dd5ed',
+        colorLight: '#0891b2',
         chartType: 'line',
         suffix: '%',
     },
@@ -179,10 +222,11 @@ export const MetricChart: React.FC<MetricChartProps> = ({
     };
 
     // Calculate summary stats
-    const totalValue = data.reduce((sum, d) => sum + (d[config.dataKey] as number), 0);
+    const getDataValue = (d: ChartDataPoint): number => (d as any)[config.dataKey] ?? 0;
+    const totalValue = data.reduce((sum, d) => sum + getDataValue(d), 0);
     const avgValue = data.length > 0 ? Math.round(totalValue / data.length * 10) / 10 : 0;
-    const maxValue = Math.max(...data.map(d => d[config.dataKey] as number));
-    const latestValue = data.length > 0 ? data[data.length - 1][config.dataKey] : 0;
+    const maxValue = data.length > 0 ? Math.max(...data.map(d => getDataValue(d))) : 0;
+    const latestValue = data.length > 0 ? getDataValue(data[data.length - 1]) : 0;
 
     return (
         <div className="metric-chart-modal-overlay" onClick={onClose}>

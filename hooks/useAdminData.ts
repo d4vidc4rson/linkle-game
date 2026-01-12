@@ -226,6 +226,30 @@ export interface FeatureUsageMetrics {
     themePreferencePercent: { light: number; dark: number };
 }
 
+// Anonymous Day-0 activation data point for historical charts
+export interface AnonymousDay0DataPoint {
+    date: string;
+    displayDate: string;
+    newAnonymousVisitors: number;  // New anonymous visitors that day
+    day0Starts: number;            // Who started at least 1 puzzle
+    day0Solved: number;            // Who solved at least 1 puzzle
+    day0StartRate: number;         // % who started (out of new visitors)
+    day0SolveRate: number;         // % of starters who solved
+}
+
+// Growth Dashboard Day-0 activation data point for historical charts (all visitors)
+export interface GrowthDay0DataPoint {
+    date: string;
+    displayDate: string;
+    newVisitors: number;           // New visitors that day (all, not just anonymous)
+    day0Starts: number;            // Who started at least 1 puzzle
+    day0Solved: number;            // Who solved at least 1 puzzle
+    day0Depth: number;             // Who started 3+ puzzles
+    day0StartRate: number;         // % who started (out of new visitors)
+    day0SolveRate: number;         // % who solved (out of new visitors)
+    day0DepthRate: number;         // % who started 3+ (out of new visitors)
+}
+
 // Win rate trend data point for Trends tab
 export interface WinRateTrendPoint {
     date: string;
@@ -2120,6 +2144,266 @@ export const useAdminData = (user: any) => {
         });
     }, [analyticsEvents]);
 
+    // Calculate Anonymous Day-0 historical metrics for charts
+    // This shows Day-0 activation metrics for anonymous users, grouped by the date they first appeared
+    const calculateAnonymousDay0HistoricalMetrics = useCallback((timeRange: TimeRange = '28days'): AnonymousDay0DataPoint[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Get visitor IDs that eventually signed up (to exclude them)
+        const signedUpVisitorIds = new Set(
+            analyticsEvents
+                .filter(e => e.event === 'signup_completed')
+                .map(e => e.visitorId)
+        );
+        
+        // Build visitor activity map for anonymous visitors only
+        // Track: first seen date, started count on day 0, solved count on day 0
+        const visitorDay0Stats: Record<string, {
+            firstSeen: string;
+            day0Started: number;
+            day0Solved: number;
+        }> = {};
+        
+        // First pass: determine first seen date for each anonymous visitor
+        analyticsEvents.forEach(e => {
+            const vid = e.visitorId;
+            if (!vid || !e.isAnonymous) return;
+            if (signedUpVisitorIds.has(vid)) return; // Exclude converters
+            
+            const date = e.date;
+            if (!date) return;
+            
+            if (!visitorDay0Stats[vid]) {
+                visitorDay0Stats[vid] = { firstSeen: date, day0Started: 0, day0Solved: 0 };
+            }
+            
+            // Update first seen if this date is earlier
+            if (date < visitorDay0Stats[vid].firstSeen) {
+                visitorDay0Stats[vid].firstSeen = date;
+            }
+        });
+        
+        // Second pass: count Day-0 starts and solves for each visitor
+        analyticsEvents.forEach(e => {
+            const vid = e.visitorId;
+            if (!vid || !e.isAnonymous) return;
+            if (signedUpVisitorIds.has(vid)) return;
+            if (!visitorDay0Stats[vid]) return;
+            
+            const date = e.date;
+            if (!date) return;
+            
+            // Only count events on their first day (Day-0)
+            if (date !== visitorDay0Stats[vid].firstSeen) return;
+            
+            if (e.event === 'puzzle_started') {
+                visitorDay0Stats[vid].day0Started++;
+            }
+            if (e.event === 'puzzle_completed' && e.solved) {
+                visitorDay0Stats[vid].day0Solved++;
+            }
+        });
+        
+        // Determine date range
+        let startDate: Date;
+        if (timeRange === 'all') {
+            const firstSeenDates = Object.values(visitorDay0Stats).map(v => v.firstSeen).filter(Boolean);
+            if (firstSeenDates.length === 0) {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7);
+            } else {
+                const earliestDate = firstSeenDates.reduce((min, d) => d < min ? d : min, firstSeenDates[0]);
+                startDate = new Date(earliestDate + 'T00:00:00');
+            }
+        } else if (timeRange === 'today') {
+            startDate = new Date(today);
+        } else {
+            let daysToShow = 28;
+            if (timeRange === '7days') daysToShow = 7;
+            else if (timeRange === '14days') daysToShow = 14;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
+        }
+        
+        // Generate array of dates from start to today
+        const dates: string[] = [];
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        // Aggregate visitors by their first seen date
+        const dataByDate: Record<string, AnonymousDay0DataPoint> = {};
+        dates.forEach(date => {
+            const d = new Date(date + 'T00:00:00');
+            dataByDate[date] = {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                newAnonymousVisitors: 0,
+                day0Starts: 0,
+                day0Solved: 0,
+                day0StartRate: 0,
+                day0SolveRate: 0,
+            };
+        });
+        
+        // Count visitors by their first seen date
+        Object.values(visitorDay0Stats).forEach(v => {
+            const firstSeenDate = v.firstSeen;
+            if (!dataByDate[firstSeenDate]) return;
+            
+            dataByDate[firstSeenDate].newAnonymousVisitors++;
+            if (v.day0Started >= 1) {
+                dataByDate[firstSeenDate].day0Starts++;
+            }
+            if (v.day0Solved >= 1) {
+                dataByDate[firstSeenDate].day0Solved++;
+            }
+        });
+        
+        // Calculate rates
+        dates.forEach(date => {
+            const data = dataByDate[date];
+            data.day0StartRate = data.newAnonymousVisitors > 0 
+                ? Math.round((data.day0Starts / data.newAnonymousVisitors) * 100) : 0;
+            data.day0SolveRate = data.day0Starts > 0 
+                ? Math.round((data.day0Solved / data.day0Starts) * 100) : 0;
+        });
+        
+        return dates.map(date => dataByDate[date]);
+    }, [analyticsEvents]);
+
+    // Calculate Growth Dashboard Day-0 historical metrics for charts (ALL visitors, not just anonymous)
+    // This matches the Growth Dashboard's Activation section scope
+    const calculateGrowthDay0HistoricalMetrics = useCallback((timeRange: TimeRange = '28days'): GrowthDay0DataPoint[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Build visitor activity map for ALL visitors (anonymous + signed up)
+        // Track: first seen date, started count on day 0, solved count on day 0
+        const visitorDay0Stats: Record<string, {
+            firstSeen: string;
+            day0Started: number;
+            day0Solved: number;
+        }> = {};
+        
+        // First pass: determine first seen date for each visitor
+        analyticsEvents.forEach(e => {
+            const vid = e.visitorId;
+            if (!vid) return;
+            
+            const date = e.date;
+            if (!date) return;
+            
+            if (!visitorDay0Stats[vid]) {
+                visitorDay0Stats[vid] = { firstSeen: date, day0Started: 0, day0Solved: 0 };
+            }
+            
+            // Update first seen if this date is earlier
+            if (date < visitorDay0Stats[vid].firstSeen) {
+                visitorDay0Stats[vid].firstSeen = date;
+            }
+        });
+        
+        // Second pass: count Day-0 starts and solves for each visitor
+        analyticsEvents.forEach(e => {
+            const vid = e.visitorId;
+            if (!vid) return;
+            if (!visitorDay0Stats[vid]) return;
+            
+            const date = e.date;
+            if (!date) return;
+            
+            // Only count events on their first day (Day-0)
+            if (date !== visitorDay0Stats[vid].firstSeen) return;
+            
+            if (e.event === 'puzzle_started') {
+                visitorDay0Stats[vid].day0Started++;
+            }
+            if (e.event === 'puzzle_completed' && e.solved) {
+                visitorDay0Stats[vid].day0Solved++;
+            }
+        });
+        
+        // Determine date range
+        let startDate: Date;
+        if (timeRange === 'all') {
+            const firstSeenDates = Object.values(visitorDay0Stats).map(v => v.firstSeen).filter(Boolean);
+            if (firstSeenDates.length === 0) {
+                startDate = new Date(today);
+                startDate.setDate(startDate.getDate() - 7);
+            } else {
+                const earliestDate = firstSeenDates.reduce((min, d) => d < min ? d : min, firstSeenDates[0]);
+                startDate = new Date(earliestDate + 'T00:00:00');
+            }
+        } else if (timeRange === 'today') {
+            startDate = new Date(today);
+        } else {
+            let daysToShow = 28;
+            if (timeRange === '7days') daysToShow = 7;
+            else if (timeRange === '14days') daysToShow = 14;
+            startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - daysToShow + 1);
+        }
+        
+        // Generate array of dates from start to today
+        const dates: string[] = [];
+        const currentDate = new Date(startDate);
+        while (currentDate <= today) {
+            dates.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        // Aggregate visitors by their first seen date
+        const dataByDate: Record<string, GrowthDay0DataPoint> = {};
+        dates.forEach(date => {
+            const d = new Date(date + 'T00:00:00');
+            dataByDate[date] = {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                newVisitors: 0,
+                day0Starts: 0,
+                day0Solved: 0,
+                day0Depth: 0,
+                day0StartRate: 0,
+                day0SolveRate: 0,
+                day0DepthRate: 0,
+            };
+        });
+        
+        // Count visitors by their first seen date
+        Object.values(visitorDay0Stats).forEach(v => {
+            const firstSeenDate = v.firstSeen;
+            if (!dataByDate[firstSeenDate]) return;
+            
+            dataByDate[firstSeenDate].newVisitors++;
+            if (v.day0Started >= 1) {
+                dataByDate[firstSeenDate].day0Starts++;
+            }
+            if (v.day0Solved >= 1) {
+                dataByDate[firstSeenDate].day0Solved++;
+            }
+            if (v.day0Started >= 3) {
+                dataByDate[firstSeenDate].day0Depth++;
+            }
+        });
+        
+        // Calculate rates
+        dates.forEach(date => {
+            const data = dataByDate[date];
+            data.day0StartRate = data.newVisitors > 0 
+                ? Math.round((data.day0Starts / data.newVisitors) * 1000) / 10 : 0;
+            data.day0SolveRate = data.newVisitors > 0 
+                ? Math.round((data.day0Solved / data.newVisitors) * 1000) / 10 : 0;
+            data.day0DepthRate = data.newVisitors > 0 
+                ? Math.round((data.day0Depth / data.newVisitors) * 1000) / 10 : 0;
+        });
+        
+        return dates.map(date => dataByDate[date]);
+    }, [analyticsEvents]);
+
     return {
         players,
         loading,
@@ -2138,6 +2422,8 @@ export const useAdminData = (user: any) => {
         calculateWinRateTrend,
         calculateEngagementTrend,
         calculateGrowthMetrics,
+        calculateAnonymousDay0HistoricalMetrics,
+        calculateGrowthDay0HistoricalMetrics,
         getLeaderboard,
         searchPlayers,
         analyticsEvents, // Expose for CSV export

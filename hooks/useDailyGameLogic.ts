@@ -457,6 +457,7 @@ export const useDailyGameLogic = (
             consecutiveDays: newConsecutiveDaysPlayed,
             impossiblePerfects: newImpossiblePerfects,
             consecutivePerfects: newConsecutivePerfects,
+            totalScore: newTotalScore,
         });
         
         const singleEventResult = checkSingleEventBadges(newBadges, puzzle, triesLeft, solveTimeSeconds);

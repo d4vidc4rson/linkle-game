@@ -15,6 +15,7 @@ export const updateBadgeProgress = (
         consecutiveDays: number;
         impossiblePerfects: number;
         consecutivePerfects: number;
+        totalScore: number;
     }
 ): Badge[] => {
     return badges.map(badge => {
@@ -36,6 +37,8 @@ export const updateBadgeProgress = (
             updated.progress = stats.impossiblePerfects;
         } else if (badge.id === 'perfectStreak3') {
             updated.progress = stats.consecutivePerfects;
+        } else if (badge.id.startsWith('points')) {
+            updated.progress = stats.totalScore;
         }
         
         return updated;

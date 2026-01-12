@@ -11,20 +11,38 @@ const {
 
 const upgradePlayerData = (savedData: Partial<PlayerData>): PlayerData => {
     const savedBadges = savedData.badges || [];
+    const existingTotalScore = savedData.totalScore || 0;
     
     const upgradedBadges = initialBadges.map(initialBadge => {
         const savedBadge = savedBadges.find(sb => sb.id === initialBadge.id);
         if (savedBadge) {
             // If we have a saved version, use its data but ensure all fields from the template are present
+            // For unlocked point badges, update progress to current total score
+            const progress = (initialBadge.id.startsWith('points') && !savedBadge.unlocked)
+                ? existingTotalScore
+                : savedBadge.progress || (savedBadge.unlocked ? initialBadge.target : 0) || 0;
+            
+            // Retroactively unlock badges that meet their target
+            const shouldUnlock = !savedBadge.unlocked && initialBadge.target && progress >= initialBadge.target;
             return {
                 ...initialBadge,
-                unlocked: savedBadge.unlocked || false,
-                dateUnlocked: savedBadge.dateUnlocked || null,
-                progress: savedBadge.progress || (savedBadge.unlocked ? initialBadge.target : 0) || 0,
+                unlocked: savedBadge.unlocked || shouldUnlock,
+                dateUnlocked: savedBadge.dateUnlocked || (shouldUnlock ? new Date().toISOString() : null),
+                progress,
             };
         }
         // If the badge is new and not in saved data, use the initial template
-        return { ...initialBadge, progress: 0 };
+        // For point badges, set progress to existing total score so they unlock retroactively
+        const initialProgress = initialBadge.id.startsWith('points') ? existingTotalScore : 0;
+        
+        // Retroactively unlock new badges that already meet their target
+        const shouldUnlock = initialBadge.target && initialProgress >= initialBadge.target;
+        return { 
+            ...initialBadge, 
+            progress: initialProgress,
+            unlocked: shouldUnlock,
+            dateUnlocked: shouldUnlock ? new Date().toISOString() : null,
+        };
     });
 
     // Clean up dailyResults to remove any undefined values (Firestore corruption fix)

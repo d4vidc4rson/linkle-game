@@ -31,6 +31,14 @@ export const initialBadges: Badge[] = [
     { id: 'impossible5', name: 'Mind Melter', description: 'Solve 5 IMPOSSIBLE puzzles.', unlockMessage: '5 IMPOSSIBLE puzzles solved. Your brain is operating on another level.', unlocked: false, icon: '/badges/mind-melter.png', category: 'Difficulty Conquest', dateUnlocked: null, target: 5 },
     { id: 'impossiblePerfect', name: 'The Oracle', description: 'Get a "Perfect Linkle!" on an IMPOSSIBLE puzzle.', unlockMessage: 'A "Perfect Linkle!" on an IMPOSSIBLE puzzle. You can see the connections others can\'t.', unlocked: false, icon: '/badges/the-oracle.png', category: 'Difficulty Conquest', dateUnlocked: null, target: 1 },
     { id: 'polymath', name: 'Puzzle Polymath', description: 'Solve at least one puzzle of each difficulty.', unlockMessage: 'You\'ve solved a puzzle of every difficulty. A true polymath of puzzles!', unlocked: false, icon: '/badges/puzzle-polymath.png', category: 'Difficulty Conquest', dateUnlocked: null, target: 3 },
+
+    // Score Milestones
+    { id: 'points1k', name: 'First Fortune', description: 'Accumulate 1,000 total points.', unlockMessage: 'You\'ve hit your first 1,000 points. The fortune is just beginning!', unlocked: false, icon: '/badges/score-1000.png', category: 'Score Milestones', dateUnlocked: null, target: 1000 },
+    { id: 'points5k', name: 'Rising Scorer', description: 'Accumulate 5,000 total points.', unlockMessage: '5,000 points! Your score is really starting to climb.', unlocked: false, icon: '/badges/score-5000.png', category: 'Score Milestones', dateUnlocked: null, target: 5000 },
+    { id: 'points10k', name: 'Ten-K Titan', description: 'Accumulate 10,000 total points.', unlockMessage: '10,000 points! You\'ve entered titan territory.', unlocked: false, icon: '/badges/score-10000.png', category: 'Score Milestones', dateUnlocked: null, target: 10000 },
+    { id: 'points20k', name: 'Score Sovereign', description: 'Accumulate 20,000 total points.', unlockMessage: '20,000 points! You rule the scoreboard with a steady hand.', unlocked: false, icon: '/badges/score-20000.png', category: 'Score Milestones', dateUnlocked: null, target: 20000 },
+    { id: 'points50k', name: 'Point Phenom', description: 'Accumulate 50,000 total points.', unlockMessage: '50,000 points! You\'re a phenomenon of puzzle prowess.', unlocked: false, icon: '/badges/score-50000.png', category: 'Score Milestones', dateUnlocked: null, target: 50000 },
+    { id: 'points100k', name: 'Century Scorer', description: 'Accumulate 100,000 total points.', unlockMessage: '100,000 points! A century of scoring excellence. You are legendary.', unlocked: false, icon: '/badges/score-100000.png', category: 'Score Milestones', dateUnlocked: null, target: 100000 },
 ];
 
 export const defaultPlayerData: PlayerData = {

@@ -302,6 +302,9 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         setWinMessageBase(getWinMessage(puzzle.difficulty, triesLeft, baseScore));
         setWinMessageBonus(streakBonus > 0 ? `🔥 Streak bonus: +${streakBonus} points` : '');
         
+        // Calculate accumulated total score
+        const accumulatedTotalScore = (playerData.totalScore || 0) + newTotalScore;
+        
         // Update badges
         let newBadges = updateBadgeProgress(playerData.badges, {
             streak: newStreak,
@@ -312,6 +315,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
             consecutiveDays: playerData.consecutiveDaysPlayed,
             impossiblePerfects: newImpossiblePerfects,
             consecutivePerfects: newConsecutivePerfects,
+            totalScore: accumulatedTotalScore,
         });
         
         // Check single-event badges
@@ -341,7 +345,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         // Update player data
         const newPlayerData = {
             ...playerData,
-            totalScore: newTotalScore,
+            totalScore: accumulatedTotalScore,
             currentStreak: newStreak,
             totalSolved: newTotalSolvedCount,
             perfectScores: newPerfectCount,

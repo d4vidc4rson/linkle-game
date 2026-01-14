@@ -2,10 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { DailySchedule } from '../types';
 import { DEFAULT_DAILY_SCHEDULE, generateDailySchedule, formatDateKey, getPuzzlesForDateFromSchedule, calculatePuzzleIndicesForDate } from '../dailySchedule';
-
-// Firebase services from window
-declare const window: any;
-const { db, doc, getDoc, setDoc } = window.firebase || {};
+import { db, doc, getDoc, setDoc } from '../firebase';
 
 const SCHEDULE_DOC_ID = 'main';
 

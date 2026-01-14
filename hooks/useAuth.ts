@@ -2,12 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { PlayerData, Badge } from '../types';
 import { initialBadges, defaultPlayerData } from '../constants';
-
-// Firebase services from window
-declare const window: any;
-const {
-    auth, db, onAuthStateChanged, doc, getDoc, setDoc, signOut
-} = window.firebase || {};
+import { auth, db, onAuthStateChanged, doc, getDoc, setDoc, signOut } from '../firebase';
 
 const upgradePlayerData = (savedData: Partial<PlayerData>): PlayerData => {
     const savedBadges = savedData.badges || [];

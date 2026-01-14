@@ -1,17 +1,9 @@
-
-
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
 import type { Badge, AuthMode } from '../types';
 import { CloseIcon } from './Icons';
 import { useAnalytics } from '../hooks/useAnalytics';
-
-// --- Firebase Services (for AuthModal) ---
-declare const window: any;
-const {
-    auth, GoogleAuthProvider, signInWithPopup,
-    createUserWithEmailAndPassword, signInWithEmailAndPassword
-} = window.firebase || {};
+import { auth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase';
 
 // This function is only used by the ExplanationModal, so it lives here.
 const formatLogicNarrative = (text: string, solution: string[]) => {

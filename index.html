@@ -7676,100 +7676,10 @@
 </head>
 <body>
   <div id="root"></div>
-  <div id="firebase-config-warning">
-    <b>Action Required:</b> To enable saving your progress online, you need to connect the game to a free Firebase project. Please update the <code>firebaseConfig</code> object in <code>index.html</code>.
+  <div id="firebase-config-warning" style="display: none;">
+    <b>Action Required:</b> Firebase not configured. Set VITE_FIREBASE_* environment variables in your .env file.
   </div>
-
-  <!-- Add Firebase SDKs -->
-  <script type="module">
-    // This is a simplified integration for this environment.
-    // In a real-world app, you would use a module bundler.
-    
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    
-    // ----------------------------------------------------------------------------------
-    // Your web app's Firebase configuration
-    // ----------------------------------------------------------------------------------
-    // 1. Go to your Firebase project console: https://console.firebase.google.com/
-    // 2. In your project, go to Project settings (gear icon)
-    // 3. In the "Your apps" card, select the Web app (</>)
-    // 4. Find the `firebaseConfig` object and copy it.
-    // 5. Paste the entire object below, replacing the placeholder.
-    // ----------------------------------------------------------------------------------
-    
-    // ⬇️ PASTE YOUR FIREBASE CONFIG OBJECT HERE ⬇️
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCEDja5YKTHE85L8N2O1DJiEFbof2JkBng",
-  authDomain: "chain-reaction-4ffe8.firebaseapp.com",
-  projectId: "chain-reaction-4ffe8",
-  storageBucket: "chain-reaction-4ffe8.firebasestorage.app",
-  messagingSenderId: "392153797479",
-  appId: "1:392153797479:web:ef7adfa46c58d4d66195c2",
-  measurementId: "G-NBFYERDH11"
-};
-    
-    // ⬆️ PASTE YOUR FIREBASE CONFIG OBJECT HERE ⬆️
-
-
-    // Initialize Firebase and handle config warning
-    try {
-        if (!firebaseConfig || firebaseConfig.apiKey === "YOUR_API_KEY") {
-          throw new Error("Firebase config not set");
-        }
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Make firebase services available globally for the main script
-        window.firebase = {
-            auth,
-            db,
-            onAuthStateChanged,
-            GoogleAuthProvider,
-            signInWithPopup,
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-            signOut,
-            updateProfile,
-            doc,
-            getDoc,
-            setDoc,
-            collection,
-            getDocs,
-            addDoc
-        };
-    } catch(e) {
-        console.warn(e.message);
-        // Show the warning message if Firebase fails to initialize
-        document.getElementById('firebase-config-warning').style.display = 'block';
-
-        // Create a dummy object so the app doesn't crash
-        window.firebase = {
-          onAuthStateChanged: (auth, callback) => {
-            // Immediately call back with "null" to signify a logged-out user
-            callback(null);
-            // Hide login button if firebase isn't configured
-            const root = document.getElementById('root');
-            if(root) {
-              const observer = new MutationObserver((mutationsList, obs) => {
-                const userDisplay = root.querySelector('.user-display');
-                if (userDisplay) {
-                  userDisplay.style.display = 'none';
-                  obs.disconnect(); // stop observing once we find it
-                }
-              });
-              observer.observe(root, { childList: true, subtree: true });
-            }
-          }
-        };
-    }
-  </script>
-  <script type="module" src="index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
+  
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>

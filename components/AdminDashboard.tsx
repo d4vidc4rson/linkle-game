@@ -19,10 +19,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
-
-// Firebase services for Google sign-in
-declare const window: any;
-const { auth, GoogleAuthProvider, signInWithPopup } = window.firebase || {};
+import { auth, GoogleAuthProvider, signInWithPopup } from '../firebase';
 
 type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends' | 'growth';
 

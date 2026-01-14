@@ -1,4 +1,7 @@
 // @ts-nocheck
+// Initialize Firebase first (must be imported before any hooks that use Firebase)
+import './firebase';
+
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';

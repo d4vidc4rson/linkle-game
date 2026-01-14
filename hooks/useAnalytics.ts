@@ -1,9 +1,6 @@
 // @ts-nocheck
 import { useCallback, useEffect, useRef } from 'react';
-
-// Firebase services from window
-declare const window: any;
-const { db, collection, addDoc, doc, setDoc, getDoc, auth } = window.firebase || {};
+import { db, collection, addDoc, doc, setDoc, getDoc, auth } from '../firebase';
 
 // Session ID - unique per browser session, stored in sessionStorage
 const getSessionId = (): string => {

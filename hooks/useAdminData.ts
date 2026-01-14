@@ -2,10 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { PlayerData } from '../types';
 import { formatDateKey } from '../dailySchedule';
-
-// Firebase services from window
-declare const window: any;
-const { db, collection, getDocs, auth } = window.firebase || {};
+import { db, collection, getDocs, auth } from '../firebase';
 
 // Admin email - hardcoded for now
 const ADMIN_EMAIL = 'davidvcarson@gmail.com';

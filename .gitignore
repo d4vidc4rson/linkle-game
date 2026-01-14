@@ -25,3 +25,8 @@ dist-ssr
 
 # macOS resource fork files
 ._*
+
+# Environment variables (contains secrets!)
+.env
+.env.local
+.env.*.local

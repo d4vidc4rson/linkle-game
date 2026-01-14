@@ -81,6 +81,10 @@ export const useAuth = () => {
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const lastUserUidRef = useRef<string | null | undefined>(undefined);
+    
+    // Ref to hold the latest saveGameState function to avoid including it in useEffect dependencies
+    // This prevents the infinite loop where: user changes -> saveGameState changes -> useEffect re-runs -> onAuthStateChanged re-subscribes
+    const saveGameStateRef = useRef<((data: PlayerData, overrideUser?: any) => Promise<{ success: boolean; error?: string }>) | null>(null);
 
     const loadDataFromLocalStorage = useCallback((): PlayerData => {
         // --- LocalStorage Migration: player data ---
@@ -212,6 +216,11 @@ export const useAuth = () => {
         }
     }, [user]);
 
+    // Keep the ref updated with the latest saveGameState function
+    useEffect(() => {
+        saveGameStateRef.current = saveGameState;
+    }, [saveGameState]);
+
     useEffect(() => {
         if (!auth) {
             setUser(null);
@@ -320,7 +329,8 @@ export const useAuth = () => {
 
                     // CRITICAL: Pass currentUser directly to avoid race condition
                     // (user state may not have updated yet since setUser is async)
-                    const saveResult = await saveGameState(finalPlayerData, currentUser);
+                    // Use ref to get latest saveGameState without including it in dependencies
+                    const saveResult = await saveGameStateRef.current!(finalPlayerData, currentUser);
                     if (!saveResult.success) {
                         console.error('[useAuth] ❌ Failed to save user document:', saveResult.error);
                     } else {
@@ -365,7 +375,9 @@ export const useAuth = () => {
         });
 
         return () => unsubscribe();
-    }, [loadDataFromLocalStorage, saveGameState]);
+    // IMPORTANT: saveGameState is accessed via ref (saveGameStateRef) to prevent infinite loop
+    // The loop was: user changes -> saveGameState changes -> useEffect re-runs -> re-subscribes to auth -> Firebase fires callback -> user changes...
+    }, [loadDataFromLocalStorage]);
 
     const handleLogout = async () => {
         setPlayerData(defaultPlayerData);

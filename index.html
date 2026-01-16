@@ -1000,25 +1000,19 @@
     }
     
     .word-card.placeholder {
-        background-color: transparent;
-        color: transparent;
-        box-shadow: none;
-        border: 2px dashed var(--placeholder-border-color);
+        visibility: hidden;
     }
     .word-card.placeholder::before, .word-card.placeholder::after {
         display: none;
     }
     
-    /* Override for bonus mode - placeholder should be completely blank (no red background) */
+    /* Override for bonus mode - placeholder should be completely blank */
     .bonus-mode .word-card.placeholder:not(.locked):not(.revealed)::before,
     .bonus-mode .word-card.placeholder:not(.locked):not(.revealed)::after {
-        display: none !important; /* Hide red background and shadow completely */
+        display: none !important;
     }
     .bonus-mode .word-card.placeholder:not(.locked):not(.revealed) {
-        background-color: transparent !important;
-        color: transparent !important; /* Hide text */
-        border: 2px dashed rgba(255, 87, 87, 0.5) !important; /* Red dashed border */
-        box-shadow: none !important;
+        visibility: hidden;
     }
     
     /* Ghost tile in bonus mode should be red */
@@ -1465,12 +1459,21 @@
     .state-playing .solved-ui,
     .state-generating .solved-ui,
     .state-generating .gameplay-ui,
-    .state-solved .gameplay-ui {
+    .state-solved .gameplay-ui,
+    .state-loading .solved-ui,
+    .state-loading .gameplay-ui {
         opacity: 0;
         pointer-events: none;
     }
     
-    .state-generating .word-card:not(.revealed) {
+    /* Hide grid during loading to prevent flash of previous puzzle */
+    .state-loading .solution-grid {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .state-generating .word-card:not(.revealed),
+    .state-loading .word-card {
       opacity: 0;
     }
 
@@ -1653,6 +1656,12 @@
     .state-playing .word-card:nth-child(8) { transition-delay: 0s, 0.31s; }
     .state-playing .word-card:nth-child(9) { transition-delay: 0s, 0.34s; }
 
+    /* Disable CSS transform transition during drag to let Framer Motion handle layout animations */
+    .state-playing .solution-grid:has(.placeholder) .word-card {
+      transition-property: opacity;
+      transition-duration: 0.4s;
+      transition-timing-function: ease;
+    }
 
     .confetti-container {
         position: fixed;

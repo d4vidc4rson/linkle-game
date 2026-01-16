@@ -47,9 +47,11 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
     const puzzleStartTimeRef = useRef<number | null>(null);
 
     const [dragState, setDragState] = useState<DragState>({
-        isDragging: false, index: -1, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0
+        isDragging: false, originIndex: -1, draggedWord: '', hoverIndex: null, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0
     });
     const dragItemRef = useRef<HTMLDivElement | null>(null);
+    const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pendingHoverIndexRef = useRef<number | null>(null);
     const winAnimationPropertiesRef = useRef<Array<any>>([]);
     const lossAnimationPropertiesRef = useRef<Array<any>>([]);
 
@@ -182,32 +184,127 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, index: number) => {
         if (lockedSlots[index] || gameState === 'solved') return;
         const rect = e.currentTarget.getBoundingClientRect();
-        setDragState({ isDragging: true, index, clientX: e.clientX, clientY: e.clientY, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top, ghostWidth: rect.width, ghostHeight: rect.height });
+        const draggedWord = boardState[index];
+        setDragState({ 
+            isDragging: true, 
+            originIndex: index, 
+            draggedWord, 
+            hoverIndex: null,
+            clientX: e.clientX, 
+            clientY: e.clientY, 
+            offsetX: e.clientX - rect.left, 
+            offsetY: e.clientY - rect.top, 
+            ghostWidth: rect.width, 
+            ghostHeight: rect.height 
+        });
     };
 
     useEffect(() => {
+        const HOVER_DELAY = 60; // ms delay before updating hover index
+        
         const handleDragMove = (e: PointerEvent) => {
             e.preventDefault();
-            setDragState(prev => ({ ...prev, clientX: e.clientX, clientY: e.clientY }));
+            
+            if (dragState.isDragging) {
+                // Calculate grid position based on cursor coordinates (not element detection)
+                // This prevents jitter when tiles animate to new positions
+                const grid = document.querySelector('.solution-grid');
+                let newHoverIndex: number | null = null;
+                
+                if (grid) {
+                    const gridRect = grid.getBoundingClientRect();
+                    const computedStyle = window.getComputedStyle(grid);
+                    const gap = parseFloat(computedStyle.gap) || 0;
+                    
+                    // Calculate cell dimensions accounting for gaps
+                    // Total width = 3 * cellWidth + 2 * gap
+                    const cellWidth = (gridRect.width - 2 * gap) / 3;
+                    const cellHeight = (gridRect.height - 2 * gap) / 3;
+                    
+                    const relX = e.clientX - gridRect.left;
+                    const relY = e.clientY - gridRect.top;
+                    
+                    // Calculate which cell the cursor is in
+                    // Each cell starts at: col * (cellWidth + gap)
+                    const col = Math.floor(relX / (cellWidth + gap));
+                    const row = Math.floor(relY / (cellHeight + gap));
+                    
+                    // Verify cursor is within a cell (not in the gap)
+                    const cellStartX = col * (cellWidth + gap);
+                    const cellStartY = row * (cellHeight + gap);
+                    const isInCell = relX >= cellStartX && relX < cellStartX + cellWidth &&
+                                     relY >= cellStartY && relY < cellStartY + cellHeight;
+                    
+                    if (col >= 0 && col < 3 && row >= 0 && row < 3 && isInCell) {
+                        const gridIndex = row * 3 + col;
+                        
+                        // Only set hover if it's a different position and not locked
+                        if (gridIndex !== dragState.originIndex && !lockedSlots[gridIndex]) {
+                            newHoverIndex = gridIndex;
+                        }
+                    }
+                }
+                
+                // Always update cursor position immediately
+                setDragState(prev => ({ 
+                    ...prev, 
+                    clientX: e.clientX, 
+                    clientY: e.clientY
+                }));
+                
+                // Debounce hover index updates to prevent rapid tile shuffling
+                if (newHoverIndex !== pendingHoverIndexRef.current) {
+                    pendingHoverIndexRef.current = newHoverIndex;
+                    
+                    // Clear any pending hover update
+                    if (hoverTimeoutRef.current) {
+                        clearTimeout(hoverTimeoutRef.current);
+                    }
+                    
+                    // Delay the hover index update
+                    hoverTimeoutRef.current = setTimeout(() => {
+                        setDragState(prev => ({
+                            ...prev,
+                            hoverIndex: pendingHoverIndexRef.current
+                        }));
+                    }, HOVER_DELAY);
+                }
+            }
         };
 
         const handleDragEnd = (e: PointerEvent) => {
-            setDragState(prevDragState => {
-                if (!prevDragState.isDragging) return prevDragState;
-
-                const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-                const dropTargetCard = dropTarget?.closest('.word-card');
-                const dropIndexAttr = dropTargetCard?.getAttribute('data-index');
-
-                if (dropIndexAttr) {
-                    const dropIndex = parseInt(dropIndexAttr, 10);
-                    if (prevDragState.index !== dropIndex && !lockedSlots[dropIndex]) {
-                         const newBoardState = [...boardState];
-                         [newBoardState[prevDragState.index], newBoardState[dropIndex]] = [newBoardState[dropIndex], newBoardState[prevDragState.index]];
-                         setBoardState(newBoardState);
-                    }
-                }
-                return { isDragging: false, index: -1, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0 };
+            if (!dragState.isDragging) return;
+            
+            // Clear any pending hover timeout
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+                hoverTimeoutRef.current = null;
+            }
+            
+            // Use the pending hover index if we have one (in case timeout hasn't fired yet)
+            const finalHoverIndex = pendingHoverIndexRef.current;
+            
+            // Perform the actual swap if we're hovering over a valid target
+            if (finalHoverIndex !== null && finalHoverIndex !== dragState.originIndex && !lockedSlots[finalHoverIndex]) {
+                const newBoardState = [...boardState];
+                [newBoardState[dragState.originIndex], newBoardState[finalHoverIndex]] = 
+                    [newBoardState[finalHoverIndex], newBoardState[dragState.originIndex]];
+                setBoardState(newBoardState);
+            }
+            
+            pendingHoverIndexRef.current = null;
+            
+            setDragState({ 
+                isDragging: false, 
+                originIndex: -1, 
+                draggedWord: '', 
+                hoverIndex: null,
+                clientX: 0, 
+                clientY: 0, 
+                offsetX: 0, 
+                offsetY: 0, 
+                ghostWidth: 0, 
+                ghostHeight: 0 
             });
         };
 
@@ -223,8 +320,13 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
             window.removeEventListener('pointermove', handleDragMove);
             window.removeEventListener('pointerup', handleDragEnd);
             window.removeEventListener('pointercancel', handleDragEnd);
+            // Clear any pending hover timeout on cleanup
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+                hoverTimeoutRef.current = null;
+            }
         };
-    }, [dragState.isDragging, boardState, lockedSlots, setBoardState]);
+    }, [dragState.isDragging, dragState.originIndex, boardState, lockedSlots, setBoardState]);
     
     const calculateScore = (difficulty: string, triesLeft: number, currentStreak: number) => {
         const points = { 'EASY': [0, 50, 75, 100, 125], 'HARD': [0, 150, 200, 250], 'IMPOSSIBLE': [0, 400, 500] };

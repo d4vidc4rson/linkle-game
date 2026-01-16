@@ -221,8 +221,8 @@ const App = () => {
                     ) : (
                         <div className={`app-container state-${gameState} ${animationClass}`}>
                             {dragState.isDragging && (
-                                <div className="ghost-tile word-card" style={{ position: 'fixed', left: dragState.clientX - dragState.offsetX, top: dragState.clientY - dragState.offsetY, width: dragState.ghostWidth, height: dragState.ghostHeight, pointerEvents: 'none', zIndex: 1000, opacity: 0.9, transform: 'scale(1.05)', boxShadow: '0 10px 20px rgba(0,0,0,0.2)'}}>
-                                    <span>{boardState[dragState.index]}</span>
+                                <div className="ghost-tile word-card" style={{ position: 'fixed', left: dragState.clientX - dragState.offsetX, top: dragState.clientY - dragState.offsetY, width: dragState.ghostWidth, height: dragState.ghostHeight, pointerEvents: 'none', zIndex: 1000, opacity: 0.95, transform: 'scale(1.12) rotate(-3deg)', boxShadow: '0 12px 28px rgba(0,0,0,0.25)'}}>
+                                    <span>{dragState.draggedWord}</span>
                                 </div>
                             )}
                         
@@ -251,6 +251,7 @@ const App = () => {
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
                                         onPointerDown={handlePointerDown}
+                                        puzzleId={puzzle?.narrative || 'sandbox'}
                                     />
                                     <div className="bottom-content-container">
                                         <div className="gameplay-ui">

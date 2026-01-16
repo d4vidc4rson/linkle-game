@@ -6,7 +6,9 @@ export type AuthMode = 'login' | 'signup';
 
 export interface DragState {
     isDragging: boolean;
-    index: number;
+    originIndex: number;
+    draggedWord: string;
+    hoverIndex: number | null;
     clientX: number;
     clientY: number;
     offsetX: number;

@@ -451,7 +451,9 @@ export const BonusSpeedRoundMode = () => {
     // Custom drag state for bonus round (separate from hook's dragState)
     const [bonusDragState, setBonusDragState] = useState<DragState>({
         isDragging: false,
-        index: -1,
+        originIndex: -1,
+        draggedWord: '',
+        hoverIndex: null,
         clientX: 0,
         clientY: 0,
         offsetX: 0,
@@ -459,6 +461,10 @@ export const BonusSpeedRoundMode = () => {
         ghostWidth: 0,
         ghostHeight: 0,
     });
+    
+    // Refs for debounced hover updates
+    const bonusHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const bonusPendingHoverIndexRef = useRef<number | null>(null);
     
     // Use ref to track current drag position for immediate updates
     const bonusDragStateRef = useRef<DragState>(bonusDragState);
@@ -472,9 +478,12 @@ export const BonusSpeedRoundMode = () => {
     const handleBonusPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>, index: number) => {
         if (bonusLockedSlots[index] || gameState === 'solved') return;
         const rect = e.currentTarget.getBoundingClientRect();
-        const newDragState = {
+        const draggedWord = bonusBoardState[index];
+        const newDragState: DragState = {
             isDragging: true,
-            index,
+            originIndex: index,
+            draggedWord,
+            hoverIndex: null,
             clientX: e.clientX,
             clientY: e.clientY,
             offsetX: e.clientX - rect.left,
@@ -484,52 +493,124 @@ export const BonusSpeedRoundMode = () => {
         };
         bonusDragStateRef.current = newDragState;
         setBonusDragState(newDragState);
-    }, [bonusLockedSlots, gameState]);
+    }, [bonusLockedSlots, gameState, bonusBoardState]);
 
     // Handle bonus round drag events
     useEffect(() => {
         if (!isBonusRound || !bonusDragState.isDragging) return;
+        
+        const HOVER_DELAY = 60; // ms delay before updating hover index
 
         const handleBonusDragMove = (e: PointerEvent) => {
-            const updatedState = {
+            // Calculate grid position based on cursor coordinates (not element detection)
+            // This prevents jitter when tiles animate to new positions
+            const grid = document.querySelector('.solution-grid');
+            let newHoverIndex: number | null = null;
+            
+            if (grid) {
+                const gridRect = grid.getBoundingClientRect();
+                const computedStyle = window.getComputedStyle(grid);
+                const gap = parseFloat(computedStyle.gap) || 0;
+                
+                // Calculate cell dimensions accounting for gaps
+                // Total width = 3 * cellWidth + 2 * gap
+                const cellWidth = (gridRect.width - 2 * gap) / 3;
+                const cellHeight = (gridRect.height - 2 * gap) / 3;
+                
+                const relX = e.clientX - gridRect.left;
+                const relY = e.clientY - gridRect.top;
+                
+                // Calculate which cell the cursor is in
+                // Each cell starts at: col * (cellWidth + gap)
+                const col = Math.floor(relX / (cellWidth + gap));
+                const row = Math.floor(relY / (cellHeight + gap));
+                
+                // Verify cursor is within a cell (not in the gap)
+                const cellStartX = col * (cellWidth + gap);
+                const cellStartY = row * (cellHeight + gap);
+                const isInCell = relX >= cellStartX && relX < cellStartX + cellWidth &&
+                                 relY >= cellStartY && relY < cellStartY + cellHeight;
+                
+                if (col >= 0 && col < 3 && row >= 0 && row < 3 && isInCell) {
+                    const gridIndex = row * 3 + col;
+                    
+                    // Only set hover if it's a different position and not locked
+                    if (gridIndex !== bonusDragStateRef.current.originIndex && !bonusLockedSlots[gridIndex]) {
+                        newHoverIndex = gridIndex;
+                    }
+                }
+            }
+            
+            // Always update cursor position immediately
+            const updatedState: DragState = {
                 ...bonusDragStateRef.current,
                 clientX: e.clientX,
                 clientY: e.clientY,
             };
             bonusDragStateRef.current = updatedState;
             setBonusDragState(updatedState);
+            
+            // Debounce hover index updates to prevent rapid tile shuffling
+            if (newHoverIndex !== bonusPendingHoverIndexRef.current) {
+                bonusPendingHoverIndexRef.current = newHoverIndex;
+                
+                // Clear any pending hover update
+                if (bonusHoverTimeoutRef.current) {
+                    clearTimeout(bonusHoverTimeoutRef.current);
+                }
+                
+                // Delay the hover index update
+                bonusHoverTimeoutRef.current = setTimeout(() => {
+                    const stateWithHover: DragState = {
+                        ...bonusDragStateRef.current,
+                        hoverIndex: bonusPendingHoverIndexRef.current,
+                    };
+                    bonusDragStateRef.current = stateWithHover;
+                    setBonusDragState(stateWithHover);
+                }, HOVER_DELAY);
+            }
         };
 
         const handleBonusDragEnd = (e: PointerEvent) => {
-            // Use the current drag state index from the closure
-            const currentDragIndex = bonusDragState.index;
-            
-            const dropTargetCard = document.elementFromPoint(e.clientX, e.clientY)?.closest('.word-card');
-            const dropIndexAttr = dropTargetCard?.getAttribute('data-index');
-
-            if (dropIndexAttr) {
-                const dropIndex = parseInt(dropIndexAttr, 10);
-                if (currentDragIndex !== dropIndex && !bonusLockedSlots[dropIndex]) {
-                    setBonusBoardState(prev => {
-                        const newBoardState = [...prev];
-                        [newBoardState[currentDragIndex], newBoardState[dropIndex]] = [newBoardState[dropIndex], newBoardState[currentDragIndex]];
-                        return newBoardState;
-                    });
-                    // Track the move for analytics
-                    setBonusMoveCount(prev => prev + 1);
-                }
+            // Clear any pending hover timeout
+            if (bonusHoverTimeoutRef.current) {
+                clearTimeout(bonusHoverTimeoutRef.current);
+                bonusHoverTimeoutRef.current = null;
             }
             
-            setBonusDragState({
+            // Use the pending hover index if we have one (in case timeout hasn't fired yet)
+            const finalHoverIndex = bonusPendingHoverIndexRef.current;
+            const currentState = bonusDragStateRef.current;
+            
+            // Perform the actual swap if we're hovering over a valid target
+            if (finalHoverIndex !== null && 
+                finalHoverIndex !== currentState.originIndex && 
+                !bonusLockedSlots[finalHoverIndex]) {
+                setBonusBoardState(prev => {
+                    const newBoardState = [...prev];
+                    [newBoardState[currentState.originIndex], newBoardState[finalHoverIndex]] = 
+                        [newBoardState[finalHoverIndex], newBoardState[currentState.originIndex]];
+                    return newBoardState;
+                });
+                setBonusMoveCount(prev => prev + 1);
+            }
+            
+            bonusPendingHoverIndexRef.current = null;
+            
+            const resetState: DragState = {
                 isDragging: false,
-                index: -1,
+                originIndex: -1,
+                draggedWord: '',
+                hoverIndex: null,
                 clientX: 0,
                 clientY: 0,
                 offsetX: 0,
                 offsetY: 0,
                 ghostWidth: 0,
                 ghostHeight: 0,
-            });
+            };
+            bonusDragStateRef.current = resetState;
+            setBonusDragState(resetState);
         };
 
         document.body.classList.add('dragging-active');
@@ -542,8 +623,13 @@ export const BonusSpeedRoundMode = () => {
             window.removeEventListener('pointermove', handleBonusDragMove);
             window.removeEventListener('pointerup', handleBonusDragEnd);
             window.removeEventListener('pointercancel', handleBonusDragEnd);
+            // Clear any pending hover timeout on cleanup
+            if (bonusHoverTimeoutRef.current) {
+                clearTimeout(bonusHoverTimeoutRef.current);
+                bonusHoverTimeoutRef.current = null;
+            }
         };
-    }, [isBonusRound, bonusDragState.isDragging, bonusDragState.index, bonusLockedSlots]);
+    }, [isBonusRound, bonusDragState.isDragging, bonusLockedSlots]);
 
     const handleThemeToggle = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -1022,13 +1108,13 @@ export const BonusSpeedRoundMode = () => {
                                 height: isBonusRound ? `${bonusDragStateRef.current.ghostHeight}px` : `${dragState.ghostHeight}px`, 
                                 pointerEvents: 'none', 
                                 zIndex: 1000, 
-                                opacity: 0.9, 
-                                transform: 'scale(1.05)', 
-                                boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+                                opacity: 0.95, 
+                                transform: 'scale(1.12) rotate(-3deg)', 
+                                boxShadow: '0 12px 28px rgba(0,0,0,0.25)',
                                 margin: 0,
                                 padding: 0
                             }}>
-                                <span>{isBonusRound ? bonusBoardState[bonusDragStateRef.current.index] : boardState[dragState.index]}</span>
+                                <span>{isBonusRound ? bonusDragStateRef.current.draggedWord : dragState.draggedWord}</span>
                             </div>
                         ))}
                     
@@ -1097,6 +1183,7 @@ export const BonusSpeedRoundMode = () => {
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
                                         onPointerDown={isBonusRound ? handleBonusPointerDown : handlePointerDown}
+                                        puzzleId={isBonusRound ? (bonusPuzzle?.narrative || 'bonus') : (currentPuzzle?.narrative || 'daily')}
                                     />
                                 ) : (
                                     <div className="loading-puzzle" style={{ 

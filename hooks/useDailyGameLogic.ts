@@ -608,6 +608,7 @@ export const useDailyGameLogic = (
                 consecutiveDays: newConsecutiveDaysPlayed,
                 impossiblePerfects: playerData.impossiblePerfects,
                 consecutivePerfects: 0, // Reset on loss
+                totalScore: playerData.totalScore || 0, // Keep existing score (no points on loss)
             });
             
             // Reset streak-related badges

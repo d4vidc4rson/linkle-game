@@ -1183,7 +1183,6 @@ export const BonusSpeedRoundMode = () => {
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
                                         onPointerDown={isBonusRound ? handleBonusPointerDown : handlePointerDown}
-                                        puzzleId={isBonusRound ? (bonusPuzzle?.narrative || 'bonus') : (currentPuzzle?.narrative || 'daily')}
                                     />
                                 ) : (
                                     <div className="loading-puzzle" style={{ 

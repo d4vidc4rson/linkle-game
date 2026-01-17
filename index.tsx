@@ -251,7 +251,6 @@ const App = () => {
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
                                         onPointerDown={handlePointerDown}
-                                        puzzleId={puzzle?.narrative || 'sandbox'}
                                     />
                                     <div className="bottom-content-container">
                                         <div className="gameplay-ui">

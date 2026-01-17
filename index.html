@@ -1656,13 +1656,6 @@
     .state-playing .word-card:nth-child(8) { transition-delay: 0s, 0.31s; }
     .state-playing .word-card:nth-child(9) { transition-delay: 0s, 0.34s; }
 
-    /* Disable CSS transform transition during drag to let Framer Motion handle layout animations */
-    .state-playing .solution-grid:has(.placeholder) .word-card {
-      transition-property: opacity;
-      transition-duration: 0.4s;
-      transition-timing-function: ease;
-    }
-
     .confetti-container {
         position: fixed;
         top: 0;

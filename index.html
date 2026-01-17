@@ -751,7 +751,7 @@
       align-items: center;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       letter-spacing: -0.5px;
       text-transform: uppercase;
       cursor: grab;
@@ -3180,6 +3180,11 @@
         top: 5px; /* Shadow offset - 5px on mobile */
       }
 
+      /* Mobile: Match footer-controls gap to tile grid gap */
+      .footer-controls {
+        gap: calc(var(--grid-unit) * 1.75);
+      }
+
       /* Mobile: Set SUBMIT button face corner radius to 12px */
       .button.button-submit::after {
         border-radius: 12px !important; /* Face radius - 12px on mobile */
@@ -3187,8 +3192,9 @@
 
       /* Mobile: Match SUBMIT button font size to tiles */
       .button.button-submit {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
         padding: 8px 24px;
+        letter-spacing: -0.5px;
       }
 
       /* Mobile: Match SUBMIT button shadow to tile shadow */

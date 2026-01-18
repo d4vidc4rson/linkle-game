@@ -58,6 +58,7 @@ export const useDailyGameLogic = (
     const navigatingToNextPuzzleRef = useRef<boolean>(false); // Track if we're actively navigating to next puzzle
     const isSolvedRef = useRef<boolean>(false); // Track if we're currently in solved state to prevent reloads
     const gameStateRef = useRef<GameState>(gameState); // Track current gameState in a ref for reliable checking
+    const puzzleLoadTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null); // Track puzzle load timeout to cancel duplicates
 
     const [dragState, setDragState] = useState<DragState>({
         isDragging: false, originIndex: -1, draggedWord: '', hoverIndex: null, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0
@@ -198,7 +199,12 @@ export const useDailyGameLogic = (
         gameStateRef.current = 'generating';
         setGameState('generating');
         
-        setTimeout(() => {
+        // Cancel any previous puzzle load timeout to prevent duplicate/stale callbacks (fixes React StrictMode double-render issue)
+        if (puzzleLoadTimeoutRef.current) {
+            clearTimeout(puzzleLoadTimeoutRef.current);
+        }
+        
+        puzzleLoadTimeoutRef.current = setTimeout(() => {
             const initialTries = TRIES_PER_DIFFICULTY[newPuzzle.difficulty] || DEFAULT_TRIES;
             
             let winCombos, lossCombos;
@@ -265,6 +271,14 @@ export const useDailyGameLogic = (
                 }, 0);
             }
         }, 500);
+        
+        // Cleanup: cancel timeout if effect re-runs or component unmounts
+        return () => {
+            if (puzzleLoadTimeoutRef.current) {
+                clearTimeout(puzzleLoadTimeoutRef.current);
+                puzzleLoadTimeoutRef.current = null;
+            }
+        };
     }, [puzzleIndices, currentPuzzleType, targetDate, playerData.dailyResults]); // Removed theme from dependencies to prevent reload on theme change
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, index: number) => {
@@ -812,6 +826,22 @@ export const useDailyGameLogic = (
         navigatingToNextPuzzleRef.current = true;
     }, []);
 
+    const resetBoardForNewSession = useCallback(() => {
+        gameStateRef.current = 'loading';
+        setGameState('loading');
+        loadedPuzzleRef.current = null;
+        isSolvedRef.current = false;
+        setBoardState([]);
+        setLockedSlots(Array(9).fill(false));
+        setSolvedStatus(null);
+        setAnimationClass('');
+        setFeedback('');
+        setFinalNarrative('');
+        setWinMessageBase('');
+        setWinMessageBonus('');
+        setNewlyUnlockedBadge(null);
+    }, []);
+
     return {
         gameState,
         setGameState,
@@ -840,6 +870,7 @@ export const useDailyGameLogic = (
         handleShowExplanation,
         handleCloseExplanation,
         setNavigatingToNextPuzzle,
+        resetBoardForNewSession,
     };
 };
 

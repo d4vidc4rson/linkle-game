@@ -217,6 +217,7 @@ export const BonusSpeedRoundMode = () => {
         handleShowExplanation,
         handleCloseExplanation,
         setNavigatingToNextPuzzle,
+        resetBoardForNewSession,
     } = useDailyGameLogic(
         playerData,
         setPlayerData,
@@ -692,7 +693,10 @@ export const BonusSpeedRoundMode = () => {
             setView('allDone');
             return;
         }
-        
+
+        // Clear any stale tiles/solved state from previous session
+        resetBoardForNewSession();
+
         // Set flag to indicate we're starting fresh from intro (ignore existing results)
         setNavigatingToNextPuzzle();
         
@@ -1026,6 +1030,17 @@ export const BonusSpeedRoundMode = () => {
     const currentPuzzle = isBonusRound ? bonusPuzzle : puzzle;
     const totalTries = currentPuzzle ? TRIES_PER_DIFFICULTY[currentPuzzle.difficulty] : DEFAULT_TRIES;
     const isLastPuzzle = currentPuzzleType === 'impossible';
+    const shouldShowBoard = isBonusRound
+        ? bonusPuzzle &&
+          bonusBoardState.length > 0 &&
+          (gameState === 'playing' ||
+            gameState === 'solved' ||
+            (gameState === 'generating' && bonusSolvedStatus))
+        : currentPuzzle &&
+          boardState.length > 0 &&
+          (gameState === 'playing' ||
+            gameState === 'solved' ||
+            (gameState === 'generating' && solvedStatus));
 
     return (
         <>
@@ -1120,58 +1135,63 @@ export const BonusSpeedRoundMode = () => {
                     
                         <div className={`game-unit ${isBonusRound ? 'bonus-mode' : ''}`}>
                             <div className="game-header-info" style={{ position: 'relative' }}>
-                                <div className="tries-container">
-                                    {isBonusRound ? (
-                                        <>
-                                            <span>BONUS SPEED ROUND</span>
-                                            <BonusTimer timeRemaining={timeRemaining} />
-                                        </>
-                                    ) : (
-                                        <>
-                                            {puzzle && <span>{puzzle.difficulty}</span>}
-                                            <TriesDots count={triesLeft} totalTries={totalTries} />
-                                        </>
-                                    )}
-                                </div>
-                                {!isBonusRound && targetDate && (() => {
-                                    const today = new Date();
-                                    const todayKey = formatDateKey(today);
-                                    const dateKey = formatDateKey(targetDate);
-                                    if (dateKey !== todayKey) {
-                                        const dateStr = targetDate.toLocaleDateString('en-US', { 
-                                            month: 'short', 
-                                            day: 'numeric',
-                                            year: 'numeric'
-                                        });
-                                        return (
-                                            <span style={{ 
-                                                position: 'absolute',
-                                                right: 0,
-                                                top: '50%',
-                                                transform: 'translateY(-50%)',
-                                                fontSize: '1.1rem',
-                                                fontWeight: '500',
-                                                color: 'var(--header-text)',
-                                                fontFamily: 'var(--font-ui)'
-                                            }}>
-                                                {dateStr}
-                                            </span>
-                                        );
-                                    }
-                                    // Show help button for today's puzzle + new players (< 9 daily completions)
-                                    if ((playerData.gamesPlayed || 0) < 9) {
-                                        return (
-                                            <button className="help-trigger" onClick={() => setShowNewPlayerModal(true)}>
-                                                <span className="help-icon">?</span>
-                                                <span>How to play</span>
-                                            </button>
-                                        );
-                                    }
-                                    return null;
-                                })()}
+                                {/* Only show header content when board is ready to prevent stale difficulty/help button flash */}
+                                {shouldShowBoard && (
+                                    <>
+                                        <div className="tries-container">
+                                            {isBonusRound ? (
+                                                <>
+                                                    <span>BONUS SPEED ROUND</span>
+                                                    <BonusTimer timeRemaining={timeRemaining} />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {puzzle && <span>{puzzle.difficulty}</span>}
+                                                    <TriesDots count={triesLeft} totalTries={totalTries} />
+                                                </>
+                                            )}
+                                        </div>
+                                        {!isBonusRound && targetDate && (() => {
+                                            const today = new Date();
+                                            const todayKey = formatDateKey(today);
+                                            const dateKey = formatDateKey(targetDate);
+                                            if (dateKey !== todayKey) {
+                                                const dateStr = targetDate.toLocaleDateString('en-US', { 
+                                                    month: 'short', 
+                                                    day: 'numeric',
+                                                    year: 'numeric'
+                                                });
+                                                return (
+                                                    <span style={{ 
+                                                        position: 'absolute',
+                                                        right: 0,
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                        fontSize: '1.1rem',
+                                                        fontWeight: '500',
+                                                        color: 'var(--header-text)',
+                                                        fontFamily: 'var(--font-ui)'
+                                                    }}>
+                                                        {dateStr}
+                                                    </span>
+                                                );
+                                            }
+                                            // Show help button for today's puzzle + new players (< 9 daily completions)
+                                            if ((playerData.gamesPlayed || 0) < 9) {
+                                                return (
+                                                    <button className="help-trigger" onClick={() => setShowNewPlayerModal(true)}>
+                                                        <span className="help-icon">?</span>
+                                                        <span>How to play</span>
+                                                    </button>
+                                                );
+                                            }
+                                            return null;
+                                        })()}
+                                    </>
+                                )}
                             </div>
                             <div className="game-board-wrapper">
-                                {((isBonusRound && bonusPuzzle && bonusBoardState.length > 0) || (!isBonusRound && currentPuzzle && boardState.length > 0)) ? (
+                                {shouldShowBoard ? (
                                     <GameBoard 
                                         boardState={isBonusRound ? bonusBoardState : boardState}
                                         lockedSlots={isBonusRound ? bonusLockedSlots : lockedSlots}

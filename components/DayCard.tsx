@@ -51,7 +51,7 @@ const PuzzleGrid = ({ solved, triesUsed, maxTries, boardState, solution, isLarge
         const squareSize = 33.5; // Approximate size of each square
         
         const greenColor = '#9eef80';
-        const whiteColor = '#f6e6d9';
+        const whiteColor = '#fbecd7';
         const bgColor = '#3b422e';
         const bgBorderRadius = 8.18; // Rounded corners for background (matches original SVG)
         const squareBorderRadius = 2.5; // Rounded corners for squares (matches original SVG)
@@ -203,10 +203,10 @@ export const DayCard: React.FC<DayCardProps> = ({
                         {/* Row 1 */}
                         <rect x="6" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
                         <rect x="44" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
-                        <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#fbecd7" />
                         {/* Row 2 */}
                         <rect x="6" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
-                        <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#fbecd7" />
                         <rect x="83" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
                         {/* Row 3 */}
                         <rect x="6" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
@@ -240,10 +240,10 @@ export const DayCard: React.FC<DayCardProps> = ({
                         {/* Row 1 */}
                         <rect x="6" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
                         <rect x="44" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
-                        <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        <rect x="83" y="6" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#fbecd7" />
                         {/* Row 2 */}
                         <rect x="6" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
-                        <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#f6e6d9" />
+                        <rect x="44" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#fbecd7" />
                         <rect x="83" y="44" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />
                         {/* Row 3 */}
                         <rect x="6" y="82" width="33.5" height="33.5" rx="2.5" ry="2.5" fill="#9eef80" />

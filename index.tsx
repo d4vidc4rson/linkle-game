@@ -11,9 +11,9 @@ import { useGameLogic } from './hooks/useGameLogic';
 import { useBodyClasses } from './hooks/useBodyClasses';
 import type { Theme, GameState, AuthMode } from './types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './components/Icons';
-import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal } from './components/Modals';
+import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal, PowerUserHintModal, WhatsNewSheet } from './components/Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots, DifficultyTag } from './components/GameUI';
-import { GameBoard } from './components/GameBoard';
+import { SortableGameBoard } from './components/SortableGameBoard';
 import { SandboxPage } from './components/SandboxPage';
 import { BonusSpeedRoundMode } from './components/BonusSpeedRoundMode';
 import { AdminDashboard } from './components/AdminDashboard';
@@ -25,6 +25,7 @@ const App = () => {
     const prevGameStateRef = useRef<GameState>();
     const [animateHeader, setAnimateHeader] = useState(false);
     const [authModalMode, setAuthModalMode] = useState<AuthMode>('signup');
+    const [showWhatsNewSheet, setShowWhatsNewSheet] = useState(false);
 
     const {
         user,
@@ -46,6 +47,7 @@ const App = () => {
         puzzle,
         boardState,
         lockedSlots,
+        userLockedSlots,
         triesLeft,
         feedback,
         finalNarrative,
@@ -55,18 +57,22 @@ const App = () => {
         showExplanationModal,
         newlyUnlockedBadge,
         setNewlyUnlockedBadge,
-        dragState,
-        dragItemRef,
         winAnimationPropertiesRef,
         lossAnimationPropertiesRef,
         animateFeedback,
         animateGridShake,
+        showPowerUserHintModal,
+        hintViewCount,
         resetToStart,
         generateNewPuzzle,
-        handlePointerDown,
+        handleReorder,
+        handleUserLockToggle,
         handleSubmit,
         handleShowExplanation,
         handleCloseExplanation,
+        handleDragStartForHint,
+        handleClosePowerUserHint,
+        handleDismissPowerUserHintPermanently,
     } = useGameLogic(playerData, setPlayerData, saveGameState, theme);
 
     // --- Login State Reset ---
@@ -107,6 +113,22 @@ const App = () => {
         setTheme(initialTheme);
         document.body.dataset.theme = initialTheme;
     }, []);
+
+    // Show What's New sheet for returning players who haven't seen it yet
+    useEffect(() => {
+        const hasSeenWhatsNew = localStorage.getItem('linkleHasSeenWhatsNew_v1') === 'true';
+        
+        // New players (0 puzzles solved) should never see this - pre-exempt them
+        if (playerData.totalSolved === 0 && !hasSeenWhatsNew) {
+            localStorage.setItem('linkleHasSeenWhatsNew_v1', 'true');
+            return;
+        }
+        
+        // Returning players with 3+ solved who haven't seen it
+        if (playerData.totalSolved >= 3 && !hasSeenWhatsNew) {
+            setShowWhatsNewSheet(true);
+        }
+    }, [playerData.totalSolved]);
 
     // --- Body Class Management ---
     useBodyClasses(gameState, puzzle, solvedStatus, theme);
@@ -156,6 +178,16 @@ const App = () => {
                 }} 
                 onClose={() => setShowLogoutModal(false)} 
             />}
+            {showPowerUserHintModal && (
+                <PowerUserHintModal 
+                    onClose={handleClosePowerUserHint} 
+                    viewCount={hintViewCount}
+                    onDismissPermanently={handleDismissPowerUserHintPermanently}
+                />
+            )}
+            {showWhatsNewSheet && (
+                <WhatsNewSheet onClose={() => setShowWhatsNewSheet(false)} />
+            )}
 
             <div className="app-wrapper">
                 <div className="top-bar-container">
@@ -220,12 +252,6 @@ const App = () => {
                         </div>
                     ) : (
                         <div className={`app-container state-${gameState} ${animationClass}`}>
-                            {dragState.isDragging && (
-                                <div className="ghost-tile word-card" style={{ position: 'fixed', left: dragState.clientX - dragState.offsetX, top: dragState.clientY - dragState.offsetY, width: dragState.ghostWidth, height: dragState.ghostHeight, pointerEvents: 'none', zIndex: 1000, opacity: 0.95, transform: 'scale(1.12) rotate(-3deg)', boxShadow: '0 12px 28px rgba(0,0,0,0.25)'}}>
-                                    <span>{dragState.draggedWord}</span>
-                                </div>
-                            )}
-                        
                             <div className={`game-unit ${animateHeader ? 'initial-play-animation' : ''}`}>
                                 {/* 
                                 <div className="header">
@@ -240,17 +266,18 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="game-board-wrapper">
-                                    <GameBoard 
+                                    <SortableGameBoard 
                                         boardState={boardState}
                                         lockedSlots={lockedSlots}
+                                        userLockedSlots={userLockedSlots}
                                         gameState={gameState}
                                         solvedStatus={solvedStatus}
-                                        dragState={dragState}
-                                        dragItemRef={dragItemRef}
                                         winAnimationPropertiesRef={winAnimationPropertiesRef}
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
-                                        onPointerDown={handlePointerDown}
+                                        onReorder={handleReorder}
+                                        onUserLockToggle={handleUserLockToggle}
+                                        onDragStartForHint={handleDragStartForHint}
                                     />
                                     <div className="bottom-content-container">
                                         <div className="gameplay-ui">

@@ -431,3 +431,94 @@ export const NewPlayerModal = ({ onClose }: { onClose: () => void }) => (
         </div>
     </div>
 );
+
+export const PowerUserHintModal = ({ 
+    onClose, 
+    viewCount = 0,
+    onDismissPermanently 
+}: { 
+    onClose: () => void;
+    viewCount?: number;
+    onDismissPermanently?: () => void;
+}) => (
+    <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content power-user-hint-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-button" onClick={onClose} aria-label="Close"><CloseIcon /></button>
+            <h2>POWER USER HINT</h2>
+            <p><strong>Double-tap any tile</strong> to temporarily lock it in place while you solve the puzzle.</p>
+            <p className="power-user-hint-unlock"><strong>To unlock,</strong> simply double-tap the tile again.</p>
+            <button className="button" onClick={onClose}><span>Got it!</span></button>
+            {viewCount >= 2 && onDismissPermanently && (
+                <button className="dismiss-hint-button" onClick={onDismissPermanently}>
+                    Don't show this again
+                </button>
+            )}
+        </div>
+    </div>
+);
+
+export const WhatsNewSheet = ({ onClose }: { onClose: () => void }) => {
+    const [dragState, setDragState] = useState({ isDragging: false, startY: 0 });
+    const sheetRef = useRef<HTMLDivElement>(null);
+
+    const handlePointerDown = (e: React.PointerEvent) => {
+        setDragState({ isDragging: true, startY: e.clientY });
+        if (sheetRef.current) {
+            sheetRef.current.style.transition = 'none';
+            sheetRef.current.classList.add('is-dragging');
+        }
+    };
+    
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!dragState.isDragging || !sheetRef.current) return;
+        const deltaY = e.clientY - dragState.startY;
+        if (deltaY > 0) {
+            sheetRef.current.style.transform = `translateY(${deltaY}px)`;
+        }
+    };
+    
+    const handlePointerUp = (e: React.PointerEvent) => {
+        if (!dragState.isDragging || !sheetRef.current) return;
+        sheetRef.current.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        sheetRef.current.classList.remove('is-dragging');
+    
+        const deltaY = e.clientY - dragState.startY;
+        const sheetHeight = sheetRef.current.offsetHeight;
+    
+        if (deltaY > sheetHeight / 4) {
+            onClose();
+        } else {
+            sheetRef.current.style.transform = `translateY(0px)`;
+        }
+    
+        setDragState({ isDragging: false, startY: 0 });
+    };
+
+    const handleDismiss = () => {
+        localStorage.setItem('linkleHasSeenWhatsNew_v1', 'true');
+        onClose();
+    };
+
+    return (
+        <div className="modal-overlay is-sheet" onClick={handleDismiss}>
+            <div 
+                className="whats-new-sheet" 
+                ref={sheetRef}
+                onClick={(e) => e.stopPropagation()}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+            >
+                <div className="sheet-drag-handle"></div>
+                <button className="modal-close-button" onClick={handleDismiss} aria-label="Close"><CloseIcon /></button>
+                <h2>WHAT'S NEW</h2>
+                <div className="whats-new-content">
+                    <p><strong>Drag-to-reorder:</strong> Tiles now shift into place when you drop, instead of swapping.</p>
+                    <p className="whats-new-protip"><strong>Pro tip:</strong> Double-tap any tile to temporarily lock it in place.</p>
+                </div>
+                <button className="button" onClick={handleDismiss}><span>GOT IT</span></button>
+            </div>
+        </div>
+    );
+};

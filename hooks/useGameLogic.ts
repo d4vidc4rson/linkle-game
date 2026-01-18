@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { PREGENERATED_PUZZLES, Puzzle } from '../puzzles';
-import type { GameState, SolvedStatus, DragState, PlayerData, Badge, Theme } from '../types';
+import type { GameState, SolvedStatus, PlayerData, Badge, Theme } from '../types';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
 import { 
     updateBadgeProgress, 
@@ -26,12 +26,90 @@ const isSameDay = (date1, date2) => {
            date1.getDate() === date2.getDate();
 };
 
+/**
+ * Detects if a locked slot pattern is "frustrating" for the user.
+ * Frustrating patterns occur when:
+ * 1. Middle column tiles (indices 1, 4, or 7) are locked - causes tiles before/after to shift a lot
+ * 2. Non-contiguous locks exist (gaps in the lock pattern) - creates "islands"
+ * 
+ * Grid layout:
+ * 0 | 1 | 2
+ * ---------
+ * 3 | 4 | 5
+ * ---------
+ * 6 | 7 | 8
+ */
+const isFrustratingLockPattern = (lockedSlots: boolean[]): boolean => {
+    const lockedIndices = lockedSlots
+        .map((locked, index) => locked ? index : -1)
+        .filter(index => index !== -1);
+    
+    // No locked tiles or all tiles locked = not frustrating
+    if (lockedIndices.length === 0 || lockedIndices.length === 9) {
+        return false;
+    }
+    
+    // Check for middle column locks (indices 1, 4, 7)
+    const middleColumnIndices = [1, 4, 7];
+    const hasMiddleColumnLock = lockedIndices.some(idx => middleColumnIndices.includes(idx));
+    
+    if (hasMiddleColumnLock) {
+        return true;
+    }
+    
+    // Check for non-contiguous locks (gaps in the sequence)
+    // For a 3x3 grid read left-to-right, top-to-bottom, gaps create frustration
+    if (lockedIndices.length >= 2) {
+        const sortedIndices = [...lockedIndices].sort((a, b) => a - b);
+        for (let i = 0; i < sortedIndices.length - 1; i++) {
+            const gap = sortedIndices[i + 1] - sortedIndices[i];
+            // If there's a gap > 1, there are unlocked tiles between locked ones
+            if (gap > 1) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+};
+
+/**
+ * Checks if we should show the power user hint based on localStorage flags.
+ * Stop showing when ANY of these conditions are met:
+ * - User has seen the hint modal AND used the double-tap lock feature
+ * - User has seen the hint modal 5+ times without using the feature
+ * - User has permanently dismissed the hint
+ */
+const shouldShowPowerUserHintCheck = (): boolean => {
+    const hasDismissed = localStorage.getItem('linkleHasDismissedPowerUserHint') === 'true';
+    if (hasDismissed) return false;
+    
+    const viewCount = parseInt(localStorage.getItem('linkleHintViewCount') || '0', 10);
+    const hasUsedFeature = localStorage.getItem('linkleHasUsedUserLock') === 'true';
+    
+    // Stop showing if seen 5+ times without using the feature
+    if (viewCount >= 5 && !hasUsedFeature) return false;
+    
+    // Stop showing if seen at least once AND used the feature
+    if (viewCount > 0 && hasUsedFeature) return false;
+    
+    return true;
+};
+
+/**
+ * Gets the current view count for the power user hint modal.
+ */
+const getHintViewCount = (): number => {
+    return parseInt(localStorage.getItem('linkleHintViewCount') || '0', 10);
+};
+
 export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: PlayerData) => void, saveGameState: (data: PlayerData) => Promise<void>, theme: Theme) => {
     const [gameState, setGameState] = useState<GameState>('loading');
     const [solvedStatus, setSolvedStatus] = useState<SolvedStatus>(null);
     const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
     const [boardState, setBoardState] = useState<string[]>([]);
     const [lockedSlots, setLockedSlots] = useState<boolean[]>(Array(9).fill(false));
+    const [userLockedSlots, setUserLockedSlots] = useState<boolean[]>(Array(9).fill(false));
     const [triesLeft, setTriesLeft] = useState(4);
     const [feedback, setFeedback] = useState('');
     const [finalNarrative, setFinalNarrative] = useState('');
@@ -43,15 +121,14 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
     const [badgePendingOnModalClose, setBadgePendingOnModalClose] = useState<Badge | null>(null);
     const [animateFeedback, setAnimateFeedback] = useState(false);
     const [animateGridShake, setAnimateGridShake] = useState(false);
+    
+    // Power user hint modal state
+    const [shouldShowPowerUserHint, setShouldShowPowerUserHint] = useState(false);
+    const [showPowerUserHintModal, setShowPowerUserHintModal] = useState(false);
+    const [hintViewCount, setHintViewCount] = useState(getHintViewCount);
 
     const puzzleStartTimeRef = useRef<number | null>(null);
 
-    const [dragState, setDragState] = useState<DragState>({
-        isDragging: false, originIndex: -1, draggedWord: '', hoverIndex: null, clientX: 0, clientY: 0, offsetX: 0, offsetY: 0, ghostWidth: 0, ghostHeight: 0
-    });
-    const dragItemRef = useRef<HTMLDivElement | null>(null);
-    const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const pendingHoverIndexRef = useRef<number | null>(null);
     const winAnimationPropertiesRef = useRef<Array<any>>([]);
     const lossAnimationPropertiesRef = useRef<Array<any>>([]);
 
@@ -166,6 +243,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
             setPuzzle(newPuzzle);
             setBoardState(shuffleArray([...newPuzzle.solution]));
             setLockedSlots(Array(9).fill(false));
+            setUserLockedSlots(Array(9).fill(false));
             setTriesLeft(initialTries);
             setFeedback('');
             setFinalNarrative('');
@@ -181,152 +259,27 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
     
     }, [playerData, setPlayerData, theme]);
 
-    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, index: number) => {
-        if (lockedSlots[index] || gameState === 'solved') return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        const draggedWord = boardState[index];
-        setDragState({ 
-            isDragging: true, 
-            originIndex: index, 
-            draggedWord, 
-            hoverIndex: null,
-            clientX: e.clientX, 
-            clientY: e.clientY, 
-            offsetX: e.clientX - rect.left, 
-            offsetY: e.clientY - rect.top, 
-            ghostWidth: rect.width, 
-            ghostHeight: rect.height 
+    // Handle reorder from SortableGameBoard (called when tiles are dragged and dropped)
+    const handleReorder = useCallback((newBoardState: string[]) => {
+        setBoardState(newBoardState);
+    }, []);
+
+    // Handle double-tap to toggle user-lock on a tile (only if not system-locked)
+    const handleUserLockToggle = useCallback((index: number) => {
+        if (lockedSlots[index]) return; // Can't user-lock a system-locked tile
+        setUserLockedSlots(prev => {
+            const newUserLocked = [...prev];
+            const wasLocked = newUserLocked[index];
+            newUserLocked[index] = !wasLocked;
+            
+            // Track when user locks a tile (not unlocks) - they've discovered the feature
+            if (!wasLocked) {
+                localStorage.setItem('linkleHasUsedUserLock', 'true');
+            }
+            
+            return newUserLocked;
         });
-    };
-
-    useEffect(() => {
-        const HOVER_DELAY = 60; // ms delay before updating hover index
-        
-        const handleDragMove = (e: PointerEvent) => {
-            e.preventDefault();
-            
-            if (dragState.isDragging) {
-                // Calculate grid position based on cursor coordinates (not element detection)
-                // This prevents jitter when tiles animate to new positions
-                const grid = document.querySelector('.solution-grid');
-                let newHoverIndex: number | null = null;
-                
-                if (grid) {
-                    const gridRect = grid.getBoundingClientRect();
-                    const computedStyle = window.getComputedStyle(grid);
-                    const gap = parseFloat(computedStyle.gap) || 0;
-                    
-                    // Calculate cell dimensions accounting for gaps
-                    // Total width = 3 * cellWidth + 2 * gap
-                    const cellWidth = (gridRect.width - 2 * gap) / 3;
-                    const cellHeight = (gridRect.height - 2 * gap) / 3;
-                    
-                    const relX = e.clientX - gridRect.left;
-                    const relY = e.clientY - gridRect.top;
-                    
-                    // Calculate which cell the cursor is in
-                    // Each cell starts at: col * (cellWidth + gap)
-                    const col = Math.floor(relX / (cellWidth + gap));
-                    const row = Math.floor(relY / (cellHeight + gap));
-                    
-                    // Verify cursor is within a cell (not in the gap)
-                    const cellStartX = col * (cellWidth + gap);
-                    const cellStartY = row * (cellHeight + gap);
-                    const isInCell = relX >= cellStartX && relX < cellStartX + cellWidth &&
-                                     relY >= cellStartY && relY < cellStartY + cellHeight;
-                    
-                    if (col >= 0 && col < 3 && row >= 0 && row < 3 && isInCell) {
-                        const gridIndex = row * 3 + col;
-                        
-                        // Only set hover if it's a different position and not locked
-                        if (gridIndex !== dragState.originIndex && !lockedSlots[gridIndex]) {
-                            newHoverIndex = gridIndex;
-                        }
-                    }
-                }
-                
-                // Always update cursor position immediately
-                setDragState(prev => ({ 
-                    ...prev, 
-                    clientX: e.clientX, 
-                    clientY: e.clientY
-                }));
-                
-                // Debounce hover index updates to prevent rapid tile shuffling
-                if (newHoverIndex !== pendingHoverIndexRef.current) {
-                    pendingHoverIndexRef.current = newHoverIndex;
-                    
-                    // Clear any pending hover update
-                    if (hoverTimeoutRef.current) {
-                        clearTimeout(hoverTimeoutRef.current);
-                    }
-                    
-                    // Delay the hover index update
-                    hoverTimeoutRef.current = setTimeout(() => {
-                        setDragState(prev => ({
-                            ...prev,
-                            hoverIndex: pendingHoverIndexRef.current
-                        }));
-                    }, HOVER_DELAY);
-                }
-            }
-        };
-
-        const handleDragEnd = (e: PointerEvent) => {
-            if (!dragState.isDragging) return;
-            
-            // Clear any pending hover timeout
-            if (hoverTimeoutRef.current) {
-                clearTimeout(hoverTimeoutRef.current);
-                hoverTimeoutRef.current = null;
-            }
-            
-            // Use the pending hover index if we have one (in case timeout hasn't fired yet)
-            const finalHoverIndex = pendingHoverIndexRef.current;
-            
-            // Perform the actual swap if we're hovering over a valid target
-            if (finalHoverIndex !== null && finalHoverIndex !== dragState.originIndex && !lockedSlots[finalHoverIndex]) {
-                const newBoardState = [...boardState];
-                [newBoardState[dragState.originIndex], newBoardState[finalHoverIndex]] = 
-                    [newBoardState[finalHoverIndex], newBoardState[dragState.originIndex]];
-                setBoardState(newBoardState);
-            }
-            
-            pendingHoverIndexRef.current = null;
-            
-            setDragState({ 
-                isDragging: false, 
-                originIndex: -1, 
-                draggedWord: '', 
-                hoverIndex: null,
-                clientX: 0, 
-                clientY: 0, 
-                offsetX: 0, 
-                offsetY: 0, 
-                ghostWidth: 0, 
-                ghostHeight: 0 
-            });
-        };
-
-        if (dragState.isDragging) {
-            document.body.classList.add('dragging-active');
-            window.addEventListener('pointermove', handleDragMove);
-            window.addEventListener('pointerup', handleDragEnd);
-            window.addEventListener('pointercancel', handleDragEnd);
-        }
-
-        return () => {
-            document.body.classList.remove('dragging-active');
-            window.removeEventListener('pointermove', handleDragMove);
-            window.removeEventListener('pointerup', handleDragEnd);
-            window.removeEventListener('pointercancel', handleDragEnd);
-            // Clear any pending hover timeout on cleanup
-            if (hoverTimeoutRef.current) {
-                clearTimeout(hoverTimeoutRef.current);
-                hoverTimeoutRef.current = null;
-            }
-        };
-    }, [dragState.isDragging, dragState.originIndex, boardState, lockedSlots, setBoardState]);
+    }, [lockedSlots]);
     
     const calculateScore = (difficulty: string, triesLeft: number, currentStreak: number) => {
         const points = { 'EASY': [0, 50, 75, 100, 125], 'HARD': [0, 150, 200, 250], 'IMPOSSIBLE': [0, 400, 500] };
@@ -509,11 +462,20 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
             const newTotalLockedCount = newLockedSlots.filter(Boolean).length;
 
             setLockedSlots(newLockedSlots);
+            
+            // Clear all user-locked tiles after submit validation
+            // (correct ones are now system-locked, wrong ones go back to normal)
+            setUserLockedSlots(Array(9).fill(false));
 
             const madeProgress = newTotalLockedCount > currentLockedCount;
 
             if (!madeProgress) {
                 setAnimateGridShake(true);
+            }
+            
+            // Check if the new locked pattern is frustrating and we should show the hint
+            if (isFrustratingLockPattern(newLockedSlots) && shouldShowPowerUserHintCheck()) {
+                setShouldShowPowerUserHint(true);
             }
             
             const newFeedback = getFeedbackMessage(newTotalLockedCount, newTriesLeft, madeProgress);
@@ -555,6 +517,28 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         }
     };
     
+    // Called when user starts dragging a tile - triggers power user hint if needed
+    const handleDragStartForHint = useCallback(() => {
+        if (shouldShowPowerUserHint) {
+            setShowPowerUserHintModal(true);
+            setShouldShowPowerUserHint(false); // Reset so we don't show again until next frustrating submit
+        }
+    }, [shouldShowPowerUserHint]);
+    
+    // Called when user closes the power user hint modal
+    const handleClosePowerUserHint = useCallback(() => {
+        setShowPowerUserHintModal(false);
+        const newCount = hintViewCount + 1;
+        setHintViewCount(newCount);
+        localStorage.setItem('linkleHintViewCount', String(newCount));
+    }, [hintViewCount]);
+    
+    // Called when user clicks "Don't show this again"
+    const handleDismissPowerUserHintPermanently = useCallback(() => {
+        setShowPowerUserHintModal(false);
+        localStorage.setItem('linkleHasDismissedPowerUserHint', 'true');
+    }, []);
+    
     return {
         gameState,
         setGameState,
@@ -562,6 +546,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         puzzle,
         boardState,
         lockedSlots,
+        userLockedSlots,
         triesLeft,
         feedback,
         finalNarrative,
@@ -571,17 +556,21 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
         showExplanationModal,
         newlyUnlockedBadge,
         setNewlyUnlockedBadge,
-        dragState,
-        dragItemRef,
         winAnimationPropertiesRef,
         lossAnimationPropertiesRef,
         animateFeedback,
         animateGridShake,
+        showPowerUserHintModal,
+        hintViewCount,
         resetToStart,
         generateNewPuzzle,
-        handlePointerDown,
+        handleReorder,
+        handleUserLockToggle,
         handleSubmit,
         handleShowExplanation,
         handleCloseExplanation,
+        handleDragStartForHint,
+        handleClosePowerUserHint,
+        handleDismissPowerUserHintPermanently,
     };
 };

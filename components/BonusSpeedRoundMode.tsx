@@ -5,11 +5,11 @@ import { useAnalytics } from '../hooks/useAnalytics';
 import { useDailySchedule } from '../hooks/useDailySchedule';
 import { useDailyGameLogic, type DailyPuzzleDifficulty } from '../hooks/useDailyGameLogic';
 import { useBodyClasses } from '../hooks/useBodyClasses';
-import type { Theme, GameState, DailyResult, AuthMode, DragState } from '../types';
+import type { Theme, GameState, DailyResult, AuthMode } from '../types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
-import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal, NewPlayerModal } from './Modals';
+import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal, NewPlayerModal, PowerUserHintModal, WhatsNewSheet } from './Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots } from './GameUI';
-import { GameBoard } from './GameBoard';
+import { SortableGameBoard } from './SortableGameBoard';
 import { DailyStartScreen } from './DailyStartScreen';
 import { DailyIntroScreen } from './DailyIntroScreen';
 import { DailyPuzzleSolved } from './DailyPuzzleSolved';
@@ -82,6 +82,7 @@ export const BonusSpeedRoundMode = () => {
     const [bonusAnimationClass, setBonusAnimationClass] = useState<string>('');
     const [bonusBoardState, setBonusBoardState] = useState<string[]>([]);
     const [bonusLockedSlots, setBonusLockedSlots] = useState<boolean[]>(Array(9).fill(false));
+    const [bonusUserLockedSlots, setBonusUserLockedSlots] = useState<boolean[]>(Array(9).fill(false));
     const [bonusTriesLeft, setBonusTriesLeft] = useState(1);
     const [bonusFeedback, setBonusFeedback] = useState('');
     const [bonusMoveCount, setBonusMoveCount] = useState(0); // Track tile swaps for bonus round analytics
@@ -89,6 +90,7 @@ export const BonusSpeedRoundMode = () => {
     const [dayStreakWasReset, setDayStreakWasReset] = useState(false);
     const [introMode, setIntroMode] = useState<IntroMode>('play');
     const [showNewPlayerModal, setShowNewPlayerModal] = useState(false);
+    const [showWhatsNewSheet, setShowWhatsNewSheet] = useState(false);
 
     // Track previous user for login detection
     const prevUserRef = useRef<any>(undefined);
@@ -196,6 +198,7 @@ export const BonusSpeedRoundMode = () => {
         puzzle,
         boardState,
         lockedSlots,
+        userLockedSlots,
         triesLeft,
         feedback,
         finalNarrative,
@@ -205,19 +208,23 @@ export const BonusSpeedRoundMode = () => {
         showExplanationModal,
         newlyUnlockedBadge,
         setNewlyUnlockedBadge,
-        dragState,
-        dragItemRef,
         winAnimationPropertiesRef,
         lossAnimationPropertiesRef,
         animateFeedback,
         animateGridShake,
         moveCount,
-        handlePointerDown,
+        showPowerUserHintModal,
+        hintViewCount,
+        handleReorder,
+        handleUserLockToggle,
         handleSubmit,
         handleShowExplanation,
         handleCloseExplanation,
         setNavigatingToNextPuzzle,
         resetBoardForNewSession,
+        handleDragStartForHint,
+        handleClosePowerUserHint,
+        handleDismissPowerUserHintPermanently,
     } = useDailyGameLogic(
         playerData,
         setPlayerData,
@@ -239,6 +246,24 @@ export const BonusSpeedRoundMode = () => {
         setTheme(initialTheme);
         document.body.dataset.theme = initialTheme;
     }, []);
+
+    // Show What's New sheet for returning players who haven't seen it yet
+    useEffect(() => {
+        if (!dataReady) return;
+        
+        const hasSeenWhatsNew = localStorage.getItem('linkleHasSeenWhatsNew_v1') === 'true';
+        
+        // New players (0 puzzles solved) should never see this - pre-exempt them
+        if (playerData.totalSolved === 0 && !hasSeenWhatsNew) {
+            localStorage.setItem('linkleHasSeenWhatsNew_v1', 'true');
+            return;
+        }
+        
+        // Returning players with 3+ solved who haven't seen it
+        if (playerData.totalSolved >= 3 && !hasSeenWhatsNew) {
+            setShowWhatsNewSheet(true);
+        }
+    }, [dataReady, playerData.totalSolved]);
 
     const handleCloseNewPlayerModal = () => {
         setShowNewPlayerModal(false);
@@ -393,6 +418,7 @@ export const BonusSpeedRoundMode = () => {
             // For loss, show the correct solution
             setBonusBoardState([...bonusPuzzle.solution]);
             setBonusLockedSlots(Array(9).fill(true)); // Lock all slots to show solution
+            setBonusUserLockedSlots(Array(9).fill(false)); // Clear user locks
             setBonusSolvedStatus('loss');
             setBonusWinMessage('NO BONUS FOR YOU!');
             setBonusAnimationClass('screen-shake-loss');
@@ -449,188 +475,28 @@ export const BonusSpeedRoundMode = () => {
         return () => clearInterval(timer);
     }, [isBonusRound, gameState, handleBonusSubmit, bonusStartTime]);
 
-    // Custom drag state for bonus round (separate from hook's dragState)
-    const [bonusDragState, setBonusDragState] = useState<DragState>({
-        isDragging: false,
-        originIndex: -1,
-        draggedWord: '',
-        hoverIndex: null,
-        clientX: 0,
-        clientY: 0,
-        offsetX: 0,
-        offsetY: 0,
-        ghostWidth: 0,
-        ghostHeight: 0,
-    });
-    
-    // Refs for debounced hover updates
-    const bonusHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const bonusPendingHoverIndexRef = useRef<number | null>(null);
-    
-    // Use ref to track current drag position for immediate updates
-    const bonusDragStateRef = useRef<DragState>(bonusDragState);
-    
-    // Keep ref in sync with state
-    useEffect(() => {
-        bonusDragStateRef.current = bonusDragState;
-    }, [bonusDragState]);
+    // Handle reorder for bonus round (called when tiles are dragged and dropped)
+    const handleBonusReorder = useCallback((newBoardState: string[]) => {
+        setBonusBoardState(newBoardState);
+        setBonusMoveCount(prev => prev + 1);
+    }, []);
 
-    // Custom drag handler for bonus round
-    const handleBonusPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>, index: number) => {
-        if (bonusLockedSlots[index] || gameState === 'solved') return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        const draggedWord = bonusBoardState[index];
-        const newDragState: DragState = {
-            isDragging: true,
-            originIndex: index,
-            draggedWord,
-            hoverIndex: null,
-            clientX: e.clientX,
-            clientY: e.clientY,
-            offsetX: e.clientX - rect.left,
-            offsetY: e.clientY - rect.top,
-            ghostWidth: rect.width,
-            ghostHeight: rect.height,
-        };
-        bonusDragStateRef.current = newDragState;
-        setBonusDragState(newDragState);
-    }, [bonusLockedSlots, gameState, bonusBoardState]);
-
-    // Handle bonus round drag events
-    useEffect(() => {
-        if (!isBonusRound || !bonusDragState.isDragging) return;
-        
-        const HOVER_DELAY = 60; // ms delay before updating hover index
-
-        const handleBonusDragMove = (e: PointerEvent) => {
-            // Calculate grid position based on cursor coordinates (not element detection)
-            // This prevents jitter when tiles animate to new positions
-            const grid = document.querySelector('.solution-grid');
-            let newHoverIndex: number | null = null;
+    // Handle double-tap to toggle user-lock on a tile (only if not system-locked)
+    const handleBonusUserLockToggle = useCallback((index: number) => {
+        if (bonusLockedSlots[index]) return; // Can't user-lock a system-locked tile
+        setBonusUserLockedSlots(prev => {
+            const newUserLocked = [...prev];
+            const wasLocked = newUserLocked[index];
+            newUserLocked[index] = !wasLocked;
             
-            if (grid) {
-                const gridRect = grid.getBoundingClientRect();
-                const computedStyle = window.getComputedStyle(grid);
-                const gap = parseFloat(computedStyle.gap) || 0;
-                
-                // Calculate cell dimensions accounting for gaps
-                // Total width = 3 * cellWidth + 2 * gap
-                const cellWidth = (gridRect.width - 2 * gap) / 3;
-                const cellHeight = (gridRect.height - 2 * gap) / 3;
-                
-                const relX = e.clientX - gridRect.left;
-                const relY = e.clientY - gridRect.top;
-                
-                // Calculate which cell the cursor is in
-                // Each cell starts at: col * (cellWidth + gap)
-                const col = Math.floor(relX / (cellWidth + gap));
-                const row = Math.floor(relY / (cellHeight + gap));
-                
-                // Verify cursor is within a cell (not in the gap)
-                const cellStartX = col * (cellWidth + gap);
-                const cellStartY = row * (cellHeight + gap);
-                const isInCell = relX >= cellStartX && relX < cellStartX + cellWidth &&
-                                 relY >= cellStartY && relY < cellStartY + cellHeight;
-                
-                if (col >= 0 && col < 3 && row >= 0 && row < 3 && isInCell) {
-                    const gridIndex = row * 3 + col;
-                    
-                    // Only set hover if it's a different position and not locked
-                    if (gridIndex !== bonusDragStateRef.current.originIndex && !bonusLockedSlots[gridIndex]) {
-                        newHoverIndex = gridIndex;
-                    }
-                }
+            // Track when user locks a tile (not unlocks) - they've discovered the feature
+            if (!wasLocked) {
+                localStorage.setItem('linkleHasUsedUserLock', 'true');
             }
             
-            // Always update cursor position immediately
-            const updatedState: DragState = {
-                ...bonusDragStateRef.current,
-                clientX: e.clientX,
-                clientY: e.clientY,
-            };
-            bonusDragStateRef.current = updatedState;
-            setBonusDragState(updatedState);
-            
-            // Debounce hover index updates to prevent rapid tile shuffling
-            if (newHoverIndex !== bonusPendingHoverIndexRef.current) {
-                bonusPendingHoverIndexRef.current = newHoverIndex;
-                
-                // Clear any pending hover update
-                if (bonusHoverTimeoutRef.current) {
-                    clearTimeout(bonusHoverTimeoutRef.current);
-                }
-                
-                // Delay the hover index update
-                bonusHoverTimeoutRef.current = setTimeout(() => {
-                    const stateWithHover: DragState = {
-                        ...bonusDragStateRef.current,
-                        hoverIndex: bonusPendingHoverIndexRef.current,
-                    };
-                    bonusDragStateRef.current = stateWithHover;
-                    setBonusDragState(stateWithHover);
-                }, HOVER_DELAY);
-            }
-        };
-
-        const handleBonusDragEnd = (e: PointerEvent) => {
-            // Clear any pending hover timeout
-            if (bonusHoverTimeoutRef.current) {
-                clearTimeout(bonusHoverTimeoutRef.current);
-                bonusHoverTimeoutRef.current = null;
-            }
-            
-            // Use the pending hover index if we have one (in case timeout hasn't fired yet)
-            const finalHoverIndex = bonusPendingHoverIndexRef.current;
-            const currentState = bonusDragStateRef.current;
-            
-            // Perform the actual swap if we're hovering over a valid target
-            if (finalHoverIndex !== null && 
-                finalHoverIndex !== currentState.originIndex && 
-                !bonusLockedSlots[finalHoverIndex]) {
-                setBonusBoardState(prev => {
-                    const newBoardState = [...prev];
-                    [newBoardState[currentState.originIndex], newBoardState[finalHoverIndex]] = 
-                        [newBoardState[finalHoverIndex], newBoardState[currentState.originIndex]];
-                    return newBoardState;
-                });
-                setBonusMoveCount(prev => prev + 1);
-            }
-            
-            bonusPendingHoverIndexRef.current = null;
-            
-            const resetState: DragState = {
-                isDragging: false,
-                originIndex: -1,
-                draggedWord: '',
-                hoverIndex: null,
-                clientX: 0,
-                clientY: 0,
-                offsetX: 0,
-                offsetY: 0,
-                ghostWidth: 0,
-                ghostHeight: 0,
-            };
-            bonusDragStateRef.current = resetState;
-            setBonusDragState(resetState);
-        };
-
-        document.body.classList.add('dragging-active');
-        window.addEventListener('pointermove', handleBonusDragMove);
-        window.addEventListener('pointerup', handleBonusDragEnd);
-        window.addEventListener('pointercancel', handleBonusDragEnd);
-
-        return () => {
-            document.body.classList.remove('dragging-active');
-            window.removeEventListener('pointermove', handleBonusDragMove);
-            window.removeEventListener('pointerup', handleBonusDragEnd);
-            window.removeEventListener('pointercancel', handleBonusDragEnd);
-            // Clear any pending hover timeout on cleanup
-            if (bonusHoverTimeoutRef.current) {
-                clearTimeout(bonusHoverTimeoutRef.current);
-                bonusHoverTimeoutRef.current = null;
-            }
-        };
-    }, [isBonusRound, bonusDragState.isDragging, bonusLockedSlots]);
+            return newUserLocked;
+        });
+    }, [bonusLockedSlots]);
 
     const handleThemeToggle = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -769,6 +635,7 @@ export const BonusSpeedRoundMode = () => {
             // Use local state for bonus round instead of hook's state
             setBonusBoardState(shuffleArray([...selectedPuzzle.solution]));
             setBonusLockedSlots(Array(9).fill(false));
+            setBonusUserLockedSlots(Array(9).fill(false));
             setBonusTriesLeft(1); // Only 1 try for bonus round
             setBonusFeedback('60 seconds! Solve it fast!');
                     // Note: finalNarrative is handled in ExplanationModal rendering using bonusPuzzle?.narrative
@@ -1067,6 +934,16 @@ export const BonusSpeedRoundMode = () => {
                 onClose={() => setShowLogoutModal(false)} 
             />}
             {showNewPlayerModal && <NewPlayerModal onClose={handleCloseNewPlayerModal} />}
+            {showPowerUserHintModal && !isBonusRound && (
+                <PowerUserHintModal 
+                    onClose={handleClosePowerUserHint}
+                    viewCount={hintViewCount}
+                    onDismissPermanently={handleDismissPowerUserHintPermanently}
+                />
+            )}
+            {showWhatsNewSheet && (
+                <WhatsNewSheet onClose={() => setShowWhatsNewSheet(false)} />
+            )}
 
             <div className="app-wrapper daily-mode-wrapper bonus-speed-round-mode">
                 <div className="top-bar-container">
@@ -1111,28 +988,6 @@ export const BonusSpeedRoundMode = () => {
                         />
                     )}
                     <div className={`app-container state-${gameState} ${isBonusRound ? bonusAnimationClass : animationClass}`}>
-                        {((isBonusRound ? bonusDragState.isDragging : dragState.isDragging) && (
-                            <div className={`ghost-tile word-card ${isBonusRound ? 'bonus-mode' : ''}`} style={{ 
-                                position: 'fixed', 
-                                left: isBonusRound 
-                                    ? `${bonusDragStateRef.current.clientX - bonusDragStateRef.current.offsetX}px`
-                                    : `${dragState.clientX - dragState.offsetX}px`, 
-                                top: isBonusRound 
-                                    ? `${bonusDragStateRef.current.clientY - bonusDragStateRef.current.offsetY}px`
-                                    : `${dragState.clientY - dragState.offsetY}px`, 
-                                width: isBonusRound ? `${bonusDragStateRef.current.ghostWidth}px` : `${dragState.ghostWidth}px`, 
-                                height: isBonusRound ? `${bonusDragStateRef.current.ghostHeight}px` : `${dragState.ghostHeight}px`, 
-                                pointerEvents: 'none', 
-                                zIndex: 1000, 
-                                opacity: 0.95, 
-                                transform: 'scale(1.12) rotate(-3deg)', 
-                                boxShadow: '0 12px 28px rgba(0,0,0,0.25)',
-                                margin: 0,
-                                padding: 0
-                            }}>
-                                <span>{isBonusRound ? bonusDragStateRef.current.draggedWord : dragState.draggedWord}</span>
-                            </div>
-                        ))}
                     
                         <div className={`game-unit ${isBonusRound ? 'bonus-mode' : ''}`}>
                             <div className="game-header-info" style={{ position: 'relative' }}>
@@ -1193,17 +1048,19 @@ export const BonusSpeedRoundMode = () => {
                             </div>
                             <div className="game-board-wrapper">
                                 {shouldShowBoard ? (
-                                    <GameBoard 
+                                    <SortableGameBoard 
                                         boardState={isBonusRound ? bonusBoardState : boardState}
                                         lockedSlots={isBonusRound ? bonusLockedSlots : lockedSlots}
+                                        userLockedSlots={isBonusRound ? bonusUserLockedSlots : userLockedSlots}
                                         gameState={gameState}
                                         solvedStatus={isBonusRound ? bonusSolvedStatus : solvedStatus}
-                                        dragState={isBonusRound ? bonusDragState : dragState}
-                                        dragItemRef={dragItemRef}
                                         winAnimationPropertiesRef={winAnimationPropertiesRef}
                                         lossAnimationPropertiesRef={lossAnimationPropertiesRef}
                                         animateGridShake={animateGridShake}
-                                        onPointerDown={isBonusRound ? handleBonusPointerDown : handlePointerDown}
+                                        onReorder={isBonusRound ? handleBonusReorder : handleReorder}
+                                        onUserLockToggle={isBonusRound ? handleBonusUserLockToggle : handleUserLockToggle}
+                                        onDragStartForHint={isBonusRound ? undefined : handleDragStartForHint}
+                                        isBonusMode={isBonusRound}
                                     />
                                 ) : (
                                     <div className="loading-puzzle" style={{ 

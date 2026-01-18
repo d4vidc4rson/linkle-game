@@ -74,6 +74,9 @@
       --box-text-normal: #3b422e;
       --box-bg-locked: #9eef80;
       --box-text-locked: #3b422e;
+      --box-bg-user-locked: #FFB347;
+      --box-text-user-locked: #3b422e;
+      --tile-shadow-user-locked: #E8943A;
       --button-bg: #b0a4fb;
       --button-text: #3b422e;
       --button-shadow: #8981bd;
@@ -107,6 +110,9 @@
       --box-text-normal: #FFFFFF;
       --box-bg-locked: #9eef80;
       --box-text-locked: #3b422e;
+      --box-bg-user-locked: #FFB347;
+      --box-text-user-locked: #3b422e;
+      --tile-shadow-user-locked: #E8943A;
       --button-bg: #b0a4fb;
       --button-text: #3b422e;
       --button-shadow: #8981bd;
@@ -978,18 +984,18 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-      body:not(.dragging-active) .word-card:not(.locked):not(.revealed):hover {
+      body:not(.dragging-active) .word-card:not(.locked):not(.revealed):not(.user-locked):hover {
           transform: translateY(-2px);
       }
-      body:not(.dragging-active) .word-card:not(.locked):not(.revealed):hover::before {
+      body:not(.dragging-active) .word-card:not(.locked):not(.revealed):not(.user-locked):hover::before {
           transform: translateY(2px);
       }
     }
     
-    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):active {
+    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):not(.user-locked):active {
         transform: translateY(var(--shadow-depth));
     }
-    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):active::before {
+    body:not(.dragging-active) .word-card:not(.locked):not(.revealed):not(.user-locked):active::before {
         transform: translateY(calc(var(--shadow-depth) * -1));
     }
     
@@ -1038,6 +1044,21 @@
     }
     .word-card.locked::before {
       background-color: var(--tile-shadow-locked);
+    }
+
+    /* User-locked tiles (orange) - player-locked via double-tap */
+    .word-card.user-locked {
+      color: var(--box-text-user-locked);
+      cursor: pointer;
+      box-shadow: none;
+      background-color: transparent !important;
+    }
+    .word-card.user-locked::after {
+      background-color: var(--box-bg-user-locked);
+      border-radius: 12px;
+    }
+    .word-card.user-locked::before {
+      background-color: var(--tile-shadow-user-locked);
     }
     
     .word-card.revealed {
@@ -1888,6 +1909,59 @@
       color: var(--primary-text);
     }
 
+    /* What's New Sheet - simpler, shorter version of achievement sheet */
+    .whats-new-sheet {
+      background: var(--background-color);
+      width: 100%;
+      max-width: 100%;
+      border-top-left-radius: calc(var(--border-radius) * 2);
+      border-top-right-radius: calc(var(--border-radius) * 2);
+      box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4);
+      text-align: center;
+      position: relative;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      touch-action: none;
+      user-select: none;
+    }
+    
+    body[data-theme='light'] .whats-new-sheet {
+      background: #fbecd7;
+    }
+    
+    .modal-overlay.is-sheet > .whats-new-sheet {
+      animation: slide-in-from-bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .whats-new-sheet h2 {
+      margin: calc(var(--grid-unit) * 1) 0 calc(var(--grid-unit) * 2);
+      font-size: 1.4rem;
+      color: var(--header-text);
+    }
+    
+    .whats-new-content {
+      max-width: 320px;
+      margin-bottom: calc(var(--grid-unit) * 3);
+    }
+    
+    .whats-new-content p {
+      margin: 0 0 calc(var(--grid-unit) * 1.5);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--primary-text);
+    }
+    
+    .whats-new-content .whats-new-protip {
+      margin-top: calc(var(--grid-unit) * 2);
+      padding-top: calc(var(--grid-unit) * 2);
+      border-top: 1px solid var(--bar-border);
+    }
+
     @keyframes slide-in-from-bottom {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
@@ -1953,6 +2027,26 @@
     .modal-close-button svg {
         width: 100%;
         height: 100%;
+    }
+    
+    /* Dismiss hint button (underlined text link) */
+    .dismiss-hint-button {
+        display: block;
+        margin: calc(var(--grid-unit) * 3) auto 0;
+        padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 1);
+        background: none;
+        border: none;
+        font-family: var(--font-ui);
+        font-size: 0.875rem;
+        color: var(--primary-text);
+        text-decoration: underline;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+    }
+    
+    .dismiss-hint-button:hover {
+        opacity: 1;
     }
 
 
@@ -4260,11 +4354,11 @@
     }
 
     /* Playable tiles - face and shadow with outline */
-    .word-card:not(.locked):not(.revealed)::after {
+    .word-card:not(.locked):not(.revealed):not(.user-locked)::after {
       background-color: #b0a4fb;
       outline: 2px solid #3b422e;
     }
-    .word-card:not(.locked):not(.revealed)::before {
+    .word-card:not(.locked):not(.revealed):not(.user-locked)::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
     }
@@ -4282,6 +4376,16 @@
     .word-card.locked::before,
     .word-card.revealed::before {
       background-color: #81c269;
+      outline: 2px solid #3b422e;
+    }
+
+    /* User-locked tiles (orange) - face and shadow with outline */
+    .word-card.user-locked::after {
+      background-color: #FFB347;
+      outline: 2px solid #3b422e;
+    }
+    .word-card.user-locked::before {
+      background-color: #E8943A;
       outline: 2px solid #3b422e;
     }
 

@@ -839,8 +839,9 @@ export const BonusSpeedRoundMode = () => {
             trackArchivePuzzleStarted(difficulty, dateKey, puzzlesForDate[difficulty]);
         }
         
-        // Reset game state to ensure clean start (no solved animations)
-        setGameState('loading');
+        // Clear stale tiles/solved state from previous session (fixes flash of old puzzle)
+        resetBoardForNewSession();
+        setNavigatingToNextPuzzle();
         
         // Set target date and start playing that date's puzzles
         setTargetDate(date);

@@ -448,7 +448,7 @@ export const PowerUserHintModal = ({
             <p><strong>Double-tap any tile</strong> to temporarily lock it in place while you solve the puzzle.</p>
             <p className="power-user-hint-unlock"><strong>To unlock,</strong> simply double-tap the tile again.</p>
             <button className="button" onClick={onClose}><span>Got it!</span></button>
-            {viewCount >= 2 && onDismissPermanently && (
+            {viewCount >= 1 && onDismissPermanently && (
                 <button className="dismiss-hint-button" onClick={onDismissPermanently}>
                     Don't show this again
                 </button>

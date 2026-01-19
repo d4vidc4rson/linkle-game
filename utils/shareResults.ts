@@ -53,7 +53,7 @@ export const generateShareText = (
                 return word === solution[index] ? '🟩' : '🟪'; // Green for correct, purple for incorrect
             });
             // Format as 3x3 grid with "Nope" on its own line after
-            return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope`;
+            return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope.`;
         }
         
         // Fallback: show based on tries used (old behavior)
@@ -61,7 +61,7 @@ export const generateShareText = (
         const squares = Array.from({ length: 9 }).map((_, i) => {
             return i < solvedSquares ? '🟩' : '🟪'; // Green for correct, purple for incorrect
         });
-        return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope`;
+        return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope.`;
     };
 
     const easySolution = puzzleIndices ? PREGENERATED_PUZZLES[puzzleIndices.easy]?.solution : null;

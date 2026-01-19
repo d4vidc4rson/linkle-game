@@ -227,12 +227,25 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date, onShar
                         <button className="modal-close-button" onClick={() => setShowShareModal(false)} aria-label="Close">
                             <CloseIcon />
                         </button>
-                        <h2>Share Your Bonus Speed Round Results</h2>
-                        <div className="share-text-preview">
-                            <pre>{generateBonusShareText()}</pre>
+                        <h2>Share Your Results</h2>
+                        
+                        <div className="share-preview-card">
+                            <div className="share-header">Linkle.fun Bonus Speed Round</div>
+                            <div className="share-status-line">
+                                <span className="share-status-item">⏱️ {formattedTime}</span>
+                            </div>
+                            
+                            <div className="share-puzzle-result">
+                                <div className="share-grid">
+                                    {Array(9).fill(null).map((_, index) => (
+                                        <div key={index} className="share-grid-cell bonus" />
+                                    ))}
+                                </div>
+                            </div>
                         </div>
+                        
                         <button className="button button-primary" onClick={handleCopy}>
-                            {copied ? 'Copied!' : 'Copy to Clipboard'}
+                            {copied ? 'Copied!' : 'COPY TO SHARE'}
                         </button>
                     </div>
                 </div>,

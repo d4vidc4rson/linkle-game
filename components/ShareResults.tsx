@@ -108,6 +108,7 @@ export const ShareResults: React.FC<ShareResultsProps> = ({
     // Generate the emoji-based text for clipboard
     const shareText = generateShareText(date, dailyResults, dayNumber, puzzleIndices, scheduleStartDate || undefined);
 
+    // Desktop-only: copy to clipboard
     const handleCopy = async () => {
         const success = await copyToClipboard(shareText);
         if (success) {

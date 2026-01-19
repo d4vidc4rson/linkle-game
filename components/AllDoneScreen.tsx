@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import type { PlayerData, DailyResult, Theme, DaySummary } from '../types';
-import { formatDateKey, getPuzzlesForDateFromSchedule, SCHEDULE_EPOCH, calculatePuzzleIndicesForDate } from '../dailySchedule';
+import { formatDateKey, getPuzzlesForDateFromSchedule, SCHEDULE_EPOCH, calculatePuzzleIndicesForDate, getScheduleStartDate } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { DayCarousel } from './DayCarousel';
 import { ShareResults } from './ShareResults';
@@ -9,6 +9,26 @@ import { SignUpSheet } from './SignUpSheet';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
 import { UserAvatar } from './GameUI';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { generateShareText } from '../utils/shareResults';
+
+// Check if we should use native Web Share (mobile/tablet only)
+const shouldUseNativeShare = (): boolean => {
+    // First check if Web Share API is even available
+    if (!navigator.share) return false;
+    try {
+        if (!navigator.canShare?.({ text: 'test' })) return false;
+    } catch {
+        return false;
+    }
+    
+    // Now check if we're on a mobile/tablet device (not desktop)
+    // Use multiple signals to detect mobile/tablet
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isSmallScreen = window.innerWidth <= 1024; // Tablets and phones
+    
+    return isTouchDevice && (isMobileUA || isSmallScreen);
+};
 
 interface AllDoneScreenProps {
     date: Date;
@@ -376,10 +396,31 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                             days={days}
                             theme={theme}
                             initialIndex={initialCarouselIndex >= 0 ? initialCarouselIndex : 0}
-                            onShare={(d) => {
-                                setShareDate(d);
-                                setShowShareModal(true);
+                            onShare={async (d) => {
                                 trackShareClicked(d);
+                                
+                                if (shouldUseNativeShare()) {
+                                    // Mobile: use native share directly
+                                    const puzzleIndicesForDate = getPuzzlesForDateFromSchedule(schedule, d) || calculatePuzzleIndicesForDate(d);
+                                    const scheduleStartDate = schedule ? getScheduleStartDate(schedule) : null;
+                                    const dayNumber = scheduleStartDate 
+                                        ? Math.floor((d.getTime() - scheduleStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+                                        : 1;
+                                    const shareText = generateShareText(d, playerData.dailyResults, dayNumber, puzzleIndicesForDate, scheduleStartDate || undefined);
+                                    
+                                    try {
+                                        await navigator.share({ text: shareText });
+                                        trackShareCopied(d);
+                                    } catch (err: any) {
+                                        if (err.name !== 'AbortError') {
+                                            console.error('Share failed:', err);
+                                        }
+                                    }
+                                } else {
+                                    // Desktop: show modal
+                                    setShareDate(d);
+                                    setShowShareModal(true);
+                                }
                             }}
                             onPlay={(d) => {
                                 if (onPlayDate) {

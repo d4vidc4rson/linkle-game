@@ -79,11 +79,44 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date, onShar
         return `Linkle.fun Bonus Speed Round ⏱️ ${formattedTime}\n\n${gridEmoji}`;
     };
 
-    const handleShare = () => {
-        setShowShareModal(true);
-        onShareClicked?.();
+    // Check if we should use native Web Share (mobile/tablet only)
+    const shouldUseNativeShare = (): boolean => {
+        if (!navigator.share) return false;
+        try {
+            if (!navigator.canShare?.({ text: 'test' })) return false;
+        } catch {
+            return false;
+        }
+        
+        // Check if we're on a mobile/tablet device (not desktop)
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isSmallScreen = window.innerWidth <= 1024;
+        
+        return isTouchDevice && (isMobileUA || isSmallScreen);
     };
 
+    const handleShareButtonClick = async () => {
+        onShareClicked?.();
+        
+        if (shouldUseNativeShare()) {
+            // Mobile: use native share directly, skip modal
+            const shareText = generateBonusShareText();
+            try {
+                await navigator.share({ text: shareText });
+                onShareCopied?.();
+            } catch (err: any) {
+                if (err.name !== 'AbortError') {
+                    console.error('Share failed:', err);
+                }
+            }
+        } else {
+            // Desktop: show modal
+            setShowShareModal(true);
+        }
+    };
+
+    // Desktop-only: copy to clipboard from modal
     const handleCopy = async () => {
         const shareText = generateBonusShareText();
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -213,7 +246,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date, onShar
                 <div className="bonus-row-4">
                     <div className="bonus-col-4">
                         <div className="day-card-share-container">
-                            <button className="day-card-share-button" onClick={handleShare}>
+                            <button className="day-card-share-button" onClick={handleShareButtonClick}>
                                 <span>SHARE</span>
                             </button>
                         </div>

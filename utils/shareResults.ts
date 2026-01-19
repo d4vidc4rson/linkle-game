@@ -32,36 +32,36 @@ export const generateShareText = (
     const impossibleStatus = impossibleResult?.solved ? '✅' : '❌';
 
     // Generate emoji grids (3x3 for each puzzle)
-    // If solved: all green squares
-    // If lost: green for correct positions, white for incorrect positions
+    // If solved: all green squares with "Solved in X" on line after grid
+    // If lost: green for correct positions, purple for incorrect positions with "Nope" after grid
     const generateGrid = (
         result: { solved: boolean; triesUsed: number; boardState?: string[] } | undefined,
         solution: string[] | null
     ): string => {
         if (!result) {
-            return '⬜⬜⬜\n⬜⬜⬜\n⬜⬜⬜';
+            return '🟪🟪🟪\n🟪🟪🟪\n🟪🟪🟪';
         }
         
         if (result.solved) {
-            // All green for solved puzzles (all correct)
-            return '🟩🟩🟩\n🟩🟩🟩\n🟩🟩🟩';
+            // All green for solved puzzles with solve count on its own line
+            return `🟩🟩🟩\n🟩🟩🟩\n🟩🟩🟩\nSolved in ${result.triesUsed}`;
         }
         
         // For lost puzzles, show which positions were correct
         if (result.boardState && solution) {
             const squares = result.boardState.map((word, index) => {
-                return word === solution[index] ? '🟩' : '⬜'; // Green for correct, white for incorrect
+                return word === solution[index] ? '🟩' : '🟪'; // Green for correct, purple for incorrect
             });
-            // Format as 3x3 grid with line breaks
-            return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}`;
+            // Format as 3x3 grid with "Nope" on its own line after
+            return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope`;
         }
         
         // Fallback: show based on tries used (old behavior)
         const solvedSquares = Math.max(0, 9 - (4 - result.triesUsed));
         const squares = Array.from({ length: 9 }).map((_, i) => {
-            return i < solvedSquares ? '🟩' : '⬜'; // Green for correct, white for incorrect
+            return i < solvedSquares ? '🟩' : '🟪'; // Green for correct, purple for incorrect
         });
-        return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}`;
+        return `${squares[0]}${squares[1]}${squares[2]}\n${squares[3]}${squares[4]}${squares[5]}\n${squares[6]}${squares[7]}${squares[8]}\nNope`;
     };
 
     const easySolution = puzzleIndices ? PREGENERATED_PUZZLES[puzzleIndices.easy]?.solution : null;

@@ -103,7 +103,7 @@ export const BonusDayCard: React.FC<BonusDayCardProps> = ({ result, date, onShar
             // Mobile: use native share directly, skip modal
             const shareText = generateBonusShareText();
             try {
-                await navigator.share({ text: shareText });
+                await navigator.share({ text: shareText, url: 'https://linkle.fun' });
                 onShareCopied?.();
             } catch (err: any) {
                 if (err.name !== 'AbortError') {

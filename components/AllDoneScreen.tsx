@@ -409,7 +409,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                                     const shareText = generateShareText(d, playerData.dailyResults, dayNumber, puzzleIndicesForDate, scheduleStartDate || undefined);
                                     
                                     try {
-                                        await navigator.share({ text: shareText });
+                                        await navigator.share({ text: shareText, url: 'https://linkle.fun' });
                                         trackShareCopied(d);
                                     } catch (err: any) {
                                         if (err.name !== 'AbortError') {

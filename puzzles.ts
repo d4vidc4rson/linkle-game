@@ -918,8 +918,8 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'IMPOSSIBLE'
     },
     {
-        solution: ["GHOST", "WRITER", "ROOM", "MATE", "GUARDING", "RAIL", "GUN", "POWDER", "KEG"],
-        narrative: "A person who writes for someone else is a GHOSTWRITER. A shared space is a WRITER'S ROOM. You can have a ROOMMATE. A specific behavior in evolutionary biology is MATE GUARDING. A safety barrier is a GUARDING RAIL. A weapon that uses electromagnetic force is a RAILGUN. An explosive substance is GUNPOWDER. You store beer in a POWDER KEG.",
+        solution: ["GHOST", "WRITERS", "ROOM", "MATE", "GUARDING", "RAIL", "GUN", "POWDER", "KEG"],
+        narrative: "People who write for others are GHOSTWRITERS. A TV writing staff workspace is the WRITERS' ROOM. You can have a ROOMMATE. A specific behavior in evolutionary biology is MATE GUARDING. A safety barrier is a GUARDING RAIL. A weapon that uses electromagnetic force is a RAILGUN. An explosive substance is GUNPOWDER. You store beer in a POWDER KEG.",
         difficulty: 'IMPOSSIBLE'
     },
     {

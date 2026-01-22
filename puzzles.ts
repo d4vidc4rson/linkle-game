@@ -1113,8 +1113,8 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'EASY' 
     },
     { 
-        solution: ["POWER", "POINT", "BLANK", "CHECK", "MATE", "BOX", "SCORE", "KEEPER", "TALE"], 
-        narrative: "A presentation slide is a POWERPOINT. At close range is POINT-BLANK. To have unlimited funds is to have a BLANK CHECK. The end of a chess game is CHECKMATE. A MATEBOX is a type of chess puzzle. A newspaper summary of a game is a BOX SCORE. The person tracking points is the SCOREKEEPER. A traditional story is a KEEPER'S TALE.", 
+        solution: ["POWER", "POINT", "BLANK", "CHECK", "MATE", "BOX", "SCORE", "KEEPERS", "TALE"], 
+        narrative: "A presentation slide is a POWERPOINT. At close range is POINT-BLANK. To have unlimited funds is to have a BLANK CHECK. The end of a chess game is CHECKMATE. A MATEBOX is a type of chess puzzle. A newspaper summary of a game is a BOX SCORE. The people tracking points are the SCOREKEEPERS. A story passed down by guardians is a KEEPERS' TALE.", 
         difficulty: 'HARD' 
     },
     { 

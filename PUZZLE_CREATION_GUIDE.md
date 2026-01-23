@@ -13,7 +13,33 @@ These two rules apply to ALL puzzles, regardless of their intended difficulty. A
 - **Purpose:** Ensures every puzzle provides a fresh challenge and prevents the game from becoming repetitive. It guarantees that each solution is a genuine discovery for the player.
 - **Verification Method:** Before adding any puzzle, you MUST check every single word pair individually against the entire `puzzles.ts` file. Use grep or search to verify each of the 8 pairs in your 9-word chain is unique.
 
-### 2. The Rule of Dyadic Integrity (The "Two-Word" Rule)
+### 2. The Rule of Directional Order
+- **Definition:** In the chain A → B → C, the pair A→B must form the valid phrase "A B" (not "B A"). The order of words in the puzzle IS the order of the compound word/phrase.
+- **Purpose:** This is the core mechanic of the game. Players win by arranging words in the correct order. If we allow "ROOM→ESCAPE" to mean "ESCAPE ROOM," we undermine the entire game logic. The puzzle order must match the phrase order exactly.
+- **Verification Method:** For each pair A→B, ask: "Is 'A B' a valid phrase in that exact order?" If only "B A" is valid, the puzzle is broken.
+- **Common Violations:**
+  - ❌ `ROOM` → `ESCAPE` — "ROOM ESCAPE" is NOT a phrase. "ESCAPE ROOM" IS a phrase. This pair is invalid.
+  - ❌ `CAKE` → `CUP` — "CAKE CUP" is NOT a phrase. "CUPCAKE" IS a phrase. This pair is invalid.
+  - ❌ `VELOCITY` → `RAPTOR` — "VELOCITY RAPTOR" is NOT a phrase. "Velociraptor" is a single dinosaur name, not a compound. This pair is invalid.
+- **Valid Examples:**
+  - ✅ `ESCAPE` → `ROOM` — "ESCAPE ROOM" is a valid phrase in this order.
+  - ✅ `CUP` → `CAKE` — "CUPCAKE" is a valid compound word in this order.
+  - ✅ `ENGINE` → `ROOM` — "ENGINE ROOM" is valid in this order.
+
+### 3. The Rule of Morphological Consistency (Singular/Plural Match)
+- **Definition:** When a word appears in a specific form (singular or plural), the connections on BOTH sides must work with that exact form. You cannot use a plural word and then require the singular to make the next phrase valid.
+- **Purpose:** Maintains puzzle integrity. Players see the exact words in the puzzle—if SADDLES appears, both connections must work with "SADDLES", not "SADDLE".
+- **Common Violations:**
+  - ❌ `BLAZING` → `SADDLES` → `UP` — "BLAZING SADDLES" is valid, but "SADDLES UP" requires singular "SADDLE UP". This is invalid.
+  - ❌ `FRENCH` → `FRIES` → `COOK` — "FRENCH FRIES" is valid, but "FRIES COOK" isn't a phrase (you'd need "FRY COOK"). Invalid.
+  - ❌ `JUMPING` → `BEANS` → `COUNTER` — "JUMPING BEANS" is valid, but "BEANS COUNTER" isn't a phrase (you'd need "BEAN COUNTER"). Invalid.
+- **Valid Examples:**
+  - ✅ `FINGER` → `GUNS` → `BLAZING` — "FINGER GUNS" is valid and "GUNS BLAZING" is valid. Both use plural GUNS.
+  - ✅ `HOT` → `DOG` → `DAYS` — "HOT DOG" is valid and "DOG DAYS" is valid. Both use singular DOG.
+  - ✅ `DINNER` → `ROLLS` → `ROYCE` — "DINNER ROLLS" is valid and "ROLLS ROYCE" is valid. Both use plural ROLLS.
+- **Verification Method:** For each word in your chain, check that BOTH adjacent connections work with the exact form of the word as written.
+
+### 4. The Rule of Dyadic Integrity (The "Two-Word" Rule)
 - **Definition:** Every link in the chain (`B` -> `C`) must be a valid, standalone connection, independent of the preceding word (`A`). The phrase "B C" must make sense on its own.
 - **Purpose:** Maintains the core logic and fairness of the game. It prevents frustrating, illogical leaps.
 - **Common Violations:**

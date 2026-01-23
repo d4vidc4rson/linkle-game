@@ -1761,5 +1761,80 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SUMPTUARY", "LAW", "MERCHANT", "BANK", "SHOT", "NOISE", "GATE", "ARRAY", "ANTENNA"],
         narrative: "A SUMPTUARY LAW was the original 'no flexing' rule—limits on fancy clothes and spending. The LAW MERCHANT was the medieval rulebook for cross-border trade, which eventually feeds into a MERCHANT BANK (finance for big deals). Then we ricochet into the literal: a BANK SHOT bounces off a cushion. In electronics, SHOT NOISE is the jitter from electrons arriving in discrete clumps; audio folks tame that with a NOISE GATE. Chip designers build logic with a GATE ARRAY, and antenna engineers scale that idea into an ARRAY ANTENNA that beams signals directionally.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STONE", "MASON", "JAR", "HEAD", "STRONG", "HOLD", "OVER", "NIGHT", "GOWN"],
+        narrative: "A STONEMASON is a craftsperson who works with stone. A MASON JAR is a glass container for preserving food. A JARHEAD is military slang for a U.S. Marine. Someone who is HEADSTRONG is stubbornly willful. A STRONGHOLD is a fortified place or a place of strength. A HOLDOVER is something remaining from a previous period. OVERNIGHT means during or throughout the night. A NIGHTGOWN is a loose garment worn for sleeping.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DROP", "KICK", "STAND", "OFF", "SHORE", "BIRD", "DOG", "EAR", "PLUG"],
+        narrative: "A DROPKICK is a kick made by dropping the ball and kicking it as it bounces. A KICKSTAND supports a bicycle when parked. A STANDOFF is a deadlock between opposing parties. OFFSHORE refers to activities or locations away from the coast. A SHOREBIRD is a bird that lives along coastlines. A BIRD DOG is a hunting dog trained to point at game birds. A DOG-EAR is a folded corner of a page in a book. An EARPLUG is inserted into the ear canal to block sound or water.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SNARE", "DRUM", "ROLL", "TOP", "SOIL", "PIPE", "ORGAN", "DONOR", "CARD"],
+        narrative: "A SNARE DRUM is a drum with metal wires stretched across the bottom head. A DRUM ROLL is a rapid succession of beats. A ROLL-TOP desk has a flexible wooden cover that rolls up. TOPSOIL is the uppermost layer of soil, rich in nutrients. A SOIL PIPE is a vertical pipe carrying waste from toilets. A PIPE ORGAN is a musical instrument that produces sound using pressurized air through pipes. An ORGAN DONOR agrees to donate their organs after death. A DONOR CARD indicates a person's wish to be an organ donor.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BRAIN", "DEAD", "LOCK", "PICK", "AXE", "GRIND", "STONE", "FRUIT", "FLY"],
+        narrative: "Someone who is BRAIN DEAD has no brain activity. A DEADLOCK is a standstill where no progress can be made. A LOCKPICK is a tool for opening locks without a key. A PICKAXE is a tool with a pointed head for breaking rock. To have an AXE TO GRIND is to have a personal issue to address. A GRINDSTONE is used for sharpening tools. STONE FRUIT includes peaches, plums, and cherries. A FRUIT FLY is a small insect attracted to ripe produce.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BUTTER", "MILK", "MAN", "HOLE", "COVER", "STORY", "TIME", "SHARE", "HOLDER"],
+        narrative: "BUTTERMILK is a tangy dairy drink used in cooking and baking. A MILKMAN delivers dairy products to homes. A MANHOLE provides access to underground utilities. A HOLE COVER protects openings in streets and sidewalks. A COVER STORY is a false account to hide the truth. STORYTIME is when children gather to hear tales read aloud. A TIMESHARE is a vacation property shared by multiple owners. A SHAREHOLDER owns stock in a company.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SILENT", "TREATMENT", "PLANT", "CELL", "TOWER", "BLOCK", "HEAD", "FIRST", "BASE"],
+        narrative: "The SILENT TREATMENT is a form of passive-aggressive behavior where someone refuses to communicate. A TREATMENT PLANT processes water or sewage for safe disposal. A PLANT CELL is the basic structural unit of plant life, containing chloroplasts. A CELL TOWER transmits wireless communication signals. A TOWER BLOCK is a British term for a high-rise residential building. A BLOCKHEAD is slang for a foolish or stubborn person. To dive HEADFIRST is to jump in bravely without hesitation. FIRST BASE is both a baseball position and slang for early romantic progress.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["RIVER", "DANCE", "HALL", "WAY", "LAY", "OFF", "ROAD", "SHOW", "BOAT"],
+        narrative: "RIVERDANCE is the iconic Irish step-dancing theatrical show that became a global phenomenon. A DANCE HALL is a venue for social dancing. A HALLWAY is a corridor connecting rooms in a building. To WAYLAY someone is to ambush or intercept them unexpectedly. A LAYOFF is when an employer terminates workers due to economic conditions. An OFF-ROAD vehicle is designed for driving on unpaved terrain. A ROAD SHOW is a traveling presentation or tour promoting a product or idea. A SHOWBOAT is a riverboat with theatrical performances, or someone who shows off.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PEPPER", "CORN", "DOG", "WATCH", "TOWER", "CRANE", "FLY", "WEIGHT", "LOSS"],
+        narrative: "A PEPPERCORN is the dried berry used to make black pepper. A CORN DOG is a hot dog coated in cornmeal batter and deep-fried. A DOG WATCH is a naval term for a short duty shift of two hours, traditionally from 4-6 PM or 6-8 PM. A WATCHTOWER is a tall structure used for observation and surveillance. A TOWER CRANE is the tall construction equipment used to lift heavy materials at building sites. A CRANE FLY is a long-legged flying insect often mistaken for a giant mosquito. A FLYWEIGHT is the lightest weight class in boxing, under 112 pounds. WEIGHT LOSS is the reduction of body mass through diet or exercise.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CLOCK", "WORK", "FORCE", "FIELD", "TEST", "PILOT", "WHALE", "TAIL", "COAT"],
+        narrative: "CLOCKWORK refers to a mechanism with gears and springs, or something that operates with precision. The WORKFORCE is the total number of people employed or available for work. A FORCE FIELD is a protective energy barrier in science fiction. A FIELD TEST evaluates a product or system under real-world conditions. A TEST PILOT is an aviator who flies experimental aircraft to evaluate performance. A PILOT WHALE is a species of oceanic dolphin known for mass strandings. A WHALE TAIL is slang for when underwear shows above low-rise pants, or the actual fluke of a whale. A TAILCOAT is a formal men's coat with tails at the back, worn for white-tie events.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["TRIGGER", "FINGER", "TIP", "TOE", "HOLD", "OUT", "BURST", "MODE", "DIAL"],
+        narrative: "A TRIGGER FINGER is the index finger used to fire a weapon, or a medical condition causing finger stiffness. A FINGERTIP is the sensitive end of a finger. To TIPTOE is to walk quietly on the tips of one's toes. A TOEHOLD is a small foothold in climbing, or an initial position from which to advance. A HOLDOUT is someone who refuses to participate or accept terms. An OUTBURST is a sudden release of strong emotion or energy. BURST MODE is a camera setting that takes multiple rapid-fire photos. A MODE DIAL is the control on a camera that switches between shooting modes like manual, automatic, or portrait.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STAN", "TWITTER", "BLUE", "CHECK", "MARK", "CUBAN", "MISSILE", "CRISIS", "MODE"],
+        narrative: "To STAN is internet slang for being an obsessive fan (from Eminem's song). STAN TWITTER refers to the communities of devoted celebrity fans on the platform. TWITTER BLUE is the paid subscription service for verification and features. A BLUE CHECK is the verified account badge. A CHECK MARK indicates completion or approval. MARK CUBAN is the billionaire entrepreneur and Shark Tank investor. The CUBAN MISSILE Crisis was the 1962 nuclear standoff between the US and USSR. A MISSILE CRISIS is a dangerous military confrontation. CRISIS MODE is operating under emergency conditions.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["EDGE", "LORD", "COMMANDER", "DATA", "BASE", "JUMP", "SCARE", "CROW", "BAR"],
+        narrative: "An EDGE LORD is internet slang for someone who tries to be provocatively offensive. A LORD COMMANDER is the leader of the Night's Watch in Game of Thrones. COMMANDER DATA is the android officer from Star Trek: The Next Generation. A DATABASE stores organized digital information. BASE JUMP is the extreme sport of parachuting from fixed objects (buildings, antennas, spans, earth). A JUMP SCARE is a horror movie technique. A SCARECROW deters birds from crops. A CROWBAR is a metal prying tool.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SPEED", "RUN", "FLAT", "EARTH", "QUAKE", "LAKE", "CITY", "POP", "TART"],
+        narrative: "A SPEED RUN is completing a video game as fast as possible. A RUN-FLAT tire can operate after puncture. FLAT EARTH is the debunked conspiracy theory. An EARTHQUAKE is seismic activity. QUAKE LAKE (like Montana's 1959 Earthquake Lake) forms when landslides dam rivers. A LAKE CITY is a municipality near a lake. CITY POP is the 1980s Japanese music genre experiencing revival. A POP-TART is the Kellogg's toaster pastry.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["VLOG", "SQUAD", "GOAL", "POST", "ROCK", "HARD", "CORE", "GAMER", "GATE"],
+        narrative: "A VLOG SQUAD refers to David Dobrik's YouTube collaborative group. A SQUAD GOAL is internet slang for aspirational friendship. A GOAL POST is the upright structure in sports. POST-ROCK is an experimental music genre (Sigur Rós, Godspeed You! Black Emperor). ROCK HARD means extremely firm. HARDCORE describes intense music or dedicated fans. A CORE GAMER plays frequently and seriously. GAMERGATE was the controversial 2014 internet harassment campaign.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CRYPTO", "BRO", "CODE", "NAME", "DROP", "DEAD", "PAN", "FLUTE", "PLAYER"],
+        narrative: "A CRYPTO BRO is slang for an overly enthusiastic cryptocurrency evangelist. The BRO CODE is the unwritten rules of male friendship (popularized by 'How I Met Your Mother'). A CODE NAME is a secret identifier. To NAME DROP is to mention famous acquaintances to impress. DROP DEAD means to die suddenly, or as slang, stunning ('drop-dead gorgeous'). DEADPAN is the expressionless comedic delivery style. A PAN FLUTE is the ancient musical instrument of bound pipes. A FLUTE PLAYER is a musician of the instrument.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

@@ -1836,5 +1836,80 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["CRYPTO", "BRO", "CODE", "NAME", "DROP", "DEAD", "PAN", "FLUTE", "PLAYER"],
         narrative: "A CRYPTO BRO is slang for an overly enthusiastic cryptocurrency evangelist. The BRO CODE is the unwritten rules of male friendship (popularized by 'How I Met Your Mother'). A CODE NAME is a secret identifier. To NAME DROP is to mention famous acquaintances to impress. DROP DEAD means to die suddenly, or as slang, stunning ('drop-dead gorgeous'). DEADPAN is the expressionless comedic delivery style. A PAN FLUTE is the ancient musical instrument of bound pipes. A FLUTE PLAYER is a musician of the instrument.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ROCKING", "HORSE", "SHOE", "STRING", "BEAN", "COUNTER", "PART", "TIME", "ZONE"],
+        narrative: "A ROCKING HORSE is a children's toy horse mounted on curved rockers. A HORSESHOE is a U-shaped metal piece nailed to a horse's hoof for protection. A SHOESTRING is a thin cord for fastening shoes, also slang for a minimal budget. A STRING BEAN is a long, thin green bean. A BEAN COUNTER is slang for an accountant who obsesses over small details. A COUNTERPART is a person or thing that corresponds to another. PART-TIME means working fewer than full-time hours. A TIME ZONE is a geographical region with a uniform standard time.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LIME", "STONE", "WALL", "EYE", "WITNESS", "STAND", "UP", "START", "LINE"],
+        narrative: "LIMESTONE is a sedimentary rock composed mainly of calcium carbonate. A STONEWALL is a wall made of stones, or to obstruct and delay as a verb. A WALLEYE is a freshwater fish with large, reflective eyes, or an eye condition. An EYEWITNESS is a person who sees an event firsthand. A WITNESS STAND is the place in a courtroom where a witness testifies. STAND-UP can mean rising to one's feet or a comedy performance. An UPSTART is an arrogant newcomer who rises suddenly to prominence. A START LINE is the line where a race begins.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BLUE", "BERRY", "PATCH", "CORD", "BLOOD", "TYPE", "FACE", "OFF", "SPRING"],
+        narrative: "A BLUEBERRY is a small, sweet blue fruit popular in pies and muffins. A BERRY PATCH is an area where berries grow wild or are cultivated. A PATCH CORD is a short cable connecting audio or electronic equipment. CORD BLOOD is blood from the umbilical cord, rich in stem cells for medical use. A BLOOD TYPE is the classification of blood (A, B, AB, O) based on antigens. A TYPEFACE is the design style of printed letters, also called a font. A FACE-OFF is a confrontation or standoff, or the start of play in hockey. OFFSPRING refers to one's children or descendants.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["JUNK", "MAIL", "BOX", "LUNCH", "BREAK", "WATER", "MELON", "SEED", "POD"],
+        narrative: "JUNK MAIL is unwanted advertising mail that clutters your mailbox. A MAILBOX is a box for receiving mail at your home or office. A BOX LUNCH is a meal packed in a box for eating away from home. A LUNCH BREAK is a midday pause from work for eating. A BREAKWATER is a barrier built to protect a harbor from waves. A WATERMELON is a large fruit with a green rind and sweet red flesh. A MELON SEED is the seed found inside a melon. A SEED POD is a protective case containing seeds on a plant.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HONEY", "POT", "ROAST", "BEEF", "CAKE", "MIX", "UP", "STREAM", "BED"],
+        narrative: "A HONEYPOT is a container for storing honey, or a trap in cybersecurity. A POT ROAST is a beef dish braised slowly in a covered pot. ROAST BEEF is beef cooked by roasting, often served in sandwiches. A BEEFCAKE is slang for a muscular, attractive man. A CAKE MIX is a pre-made mixture for baking cakes easily. A MIX-UP is a confusion or mistake, often involving mistaken identity. UPSTREAM means in the direction opposite to the flow of a stream. A STREAMBED is the channel bottom where a stream or river flows.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BOAT", "MOTOR", "PARK", "PLACE", "SETTING", "SUN", "RA", "TEMPLE", "MOUNT"],
+        narrative: "A BOAT MOTOR is an engine that powers a watercraft. A MOTOR PARK is British and African English for a bus station or transport hub. PARK PLACE is the famous blue property on the Monopoly board. A PLACE SETTING is the arrangement of dishes, utensils, and glassware for one person at a dining table. The SETTING SUN is the sun as it descends below the horizon at dusk. SUN RA was the visionary avant-garde jazz musician known for cosmic philosophy and Afrofuturism. A RA TEMPLE was a sanctuary dedicated to the ancient Egyptian sun god, such as those at Heliopolis. The TEMPLE MOUNT is the sacred hilltop in Jerusalem's Old City, holy to Judaism, Christianity, and Islam.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SPEED", "DATING", "PROFILE", "PICTURE", "DAY", "BREAK", "FAST", "FOOD", "TRUCK"],
+        narrative: "SPEED DATING is a quick-fire dating event where participants meet briefly before rotating. A DATING PROFILE is your account page on an online dating site or app. A PROFILE PICTURE is the main photo displayed on a social media or dating account. PICTURE DAY is the school day when students have their photos taken for yearbooks. DAYBREAK is the time when day begins, also known as dawn. BREAKFAST is the first meal of the day, eaten in the morning. FAST FOOD is quick-service restaurant fare designed for speed and convenience. A FOOD TRUCK is a mobile vehicle serving prepared food on the street.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PENNY", "WHISTLE", "BLOWER", "MOTOR", "CYCLE", "PATH", "WAY", "WARD", "ROBE"],
+        narrative: "A PENNY WHISTLE is a simple six-hole woodwind instrument, also called a tin whistle. A WHISTLE BLOWER is a person who exposes illegal or unethical activities within an organization. A BLOWER MOTOR is the fan motor in a car's heating and cooling system. A MOTORCYCLE is a two-wheeled motor vehicle. A CYCLE PATH is a dedicated route for bicycles. A PATHWAY is a route or track laid down for walking. WAYWARD means difficult to control or predict, erratic in behavior. A WARDROBE is a closet for storing clothes or a person's entire collection of clothing.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DOLLAR", "MENU", "BOARD", "GAME", "NIGHT", "LIFE", "VEST", "POCKET", "KNIFE"],
+        narrative: "A DOLLAR MENU is a fast-food menu featuring low-priced items. A MENU BOARD is the display showing food options at a restaurant. A BOARD GAME is a tabletop game like Monopoly or Scrabble. GAME NIGHT is an evening dedicated to playing games with friends or family. NIGHTLIFE refers to social activities and entertainment available after dark. A LIFE VEST is a flotation device worn for water safety. A VEST POCKET is a small pocket on a vest, or describes something compact. A POCKET KNIFE is a folding knife small enough to carry in a pocket.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HULA", "HOOP", "SKIRT", "STEAK", "HOUSE", "FLY", "OVER", "DRAFT", "PICK"],
+        narrative: "A HULA HOOP is a toy ring spun around the waist by gyrating the hips. A HOOP SKIRT is a women's undergarment with a framework to extend the skirt outward. A SKIRT STEAK is a flavorful, thin cut of beef from the diaphragm muscles. A STEAK HOUSE is a restaurant specializing in beef steaks. A HOUSE FLY is the common fly found buzzing around homes. A FLYOVER is an aircraft flight over a location, or a bridge carrying one road over another. An OVERDRAFT is a deficit in a bank account from withdrawing more than available. A DRAFT PICK is a player selected by a team in a sports draft.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["VIRAL", "VIDEO", "GAME", "OVER", "LOAD", "OUT", "FIT", "CHECK", "IN"],
+        narrative: "A VIRAL VIDEO is content that spreads rapidly across the internet through shares and views. A VIDEO GAME is an electronic game played on a screen or console. GAME OVER signals the end of a video game session when the player loses. OVERLOAD means to burden with too much of something. A LOAD OUT is the process of packing up equipment after an event or concert. An OUTFIT is a set of clothes worn together. A FIT CHECK is Gen Z slang for showing off your outfit on social media. CHECK-IN is the process of arriving and registering at a hotel, airport, or event.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HATE", "WATCH", "PARTY", "CITY", "COUNCIL", "FLAT", "SCREEN", "GRAB", "BAR"],
+        narrative: "To HATE WATCH is to view content you despise for entertainment or critique purposes. A WATCH PARTY is a group viewing event, popular for streaming shows or sports. PARTY CITY is the retail chain known for party supplies and costumes. A CITY COUNCIL is the elected legislative body governing a municipality. A COUNCIL FLAT is British term for a public housing apartment. A FLAT SCREEN is a thin television or computer monitor. A SCREEN GRAB is a screenshot or captured image from a display. A GRAB BAR is a safety handle mounted in bathrooms to prevent falls.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ECHO", "CHAMBER", "MUSIC", "SCORE", "CARD", "KEY", "STONE", "AGE", "GAP"],
+        narrative: "An ECHO CHAMBER is an environment where people only encounter opinions reinforcing their own, especially on social media. CHAMBER MUSIC is classical music written for a small ensemble. A MUSIC SCORE is the written form of a musical composition. A SCORE CARD tracks points in golf or other games. A CARD KEY is a plastic key card used to unlock hotel rooms. The KEYSTONE is the central wedge-shaped stone at the top of an arch, or refers to Pennsylvania (the Keystone State). The STONE AGE is the prehistoric period when tools were made from stone. An AGE GAP is a significant difference in years between people, often in relationships.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CLICK", "BAIT", "FISH", "EYE", "PATCH", "CABLE", "CAR", "WASH", "BOARD"],
+        narrative: "CLICK BAIT is sensationalist online content designed to attract attention and encourage clicks. A BAIT FISH is a small fish used to lure larger fish when fishing. A FISH EYE lens is a wide-angle camera lens that produces a curved, distorted image. An EYE PATCH is a covering worn over one eye, famously associated with pirates. A PATCH CABLE is a short cable used to connect audio equipment or network devices. A CABLE CAR is a vehicle suspended from and propelled by a moving cable, iconic in San Francisco. A CAR WASH is a facility for cleaning automobiles. A WASHBOARD refers to the old laundry tool or slang for well-defined abdominal muscles.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SPACE", "AGE", "OLD", "MONEY", "PIT", "BOSS", "LADY", "BIRD", "CAGE"],
+        narrative: "The SPACE AGE refers to the era of space exploration beginning in the 1950s. AGE OLD means ancient or longstanding. OLD MONEY refers to inherited wealth from established families. A MONEY PIT is an investment that keeps draining resources, also the title of a 1986 Tom Hanks comedy. A PIT BOSS is a casino supervisor who oversees gaming tables. BOSS LADY is slang for a confident, powerful woman in charge. LADY BIRD is both a 2017 coming-of-age film by Greta Gerwig and the nickname of First Lady Claudia Johnson. A BIRD CAGE is an enclosure for keeping pet birds.",
+        difficulty: 'HARD'
     }
 ];

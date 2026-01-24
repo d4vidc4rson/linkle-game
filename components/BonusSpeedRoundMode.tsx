@@ -20,7 +20,7 @@ import { AllDoneScreen } from './AllDoneScreen';
 import { ArchiveView } from './ArchiveView';
 import { ErrorToast } from './ErrorToast';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
-import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule } from '../dailySchedule';
+import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule, calculatePuzzleIndicesForDate } from '../dailySchedule';
 import { checkStreakReset } from '../utils/introMessages';
 
 type DailyModeView = 'start' | 'intro' | 'playing' | 'bonusSplash' | 'allDone' | 'archive';
@@ -677,18 +677,10 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleArchiveDateSelect = (date: Date) => {
-        // Check if this date has puzzles in the schedule
+        // Check if this date has puzzles - first try schedule, then fallback to dynamic calculation
         const dateKey = formatDateKey(date);
-        const puzzlesForDate = getPuzzlesForDateFromSchedule(schedule, date);
-        
-        if (!puzzlesForDate) {
-            // No puzzles for this date - shouldn't happen if archive is working correctly, but handle gracefully
-            setErrorMessage('No puzzles available for this date. Please try another date.');
-            if (import.meta.env.DEV) {
-                console.warn(`No puzzles found for date: ${dateKey}`);
-            }
-            return;
-        }
+        const scheduledPuzzles = getPuzzlesForDateFromSchedule(schedule, date);
+        const puzzlesForDate = scheduledPuzzles || calculatePuzzleIndicesForDate(date);
         
         // Track archive puzzle started (for non-today dates)
         const today = new Date();

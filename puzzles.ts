@@ -1936,5 +1936,30 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["CROCODILE", "TEAR", "GAS", "PUMP", "IRON", "FIST", "BUMP", "STOCK", "YARD"],
         narrative: "CROCODILE TEARS are fake displays of emotion. TEAR GAS is used for riot control. A GAS PUMP dispenses fuel. To PUMP IRON is to lift weights. An IRON FIST means authoritarian rule. A FIST BUMP is a greeting gesture. A BUMP STOCK is a firearm accessory. A STOCKYARD holds livestock before sale.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FAUSTIAN", "BARGAIN", "HUNTER", "MOON", "WALK", "OFF", "SEASON", "PASS", "PORT"],
+        narrative: "A FAUSTIAN BARGAIN is a deal with the devil for short-term gain. A BARGAIN HUNTER seeks discounts and deals. A HUNTER MOON is the full moon following the harvest moon in October. A MOONWALK is both a lunar stroll and Michael Jackson's signature dance. A WALK-OFF is a game-ending hit in baseball. The OFF SEASON is when a sport isn't being played. A SEASON PASS grants unlimited access. A PASSPORT is travel identification.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DUTCH", "UNCLE", "SAM", "ADAMS", "APPLE", "SAUCE", "BOAT", "LOAD", "STONE"],
+        narrative: "A DUTCH UNCLE gives blunt, honest advice. UNCLE SAM is the personification of the U.S. government. SAM ADAMS is both a founding father and a beer brand. An ADAM'S APPLE is the laryngeal prominence in the throat. APPLESAUCE is a pureed fruit side dish. A SAUCEBOAT is a serving dish for gravy. A BOATLOAD is a large quantity. A LOADSTONE is a naturally magnetized mineral that attracts iron.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SACRED", "COW", "TIPPING", "POINT", "SPREAD", "EAGLE", "EYE", "BALL", "BUSTER"],
+        narrative: "A SACRED COW is an untouchable idea or institution. COW TIPPING is the rural prank of pushing over sleeping cows. A TIPPING POINT is the critical threshold where change becomes unstoppable. A POINT SPREAD is the betting margin in sports gambling. SPREAD EAGLE means limbs extended outward. An EAGLE EYE has exceptionally sharp vision. An EYEBALL is the spherical organ of sight. A BALLBUSTER is someone who is tough or demanding.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HAIL", "MARY", "JANE", "DOE", "SKIN", "DEEP", "STATE", "CRAFT", "BEER"],
+        narrative: "A HAIL MARY is a desperate last-second football pass. MARY JANE is slang for marijuana (or Spider-Man's love interest). JANE DOE is the legal placeholder name for an unidentified woman. DOESKIN is soft leather made from deer hide. SKIN DEEP means superficial. The DEEP STATE is a conspiracy theory about shadow government. STATECRAFT is the art of diplomacy and government. CRAFT BEER is artisanal beer from small breweries.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SMOKING", "GUN", "BOAT", "NECK", "BRACE", "LET", "GO", "CART", "WHEEL"],
+        narrative: "A SMOKING GUN is irrefutable evidence of wrongdoing. A GUNBOAT is a small armed naval vessel. A BOATNECK is a wide neckline that follows the collarbone. A NECKBRACE is a cervical collar worn after injury. A BRACELET is jewelry worn around the wrist. To LET GO is to release or dismiss. A GO-CART is a small racing vehicle. A CARTWHEEL is a sideways acrobatic rotation.",
+        difficulty: 'EASY'
     }
 ];

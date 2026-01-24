@@ -1911,5 +1911,30 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SPACE", "AGE", "OLD", "MONEY", "PIT", "BOSS", "LADY", "BIRD", "CAGE"],
         narrative: "The SPACE AGE refers to the era of space exploration beginning in the 1950s. AGE OLD means ancient or longstanding. OLD MONEY refers to inherited wealth from established families. A MONEY PIT is an investment that keeps draining resources, also the title of a 1986 Tom Hanks comedy. A PIT BOSS is a casino supervisor who oversees gaming tables. BOSS LADY is slang for a confident, powerful woman in charge. LADY BIRD is both a 2017 coming-of-age film by Greta Gerwig and the nickname of First Lady Claudia Johnson. A BIRD CAGE is an enclosure for keeping pet birds.",
         difficulty: 'HARD'
+    },
+    {
+        solution: ["OCCAM", "RAZOR", "BACK", "HOE", "DOWN", "STAGE", "HAND", "BRAKE", "LIGHT"],
+        narrative: "OCCAM'S RAZOR is the principle that the simplest explanation is usually correct. A RAZORBACK is a wild boar or the Arkansas mascot. A BACKHOE is excavating equipment. A HOEDOWN is a country square dance. DOWNSTAGE is the front of the stage. A STAGEHAND works behind the scenes. A HANDBRAKE is a parking brake. A BRAKE LIGHT signals when braking.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HERCULEAN", "TASK", "MASTER", "CLASS", "CLOWN", "FISH", "LADDER", "MATCH", "POINT"],
+        narrative: "A HERCULEAN TASK is an extremely difficult labor. A TASKMASTER imposes strict discipline. A MASTER CLASS is an expert tutorial. The CLASS CLOWN makes jokes in school. A CLOWN FISH is the Finding Nemo species. A FISH LADDER lets salmon migrate past dams. A LADDER MATCH is a wrestling match type. MATCH POINT is the decisive tennis point.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MOLOTOV", "COCKTAIL", "DRESS", "REHEARSAL", "DINNER", "PARTY", "TRICK", "PLAY", "THING"],
+        narrative: "A MOLOTOV COCKTAIL is an improvised incendiary weapon. A COCKTAIL DRESS is semi-formal evening attire. A DRESS REHEARSAL is the final practice in full costume. A REHEARSAL DINNER precedes a wedding. A DINNER PARTY is a social meal gathering. A PARTY TRICK entertains guests. A TRICK PLAY deceives the defense. A PLAYTHING is a toy.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["BANANA", "SPLIT", "SECOND", "THOUGHT", "CRIME", "SCENE", "KID", "ROCK", "STEADY"],
+        narrative: "A BANANA SPLIT is an ice cream sundae. A SPLIT SECOND is a brief moment. SECOND THOUGHT is reconsideration. A THOUGHT CRIME is from Orwell's 1984. A CRIME SCENE is investigated by police. A SCENE KID was part of the 2000s emo subculture. KID ROCK is an American rock musician. ROCK STEADY is a Jamaican music genre.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CROCODILE", "TEAR", "GAS", "PUMP", "IRON", "FIST", "BUMP", "STOCK", "YARD"],
+        narrative: "CROCODILE TEARS are fake displays of emotion. TEAR GAS is used for riot control. A GAS PUMP dispenses fuel. To PUMP IRON is to lift weights. An IRON FIST means authoritarian rule. A FIST BUMP is a greeting gesture. A BUMP STOCK is a firearm accessory. A STOCKYARD holds livestock before sale.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

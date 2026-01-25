@@ -1961,5 +1961,30 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SMOKING", "GUN", "BOAT", "NECK", "BRACE", "LET", "GO", "CART", "WHEEL"],
         narrative: "A SMOKING GUN is irrefutable evidence of wrongdoing. A GUNBOAT is a small armed naval vessel. A BOATNECK is a wide neckline that follows the collarbone. A NECKBRACE is a cervical collar worn after injury. A BRACELET is jewelry worn around the wrist. To LET GO is to release or dismiss. A GO-CART is a small racing vehicle. A CARTWHEEL is a sideways acrobatic rotation.",
         difficulty: 'EASY'
+    },
+    {
+        solution: ["PETRI", "DISH", "WATER", "SHED", "ROW", "HOUSE", "BROKEN", "FIELD", "TRIP"],
+        narrative: "A PETRI DISH is a shallow container for culturing microorganisms. DISH WATER is the water used for washing dishes. A WATERSHED is a critical turning point or a drainage basin. A SHED ROW is the stable area at a racetrack. A ROW HOUSE is a connected urban dwelling sharing walls. HOUSEBROKEN means trained not to urinate indoors. BROKEN FIELD is a football running style with unpredictable direction changes. A FIELD TRIP is an educational excursion outside the classroom.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["POISON", "PEN", "STROKE", "PLAY", "BOOK", "END", "TABLE", "SALT", "SHAKER"],
+        narrative: "A POISON PEN letter is an anonymous, malicious written attack. A PEN STROKE is a single mark made when writing. STROKE PLAY is a golf scoring format counting total strokes. A PLAYBOOK contains strategies and plays for a team. A BOOKEND holds books upright on a shelf. An END TABLE is small furniture beside a sofa or bed. TABLE SALT is common sodium chloride for seasoning food. A SALT SHAKER dispenses salt through holes in its top.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DARK", "HORSE", "TRADE", "WIND", "FALL", "GUY", "LINER", "LOCK", "BOX"],
+        narrative: "A DARK HORSE is an unexpected competitor or unknown candidate. To HORSE TRADE is to negotiate shrewdly with give-and-take. TRADE WINDS are tropical winds blowing toward the equator. A WINDFALL is unexpected good fortune or money. A FALL GUY is a scapegoat who takes blame for others. GUYLINER is slang for eyeliner worn by men. A LINER LOCK is a knife mechanism that locks the blade open. A LOCKBOX is a secure container for valuables or keys.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MAIDEN", "NAME", "SAKE", "BOMB", "THREAT", "LEVEL", "SET", "BACK", "DROP"],
+        narrative: "A MAIDEN NAME is a woman's surname before marriage. A NAMESAKE shares the same name as someone else. A SAKE BOMB is a drinking game dropping sake into beer. A BOMB THREAT is a warning of an explosive device. A THREAT LEVEL indicates the degree of danger. To LEVEL SET is to align expectations in business. A SETBACK is a reversal or obstacle to progress. A BACKDROP is scenery behind a stage or the background context.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GRAVEYARD", "SHIFT", "DRESS", "CODE", "BREAKER", "BAR", "BELL", "TOWER", "DEFENSE"],
+        narrative: "The GRAVEYARD SHIFT is the overnight work shift. A SHIFT DRESS is a loose, straight-cut women's garment. A DRESS CODE specifies acceptable attire for a venue. A CODEBREAKER deciphers encrypted messages. A BREAKER BAR is a long-handled tool for loosening bolts. A BARBELL is weightlifting equipment with weights on both ends. A BELL TOWER is a structure housing bells, often in churches. TOWER DEFENSE is a video game genre about defending against waves of enemies.",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

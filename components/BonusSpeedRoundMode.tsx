@@ -606,10 +606,23 @@ export const BonusSpeedRoundMode = () => {
     };
 
     const handleBonusPuzzle = () => {
-        // Generate random bonus puzzle
-        const randomIndex = Math.floor(Math.random() * PREGENERATED_PUZZLES.length);
-        const selectedPuzzle = PREGENERATED_PUZZLES[randomIndex];
-            setBonusPuzzle(selectedPuzzle);
+        // Exclude today's puzzles from bonus selection to avoid duplicates
+        const excludedIndices = new Set([
+            safePuzzleIndices.easy,
+            safePuzzleIndices.hard,
+            safePuzzleIndices.impossible
+        ]);
+        
+        // Build array of valid indices (excluding today's puzzles)
+        const validIndices = PREGENERATED_PUZZLES
+            .map((_, index) => index)
+            .filter(index => !excludedIndices.has(index));
+        
+        // Select random puzzle from valid indices
+        const randomValidIndex = validIndices[Math.floor(Math.random() * validIndices.length)];
+        const selectedPuzzle = PREGENERATED_PUZZLES[randomValidIndex];
+        
+        setBonusPuzzle(selectedPuzzle);
             setIsBonusRound(true);
             setTimeRemaining(60);
             setBonusStartTime(null); // Will be set when gameState becomes 'playing'

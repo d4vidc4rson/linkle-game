@@ -11,14 +11,56 @@ import {
     checkPolymathBadge 
 } from '../utils/badgeHelpers';
 
-const shuffleArray = (array: string[]) => {
-    let currentIndex = array.length, randomIndex;
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+// ORIGINAL SHUFFLE (for revert reference):
+// const shuffleArray = (array: string[]) => {
+//     let currentIndex = array.length, randomIndex;
+//     while (currentIndex !== 0) {
+//         randomIndex = Math.floor(Math.random() * currentIndex);
+//         currentIndex--;
+//         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+//     }
+//     return array;
+// };
+
+// Returns indices that should be pre-locked based on difficulty
+// Pre-locked tiles make easier puzzles by reducing the problem space
+const getPreLockedPositions = (difficulty: string): number[] => {
+    switch (difficulty) {
+        case 'EASY': return [0, 8];      // First and last tiles
+        case 'HARD': return [8];          // Last tile
+        case 'IMPOSSIBLE': return [];     // No pre-locked tiles
+        default: return [];
     }
-    return array;
+};
+
+// Shuffles only non-locked positions, keeping locked positions fixed with correct solution values
+const shuffleWithLockedPositions = (solution: string[], lockedPositions: number[]): string[] => {
+    const result = [...solution];
+    const lockedSet = new Set(lockedPositions);
+    
+    // Extract unlocked items and their indices
+    const unlockedIndices: number[] = [];
+    const unlockedItems: string[] = [];
+    
+    result.forEach((item, index) => {
+        if (!lockedSet.has(index)) {
+            unlockedIndices.push(index);
+            unlockedItems.push(item);
+        }
+    });
+    
+    // Shuffle unlocked items (Fisher-Yates)
+    for (let i = unlockedItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [unlockedItems[i], unlockedItems[j]] = [unlockedItems[j], unlockedItems[i]];
+    }
+    
+    // Place shuffled items back into their original indices
+    unlockedIndices.forEach((originalIndex, i) => {
+        result[originalIndex] = unlockedItems[i];
+    });
+    
+    return result;
 };
 
 /**
@@ -290,8 +332,11 @@ export const useDailyGameLogic = (
             
             puzzleStartTimeRef.current = Date.now();
             setPuzzle(newPuzzle);
-            setBoardState(shuffleArray([...newPuzzle.solution]));
-            setLockedSlots(Array(9).fill(false));
+            
+            // Pre-lock tiles based on difficulty (Easy: first/last, Hard: middle, Impossible: none)
+            const lockedPositions = getPreLockedPositions(newPuzzle.difficulty);
+            setBoardState(shuffleWithLockedPositions(newPuzzle.solution, lockedPositions));
+            setLockedSlots(Array(9).fill(false).map((_, i) => lockedPositions.includes(i)));
             setUserLockedSlots(Array(9).fill(false));
             setTriesLeft(existingResult ? existingResult.triesUsed : initialTries);
             setMoveCount(0); // Reset move count for new puzzle

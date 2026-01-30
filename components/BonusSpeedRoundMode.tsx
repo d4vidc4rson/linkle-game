@@ -635,6 +635,9 @@ export const BonusSpeedRoundMode = () => {
         
         // Load bonus puzzle
         setTimeout(() => {
+            // NOTE: Bonus round intentionally uses full shuffle with NO pre-locked tiles,
+            // regardless of the underlying puzzle difficulty. This keeps the bonus round
+            // consistently challenging as a timed speed challenge.
             const shuffleArray = (array: string[]) => {
                 let currentIndex = array.length, randomIndex;
                 while (currentIndex !== 0) {

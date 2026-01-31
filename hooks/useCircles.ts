@@ -440,8 +440,15 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
           removedUserId: memberIdToRemove,
         });
         
-        // Refresh members list
-        await refreshMembers();
+        // Optimistically update local state - filter out the removed member
+        setMembers(prev => prev?.filter(m => m.id !== memberIdToRemove) || null);
+        
+        // Also update the circle's members array in circles state
+        setCircles(prev => prev.map(c => 
+          c.id === circle.id 
+            ? { ...c, members: c.members.filter(id => id !== memberIdToRemove) }
+            : c
+        ));
       }
       return result;
     } catch (err) {

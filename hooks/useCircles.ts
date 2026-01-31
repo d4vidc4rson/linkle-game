@@ -196,6 +196,8 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
           todayStatus: { easy: 'unplayed', hard: 'unplayed', impossible: 'unplayed' },
           todayTries: { easy: null, hard: null, impossible: null },
           winPercentage: 0,
+          bonusStatus: 'unplayed',
+          bonusTimeSeconds: null,
         }]);
         
         // Track circle creation

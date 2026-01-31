@@ -3764,7 +3764,7 @@
       font-weight: 600;
       color: var(--secondary-text);
       display: flex;
-      gap: calc(var(--grid-unit) * 1);
+      gap: calc(var(--grid-unit) * 0.5);
     }
     .member-right {
       display: flex;
@@ -3778,11 +3778,11 @@
       gap: 4px;
     }
     .member-today-label {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 600;
       text-transform: uppercase;
       color: var(--secondary-text);
-      margin-right: 2px;
+      margin-right: 0;
     }
     .member-mini-grid {
       display: grid;
@@ -3831,6 +3831,40 @@
       height: 4px;
       border-radius: 50%;
       background-color: var(--primary-text);
+    }
+    /* Bonus round indicator */
+    .bonus-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      align-self: flex-start;
+      margin-top: -1px;
+    }
+    .bonus-indicator-solved {
+      background: var(--background-color);
+      border: 3px solid #ef4444;
+      color: #1f2937;
+    }
+    .bonus-indicator-failed {
+      background: var(--background-color);
+      border: 3px solid #ef4444;
+    }
+    .bonus-indicator-unplayed {
+      background: transparent;
+      border: 3px solid #9ca3af;
+    }
+    .bonus-x {
+      color: #ef4444;
+      font-weight: 700;
+      font-size: 18px;
+      display: inline-block;
+      transform: rotate(45deg);
+      line-height: 1;
     }
 
     .circle-sheet-actions {

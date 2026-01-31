@@ -128,6 +128,8 @@ export interface CircleMember {
         impossible: number | null;
     };
     winPercentage: number; // calculated from dailyResults
+    bonusStatus: 'solved' | 'failed' | 'unplayed';
+    bonusTimeSeconds: number | null; // only set if solved
 }
 
 export interface CircleInviteInfo {

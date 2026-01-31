@@ -79,14 +79,33 @@ const MiniPuzzleGrid: React.FC<{ status: 'solved' | 'failed' | 'unplayed'; tries
     );
 };
 
+// Bonus round indicator
+const BonusIndicator: React.FC<{ status: 'solved' | 'failed' | 'unplayed'; timeSeconds: number | null }> = ({ status, timeSeconds }) => {
+    // Format time as :SS (seconds only for times under 60s)
+    const formatTime = (seconds: number) => `:${String(seconds).padStart(2, '0')}`;
+    
+    return (
+        <div className={`bonus-indicator bonus-indicator-${status}`}>
+            {status === 'solved' && timeSeconds !== null && formatTime(timeSeconds)}
+            {status === 'failed' && <span className="bonus-x">+</span>}
+        </div>
+    );
+};
+
 // Today's puzzles as mini grids
-const TodayGrids: React.FC<{ status: CircleMember['todayStatus']; tries: CircleMember['todayTries'] }> = ({ status, tries }) => {
+const TodayGrids: React.FC<{ 
+    status: CircleMember['todayStatus']; 
+    tries: CircleMember['todayTries'];
+    bonusStatus: CircleMember['bonusStatus'];
+    bonusTimeSeconds: CircleMember['bonusTimeSeconds'];
+}> = ({ status, tries, bonusStatus, bonusTimeSeconds }) => {
     return (
         <div className="member-today-grids">
             <span className="member-today-label">Today:</span>
             <MiniPuzzleGrid status={status.easy} tries={tries.easy} />
             <MiniPuzzleGrid status={status.hard} tries={tries.hard} />
             <MiniPuzzleGrid status={status.impossible} tries={tries.impossible} />
+            <BonusIndicator status={bonusStatus} timeSeconds={bonusTimeSeconds} />
         </div>
     );
 };
@@ -212,7 +231,7 @@ const MemberRow: React.FC<{
                         <span className="member-win-pct">{member.winPercentage}% wins</span>
                     </div>
                 </div>
-                <TodayGrids status={member.todayStatus} tries={member.todayTries} />
+                <TodayGrids status={member.todayStatus} tries={member.todayTries} bonusStatus={member.bonusStatus} bonusTimeSeconds={member.bonusTimeSeconds} />
             </div>
         </div>
     );

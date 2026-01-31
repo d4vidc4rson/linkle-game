@@ -316,6 +316,8 @@ export const getCircleMembers = async (
             impossible: getTodayTries(todayResults?.impossible),
           },
           winPercentage,
+          bonusStatus: getTodayStatus(todayResults?.bonus),
+          bonusTimeSeconds: todayResults?.bonus?.solved ? todayResults.bonus.timeSeconds || null : null,
         });
       }
     }

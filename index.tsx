@@ -353,6 +353,7 @@ const Root = () => {
             <Routes>
                 <Route path="/" element={<BonusSpeedRoundMode />} />
                 <Route path="/daily" element={<Navigate to="/" replace />} />
+                <Route path="/c/:inviteCode" element={<BonusSpeedRoundMode />} /> {/* Circle invite links */}
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/sandbox" element={<SandboxPage />} />
                 <Route path="/sandbox/infinite" element={<RegularMode />} />

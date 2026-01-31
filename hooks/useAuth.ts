@@ -314,6 +314,7 @@ export const useAuth = () => {
                             maxStreak: Math.max(localData.maxStreak || 0, saneRemoteData.maxStreak || 0),
                             dayStreak: Math.max(localData.dayStreak || 0, saneRemoteData.dayStreak || 0),
                             dailyResults: mergedDailyResults,
+                            circles: saneRemoteData.circles || [],
                         };
 
                     } else {

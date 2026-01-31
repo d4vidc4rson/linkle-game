@@ -5,7 +5,8 @@ import { useAnalytics } from '../hooks/useAnalytics';
 import { useDailySchedule } from '../hooks/useDailySchedule';
 import { useDailyGameLogic, type DailyPuzzleDifficulty } from '../hooks/useDailyGameLogic';
 import { useBodyClasses } from '../hooks/useBodyClasses';
-import type { Theme, GameState, DailyResult, AuthMode } from '../types';
+import { useCircles, getPendingInvite, setPendingInvite, clearPendingInvite } from '../hooks/useCircles';
+import type { Theme, GameState, DailyResult, AuthMode, CircleInviteInfo } from '../types';
 import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
 import { BadgeUnlockModal, AchievementShowcaseModal, ExplanationModal, AuthModal, LogoutModal, NewPlayerModal, PowerUserHintModal, WhatsNewSheet } from './Modals';
 import { MiniGrid, Confetti, LoserEmojis, UserAvatar, TriesDots } from './GameUI';
@@ -15,6 +16,10 @@ import { DailyIntroScreen } from './DailyIntroScreen';
 import { DailyPuzzleSolved } from './DailyPuzzleSolved';
 import { BonusTimer } from './BonusTimer';
 import { BonusSplashScreen } from './BonusSplashScreen';
+import { InviteWelcomeModal } from './InviteWelcomeModal';
+import { JoinCircleModal } from './JoinCircleModal';
+import { CreateCircleModal } from './CreateCircleModal';
+import { CircleSheet } from './CircleSheet';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { AllDoneScreen } from './AllDoneScreen';
 import { ArchiveView } from './ArchiveView';
@@ -22,6 +27,7 @@ import { ErrorToast } from './ErrorToast';
 import { TRIES_PER_DIFFICULTY, DEFAULT_TRIES } from '../constants';
 import { formatDateKey, generateDailySchedule, getPuzzlesForDateFromSchedule, calculatePuzzleIndicesForDate } from '../dailySchedule';
 import { checkStreakReset } from '../utils/introMessages';
+import { getCircleByInviteCode } from '../firebase';
 
 type DailyModeView = 'start' | 'intro' | 'playing' | 'bonusSplash' | 'allDone' | 'archive';
 type IntroMode = 'play' | 'stats';
@@ -108,6 +114,39 @@ export const BonusSpeedRoundMode = () => {
         handleLogout,
         saveGameState,
     } = useAuth();
+
+    // Circle feature
+    const {
+        circles,
+        activeCircleId,
+        setActiveCircle,
+        circle,
+        members: circleMembers,
+        createCircle,
+        joinCircle,
+        refreshMembers,
+        updateCircleName,
+        updateMyDisplayName,
+        deleteCircle,
+        leaveCircle,
+        removeMember,
+        handleRemovedFromCircle,
+        shareInviteLink,
+        getInviteInfo,
+        isUserInCircle,
+    } = useCircles({
+        userId: user?.uid || null,
+        userCircleIds: playerData.circles,
+    });
+    
+    // Circle modal state
+    const [showInviteWelcomeModal, setShowInviteWelcomeModal] = useState(false);
+    const [showJoinCircleModal, setShowJoinCircleModal] = useState(false);
+    const [showCreateCircleModal, setShowCreateCircleModal] = useState(false);
+    const [showCircleSheet, setShowCircleSheet] = useState(false);
+    const [pendingInviteInfo, setPendingInviteInfo] = useState<CircleInviteInfo | null>(null);
+    const [joiningCircle, setJoiningCircle] = useState(false);
+    const [creatingCircle, setCreatingCircle] = useState(false);
 
     // Analytics tracking
     const {
@@ -246,6 +285,80 @@ export const BonusSpeedRoundMode = () => {
         setTheme(initialTheme);
         document.body.dataset.theme = initialTheme;
     }, []);
+
+    // Check for circle invite code in URL on mount
+    useEffect(() => {
+        const checkForInviteCode = async () => {
+            // Check for /c/{code} path
+            const pathMatch = window.location.pathname.match(/^\/c\/([a-zA-Z0-9]+)$/);
+            // Check for ?join={code} query param
+            const urlParams = new URLSearchParams(window.location.search);
+            const joinParam = urlParams.get('join');
+            
+            const inviteCode = pathMatch?.[1] || joinParam;
+            
+            if (inviteCode) {
+                // Store the invite code for later (after auth)
+                setPendingInvite(inviteCode);
+                
+                // Clean up the URL
+                window.history.replaceState({}, '', '/');
+                
+                // Fetch invite info
+                const result = await getCircleByInviteCode(inviteCode);
+                if (result.success && result.inviteInfo) {
+                    setPendingInviteInfo(result.inviteInfo);
+                    // Only show welcome modal for non-logged-in users
+                    // Logged-in users will be handled by processPendingInvite useEffect
+                    if (!user) {
+                        setShowInviteWelcomeModal(true);
+                    }
+                }
+            }
+        };
+        
+        checkForInviteCode();
+    }, []);
+
+    // Check for pending invite after user logs in
+    useEffect(() => {
+        const processPendingInvite = async () => {
+            if (!user || !dataReady) return;
+            
+            const pendingCode = getPendingInvite();
+            if (!pendingCode) return;
+            
+            // Fetch the invite info first to get the circle ID
+            let inviteInfo = pendingInviteInfo;
+            if (!inviteInfo) {
+                const result = await getCircleByInviteCode(pendingCode);
+                if (result.success && result.inviteInfo) {
+                    inviteInfo = result.inviteInfo;
+                } else {
+                    // Invalid invite code - clear it
+                    clearPendingInvite();
+                    return;
+                }
+            }
+            
+            // Check if user is already in this circle
+            const alreadyMember = await isUserInCircle(inviteInfo.circleId);
+            if (alreadyMember) {
+                // Clear the pending invite and switch to that circle
+                clearPendingInvite();
+                setPendingInviteInfo(null);
+                setActiveCircle(inviteInfo.circleId);
+                setErrorMessage("You're already in this group!");
+                return;
+            }
+            
+            // Show join modal
+            setPendingInviteInfo(inviteInfo);
+            setShowJoinCircleModal(true);
+        };
+        
+        processPendingInvite();
+    }, [user, dataReady, pendingInviteInfo, isUserInCircle, setActiveCircle]);
 
     // Show What's New sheet for returning players who haven't seen it yet
     useEffect(() => {
@@ -545,6 +658,53 @@ export const BonusSpeedRoundMode = () => {
         trackSignupPromptShown();
     };
 
+    // Circle handlers
+    const handleCreateCircle = async (circleName: string, displayName: string) => {
+        const result = await createCircle(circleName, displayName);
+        if (!result.success) {
+            setErrorMessage(result.error || 'Failed to create circle');
+        } else if (result.circle) {
+            // Update local playerData.circles so the app knows about the new circle immediately
+            setPlayerData(prev => ({
+                ...prev,
+                circles: [...(prev.circles || []), result.circle!.id],
+            }));
+        }
+    };
+
+    const handleInviteToCircle = () => {
+        shareInviteLink();
+    };
+
+    const handleJoinCircle = async (displayName: string) => {
+        if (!pendingInviteInfo) return;
+        
+        setJoiningCircle(true);
+        try {
+            const result = await joinCircle(pendingInviteInfo.circleId, displayName);
+            if (result.success) {
+                setShowJoinCircleModal(false);
+                setPendingInviteInfo(null);
+                clearPendingInvite();
+            } else {
+                setErrorMessage(result.error || 'Failed to join circle');
+            }
+        } finally {
+            setJoiningCircle(false);
+        }
+    };
+
+    const handleInviteWelcomeJoin = () => {
+        setShowInviteWelcomeModal(false);
+        handleShowAuth('signup');
+    };
+
+    const handleInviteWelcomeDecline = () => {
+        setShowInviteWelcomeModal(false);
+        clearPendingInvite();
+        setPendingInviteInfo(null);
+    };
+
     // Wrapper for handleShowExplanation to add analytics tracking
     const handleShowExplanationWithTracking = () => {
         const difficulty = isBonusRound ? 'bonus' : currentPuzzleType;
@@ -790,6 +950,63 @@ export const BonusSpeedRoundMode = () => {
                 )}
                 {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
+                {showInviteWelcomeModal && pendingInviteInfo && (
+                    <InviteWelcomeModal
+                        inviteInfo={pendingInviteInfo}
+                        onJoin={handleInviteWelcomeJoin}
+                        onDecline={handleInviteWelcomeDecline}
+                    />
+                )}
+                {showJoinCircleModal && pendingInviteInfo && (
+                    <JoinCircleModal
+                        inviteInfo={pendingInviteInfo}
+                        onJoin={handleJoinCircle}
+                        onClose={() => {
+                            setShowJoinCircleModal(false);
+                            clearPendingInvite();
+                            setPendingInviteInfo(null);
+                        }}
+                        loading={joiningCircle}
+                    />
+                )}
+                {showCreateCircleModal && (
+                    <CreateCircleModal
+                        onClose={() => setShowCreateCircleModal(false)}
+                        onCreate={async (circleName, displayName) => {
+                            setCreatingCircle(true);
+                            try {
+                                await handleCreateCircle(circleName, displayName);
+                                setShowCreateCircleModal(false);
+                                // After creating, show the CircleSheet so user can see/copy invite link
+                                setShowCircleSheet(true);
+                            } finally {
+                                setCreatingCircle(false);
+                            }
+                        }}
+                        loading={creatingCircle}
+                    />
+                )}
+                {showCircleSheet && circle && circleMembers && user && activeCircleId && (
+                    <CircleSheet
+                        circles={circles}
+                        activeCircleId={activeCircleId}
+                        onChangeCircle={setActiveCircle}
+                        onCreateNewCircle={() => {
+                            setShowCircleSheet(false);
+                            setShowCreateCircleModal(true);
+                        }}
+                        circle={circle}
+                        members={circleMembers}
+                        currentUserId={user.uid}
+                        onClose={() => setShowCircleSheet(false)}
+                        onUpdateCircleName={updateCircleName}
+                        onUpdateMyDisplayName={updateMyDisplayName}
+                        onDeleteCircle={deleteCircle}
+                        onLeaveCircle={leaveCircle}
+                        onRemoveMember={removeMember}
+                        onRemovedFromCircle={handleRemovedFromCircle}
+                    />
+                )}
                 <DailyStartScreen 
                     onPlay={handleStartPlay}
                     onViewStats={handleViewStats}
@@ -797,6 +1014,15 @@ export const BonusSpeedRoundMode = () => {
                     playerData={playerData}
                     alreadyPlayedToday={!!(puzzleResults.easy && puzzleResults.hard && puzzleResults.impossible)}
                     onShowAuth={handleShowAuth}
+                    circle={circle}
+                    onInviteFriends={() => {
+                        if (circle) {
+                            handleInviteToCircle();
+                        } else {
+                            // No circle yet - show create modal
+                            setShowCreateCircleModal(true);
+                        }
+                    }}
                 />
             </>
         );
@@ -861,6 +1087,25 @@ export const BonusSpeedRoundMode = () => {
                     }} 
                     onClose={() => setShowLogoutModal(false)} 
                 />}
+                {showInviteWelcomeModal && pendingInviteInfo && (
+                    <InviteWelcomeModal
+                        inviteInfo={pendingInviteInfo}
+                        onJoin={handleInviteWelcomeJoin}
+                        onDecline={handleInviteWelcomeDecline}
+                    />
+                )}
+                {showJoinCircleModal && pendingInviteInfo && (
+                    <JoinCircleModal
+                        inviteInfo={pendingInviteInfo}
+                        onJoin={handleJoinCircle}
+                        onClose={() => {
+                            setShowJoinCircleModal(false);
+                            clearPendingInvite();
+                            setPendingInviteInfo(null);
+                        }}
+                        loading={joiningCircle}
+                    />
+                )}
                 <AllDoneScreen
                     date={targetDate}
                     playerData={playerData}
@@ -877,6 +1122,20 @@ export const BonusSpeedRoundMode = () => {
                     onShowAuth={handleShowAuth}
                     onShowLogout={() => setShowLogoutModal(true)}
                     user={user}
+                    // Circle props
+                    circles={circles}
+                    activeCircleId={activeCircleId}
+                    onChangeCircle={setActiveCircle}
+                    circle={circle}
+                    circleMembers={circleMembers}
+                    onCreateCircle={handleCreateCircle}
+                    onInviteToCircle={handleInviteToCircle}
+                    onUpdateCircleName={updateCircleName}
+                    onUpdateMyDisplayName={updateMyDisplayName}
+                    onDeleteCircle={deleteCircle}
+                    onLeaveCircle={leaveCircle}
+                    onRemoveMember={removeMember}
+                    onRemovedFromCircle={handleRemovedFromCircle}
                 />
             </div>
         );

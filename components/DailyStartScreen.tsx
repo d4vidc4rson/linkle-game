@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TitleGraphic } from './Icons';
+import { TitleGraphic, InviteIcon } from './Icons';
 import { MiniGrid } from './GameUI';
-import type { AuthMode, PlayerData } from '../types';
+import type { AuthMode, PlayerData, Circle } from '../types';
 import { getStartScreenMessage } from '../utils/introMessages';
 
 interface DailyStartScreenProps {
@@ -11,6 +11,9 @@ interface DailyStartScreenProps {
     playerData?: PlayerData;
     alreadyPlayedToday?: boolean;
     onShowAuth: (mode?: AuthMode) => void;
+    // Circle props
+    circle?: Circle | null;
+    onInviteFriends?: () => void;
 }
 
 export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({ 
@@ -19,7 +22,9 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({
     user, 
     playerData,
     alreadyPlayedToday = false,
-    onShowAuth 
+    onShowAuth,
+    circle,
+    onInviteFriends,
 }) => {
     const [isExiting, setIsExiting] = useState(false);
 
@@ -70,6 +75,14 @@ export const DailyStartScreen: React.FC<DailyStartScreenProps> = ({
                             <button className="button button-outline" onClick={() => onShowAuth('login')}><span>Login</span></button>
                         )}
                     </div>
+                    
+                    {/* Challenge a friend prompt - show for logged in users who've played before and don't have a circle yet */}
+                    {user && playerData && playerData.totalSolved > 0 && onInviteFriends && !circle && (
+                        <button className="start-screen-invite-link" onClick={onInviteFriends}>
+                            <InviteIcon />
+                            <span>Challenge a friend</span>
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

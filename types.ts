@@ -76,6 +76,7 @@ export interface PlayerData {
     maxStreak?: number; // Maximum streak achieved
     dayStreak?: number; // Consecutive days played (Wordle-style)
     dailyResults?: DailyResults; // Daily puzzle results
+    circles?: string[]; // Array of circleIds the user belongs to
 }
 
 // Day summary for carousel
@@ -97,4 +98,41 @@ export interface DaySummary {
         bonus?: DailyResult; // Bonus speed round result
     };
     puzzleIndices?: { easy: number; hard: number; impossible: number } | null;
+}
+
+// Circle types for friends leaderboard feature
+export interface Circle {
+    id: string;
+    name: string; // e.g., "Family", "Work Friends"
+    createdBy: string; // userId of creator
+    createdAt: string; // ISO timestamp
+    inviteCode: string; // unique short code for invite URLs
+    members: string[]; // array of userIds
+    memberNames: { [userId: string]: string }; // per-circle display names
+}
+
+export interface CircleMember {
+    id: string; // userId
+    name: string; // display name in this circle
+    totalScore: number;
+    currentStreak: number;
+    maxStreak: number;
+    todayStatus: {
+        easy: 'solved' | 'failed' | 'unplayed';
+        hard: 'solved' | 'failed' | 'unplayed';
+        impossible: 'solved' | 'failed' | 'unplayed';
+    };
+    todayTries: {
+        easy: number | null; // null if not solved, otherwise 1-3
+        hard: number | null;
+        impossible: number | null;
+    };
+    winPercentage: number; // calculated from dailyResults
+}
+
+export interface CircleInviteInfo {
+    circleId: string;
+    circleName: string;
+    inviterName: string; // display name of the person who created the circle
+    inviteCode: string;
 }

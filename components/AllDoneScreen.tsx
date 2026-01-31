@@ -1,12 +1,15 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import type { PlayerData, DailyResult, Theme, DaySummary } from '../types';
+import type { PlayerData, DailyResult, Theme, DaySummary, Circle, CircleMember } from '../types';
 import { formatDateKey, getPuzzlesForDateFromSchedule, SCHEDULE_EPOCH, calculatePuzzleIndicesForDate, getScheduleStartDate } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
 import { DayCarousel } from './DayCarousel';
 import { ShareResults } from './ShareResults';
 import { SignUpSheet } from './SignUpSheet';
-import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon } from './Icons';
+import { CirclePreview } from './CirclePreview';
+import { CircleSheet } from './CircleSheet';
+import { CreateCircleModal } from './CreateCircleModal';
+import { AchievementIcon, ThemeToggleIcon, TitleGraphic, StreakIcon, InviteIcon } from './Icons';
 import { UserAvatar } from './GameUI';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { generateShareText } from '../utils/shareResults';
@@ -50,6 +53,20 @@ interface AllDoneScreenProps {
     onShowAuth?: () => void;
     onShowLogout?: () => void;
     user?: any;
+    // Circle props
+    circles?: Circle[];
+    activeCircleId?: string | null;
+    onChangeCircle?: (circleId: string) => void;
+    circle?: Circle | null;
+    circleMembers?: CircleMember[] | null;
+    onCreateCircle?: (circleName: string, displayName: string) => Promise<void>;
+    onInviteToCircle?: () => void;
+    onUpdateCircleName?: (newName: string) => Promise<void>;
+    onUpdateMyDisplayName?: (newName: string) => Promise<void>;
+    onDeleteCircle?: () => Promise<{ success: boolean; error?: string }>;
+    onLeaveCircle?: () => Promise<{ success: boolean; error?: string }>;
+    onRemoveMember?: (memberId: string) => Promise<{ success: boolean; error?: string }>;
+    onRemovedFromCircle?: (circleId: string) => void;
 }
 
 const allThreeSolvedMessages = [
@@ -129,11 +146,30 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
     onShowAuth,
     onShowLogout,
     user,
+    // Circle props
+    circles = [],
+    activeCircleId,
+    onChangeCircle,
+    circle,
+    circleMembers,
+    onCreateCircle,
+    onInviteToCircle,
+    onUpdateCircleName,
+    onUpdateMyDisplayName,
+    onDeleteCircle,
+    onLeaveCircle,
+    onRemoveMember,
+    onRemovedFromCircle,
 }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [shareDate, setShareDate] = useState<Date>(date);
     const [showSignUpSheet, setShowSignUpSheet] = useState(false);
     const hasShownSignUpSheetRef = useRef(false);
+    
+    // Circle state
+    const [showCircleSheet, setShowCircleSheet] = useState(false);
+    const [showCreateCircleModal, setShowCreateCircleModal] = useState(false);
+    const [creatingCircle, setCreatingCircle] = useState(false);
     
     // Analytics tracking
     const { trackShareClicked, trackShareCopied } = useAnalytics();
@@ -389,6 +425,26 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                                 <span className="stat-label">Max Streak</span>
                             </div>
                         </div>
+                        
+                        {/* Invite friends link - only show for logged in users who don't have a circle yet */}
+                        {user && !circle && (
+                            <button 
+                                className="stats-invite-link"
+                                onClick={() => setShowCreateCircleModal(true)}
+                            >
+                                <InviteIcon />
+                                <span>Challenge a friend</span>
+                            </button>
+                        )}
+                        
+                        {/* Circle Preview - show if user has a circle */}
+                        {circle && circleMembers && circleMembers.length > 0 && (
+                            <CirclePreview
+                                circle={circle}
+                                members={circleMembers}
+                                onTap={() => setShowCircleSheet(true)}
+                            />
+                        )}
                     </div>
 
                     <section className="day-carousel-section">
@@ -500,6 +556,50 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                         onClose={() => setShowSignUpSheet(false)}
                         currentStreak={playerData.currentStreak}
                         headline="Save today's run"
+                    />
+                )}
+                
+                {/* Circle Sheet */}
+                {showCircleSheet && circle && circleMembers && user && activeCircleId && (
+                    <CircleSheet
+                        circles={circles}
+                        activeCircleId={activeCircleId}
+                        onChangeCircle={onChangeCircle || (() => {})}
+                        onCreateNewCircle={() => {
+                            setShowCircleSheet(false);
+                            setShowCreateCircleModal(true);
+                        }}
+                        circle={circle}
+                        members={circleMembers}
+                        currentUserId={user.uid}
+                        onClose={() => setShowCircleSheet(false)}
+                        onUpdateCircleName={onUpdateCircleName}
+                        onUpdateMyDisplayName={onUpdateMyDisplayName}
+                        onDeleteCircle={onDeleteCircle}
+                        onLeaveCircle={onLeaveCircle}
+                        onRemoveMember={onRemoveMember}
+                        onRemovedFromCircle={onRemovedFromCircle}
+                    />
+                )}
+                
+                {/* Create Circle Modal */}
+                {showCreateCircleModal && (
+                    <CreateCircleModal
+                        onClose={() => setShowCreateCircleModal(false)}
+                        onCreate={async (circleName, displayName) => {
+                            if (onCreateCircle) {
+                                setCreatingCircle(true);
+                                try {
+                                    await onCreateCircle(circleName, displayName);
+                                    setShowCreateCircleModal(false);
+                                    // Show the circle sheet after creating
+                                    setShowCircleSheet(true);
+                                } finally {
+                                    setCreatingCircle(false);
+                                }
+                            }
+                        }}
+                        loading={creatingCircle}
                     />
                 )}
 

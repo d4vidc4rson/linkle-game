@@ -160,6 +160,7 @@ export const BonusSpeedRoundMode = () => {
         trackArchivePuzzleStarted,
         trackBonusRoundStarted,
         trackThemeChanged,
+        trackCircleInviteVisited,
     } = useAnalytics();
 
     // Load existing results for today
@@ -307,12 +308,22 @@ export const BonusSpeedRoundMode = () => {
                 // Fetch invite info
                 const result = await getCircleByInviteCode(inviteCode);
                 if (result.success && result.inviteInfo) {
+                    // Track the invite URL visit
+                    trackCircleInviteVisited({
+                        inviteCode,
+                        circleId: result.inviteInfo.circleId,
+                        circleName: result.inviteInfo.circleName,
+                    });
+                    
                     setPendingInviteInfo(result.inviteInfo);
                     // Only show welcome modal for non-logged-in users
                     // Logged-in users will be handled by processPendingInvite useEffect
                     if (!user) {
                         setShowInviteWelcomeModal(true);
                     }
+                } else {
+                    // Track the visit even if invite code is invalid
+                    trackCircleInviteVisited({ inviteCode });
                 }
             }
         };

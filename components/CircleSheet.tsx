@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CloseIcon, CopyIcon, PencilIcon } from './Icons';
 import type { Circle, CircleMember } from '../types';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 interface CircleSheetProps {
     // Multi-circle support
@@ -295,8 +296,20 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
     const [dragState, setDragState] = useState({ isDragging: false, startY: 0 });
     const sheetRef = useRef<HTMLDivElement>(null);
 
+    // Analytics
+    const { trackCircleLeaderboardViewed, trackCircleInviteShared } = useAnalytics();
+
     const isCreator = circle.createdBy === currentUserId;
     const inviteUrl = `${window.location.origin}/c/${circle.inviteCode}`;
+
+    // Track leaderboard view on mount
+    useEffect(() => {
+        trackCircleLeaderboardViewed({
+            circleId: circle.id,
+            circleName: circle.name,
+            circleMemberCount: members.length,
+        });
+    }, [circle.id]); // Only track once per circle open
 
     // Lock body scroll when sheet is open
     useEffect(() => {
@@ -312,6 +325,14 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
             await navigator.clipboard.writeText(inviteUrl);
             setLinkCopied(true);
             setTimeout(() => setLinkCopied(false), 2000);
+            
+            // Track invite share
+            trackCircleInviteShared({
+                circleId: circle.id,
+                circleName: circle.name,
+                circleMemberCount: members.length,
+                inviteCode: circle.inviteCode,
+            });
         } catch (err) {
             console.error('Failed to copy link:', err);
         }

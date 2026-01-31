@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint, GrowthMetrics, AnonymousDay0DataPoint, GrowthDay0DataPoint } from '../hooks/useAdminData';
+import { useAdminData, PlayerWithMeta, AggregateMetrics, TimeRange, DailyDataPoint, ConversionMetrics, AnonymousMetrics, AnonymousVisitor, RetentionMetrics, RetentionCohort, PuzzleQualityMetrics, EngagementMetrics, FeatureUsageMetrics, DifficultyStats, PuzzleStats, BadgeEngagement, WinRateTrendPoint, EngagementTrendPoint, GrowthMetrics, AnonymousDay0DataPoint, GrowthDay0DataPoint, CircleMetrics, CircleData } from '../hooks/useAdminData';
 import { MetricChart, MetricType } from './MetricChart';
 import { formatDateKey } from '../dailySchedule';
 import { PREGENERATED_PUZZLES } from '../puzzles';
@@ -21,7 +21,7 @@ import {
 } from 'recharts';
 import { auth, GoogleAuthProvider, signInWithPopup } from '../firebase';
 
-type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends' | 'growth';
+type AdminTab = 'metrics' | 'players' | 'leaderboard' | 'anonymous' | 'retention' | 'insights' | 'trends' | 'growth' | 'circles';
 
 // Helper to parse date key (YYYY-MM-DD) as local date, not UTC
 const parseDateKeyAsLocal = (dateKey: string): Date => {
@@ -2472,6 +2472,237 @@ const GrowthTab: React.FC<{
     );
 };
 
+// Circles Tab Component - Friend circles analytics
+const CirclesTab: React.FC<{
+    metrics: CircleMetrics;
+    circles: CircleData[];
+}> = ({ metrics, circles }) => {
+    // Prepare chart data for circles over time
+    const circlesOverTimeData = useMemo(() => {
+        const dates = Object.keys(metrics.circlesCreatedByDate).sort();
+        let cumulative = 0;
+        return dates.map(date => {
+            cumulative += metrics.circlesCreatedByDate[date];
+            const d = new Date(date + 'T00:00:00');
+            return {
+                date,
+                displayDate: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                created: metrics.circlesCreatedByDate[date],
+                cumulative,
+            };
+        });
+    }, [metrics.circlesCreatedByDate]);
+
+    return (
+        <div className="admin-tab-content circles-tab">
+            {/* Section 1: Circle Growth */}
+            <div className="admin-section">
+                <h2>📊 Circle Growth</h2>
+                <div className="admin-metrics-grid">
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.totalCircles}</div>
+                        <div className="admin-metric-label">Total Circles</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.totalCircleMembers}</div>
+                        <div className="admin-metric-label">Users in Circles</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.percentUsersInCircles}%</div>
+                        <div className="admin-metric-label">% of Users in Circles</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.avgMembersPerCircle}</div>
+                        <div className="admin-metric-label">Avg Members / Circle</div>
+                    </div>
+                </div>
+                
+                {/* Size Distribution */}
+                <div className="admin-subsection">
+                    <h3>Circle Size Distribution</h3>
+                    <div className="circles-size-distribution">
+                        {Object.entries(metrics.circleSizeDistribution).map(([range, count]) => (
+                            <div key={range} className="size-distribution-bar">
+                                <span className="size-label">{range} members</span>
+                                <div className="size-bar-container">
+                                    <div 
+                                        className="size-bar-fill" 
+                                        style={{ 
+                                            width: `${metrics.totalCircles > 0 ? (count / metrics.totalCircles) * 100 : 0}%` 
+                                        }}
+                                    />
+                                </div>
+                                <span className="size-count">{count}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Circles Over Time Chart */}
+                {circlesOverTimeData.length > 0 && (
+                    <div className="admin-subsection">
+                        <h3>Circles Created Over Time</h3>
+                        <div className="admin-chart-container" style={{ height: 200 }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <ComposedChart data={circlesOverTimeData}>
+                                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                                    <XAxis dataKey="displayDate" fontSize={12} />
+                                    <YAxis fontSize={12} />
+                                    <Tooltip />
+                                    <Bar dataKey="created" fill="#9eef80" name="Created" />
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey="cumulative" 
+                                        stroke="#b0a4fb" 
+                                        strokeWidth={2}
+                                        name="Cumulative"
+                                        dot={false}
+                                    />
+                                </ComposedChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Section 2: Circle Activity (from analytics events) */}
+            <div className="admin-section">
+                <h2>📈 Circle Activity</h2>
+                <div className="admin-metrics-grid">
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleCreatedCount}</div>
+                        <div className="admin-metric-label">Circles Created (events)</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleJoinedCount}</div>
+                        <div className="admin-metric-label">Circle Joins</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleLeaderboardViewedCount}</div>
+                        <div className="admin-metric-label">Leaderboard Views</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Section 3: Virality Funnel */}
+            <div className="admin-section">
+                <h2>🔗 Virality Funnel</h2>
+                <div className="admin-metrics-grid">
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleInviteSharedCount}</div>
+                        <div className="admin-metric-label">Invites Shared</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleInviteVisitedCount}</div>
+                        <div className="admin-metric-label">Invite Link Visits</div>
+                    </div>
+                    <div className="admin-metric-card">
+                        <div className="admin-metric-value">{metrics.circleJoinedCount}</div>
+                        <div className="admin-metric-label">Joins from Invites</div>
+                    </div>
+                </div>
+                
+                {/* Funnel Conversion Rates */}
+                <div className="admin-subsection">
+                    <h3>Conversion Rates</h3>
+                    <div className="funnel-rates">
+                        <div className="funnel-rate-item">
+                            <span className="funnel-rate-label">Share → Visit</span>
+                            <span className="funnel-rate-value">{metrics.inviteShareToVisitRate}%</span>
+                        </div>
+                        <div className="funnel-rate-item">
+                            <span className="funnel-rate-label">Visit → Join</span>
+                            <span className="funnel-rate-value">{metrics.visitToJoinRate}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Section 4: Retention Impact */}
+            <div className="admin-section">
+                <h2>🏆 Circle Users vs Non-Circle Users</h2>
+                <div className="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Circle Users ({metrics.circleUsersStats.count})</th>
+                                <th>Non-Circle Users ({metrics.nonCircleUsersStats.count})</th>
+                                <th>Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Avg Streak</td>
+                                <td>{metrics.circleUsersStats.avgStreak}</td>
+                                <td>{metrics.nonCircleUsersStats.avgStreak}</td>
+                                <td className={metrics.circleUsersStats.avgStreak > metrics.nonCircleUsersStats.avgStreak ? 'positive' : 'negative'}>
+                                    {metrics.circleUsersStats.avgStreak > metrics.nonCircleUsersStats.avgStreak ? '+' : ''}
+                                    {(metrics.circleUsersStats.avgStreak - metrics.nonCircleUsersStats.avgStreak).toFixed(1)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Avg Score</td>
+                                <td>{metrics.circleUsersStats.avgScore.toLocaleString()}</td>
+                                <td>{metrics.nonCircleUsersStats.avgScore.toLocaleString()}</td>
+                                <td className={metrics.circleUsersStats.avgScore > metrics.nonCircleUsersStats.avgScore ? 'positive' : 'negative'}>
+                                    {metrics.circleUsersStats.avgScore > metrics.nonCircleUsersStats.avgScore ? '+' : ''}
+                                    {(metrics.circleUsersStats.avgScore - metrics.nonCircleUsersStats.avgScore).toLocaleString()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Win Rate</td>
+                                <td>{metrics.circleUsersStats.avgWinRate}%</td>
+                                <td>{metrics.nonCircleUsersStats.avgWinRate}%</td>
+                                <td className={metrics.circleUsersStats.avgWinRate > metrics.nonCircleUsersStats.avgWinRate ? 'positive' : 'negative'}>
+                                    {metrics.circleUsersStats.avgWinRate > metrics.nonCircleUsersStats.avgWinRate ? '+' : ''}
+                                    {metrics.circleUsersStats.avgWinRate - metrics.nonCircleUsersStats.avgWinRate}%
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* Section 5: Active Circles List */}
+            {circles.length > 0 && (
+                <div className="admin-section">
+                    <h2>📋 Active Circles ({circles.length})</h2>
+                    <div className="circles-list">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Members</th>
+                                    <th>Created</th>
+                                    <th>Invite Code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {circles
+                                    .sort((a, b) => b.memberCount - a.memberCount)
+                                    .slice(0, 20)
+                                    .map(circle => (
+                                        <tr key={circle.id}>
+                                            <td>{circle.name}</td>
+                                            <td>{circle.memberCount}</td>
+                                            <td>{circle.createdAt ? new Date(circle.createdAt).toLocaleDateString() : 'Unknown'}</td>
+                                            <td><code>{circle.inviteCode}</code></td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                        {circles.length > 20 && (
+                            <p className="circles-list-note">Showing top 20 of {circles.length} circles</p>
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
 // Main Admin Dashboard Component
 export const AdminDashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<AdminTab>('metrics');
@@ -2482,7 +2713,8 @@ export const AdminDashboard: React.FC = () => {
     
     const { user, authLoading } = useAuth();
     const { 
-        players, 
+        players,
+        circles,
         loading, 
         error, 
         isAdmin, 
@@ -2500,6 +2732,7 @@ export const AdminDashboard: React.FC = () => {
         calculateGrowthMetrics,
         calculateAnonymousDay0HistoricalMetrics,
         calculateGrowthDay0HistoricalMetrics,
+        calculateCircleMetrics,
         getLeaderboard,
         searchPlayers,
         fetchPlayers,
@@ -2554,6 +2787,10 @@ export const AdminDashboard: React.FC = () => {
     const growthMetrics = useMemo(
         () => calculateGrowthMetrics(),
         [calculateGrowthMetrics]
+    );
+    const circleMetrics = useMemo(
+        () => calculateCircleMetrics(),
+        [calculateCircleMetrics, circles, players]
     );
     
     // Historical data for trends based on user filter
@@ -2748,6 +2985,12 @@ export const AdminDashboard: React.FC = () => {
                 >
                     🌱 Growth
                 </button>
+                <button 
+                    className={`admin-tab ${activeTab === 'circles' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('circles')}
+                >
+                    👥 Circles
+                </button>
             </nav>
 
             <main className="admin-content">
@@ -2808,6 +3051,12 @@ export const AdminDashboard: React.FC = () => {
                             <GrowthTab 
                                 metrics={growthMetrics} 
                                 onMetricClick={(type, title) => handleMetricClick(type, title, false)}
+                            />
+                        )}
+                        {activeTab === 'circles' && (
+                            <CirclesTab 
+                                metrics={circleMetrics}
+                                circles={circles}
                             />
                         )}
                     </>

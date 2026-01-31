@@ -329,9 +329,63 @@ export interface GrowthMetrics {
     totalSharersL28: number;
 }
 
+// Circle metrics for the Circles tab
+export interface CircleMetrics {
+    // Growth metrics
+    totalCircles: number;
+    totalCircleMembers: number;         // Unique users in at least one circle
+    percentUsersInCircles: number;      // % of signed-up users in circles
+    avgMembersPerCircle: number;
+    circleSizeDistribution: {
+        '1-2': number;
+        '3-5': number;
+        '6-10': number;
+        '11+': number;
+    };
+    
+    // Circle activity metrics from analytics events
+    circleCreatedCount: number;         // Total circle_created events
+    circleJoinedCount: number;          // Total circle_joined events
+    circleInviteSharedCount: number;    // Total circle_invite_shared events
+    circleInviteVisitedCount: number;   // Total circle_invite_visited events
+    circleLeaderboardViewedCount: number; // Total leaderboard views
+    
+    // Virality funnel
+    inviteShareToVisitRate: number;     // % of shares that resulted in visits
+    visitToJoinRate: number;            // % of visits that resulted in joins
+    
+    // Retention comparison: circle users vs non-circle users
+    circleUsersStats: {
+        count: number;
+        avgStreak: number;
+        avgScore: number;
+        avgWinRate: number;
+    };
+    nonCircleUsersStats: {
+        count: number;
+        avgStreak: number;
+        avgScore: number;
+        avgWinRate: number;
+    };
+    
+    // Circles over time (for chart)
+    circlesCreatedByDate: Record<string, number>;
+}
+
+export interface CircleData {
+    id: string;
+    name: string;
+    createdBy: string;
+    createdAt: string;
+    inviteCode: string;
+    members: string[];
+    memberCount: number;
+}
+
 export const useAdminData = (user: any) => {
     const [players, setPlayers] = useState<PlayerWithMeta[]>([]);
     const [analyticsEvents, setAnalyticsEvents] = useState<any[]>([]);
+    const [circles, setCircles] = useState<CircleData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -401,13 +455,43 @@ export const useAdminData = (user: any) => {
         }
     }, [isAdmin]);
 
+    // Fetch circles from Firebase
+    const fetchCircles = useCallback(async () => {
+        if (!db || !isAdmin) return;
+        
+        try {
+            const circlesCollection = collection(db, 'circles');
+            const snapshot = await getDocs(circlesCollection);
+            
+            const circlesList: CircleData[] = [];
+            snapshot.forEach((doc: any) => {
+                const data = doc.data();
+                circlesList.push({
+                    id: doc.id,
+                    name: data.name || '',
+                    createdBy: data.createdBy || '',
+                    createdAt: data.createdAt || '',
+                    inviteCode: data.inviteCode || '',
+                    members: data.members || [],
+                    memberCount: (data.members || []).length,
+                });
+            });
+            
+            setCircles(circlesList);
+        } catch (err) {
+            console.warn('Failed to fetch circles:', err);
+            // Don't set error state - circles are optional
+        }
+    }, [isAdmin]);
+
     // Fetch on mount and when admin status changes
     useEffect(() => {
         if (isAdmin) {
             fetchPlayers();
             fetchAnalytics();
+            fetchCircles();
         }
-    }, [isAdmin, fetchPlayers, fetchAnalytics]);
+    }, [isAdmin, fetchPlayers, fetchAnalytics, fetchCircles]);
 
     // Calculate conversion metrics from analytics events
     const calculateConversionMetrics = useCallback((timeRange: TimeRange = '28days'): ConversionMetrics => {
@@ -2401,8 +2485,132 @@ export const useAdminData = (user: any) => {
         return dates.map(date => dataByDate[date]);
     }, [analyticsEvents]);
 
+    // Calculate Circle metrics for the Circles tab
+    const calculateCircleMetrics = useCallback((): CircleMetrics => {
+        // Size distribution
+        const sizeDistribution = {
+            '1-2': 0,
+            '3-5': 0,
+            '6-10': 0,
+            '11+': 0,
+        };
+        
+        circles.forEach(c => {
+            const count = c.memberCount;
+            if (count <= 2) sizeDistribution['1-2']++;
+            else if (count <= 5) sizeDistribution['3-5']++;
+            else if (count <= 10) sizeDistribution['6-10']++;
+            else sizeDistribution['11+']++;
+        });
+        
+        // Total unique members across all circles
+        const allMemberIds = new Set<string>();
+        circles.forEach(c => {
+            c.members.forEach(m => allMemberIds.add(m));
+        });
+        const totalCircleMembers = allMemberIds.size;
+        
+        // Percentage of users in circles
+        const percentUsersInCircles = players.length > 0 
+            ? Math.round((totalCircleMembers / players.length) * 100) 
+            : 0;
+        
+        // Average members per circle
+        const avgMembersPerCircle = circles.length > 0
+            ? Math.round((circles.reduce((sum, c) => sum + c.memberCount, 0) / circles.length) * 10) / 10
+            : 0;
+        
+        // Circle events from analytics
+        const circleCreatedEvents = analyticsEvents.filter(e => e.event === 'circle_created');
+        const circleJoinedEvents = analyticsEvents.filter(e => e.event === 'circle_joined');
+        const circleInviteSharedEvents = analyticsEvents.filter(e => e.event === 'circle_invite_shared');
+        const circleInviteVisitedEvents = analyticsEvents.filter(e => e.event === 'circle_invite_visited');
+        const circleLeaderboardViewedEvents = analyticsEvents.filter(e => e.event === 'circle_leaderboard_viewed');
+        
+        // Virality funnel calculations
+        const inviteShareToVisitRate = circleInviteSharedEvents.length > 0
+            ? Math.round((circleInviteVisitedEvents.length / circleInviteSharedEvents.length) * 100)
+            : 0;
+        
+        const visitToJoinRate = circleInviteVisitedEvents.length > 0
+            ? Math.round((circleJoinedEvents.length / circleInviteVisitedEvents.length) * 100)
+            : 0;
+        
+        // Compare circle users vs non-circle users
+        const circleUserIds = allMemberIds;
+        const circleUsers = players.filter(p => circleUserIds.has(p.uid));
+        const nonCircleUsers = players.filter(p => !circleUserIds.has(p.uid));
+        
+        const calculateUserStats = (userList: PlayerWithMeta[]) => {
+            if (userList.length === 0) {
+                return { count: 0, avgStreak: 0, avgScore: 0, avgWinRate: 0 };
+            }
+            
+            let totalStreak = 0;
+            let totalScore = 0;
+            let totalPlayed = 0;
+            let totalSolved = 0;
+            
+            userList.forEach(p => {
+                totalStreak += p.playerData.currentStreak || 0;
+                totalScore += p.playerData.totalScore || 0;
+                
+                // Calculate win rate from daily results
+                if (p.playerData.dailyResults) {
+                    Object.values(p.playerData.dailyResults).forEach((day: any) => {
+                        ['easy', 'hard', 'impossible'].forEach(diff => {
+                            if (day[diff]) {
+                                totalPlayed++;
+                                if (day[diff].solved) totalSolved++;
+                            }
+                        });
+                    });
+                }
+            });
+            
+            return {
+                count: userList.length,
+                avgStreak: Math.round((totalStreak / userList.length) * 10) / 10,
+                avgScore: Math.round(totalScore / userList.length),
+                avgWinRate: totalPlayed > 0 ? Math.round((totalSolved / totalPlayed) * 100) : 0,
+            };
+        };
+        
+        // Circles created by date (for chart)
+        const circlesCreatedByDate: Record<string, number> = {};
+        circles.forEach(c => {
+            if (c.createdAt) {
+                const date = c.createdAt.split('T')[0];
+                circlesCreatedByDate[date] = (circlesCreatedByDate[date] || 0) + 1;
+            }
+        });
+        
+        return {
+            totalCircles: circles.length,
+            totalCircleMembers,
+            percentUsersInCircles,
+            avgMembersPerCircle,
+            circleSizeDistribution: sizeDistribution,
+            
+            circleCreatedCount: circleCreatedEvents.length,
+            circleJoinedCount: circleJoinedEvents.length,
+            circleInviteSharedCount: circleInviteSharedEvents.length,
+            circleInviteVisitedCount: circleInviteVisitedEvents.length,
+            circleLeaderboardViewedCount: circleLeaderboardViewedEvents.length,
+            
+            inviteShareToVisitRate,
+            visitToJoinRate,
+            
+            circleUsersStats: calculateUserStats(circleUsers),
+            nonCircleUsersStats: calculateUserStats(nonCircleUsers),
+            
+            circlesCreatedByDate,
+        };
+    }, [circles, players, analyticsEvents]);
+
     return {
         players,
+        circles,
         loading,
         error,
         isAdmin,
@@ -2421,6 +2629,7 @@ export const useAdminData = (user: any) => {
         calculateGrowthMetrics,
         calculateAnonymousDay0HistoricalMetrics,
         calculateGrowthDay0HistoricalMetrics,
+        calculateCircleMetrics,
         getLeaderboard,
         searchPlayers,
         analyticsEvents, // Expose for CSV export

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useCallback } from 'react';
 import type { Circle, CircleMember, CircleInviteInfo } from '../types';
+import { useAnalytics } from './useAnalytics';
 import {
   createCircle as createCircleInFirebase,
   getCircle,
@@ -86,6 +87,15 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
   const [members, setMembers] = useState<CircleMember[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Analytics
+  const {
+    trackCircleCreated,
+    trackCircleJoined,
+    trackCircleLeft,
+    trackCircleDeleted,
+    trackCircleMemberRemoved,
+  } = useAnalytics();
 
   // Derived: get the active circle from the circles array
   const circle = circles.find(c => c.id === activeCircleId) || null;
@@ -187,6 +197,12 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
           todayTries: { easy: null, hard: null, impossible: null },
           winPercentage: 0,
         }]);
+        
+        // Track circle creation
+        trackCircleCreated({
+          circleId: result.circle.id,
+          circleName: result.circle.name,
+        });
       }
       
       return result;
@@ -197,7 +213,7 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, trackCircleCreated]);
 
   // Join an existing circle
   const joinCircle = useCallback(async (
@@ -226,6 +242,15 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
           const membersResult = await getCircleMembersFromFirebase(circleResult.circle);
           if (membersResult.success && membersResult.members) {
             setMembers(membersResult.members);
+            
+            // Track circle join
+            trackCircleJoined({
+              circleId: circleResult.circle.id,
+              circleName: circleResult.circle.name,
+              circleMemberCount: membersResult.members.length,
+              inviteCode: circleResult.circle.inviteCode,
+              referralSource: 'invite_link',
+            });
           }
         }
         
@@ -241,7 +266,7 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, [userId, trackCircleJoined]);
 
   // Refresh members list
   const refreshMembers = useCallback(async () => {
@@ -314,10 +339,20 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
       return { success: false, error: 'Only the creator can delete this group' };
     }
 
+    // Capture member count before deletion
+    const memberCount = members?.length || circle.members.length;
+
     setLoading(true);
     try {
       const result = await deleteCircleInFirebase(circle.id, userId);
       if (result.success) {
+        // Track circle deletion
+        trackCircleDeleted({
+          circleId: circle.id,
+          circleName: circle.name,
+          circleMemberCount: memberCount,
+        });
+        
         // Remove from circles array
         const remainingCircles = circles.filter(c => c.id !== circle.id);
         setCircles(remainingCircles);
@@ -336,7 +371,7 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
     } finally {
       setLoading(false);
     }
-  }, [circle, circles, userId]);
+  }, [circle, circles, userId, members, trackCircleDeleted]);
 
   // Leave circle (for non-creators)
   const leaveCircle = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
@@ -347,10 +382,20 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
       return { success: false, error: 'Creators cannot leave their own group. Delete it instead.' };
     }
 
+    // Capture member count before leaving
+    const memberCount = members?.length || circle.members.length;
+
     setLoading(true);
     try {
       const result = await leaveCircleInFirebase(userId, circle.id);
       if (result.success) {
+        // Track circle leave
+        trackCircleLeft({
+          circleId: circle.id,
+          circleName: circle.name,
+          circleMemberCount: memberCount,
+        });
+        
         // Remove from circles array
         const remainingCircles = circles.filter(c => c.id !== circle.id);
         setCircles(remainingCircles);
@@ -369,7 +414,7 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
     } finally {
       setLoading(false);
     }
-  }, [circle, circles, userId]);
+  }, [circle, circles, userId, members, trackCircleLeft]);
 
   // Remove a member from circle (creator only)
   const removeMember = useCallback(async (memberIdToRemove: string): Promise<{ success: boolean; error?: string }> => {
@@ -380,10 +425,21 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
       return { success: false, error: 'Only the creator can remove members' };
     }
 
+    // Capture member count before removal
+    const memberCount = members?.length || circle.members.length;
+
     setLoading(true);
     try {
       const result = await removeMemberInFirebase(userId, circle.id, memberIdToRemove);
       if (result.success) {
+        // Track member removal
+        trackCircleMemberRemoved({
+          circleId: circle.id,
+          circleName: circle.name,
+          circleMemberCount: memberCount,
+          removedUserId: memberIdToRemove,
+        });
+        
         // Refresh members list
         await refreshMembers();
       }
@@ -393,7 +449,7 @@ export const useCircles = ({ userId, userCircleIds }: UseCirclesOptions): UseCir
     } finally {
       setLoading(false);
     }
-  }, [circle, userId, refreshMembers]);
+  }, [circle, userId, members, refreshMembers, trackCircleMemberRemoved]);
 
   // Handle when user discovers they've been removed from a circle
   // This cleans up the stale circle from local state

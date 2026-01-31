@@ -96,7 +96,16 @@ export type AnalyticsEvent =
     | 'badge_unlocked'
     | 'archive_puzzle_started'
     | 'bonus_round_started'
-    | 'theme_changed';
+    | 'theme_changed'
+    // Circle events
+    | 'circle_created'
+    | 'circle_joined'
+    | 'circle_invite_shared'
+    | 'circle_invite_visited'
+    | 'circle_left'
+    | 'circle_deleted'
+    | 'circle_member_removed'
+    | 'circle_leaderboard_viewed';
 
 interface EventData {
     sessionId: string;
@@ -138,6 +147,14 @@ interface EventData {
     endScreen?: 'all_done' | 'mid_puzzle' | 'start_screen' | 'archive' | 'bonus';
     // Theme data
     newTheme?: 'light' | 'dark';
+    // Circle data
+    circleId?: string;
+    circleName?: string;
+    circleMemberCount?: number; // member count at time of event
+    isCreator?: boolean;
+    inviteCode?: string;
+    referralSource?: 'invite_link' | 'direct';
+    removedUserId?: string; // for circle_member_removed
 }
 
 // Puzzle start times tracked in memory (per session)
@@ -379,6 +396,114 @@ export const useAnalytics = () => {
         logEvent('theme_changed', { newTheme });
     }, [logEvent]);
 
+    // Circle tracking functions
+    const trackCircleCreated = useCallback((options: {
+        circleId: string;
+        circleName: string;
+    }) => {
+        logEvent('circle_created', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: 1, // creator is first member
+            isCreator: true,
+        });
+    }, [logEvent]);
+
+    const trackCircleJoined = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+        inviteCode?: string;
+        referralSource?: 'invite_link' | 'direct';
+    }) => {
+        logEvent('circle_joined', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+            isCreator: false,
+            inviteCode: options.inviteCode,
+            referralSource: options.referralSource || 'invite_link',
+        });
+    }, [logEvent]);
+
+    const trackCircleInviteShared = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+        inviteCode: string;
+    }) => {
+        logEvent('circle_invite_shared', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+            inviteCode: options.inviteCode,
+        });
+    }, [logEvent]);
+
+    const trackCircleInviteVisited = useCallback((options: {
+        inviteCode: string;
+        circleId?: string;
+        circleName?: string;
+    }) => {
+        logEvent('circle_invite_visited', {
+            inviteCode: options.inviteCode,
+            circleId: options.circleId,
+            circleName: options.circleName,
+        });
+    }, [logEvent]);
+
+    const trackCircleLeft = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+    }) => {
+        logEvent('circle_left', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+        });
+    }, [logEvent]);
+
+    const trackCircleDeleted = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+    }) => {
+        logEvent('circle_deleted', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+            isCreator: true,
+        });
+    }, [logEvent]);
+
+    const trackCircleMemberRemoved = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+        removedUserId: string;
+    }) => {
+        logEvent('circle_member_removed', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+            removedUserId: options.removedUserId,
+            isCreator: true,
+        });
+    }, [logEvent]);
+
+    const trackCircleLeaderboardViewed = useCallback((options: {
+        circleId: string;
+        circleName: string;
+        circleMemberCount: number;
+    }) => {
+        logEvent('circle_leaderboard_viewed', {
+            circleId: options.circleId,
+            circleName: options.circleName,
+            circleMemberCount: options.circleMemberCount,
+        });
+    }, [logEvent]);
+
     return {
         logEvent,
         trackPuzzleStarted,
@@ -396,6 +521,15 @@ export const useAnalytics = () => {
         trackSessionEnd,
         trackThemeChanged,
         getPuzzlesPlayedBeforeSignup,
+        // Circle tracking
+        trackCircleCreated,
+        trackCircleJoined,
+        trackCircleInviteShared,
+        trackCircleInviteVisited,
+        trackCircleLeft,
+        trackCircleDeleted,
+        trackCircleMemberRemoved,
+        trackCircleLeaderboardViewed,
     };
 };
 

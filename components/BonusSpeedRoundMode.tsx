@@ -305,25 +305,29 @@ export const BonusSpeedRoundMode = () => {
                 // Clean up the URL
                 window.history.replaceState({}, '', '/');
                 
-                // Fetch invite info
-                const result = await getCircleByInviteCode(inviteCode);
-                if (result.success && result.inviteInfo) {
-                    // Track the invite URL visit
-                    trackCircleInviteVisited({
-                        inviteCode,
-                        circleId: result.inviteInfo.circleId,
-                        circleName: result.inviteInfo.circleName,
-                    });
-                    
-                    setPendingInviteInfo(result.inviteInfo);
-                    // Only show welcome modal for non-logged-in users
-                    // Logged-in users will be handled by processPendingInvite useEffect
-                    if (!user) {
-                        setShowInviteWelcomeModal(true);
-                    }
-                } else {
-                    // Track the visit even if invite code is invalid
+                // For unauthenticated users, we can't fetch circle info (Firebase rules require auth)
+                // So show the welcome modal with generic text, and fetch details after they sign up
+                if (!user) {
+                    // Track the invite URL visit (without circle details since we can't fetch them)
                     trackCircleInviteVisited({ inviteCode });
+                    setShowInviteWelcomeModal(true);
+                } else {
+                    // Authenticated user - fetch invite info and let processPendingInvite handle it
+                    const result = await getCircleByInviteCode(inviteCode);
+                    
+                    if (result.success && result.inviteInfo) {
+                        // Track the invite URL visit
+                        trackCircleInviteVisited({
+                            inviteCode,
+                            circleId: result.inviteInfo.circleId,
+                            circleName: result.inviteInfo.circleName,
+                        });
+                        
+                        setPendingInviteInfo(result.inviteInfo);
+                    } else {
+                        // Track the visit even if invite code is invalid
+                        trackCircleInviteVisited({ inviteCode });
+                    }
                 }
             }
         };
@@ -961,7 +965,7 @@ export const BonusSpeedRoundMode = () => {
                 )}
                 {showcaseVisible && <AchievementShowcaseModal badges={playerData.badges} onClose={() => setShowcaseVisible(false)} user={user} onShowAuth={handleShowAuth} />}
                 {showAuthModal && <AuthModal initialMode={authModalMode} onClose={() => setShowAuthModal(false)} />}
-                {showInviteWelcomeModal && pendingInviteInfo && (
+                {showInviteWelcomeModal && (
                     <InviteWelcomeModal
                         inviteInfo={pendingInviteInfo}
                         onJoin={handleInviteWelcomeJoin}
@@ -1098,7 +1102,7 @@ export const BonusSpeedRoundMode = () => {
                     }} 
                     onClose={() => setShowLogoutModal(false)} 
                 />}
-                {showInviteWelcomeModal && pendingInviteInfo && (
+                {showInviteWelcomeModal && (
                     <InviteWelcomeModal
                         inviteInfo={pendingInviteInfo}
                         onJoin={handleInviteWelcomeJoin}

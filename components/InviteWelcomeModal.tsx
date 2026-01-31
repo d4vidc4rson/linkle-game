@@ -3,7 +3,7 @@ import React from 'react';
 import type { CircleInviteInfo } from '../types';
 
 interface InviteWelcomeModalProps {
-    inviteInfo: CircleInviteInfo;
+    inviteInfo: CircleInviteInfo | null; // May be null for unauthenticated users
     onJoin: () => void; // Opens auth flow
     onDecline: () => void; // Clears invite and closes modal
 }
@@ -18,9 +18,15 @@ export const InviteWelcomeModal: React.FC<InviteWelcomeModalProps> = ({
             <div className="modal-content invite-welcome-modal">
                 <h2>You've been invited to play Linkle!</h2>
                 
-                <p className="invite-welcome-inviter">
-                    <strong>{inviteInfo.inviterName}</strong> wants you to join their circle: <strong>"{inviteInfo.circleName}"</strong>
-                </p>
+                {inviteInfo ? (
+                    <p className="invite-welcome-inviter">
+                        <strong>{inviteInfo.inviterName}</strong> wants you to join their group: <strong>"{inviteInfo.circleName}"</strong>
+                    </p>
+                ) : (
+                    <p className="invite-welcome-inviter">
+                        Someone wants you to join their group and compete for the highest score!
+                    </p>
+                )}
                 
                 <p className="invite-welcome-description">
                     Play daily puzzles and see who gets the highest score.
@@ -28,7 +34,7 @@ export const InviteWelcomeModal: React.FC<InviteWelcomeModalProps> = ({
 
                 <div className="invite-welcome-actions">
                     <button className="button" onClick={onJoin}>
-                        <span>JOIN CIRCLE</span>
+                        <span>JOIN GROUP</span>
                     </button>
                     
                     <button className="invite-welcome-decline" onClick={onDecline}>

@@ -112,6 +112,8 @@ const MemberRow: React.FC<{
     const rowRef = useRef<HTMLDivElement>(null);
     
     const SWIPE_THRESHOLD = 80; // Pixels to swipe to reveal delete
+    const SWIPE_TRIGGER_THRESHOLD = SWIPE_THRESHOLD / 2; // Threshold to trigger delete on tap
+    const isSwipeOpenRef = useRef(false); // Ref to track open state synchronously
 
     const handleTouchStart = (e: React.TouchEvent) => {
         if (!canRemove) return;
@@ -130,10 +132,12 @@ const MemberRow: React.FC<{
         if (!canRemove) return;
         setIsSwiping(false);
         // Snap to open or closed
-        if (swipeOffset > SWIPE_THRESHOLD / 2) {
+        if (swipeOffset > SWIPE_TRIGGER_THRESHOLD) {
             setSwipeOffset(SWIPE_THRESHOLD);
+            isSwipeOpenRef.current = true;
         } else {
             setSwipeOffset(0);
+            isSwipeOpenRef.current = false;
         }
     };
 
@@ -141,6 +145,7 @@ const MemberRow: React.FC<{
         // Reset swipe if swiped open
         if (swipeOffset > 0) {
             setSwipeOffset(0);
+            isSwipeOpenRef.current = false;
             return;
         }
         if (isCurrentUser && onEditName) {
@@ -157,7 +162,9 @@ const MemberRow: React.FC<{
                     style={{ width: swipeOffset }}
                     onClick={(e) => {
                         e.stopPropagation();
-                        if (swipeOffset >= SWIPE_THRESHOLD && onRemove) {
+                        // Use ref for reliable detection - avoids React state timing issues
+                        // Also check swipeOffset as fallback for cases where ref might not be set
+                        if ((isSwipeOpenRef.current || swipeOffset >= SWIPE_TRIGGER_THRESHOLD) && onRemove) {
                             onRemove();
                         }
                     }}
@@ -662,31 +669,32 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
                     </div>
                 )}
 
-                {/* Remove member confirmation modal */}
-                {memberToRemove && (
-                    <div className="remove-member-modal-overlay" onClick={() => setMemberToRemove(null)}>
-                        <div className="delete-confirm-box" onClick={e => e.stopPropagation()}>
-                            <p>Remove {memberToRemove.name} from this group?</p>
-                            <div className="delete-confirm-actions">
-                                <button 
-                                    className="button button-outline"
-                                    onClick={() => setMemberToRemove(null)}
-                                    disabled={removing}
-                                >
-                                    <span>Cancel</span>
-                                </button>
-                                <button 
-                                    className="button button-danger"
-                                    onClick={handleRemoveMember}
-                                    disabled={removing}
-                                >
-                                    <span>{removing ? 'Removing...' : 'Remove'}</span>
-                                </button>
-                            </div>
+            </div>
+
+            {/* Remove member confirmation modal - positioned outside circle-sheet for proper mobile rendering */}
+            {memberToRemove && (
+                <div className="remove-member-modal-overlay" onClick={() => setMemberToRemove(null)}>
+                    <div className="delete-confirm-box" onClick={e => e.stopPropagation()}>
+                        <p>Remove {memberToRemove.name} from this group?</p>
+                        <div className="delete-confirm-actions">
+                            <button 
+                                className="button button-outline"
+                                onClick={() => setMemberToRemove(null)}
+                                disabled={removing}
+                            >
+                                <span>Cancel</span>
+                            </button>
+                            <button 
+                                className="button button-danger"
+                                onClick={handleRemoveMember}
+                                disabled={removing}
+                            >
+                                <span>{removing ? 'Removing...' : 'Remove'}</span>
+                            </button>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 };

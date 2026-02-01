@@ -197,7 +197,7 @@ export const LinkleAvatarIcon = (props) => (
         {/* Face */}
         <path 
           d="M145 115C145 139.853 124.853 160 100 160C75.1472 160 55 139.853 55 115C55 90.1472 70 70 100 70C130 70 145 90.1472 145 115Z" 
-          fill="#FFFFFF" 
+          fill="#fbecd7" 
           stroke="#2E2E2E" 
           strokeWidth="6"
         />

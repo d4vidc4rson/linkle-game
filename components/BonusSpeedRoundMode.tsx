@@ -1151,6 +1151,7 @@ export const BonusSpeedRoundMode = () => {
                     onLeaveCircle={leaveCircle}
                     onRemoveMember={removeMember}
                     onRemovedFromCircle={handleRemovedFromCircle}
+                    onRefreshCircleMembers={refreshMembers}
                 />
             </div>
         );

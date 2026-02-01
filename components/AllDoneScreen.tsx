@@ -67,6 +67,7 @@ interface AllDoneScreenProps {
     onLeaveCircle?: () => Promise<{ success: boolean; error?: string }>;
     onRemoveMember?: (memberId: string) => Promise<{ success: boolean; error?: string }>;
     onRemovedFromCircle?: (circleId: string) => void;
+    onRefreshCircleMembers?: () => Promise<void>;
 }
 
 const allThreeSolvedMessages = [
@@ -160,6 +161,7 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
     onLeaveCircle,
     onRemoveMember,
     onRemovedFromCircle,
+    onRefreshCircleMembers,
 }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [shareDate, setShareDate] = useState<Date>(date);
@@ -442,7 +444,13 @@ export const AllDoneScreen: React.FC<AllDoneScreenProps> = ({
                             <CirclePreview
                                 circle={circle}
                                 members={circleMembers}
-                                onTap={() => setShowCircleSheet(true)}
+                                onTap={async () => {
+                                    // Refresh members data before showing sheet to ensure fresh today status
+                                    if (onRefreshCircleMembers) {
+                                        await onRefreshCircleMembers();
+                                    }
+                                    setShowCircleSheet(true);
+                                }}
                             />
                         )}
                     </div>

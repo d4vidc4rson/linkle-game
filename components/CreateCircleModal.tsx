@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { CloseIcon } from './Icons';
+import { useKeyboardOffset } from '../hooks/useKeyboardOffset';
 
 interface CreateCircleModalProps {
     onClose: () => void;
@@ -16,6 +17,7 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
     const [circleName, setCircleName] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [error, setError] = useState('');
+    const keyboardOffset = useKeyboardOffset();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,7 +41,11 @@ export const CreateCircleModal: React.FC<CreateCircleModalProps> = ({
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content create-circle-modal" onClick={(e) => e.stopPropagation()}>
+            <div 
+                className="modal-content create-circle-modal" 
+                onClick={(e) => e.stopPropagation()}
+                style={{ transform: keyboardOffset ? `translateY(-${keyboardOffset}px)` : undefined }}
+            >
                 <button className="modal-close-button" onClick={onClose} aria-label="Close">
                     <CloseIcon />
                 </button>

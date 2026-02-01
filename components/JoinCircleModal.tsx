@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { CloseIcon } from './Icons';
+import { useKeyboardOffset } from '../hooks/useKeyboardOffset';
 import type { CircleInviteInfo } from '../types';
 
 interface JoinCircleModalProps {
@@ -20,6 +21,7 @@ export const JoinCircleModal: React.FC<JoinCircleModalProps> = ({
 }) => {
     const [displayName, setDisplayName] = useState(lastUsedName);
     const [error, setError] = useState('');
+    const keyboardOffset = useKeyboardOffset();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,7 +41,11 @@ export const JoinCircleModal: React.FC<JoinCircleModalProps> = ({
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content join-circle-modal" onClick={(e) => e.stopPropagation()}>
+            <div 
+                className="modal-content join-circle-modal" 
+                onClick={(e) => e.stopPropagation()}
+                style={{ transform: keyboardOffset ? `translateY(-${keyboardOffset}px)` : undefined }}
+            >
                 <button className="modal-close-button" onClick={onClose} aria-label="Close">
                     <CloseIcon />
                 </button>

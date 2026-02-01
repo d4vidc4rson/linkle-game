@@ -321,6 +321,7 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [dragState, setDragState] = useState({ isDragging: false, startY: 0 });
     const sheetRef = useRef<HTMLDivElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     // Analytics
     const { trackCircleLeaderboardViewed, trackCircleInviteShared } = useAnalytics();
@@ -370,13 +371,15 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
 
     // Drag to dismiss handlers
     const handlePointerDown = (e: React.PointerEvent) => {
-        const target = e.target as HTMLElement;
-        if (!target.closest('.sheet-drag-handle') && !target.closest('.circle-sheet-header')) {
+        // If user is in the scroll container and it's already scrolled, don't start drag
+        const scrollContainer = scrollContainerRef.current;
+        if (scrollContainer && scrollContainer.contains(e.target as Node) && scrollContainer.scrollTop > 0) {
             return;
         }
         setDragState({ isDragging: true, startY: e.clientY });
         if (sheetRef.current) {
             sheetRef.current.style.transition = 'none';
+            sheetRef.current.classList.add('is-dragging');
         }
     };
 
@@ -391,6 +394,7 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
     const handlePointerUp = (e: React.PointerEvent) => {
         if (!dragState.isDragging || !sheetRef.current) return;
         sheetRef.current.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        sheetRef.current.classList.remove('is-dragging');
         
         const deltaY = e.clientY - dragState.startY;
         const sheetHeight = sheetRef.current.offsetHeight;
@@ -566,127 +570,129 @@ export const CircleSheet: React.FC<CircleSheetProps> = ({
                     onCreateNew={onCreateNewCircle}
                 />
 
-                <div className="circle-sheet-leaderboard">
-                    {members.map((member, index) => (
-                        <MemberRow
-                            key={member.id}
-                            member={member}
-                            rank={index + 1}
-                            index={index}
-                            isCurrentUser={member.id === currentUserId}
-                            onEditName={handleEditMyName}
-                            canRemove={isCreator && member.id !== currentUserId}
-                            onRemove={() => setMemberToRemove({ id: member.id, name: member.name })}
-                        />
-                    ))}
-                </div>
-
-                <div className="invite-wrapper">
-                    <p className="invite-instruction">Share this link with anyone you want to add to this group:</p>
-                    <div className="invite-link-box">
-                        <span className="invite-link-url">{inviteUrl}</span>
-                        <button 
-                            className={`invite-copy-button ${linkCopied ? 'copied' : ''}`} 
-                            onClick={handleCopyLink}
-                        >
-                            <CopyIcon />
-                            {linkCopied ? 'Copied!' : 'Copy'}
-                        </button>
-                    </div>
-                </div>
-
-                {/* Edit my name modal */}
-                {isEditingMyName && (
-                    <div className="inline-edit-overlay">
-                        <div className="inline-edit-modal">
-                            <h3>Edit your name</h3>
-                            <input
-                                type="text"
-                                value={editingMyName}
-                                onChange={(e) => setEditingMyName(e.target.value)}
-                                maxLength={20}
-                                autoFocus
-                                placeholder="Your display name"
+                <div className="circle-sheet-scroll-container" ref={scrollContainerRef}>
+                    <div className="circle-sheet-leaderboard">
+                        {members.map((member, index) => (
+                            <MemberRow
+                                key={member.id}
+                                member={member}
+                                rank={index + 1}
+                                index={index}
+                                isCurrentUser={member.id === currentUserId}
+                                onEditName={handleEditMyName}
+                                canRemove={isCreator && member.id !== currentUserId}
+                                onRemove={() => setMemberToRemove({ id: member.id, name: member.name })}
                             />
-                            <div className="inline-edit-actions">
-                                <button className="button button-outline" onClick={() => setIsEditingMyName(false)}>
-                                    <span>Cancel</span>
-                                </button>
-                                <button className="button" onClick={handleSaveMyName}>
-                                    <span>Save</span>
-                                </button>
-                            </div>
+                        ))}
+                    </div>
+
+                    <div className="invite-wrapper">
+                        <p className="invite-instruction">Share this link with anyone you want to add to this group:</p>
+                        <div className="invite-link-box">
+                            <span className="invite-link-url">{inviteUrl}</span>
+                            <button 
+                                className={`invite-copy-button ${linkCopied ? 'copied' : ''}`} 
+                                onClick={handleCopyLink}
+                            >
+                                <CopyIcon />
+                                {linkCopied ? 'Copied!' : 'Copy'}
+                            </button>
                         </div>
                     </div>
-                )}
 
-                {/* Delete group button (creator only) */}
-                {isCreator && (
-                    <div className="circle-sheet-danger-zone">
-                        {!showDeleteConfirm ? (
-                            <button 
-                                className="delete-group-button"
-                                onClick={() => setShowDeleteConfirm(true)}
-                            >
-                                Delete this group
-                            </button>
-                        ) : (
-                            <div className="delete-confirm-box">
-                                <p>Are you sure? This will remove the group for all members.</p>
-                                <div className="delete-confirm-actions">
-                                    <button 
-                                        className="button button-outline"
-                                        onClick={() => setShowDeleteConfirm(false)}
-                                        disabled={deleting}
-                                    >
+                    {/* Edit my name modal */}
+                    {isEditingMyName && (
+                        <div className="inline-edit-overlay">
+                            <div className="inline-edit-modal">
+                                <h3>Edit your name</h3>
+                                <input
+                                    type="text"
+                                    value={editingMyName}
+                                    onChange={(e) => setEditingMyName(e.target.value)}
+                                    maxLength={20}
+                                    autoFocus
+                                    placeholder="Your display name"
+                                />
+                                <div className="inline-edit-actions">
+                                    <button className="button button-outline" onClick={() => setIsEditingMyName(false)}>
                                         <span>Cancel</span>
                                     </button>
-                                    <button 
-                                        className="button button-danger"
-                                        onClick={handleDeleteCircle}
-                                        disabled={deleting}
-                                    >
-                                        <span>{deleting ? 'Deleting...' : 'Delete'}</span>
+                                    <button className="button" onClick={handleSaveMyName}>
+                                        <span>Save</span>
                                     </button>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                )}
+                        </div>
+                    )}
 
-                {/* Leave group button (non-creators only) */}
-                {!isCreator && (
-                    <div className="circle-sheet-danger-zone">
-                        {!showLeaveConfirm ? (
-                            <button 
-                                className="delete-group-button"
-                                onClick={() => setShowLeaveConfirm(true)}
-                            >
-                                Leave this group
-                            </button>
-                        ) : (
-                            <div className="delete-confirm-box">
-                                <p>Are you sure you want to leave this group?</p>
-                                <div className="delete-confirm-actions">
-                                    <button 
-                                        className="button button-outline"
-                                        onClick={() => setShowLeaveConfirm(false)}
-                                        disabled={leaving}
-                                    >
-                                        <span>Cancel</span>
-                                    </button>
-                                    <button 
-                                        className="button button-danger"
-                                        onClick={handleLeaveCircle}
-                                        disabled={leaving}
-                                    >
-                                        <span>{leaving ? 'Leaving...' : 'Leave'}</span>
-                                    </button>
+                    {/* Delete group button (creator only) */}
+                    {isCreator && (
+                        <div className="circle-sheet-danger-zone">
+                            {!showDeleteConfirm ? (
+                                <button 
+                                    className="delete-group-button"
+                                    onClick={() => setShowDeleteConfirm(true)}
+                                >
+                                    Delete this group
+                                </button>
+                            ) : (
+                                <div className="delete-confirm-box">
+                                    <p>Are you sure? This will remove the group for all members.</p>
+                                    <div className="delete-confirm-actions">
+                                        <button 
+                                            className="button button-outline"
+                                            onClick={() => setShowDeleteConfirm(false)}
+                                            disabled={deleting}
+                                        >
+                                            <span>Cancel</span>
+                                        </button>
+                                        <button 
+                                            className="button button-danger"
+                                            onClick={handleDeleteCircle}
+                                            disabled={deleting}
+                                        >
+                                            <span>{deleting ? 'Deleting...' : 'Delete'}</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                )}
+                            )}
+                        </div>
+                    )}
+
+                    {/* Leave group button (non-creators only) */}
+                    {!isCreator && (
+                        <div className="circle-sheet-danger-zone">
+                            {!showLeaveConfirm ? (
+                                <button 
+                                    className="delete-group-button"
+                                    onClick={() => setShowLeaveConfirm(true)}
+                                >
+                                    Leave this group
+                                </button>
+                            ) : (
+                                <div className="delete-confirm-box">
+                                    <p>Are you sure you want to leave this group?</p>
+                                    <div className="delete-confirm-actions">
+                                        <button 
+                                            className="button button-outline"
+                                            onClick={() => setShowLeaveConfirm(false)}
+                                            disabled={leaving}
+                                        >
+                                            <span>Cancel</span>
+                                        </button>
+                                        <button 
+                                            className="button button-danger"
+                                            onClick={handleLeaveCircle}
+                                            disabled={leaving}
+                                        >
+                                            <span>{leaving ? 'Leaving...' : 'Leave'}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
 
             </div>
 

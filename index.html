@@ -3514,9 +3514,25 @@
       border-radius: calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 3) 0 0;
       padding: calc(var(--grid-unit) * 4) calc(var(--grid-unit) * 3) calc(var(--grid-unit) * 4);
       height: 80vh;
-      overflow-y: auto;
       z-index: 1001;
       animation: slide-in-from-bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      touch-action: none;
+      user-select: none;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .circle-sheet:not(.is-dragging) {
+      user-select: none;
+    }
+    .circle-sheet-scroll-container {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      min-height: 0;
+      touch-action: pan-y;
+      overscroll-behavior: contain;
+      padding-right: var(--grid-unit);
     }
     .circle-sheet-header {
       text-align: center;

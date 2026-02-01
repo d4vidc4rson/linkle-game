@@ -516,10 +516,9 @@ export const BonusSpeedRoundMode = () => {
             setBonusAnimationClass('screen-shake-win');
             setGameState('solved');
         } else {
-            // Loss: No points, reset streak to 0
+            // Loss: No points, but preserve streak (bonus round is risk-free - no penalty for losing)
             const updatedPlayerData = {
                 ...playerData,
-                currentStreak: 0,
                 lastPlayedDate: new Date().toISOString(),
             };
             

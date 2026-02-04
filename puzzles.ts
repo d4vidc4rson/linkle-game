@@ -2612,4 +2612,24 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "CAUGHT LACKING is slang for being caught unprepared or embarrassed. LACKING INFORMATION describes incomplete data. INFORMATION ASYMMETRY is the economics concept where one party has more knowledge in a transaction. ASYMMETRY WARFARE (asymmetric warfare) describes conflicts between mismatched opponents, like guerrilla tactics. WARFARE STATE is a government organized primarily for military purposes. STATE RELIGION is an officially endorsed faith, like Anglicanism in England. A RELIGION CARD is played when someone invokes faith to deflect criticism. CARD DECLINED is the embarrassing message when payment fails.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["SOFT", "BOI", "SUMMER", "WALKER", "STALKER", "ZONE", "DIET", "CULTURE", "WAR"],
+        narrative: "A SOFT BOI is the emotionally sensitive alternative to toxic masculinity. BOI SUMMER was the 2021 meme celebrating Hot Girl Summer's counterpart. A SUMMER WALKER is the R&B singer known for 'Playing Games.' A WALKER STALKER is a fan convention for The Walking Dead TV series. A STALKER ZONE is the dangerous approach area in the video game S.T.A.L.K.E.R. A ZONE DIET is the macronutrient-balanced eating plan from the 1990s. DIET CULTURE is the societal obsession with thinness and food restriction. A CULTURE WAR is the societal conflict over values and social norms.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ORCHID", "MANTIS", "SHRIMP", "BOAT", "DOCK", "WORKER", "COMP", "TIME", "LORD"],
+        narrative: "An ORCHID MANTIS is a praying mantis species that mimics orchid flowers. A MANTIS SHRIMP is a marine crustacean with powerful claws. A SHRIMP BOAT is a vessel used for commercial shrimp fishing. A BOAT DOCK is a structure where boats are moored. A DOCK WORKER is a longshoreman who loads and unloads cargo. WORKER COMP is short for workers' compensation insurance. COMP TIME is compensatory time off given for overtime work. A TIME LORD is a fictional alien species from Doctor Who.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ACCORDION", "FOLD", "MOUNTAIN", "PASS", "KEY", "LOGGER", "HEAD", "ACHE", "FREE"],
+        narrative: "An ACCORDION FOLD is a zigzag paper-folding technique. A FOLD MOUNTAIN is a mountain formed by tectonic plate compression. A MOUNTAIN PASS is a navigable route through a mountain range. A PASS KEY is a master key that opens multiple locks. A KEY LOGGER is malicious software that records keystrokes. A LOGGER HEAD is a large sea turtle species known for its big head. A HEAD ACHE is pain in the head. ACHE FREE means without pain or discomfort.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["WURLITZER", "ORGAN", "MEAT", "SPACE", "HEATER", "CORE", "ISSUE", "AREA", "CODE"],
+        narrative: "A WURLITZER ORGAN is a pipe organ made by the famous Wurlitzer Company. ORGAN MEAT refers to edible internal organs of animals like liver and kidneys. MEAT SPACE is slang for the physical world, as opposed to cyberspace. A SPACE HEATER is a portable device for warming a room. A HEATER CORE is an automotive component that provides cabin heat. A CORE ISSUE is a fundamental or central problem. An ISSUE AREA is a domain of policy concern. An AREA CODE is a telephone dialing prefix for a geographic region.",
+        difficulty: 'HARD'
+    },
 ];

@@ -1,4 +1,4 @@
-export type PuzzleDifficulty = 'EASY' | 'HARD' | 'IMPOSSIBLE' | 'EXTRA_IMPOSSIBLE';
+export type PuzzleDifficulty = 'EASY' | 'HARD' | 'IMPOSSIBLE';
 
 export interface Puzzle {
     solution: string[];
@@ -2510,6 +2510,106 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
     {
         solution: ["PARASOCIAL", "BOND", "YIELD", "CURVE", "FLATTENING", "AGENT", "ORANGE", "PEEL", "SESSION"],
         narrative: "A PARASOCIAL BOND is the one-sided emotional attachment fans form with media figures. A BOND YIELD is the return an investor earns on a debt security. A YIELD CURVE graphs interest rates across different bond maturities. CURVE FLATTENING occurs when short and long-term rates converge, often signaling recession. A FLATTENING AGENT is a paint additive that reduces gloss. AGENT ORANGE is the herbicide/defoliant notoriously used during the Vietnam War. ORANGE PEEL is the dimpled texture in paint or drywall, named for citrus skin. A PEEL SESSION was a live radio recording for BBC DJ John Peel, who championed alternative music from 1967-2004.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GRASS", "FED", "SMOKER", "VOICE", "ACTOR", "NETWORK", "ATTACHED", "STORAGE", "LOCKER"],
+        narrative: "GRASS-FED describes cattle raised on pasture rather than grain. A FED SMOKER is slang for someone who provides information to federal agents (fed + informant smoker). SMOKER VOICE is the raspy vocal quality associated with longtime smokers. A VOICE ACTOR performs dialogue for animation, video games, and dubbing. An ACTOR NETWORK is the sociological theory (ANT) that treats objects as participants in social networks. NETWORK ATTACHED STORAGE (NAS) is a dedicated file storage device on a local network. A STORAGE LOCKER is a rented unit for keeping possessions.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["TERMINALLY", "ONLINE", "HARM", "REDUCTION", "PRINT", "SPOOLER", "ALERT", "FATIGUE", "CRACK"],
+        narrative: "TERMINALLY ONLINE describes someone so internet-addicted they're disconnected from reality. ONLINE HARM refers to digital abuse, harassment, and exploitation. HARM REDUCTION is the public health approach of minimizing drug use risks without requiring abstinence. REDUCTION PRINT is a printmaking technique where layers are carved from a single block. A PRINT SPOOLER is the system service that manages printer jobs in an operating system. SPOOLER ALERT is a Windows notification about print queue issues. ALERT FATIGUE is the phenomenon where excessive warnings cause people to ignore them. FATIGUE CRACK is a fracture that develops from repeated stress cycles in materials science.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["REPLY", "GUY", "FIERI", "FLAVORTOWN", "USA", "TODAY", "YEARS", "AGO", "GO"],
+        narrative: "A REPLY GUY is a Twitter term for men who compulsively respond to women's posts. GUY FIERI is the spiky-haired Food Network celebrity chef. FIERI'S FLAVORTOWN is his signature catchphrase and imaginary culinary destination. FLAVORTOWN USA is the branding around Guy Fieri's restaurant empire. USA TODAY is the national American newspaper known for colorful infographics. TODAY YEARS OLD is the internet phrase for learning something obvious late ('I was today years old when...'). YEARS AGO is a time reference. AGO-GO refers to retro-futuristic aesthetic or the a-go-go dance style of the 1960s.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CONTENT", "FARM", "SHARE", "CROPPER", "SACK", "RACE", "REALISM", "TATTOO", "PARLOR"],
+        narrative: "A CONTENT FARM is a website that produces low-quality articles to maximize search traffic. FARM SHARE is a CSA subscription for seasonal produce from local farms. A SHARECROPPER was a tenant farmer who gave a portion of crops as rent, common in post-Civil War American South. A CROPPER SACK was the burlap bag used by cotton pickers. A SACK RACE is the party game where participants hop in burlap bags. RACE REALISM is the pseudoscientific belief in biological racial hierarchies. REALISM TATTOO is the style of tattooing that creates photorealistic images. A TATTOO PARLOR is the establishment where tattoos are applied.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["YEET", "CANNON", "FODDER", "CROP", "TOP", "BLOKE", "CORE", "MEMORY", "PALACE"],
+        narrative: "The YEET CANNON G1 is a Hi-Point pistol named after the meme-winning entry in their 2019 online naming contest. CANNON FODDER refers to soldiers viewed as expendable in military operations. FODDER CROP is agricultural vegetation grown specifically for animal feed. CROP TOP is the midriff-baring shirt style. A TOP BLOKE is British/Australian slang for a great guy. BLOKE CORE is the TikTok aesthetic of traditional masculine hobbies. CORE MEMORY is the emotional moment that becomes fundamental to identity (from Pixar's Inside Out). A MEMORY PALACE is the mnemonic technique of mentally placing items in an imagined building to improve recall.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["QUIET", "QUITTING", "TIME", "THIEF", "KNOT", "GARDEN", "LEAVE", "BEHIND", "SCENES"],
+        narrative: "QUIET QUITTING is the 2022 workplace trend of doing only the minimum job requirements. QUITTING TIME is the end of the workday. A TIME THIEF is someone or something that wastes your time unproductively. A THIEF KNOT resembles a reef knot but was used by sailors to detect if someone tampered with their belongings. A KNOT GARDEN is the formal garden style with intricately patterned low hedges. GARDEN LEAVE is paid time off during a notice period where the employee stays home. LEAVE BEHIND refers to materials or items left after a meeting or presentation. BEHIND THE SCENES describes what happens out of public view.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SITUATIONSHIP", "ERA", "DEFINING", "MOMENT", "ARM", "CANDY", "GRAM", "POSITIVE", "REINFORCEMENT"],
+        narrative: "A SITUATIONSHIP is a romantic relationship without clear labels or commitment. SITUATIONSHIP ERA is the Taylor Swift-influenced way of describing one's current dating phase. ERA-DEFINING describes something that characterizes an entire period. A DEFINING MOMENT is a pivotal event that shapes outcomes. A MOMENT ARM is the physics term for perpendicular distance from a force's line of action to a pivot point. ARM CANDY is an attractive partner displayed as a status accessory. A CANDY GRAM is the school tradition of sending treats with messages to classmates. GRAM-POSITIVE describes bacteria that retain crystal violet dye in the Gram staining procedure. POSITIVE REINFORCEMENT is the behavioral psychology technique of rewarding desired actions.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PARASOCIAL", "INTERACTION", "DESIGN", "DEBT", "JUBILEE", "YEAR", "ZERO", "GRAVITY", "BONG"],
+        narrative: "A PARASOCIAL INTERACTION is the one-sided relationship viewers form with media personalities. INTERACTION DESIGN is the UX discipline of designing digital product behavior. DESIGN DEBT is accumulated shortcuts in visual/UX work that must be repaid later. A DEBT JUBILEE is mass debt forgiveness, rooted in biblical tradition. A JUBILEE YEAR is the biblical 50-year cycle when debts were cancelled and slaves freed. YEAR ZERO is a starting point for new eras (Khmer Rouge policy, or the Nine Inch Nails album). ZERO GRAVITY describes the weightless condition in space. A GRAVITY BONG is a cannabis smoking device that uses water displacement.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DOOM", "SCROLLING", "TEXT", "NECK", "PILLOW", "PRINCESS", "TREATMENT", "RESISTANT", "STARCH"],
+        narrative: "DOOM SCROLLING is the compulsive habit of reading negative news online. SCROLLING TEXT is the moving display of words across a screen. TEXT NECK is the neck strain condition caused by looking down at phones. A NECK PILLOW is the U-shaped travel cushion for sleeping upright. A PILLOW PRINCESS is slang for a passive sexual partner who receives but doesn't reciprocate. PRINCESS TREATMENT is being pampered and spoiled like royalty. TREATMENT-RESISTANT describes medical conditions that don't respond to standard therapies. RESISTANT STARCH is dietary fiber that resists digestion and feeds gut bacteria.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CONTENT", "MODERATION", "QUEUE", "FLOODING", "ATTACK", "HELICOPTER", "PARENTING", "STYLE", "ICON"],
+        narrative: "CONTENT MODERATION is the practice of screening user-generated posts for policy violations. A MODERATION QUEUE is the backlog of flagged content awaiting human review. QUEUE FLOODING is a denial-of-service attack that overwhelms a system's processing queue. An ATTACK HELICOPTER is the military aircraft, or an offensive transphobic meme. HELICOPTER PARENTING is the overprotective style of hovering over children's activities. A PARENTING STYLE is a psychological classification of child-rearing approaches (authoritative, permissive, etc.). A STYLE ICON is someone whose fashion sense influences trends, like Audrey Hepburn or David Bowie.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["RIZZ", "GOD", "PARTICLE", "ACCELERATOR", "MASS", "SHOOTING", "STAR", "FUCKER", "JONES"],
+        narrative: "RIZZ is Gen Z slang for charisma or the ability to attract romantic interest. A RIZZ GOD is someone with exceptional charm. The GOD PARTICLE is the nickname for the Higgs boson in particle physics. A PARTICLE ACCELERATOR is a machine like CERN's LHC that propels subatomic particles. ACCELERATOR MASS SPECTROMETRY is a technique for carbon dating using particle acceleration. A MASS SHOOTING is the tragic term for gun violence killing multiple victims. A SHOOTING STAR is a meteor burning up in Earth's atmosphere. STARFUCKER is vulgar slang for someone who seeks relationships with celebrities. STARFUCKER JONES is a British band or a reference to celebrity obsession.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SIGMA", "MALE", "GAZE", "AVERSION", "THERAPY", "DOG", "PILING", "ON", "READ"],
+        narrative: "A SIGMA MALE is the internet's 'lone wolf' archetype who succeeds outside social hierarchies. The MALE GAZE is feminist film theory describing how media depicts women from a masculine perspective. GAZE AVERSION is the act of avoiding eye contact, common in autism or anxiety. AVERSION THERAPY is the controversial treatment pairing unwanted behavior with unpleasant stimuli. A THERAPY DOG provides emotional support to people in hospitals or disaster areas. DOG PILING is social media slang for mass attacks on a single target. PILING ON is the sports penalty for jumping onto a tackled player. An ON READ is when someone reads your message but doesn't reply.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MASS", "MUTUAL", "AID", "DEPENDENCY", "INJECTION", "ATTACK", "SURFACE", "MOUNT", "RUSHMORE"],
+        narrative: "MASSMUTUAL is the Massachusetts Mutual Life Insurance Company, a Fortune 500 financial services firm. MUTUAL AID is the anarchist practice of communities helping each other without charity hierarchy. AID DEPENDENCY is the criticism that foreign aid creates reliance rather than self-sufficiency. DEPENDENCY INJECTION is a software design pattern for loosely coupling components. An INJECTION ATTACK exploits vulnerabilities by inserting malicious code (SQL injection, XSS, etc.). An ATTACK SURFACE is the sum of all potential security vulnerabilities in a system. SURFACE MOUNT is the electronics manufacturing method of soldering components directly onto PCB surfaces. MOUNT RUSHMORE is the famous South Dakota monument featuring four U.S. presidents.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["RUSSIAN", "MAFIA", "STATE", "SECRET", "SANTA", "TRACKER", "FUND", "RAISING", "CANE"],
+        narrative: "The RUSSIAN MAFIA is the organized crime network originating from the former Soviet Union. A MAFIA STATE is a government controlled by organized crime. A STATE SECRET is classified information protected by government. SECRET SANTA is the anonymous holiday gift exchange tradition. The SANTA TRACKER is NORAD's annual Christmas Eve flight-following program. A TRACKER FUND is an index fund that follows a market benchmark. FUND RAISING is the practice of soliciting donations for a cause. RAISING CANE'S is the Louisiana-founded chicken finger restaurant chain.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["UNHINGED", "KING", "SHIT", "POST", "TRUTH", "DECAY", "RATE", "LIMITING", "FACTOR"],
+        narrative: "UNHINGED is slang for behaving erratically or without restraint. UNHINGED KING is ironic praise for chaotic behavior. KING SHIT is vulgar slang for feeling superior or dominant. A SHITPOST is deliberately low-quality or provocative internet content. POST-TRUTH describes the era where facts matter less than emotional appeals. TRUTH DECAY is the RAND Corporation's term for declining trust in facts and institutions. DECAY RATE measures how quickly radioactive material loses activity. RATE LIMITING is the API throttling technique to prevent server overload. A LIMITING FACTOR is the constraint that caps growth in a system.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CHRONICALLY", "ILL", "FATED", "LOVERS", "TROPE", "BUSTER", "RHYMES", "SCHEME", "PLOT"],
+        narrative: "CHRONICALLY ILL describes someone with an ongoing health condition. ILL-FATED means destined for disaster or misfortune. FATED LOVERS is the trope of characters destined to be together (or tragically apart). A LOVERS TROPE is a recurring romantic storyline pattern in fiction. A TROPE BUSTER subverts or plays against established narrative conventions. BUSTER RHYMES is the legendary fast-rapping hip-hop artist. A RHYME SCHEME is the pattern of end sounds in poetry (ABAB, etc.). A SCHEME PLOT is a planned deception or conspiracy.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SLAPS", "DIFFERENT", "GRAVY", "TRAIN", "SIMULATOR", "SICKNESS", "BEHAVIOR", "CHART", "TOPPER"],
+        narrative: "SLAPS is Gen Z slang meaning something is excellent or impressive. SLAPS DIFFERENT means something hits harder or is unexpectedly good. DIFFERENT GRAVY is British slang for being exceptionally high quality. A GRAVY TRAIN is an easy source of money or benefits. A TRAIN SIMULATOR is a video game genre for realistic railway operation. SIMULATOR SICKNESS is the motion-induced nausea from VR or simulation games. SICKNESS BEHAVIOR is the set of symptoms like fatigue and loss of appetite during illness. A BEHAVIOR CHART tracks actions for rewards (common in classrooms). A CHART TOPPER is a song that reaches #1 on music charts.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DRUM", "BEAT", "DROP", "CULTURE", "VULTURE", "CAPITALISM", "DEATH", "SPIRAL", "FRACTURE"],
+        narrative: "A DRUM BEAT is the rhythmic pattern played on drums. A BEAT DROP is the moment in electronic music when the bass kicks in. DROP CULTURE is the streetwear practice of releasing limited products without notice. A CULTURE VULTURE is someone who appropriates trends from other cultures for clout. VULTURE CAPITALISM describes predatory private equity that strips assets from companies. A CAPITALISM DEATH SPIRAL is the concept of systemic collapse from internal contradictions. A DEATH SPIRAL is an insurance term for adverse selection destroying a market, or a figure skating move. A SPIRAL FRACTURE is a bone break caused by twisting force.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FERAL", "GIRL", "DINNER", "THEATRE", "KID", "TABLE", "READ", "RECEIPT", "HOARDER"],
+        narrative: "FERAL describes wild, untamed behavior. FERAL GIRL is the TikTok persona of embracing chaotic, unpolished femininity. GIRL DINNER is the viral trend of cobbled-together snack plates as meals. DINNER THEATRE is the performance venue combining a meal with live entertainment. A THEATRE KID is the stereotypically dramatic drama club student. A KID TABLE is where children sit at family gatherings. A TABLE READ is an initial script read-through by a cast. READ RECEIPT is the notification that your message was seen. A RECEIPT HOARDER keeps every transaction record, often for tax anxiety.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CAUGHT", "LACKING", "INFORMATION", "ASYMMETRY", "WARFARE", "STATE", "RELIGION", "CARD", "DECLINED"],
+        narrative: "CAUGHT LACKING is slang for being caught unprepared or embarrassed. LACKING INFORMATION describes incomplete data. INFORMATION ASYMMETRY is the economics concept where one party has more knowledge in a transaction. ASYMMETRY WARFARE (asymmetric warfare) describes conflicts between mismatched opponents, like guerrilla tactics. WARFARE STATE is a government organized primarily for military purposes. STATE RELIGION is an officially endorsed faith, like Anglicanism in England. A RELIGION CARD is played when someone invokes faith to deflect criticism. CARD DECLINED is the embarrassing message when payment fails.",
         difficulty: 'IMPOSSIBLE'
     },
 ];

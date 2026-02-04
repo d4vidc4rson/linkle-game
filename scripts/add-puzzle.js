@@ -12,7 +12,7 @@
  * Options:
  *   --solution     The 9 words of the puzzle solution (required)
  *   --narrative    The narrative explaining the connections (required)
- *   --difficulty   One of: EASY, HARD, IMPOSSIBLE, EXTRA_IMPOSSIBLE (required)
+ *   --difficulty   One of: EASY, HARD, IMPOSSIBLE (required)
  *   --dry-run      Validate only, don't add to puzzles.ts
  *   --json         Output result as JSON (for programmatic use)
  * 
@@ -222,7 +222,7 @@ if (!args.dryRun && !args.narrative) {
     process.exit(1);
 }
 
-const validDifficulties = ['EASY', 'HARD', 'IMPOSSIBLE', 'EXTRA_IMPOSSIBLE'];
+const validDifficulties = ['EASY', 'HARD', 'IMPOSSIBLE'];
 if (!args.dryRun && !validDifficulties.includes(args.difficulty)) {
     console.error(`❌ Error: --difficulty must be one of: ${validDifficulties.join(', ')}`);
     process.exit(1);

@@ -1,4 +1,4 @@
-export type PuzzleDifficulty = 'EASY' | 'HARD' | 'IMPOSSIBLE';
+export type PuzzleDifficulty = 'EASY' | 'HARD' | 'IMPOSSIBLE' | 'EXTRA_IMPOSSIBLE';
 
 export interface Puzzle {
     solution: string[];
@@ -2391,5 +2391,75 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["SUPER", "BOWL", "CUT", "THROAT", "PUNCH", "DRUNK", "TEXT", "BOOK", "SMART"],
         narrative: "The SUPER BOWL is football's championship. A BOWL CUT is a rounded haircut. CUTTHROAT means ruthlessly competitive. A THROAT PUNCH is a violent strike. PUNCH DRUNK is dazed from blows. A DRUNK TEXT is sent while intoxicated. A TEXTBOOK is for studying. BOOK SMART means academically intelligent.",
         difficulty: 'HARD'
+    },
+    {
+        solution: ["VELVET", "ROPE", "SWING", "VOTER", "REGISTRATION", "DRIVE", "SHAFT", "MINE", "FIELD"],
+        narrative: "A VELVET ROPE marks VIP areas at exclusive venues. A ROPE SWING hangs from trees for recreational swinging. A SWING VOTER is an undecided voter who could vote for any party. VOTER REGISTRATION is the process of signing up eligible citizens to vote. A REGISTRATION DRIVE is an organized effort to register voters. A DRIVE SHAFT transmits torque in vehicles. A SHAFT MINE is an underground mine accessed via vertical shafts. A MINEFIELD is an area with explosive mines, or figuratively a dangerous situation.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PHANTOM", "THREAD", "COUNT", "DOWN", "DRAFT", "HORSE", "COLLAR", "BONE", "DRY"],
+        narrative: "PHANTOM THREAD is the 2017 Paul Thomas Anderson film about a 1950s fashion designer. THREAD COUNT measures fabric quality in sheets. A COUNTDOWN is the sequential counting before an event. A DOWNDRAFT is a meteorological phenomenon where air moves downward. A DRAFT HORSE is a large breed bred for heavy labor like Clydesdales. A HORSE COLLAR is harness equipment that fits around a draft animal's neck. The COLLARBONE (clavicle) connects the shoulder to the sternum. BONE DRY means completely without moisture.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["COMPASS", "ROSE", "WATER", "BOARDING", "SCHOOL", "SPIRIT", "WEEK", "NIGHT", "SHIFT"],
+        narrative: "A COMPASS ROSE is the circular diagram on maps showing cardinal directions. ROSE WATER is a fragrant liquid used in Middle Eastern cuisine and perfumery. WATERBOARDING is an enhanced interrogation technique simulating drowning. A BOARDING SCHOOL is a residential educational institution. SCHOOL SPIRIT is enthusiasm and pride for one's educational institution. SPIRIT WEEK is an American school tradition with themed dress-up days. A WEEK NIGHT is any evening from Monday through Thursday. The NIGHT SHIFT is the overnight work period, typically 11pm-7am.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MERCURY", "POISONING", "WELL", "SPRING", "LOADED", "QUESTION", "PERIOD", "PIECE", "MEAL"],
+        narrative: "MERCURY POISONING occurs from exposure to toxic mercury compounds, historically from hat-making (mad hatter). POISONING THE WELL is a logical fallacy of preemptively discrediting an opponent. A WELLSPRING is a source of water or figuratively of ideas. SPRING LOADED means tensioned by a spring mechanism. A LOADED QUESTION contains a hidden assumption. A QUESTION PERIOD is the parliamentary session where ministers answer questions. A PERIOD PIECE is a work set in a specific historical era. PIECEMEAL means done gradually in stages.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STERLING", "SILVER", "SCREEN", "TEST", "PATTERN", "RECOGNITION", "SCENE", "STEALING", "THUNDER"],
+        narrative: "STERLING SILVER is an alloy of 92.5% silver used in jewelry. The SILVER SCREEN is a metonym for cinema from early reflective movie screens. A SCREEN TEST evaluates an actor's on-camera presence for a role. A TEST PATTERN was the calibration image broadcast when TV stations went off-air. PATTERN RECOGNITION is the cognitive ability to identify regularities in data. A RECOGNITION SCENE (anagnorisis) is a dramatic moment of sudden realization. SCENE STEALING describes a performer who draws attention from the lead. STEALING THUNDER means preemptively announcing someone else's news.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["COBALT", "BLUE", "BLOOD", "ORANGE", "COUNTY", "FAIR", "WEATHER", "BALLOON", "PAYMENT"],
+        narrative: "COBALT BLUE is a vivid blue pigment made from cobalt salts. BLUE BLOOD refers to aristocratic lineage (veins appear blue through pale skin). BLOOD ORANGE is a citrus variety with crimson flesh due to anthocyanins. ORANGE COUNTY exists in California, Florida, and New York. A COUNTY FAIR is a regional agricultural exhibition with rides and livestock. FAIR WEATHER describes clear skies or a friend who disappears during hardship. A WEATHER BALLOON collects atmospheric data at high altitudes. A BALLOON PAYMENT is a large final payment on a loan after smaller installments.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["NITROGEN", "FIXING", "MATCH", "POINT", "BREAK", "WATER", "BIRTH", "MARK", "ZUCKERBERG"],
+        narrative: "NITROGEN FIXING is the biological process converting atmospheric N2 to usable ammonia. FIXING A MATCH is the criminal manipulation of a sporting event's outcome. MATCH POINT is the decisive moment when one player can win in tennis. POINT BREAK is the 1991 Kathryn Bigelow film about surfer bank robbers. BREAK WATER is when a pregnant woman's water breaks, labor begins. A WATER BIRTH delivers a baby in a pool. A BIRTHMARK is a congenital skin blemish. MARK ZUCKERBERG is the co-founder and CEO of Meta (Facebook).",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CINNAMON", "BROWN", "BETTY", "WHITE", "ELEPHANT", "GUN", "SMOKE", "SCREEN", "SAVER"],
+        narrative: "CINNAMON BROWN is a warm reddish-brown color named after the spice. A BROWN BETTY is a classic American baked apple dessert. BETTY WHITE was the beloved actress known for 'The Golden Girls' and 'The Mary Tyler Moore Show.' A WHITE ELEPHANT is a costly possession that's more trouble than it's worth, or the gift exchange game. An ELEPHANT GUN is a large-caliber rifle designed for hunting big game. GUNSMOKE was the long-running Western TV series (1955-1975), or the smoke from a firearm. A SMOKE SCREEN is a cloud of smoke to obscure vision, or a ruse to hide true intentions. A SCREEN SAVER is computer animation that prevents screen burn-in on displays.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["FRENCH", "PRESS", "GANG", "LAND", "SLIDE", "RULE", "BRITANNIA", "METAL", "DETECTOR"],
+        narrative: "A FRENCH PRESS is a coffee brewing device using a plunger and mesh filter. A PRESS GANG historically forced men into naval service. GANGLAND refers to the territory and activities of organized crime. A LANDSLIDE is a geological mass movement or an overwhelming electoral victory. A SLIDE RULE is the pre-calculator analog computing device for multiplication. RULE BRITANNIA is the British patriotic song celebrating naval power. BRITANNIA METAL is a pewter-like alloy of tin, antimony, and copper. A METAL DETECTOR finds buried metallic objects using electromagnetic induction.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DEVIL'S", "ADVOCATE", "GENERAL", "ASSEMBLY", "LINE", "ITEM", "VETO", "POWER", "BROKER"],
+        narrative: "A DEVIL'S ADVOCATE argues an opposing position for the sake of debate. An ADVOCATE GENERAL is a senior law officer advising the government. A GENERAL ASSEMBLY is the main deliberative body of the UN or a legislature. An ASSEMBLY LINE is the manufacturing process where products move through stations. A LINE ITEM is a single entry in a budget or list. A LINE-ITEM VETO allows executives to reject specific provisions. VETO POWER is the authority to unilaterally block legislation. A POWER BROKER is a person who wields influence behind the scenes.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["VENETIAN", "BLIND", "SIDE", "SWIPE", "RIGHT", "HAND", "OVER", "HEAD", "SHOT"],
+        narrative: "A VENETIAN BLIND is a window covering with adjustable horizontal slats invented in Venice. To BLIND SIDE someone is to attack from an unexpected angle or the 2009 Sandra Bullock film. A SIDESWIPE is a glancing collision where vehicles scrape against each other. SWIPE RIGHT is the Tinder gesture indicating romantic interest in a potential match. A RIGHT HAND is the dominant appendage for most people or a trusted assistant. HAND OVER means to transfer possession or surrender something. OVERHEAD refers to ongoing business expenses or something positioned above. A HEADSHOT is a close-up photograph for actors or a lethal shot in video games.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ESCROW", "ACCOUNT", "BALANCE", "TRANSFER", "STUDENT", "BODY", "ARMOR", "BEARER", "BOND"],
+        narrative: "An ESCROW ACCOUNT holds funds during real estate transactions until closing conditions are met. An ACCOUNT BALANCE is the total amount of money in a financial account. A BALANCE TRANSFER moves credit card debt to a new card, often with lower interest. A TRANSFER STUDENT moves from one educational institution to another mid-program. A STUDENT BODY is the entire enrolled population of a school. BODY ARMOR is protective gear worn by military and law enforcement. An ARMOR BEARER was a biblical/medieval attendant who carried a warrior's weapons. A BEARER BOND is a negotiable financial instrument owned by whoever holds the physical certificate.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MITOSIS", "PHASE", "ANGLE", "GRINDER", "PUMP", "ACTION", "HERO", "COMPLEX", "NUMBER"],
+        narrative: "MITOSIS PHASE refers to the stages of cell division (prophase, metaphase, anaphase, telophase). PHASE ANGLE is the difference in phase between voltage and current in AC circuits. An ANGLE GRINDER is a handheld power tool for cutting and polishing metal. A GRINDER PUMP is a sewage system component that macerates waste before pumping. PUMP ACTION is the manual loading mechanism on shotguns. An ACTION HERO is the protagonist archetype in blockbuster films like Die Hard. A HERO COMPLEX is the psychological need to rescue others to feel validated. A COMPLEX NUMBER combines a real part and imaginary part (a + bi) in mathematics.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KEYNOTE", "SPEAKER", "PHONE", "BANK", "ACCOUNT", "EXECUTIVE", "PRODUCER", "GAS", "LIGHT"],
+        narrative: "A KEYNOTE SPEAKER delivers the main address at conferences and events. A SPEAKERPHONE allows hands-free telephone communication. A PHONE BANK is a coordinated group making calls for political campaigns. A BANK ACCOUNT stores funds at a financial institution. An ACCOUNT EXECUTIVE manages client relationships in advertising and sales. An EXECUTIVE PRODUCER oversees film/TV production and secures financing. PRODUCER GAS is a fuel gas made by passing air over heated coal or biomass. A GAS LIGHT was pre-electric illumination using burning gas, now associated with psychological manipulation (gaslighting).",
+        difficulty: 'IMPOSSIBLE'
     }
 ];

@@ -112,6 +112,60 @@ When creating IMPOSSIBLE puzzles, use these techniques to build effective chains
 
 5. **Every Pair Must Stand Alone:** Even in IMPOSSIBLE puzzles, every pair must satisfy Dyadic Integrity. No weak pairs like "END STREET" or "SIZE BED"—each connection must be a real, standalone phrase.
 
+### Category: EXTRA IMPOSSIBLE
+**Goal:** Truly unsolvable without highly specialized, cross-disciplinary expertise. Reserved for challenge modes or special events.
+
+EXTRA IMPOSSIBLE puzzles must satisfy **all three** of the following requirements:
+
+#### 1. Deep Domain Expertise (4-5 Specialized Fields)
+- Puzzles must draw from at least 4 distinct specialized knowledge domains
+- Domains should be specific niches, not broad categories:
+  - **Bad:** "pop culture", "history", "science"
+  - **Good:** "1970s prog rock", "Napoleonic naval battles", "COBOL programming", "Baroque art restoration"
+- Each domain should require genuine field-specific knowledge, not surface-level familiarity
+
+#### 2. Semantic Misdirection
+- At least 2-3 connections must use words in their obscure/archaic/technical meanings
+- The obvious common meaning should be a trap
+- Examples of words with obscure meanings:
+  - `MAGAZINE` (ammunition storage, not publication)
+  - `PILOT` (whale species, not flyer)
+  - `CABINET` (political body, not furniture)
+  - `BATTERY` (artillery unit or legal assault, not power source)
+  - `WAKE` (funeral viewing, not waking up)
+  - `TENDER` (railcar attached to locomotive, not soft)
+
+#### 3. Multi-Layered References
+- At least 2 connections must require knowing TWO distinct pieces of trivia to bridge
+- The player must make a compound knowledge leap
+- Examples:
+  - `DESERT` → `STORM` → `SHADOW` requires knowing both "Operation Desert Storm" (military history) AND "Storm Shadow" (cruise missile/G.I. Joe character)
+  - `IRON` → `MAIDEN` → `VOYAGE` requires knowing both "Iron Maiden" (band) AND "Maiden Voyage" (nautical term/Herbie Hancock jazz album)
+  - `BLUE` → `OYSTER` → `CULT` requires knowing "Blue Oyster Cult" (band) AND that OYSTER CULT could connect forward
+
+#### EXTRA IMPOSSIBLE Example
+```
+Solution: ["MAGAZINE", "CLIP", "ART", "DECO", "LINE", "ARRAY", "ANTENNA", "FARM", "BILL"]
+
+Domains Required:
+1. Firearms terminology (MAGAZINE CLIP - ammunition)
+2. Art history (ART DECO - 1920s design movement)
+3. Vintage audio equipment (DECO LINE - rare tube amp brand)
+4. Computer science (LINE ARRAY - programming concept)
+5. Radio engineering (ARRAY ANTENNA)
+6. Agriculture/RF technology (ANTENNA FARM)
+7. US Politics (FARM BILL - legislation)
+
+Misdirection Used:
+- MAGAZINE: Using ammo meaning, not publication
+- CLIP: Using ammo meaning, not video/paper clip
+- ARRAY: Using programming meaning, not arrangement
+
+Multi-Layered References:
+- LINE ARRAY requires knowing both programming arrays AND audio speaker arrays
+- ANTENNA FARM requires knowing both RF antenna installations AND the agricultural metaphor
+```
+
 ---
 
 ## Part III: Puzzle Creation Workflow
@@ -191,6 +245,7 @@ If ANY pair is found, **you must replace it** with a unique pair.
 - **EASY:** All connections are common compound words/phrases. No brands, pop culture, or specialized knowledge.
 - **HARD:** Contains 1-2 gatekeeper links (brands, major pop culture, or significant terms). Rest are EASY-level.
 - **IMPOSSIBLE:** Contains unfair/obscure gatekeepers (niche slang, cult references, internet slang, etc.).
+- **EXTRA IMPOSSIBLE:** Combines deep domain expertise (4-5 specialized fields), semantic misdirection (obscure word meanings), and multi-layered references (compound knowledge leaps). Reserved for challenge modes.
 
 ### Step 5: Write the Narrative
 The narrative should clearly explain each connection in the chain. Each sentence should connect one word to the next, making the logic transparent once solved.
@@ -205,6 +260,12 @@ Before submitting a puzzle, verify:
 - [ ] Narrative clearly explains each connection
 - [ ] No three-word dependencies
 - [ ] No incomplete phrases requiring a third word
+
+**For EXTRA IMPOSSIBLE puzzles specifically, also verify:**
+- [ ] Contains 4-5 distinct specialized knowledge domains (list them in your notes)
+- [ ] At least 2-3 connections use obscure/archaic word meanings (semantic misdirection)
+- [ ] At least 2 connections require multi-layered trivia knowledge (compound knowledge leaps)
+- [ ] Every pair still satisfies Dyadic Integrity despite obscure meanings
 
 ---
 
@@ -238,6 +299,7 @@ Before submitting a puzzle, verify:
 - **EASY** should have ZERO gatekeepers. If you're using a brand name, pop culture reference, or specialized term, it's at least HARD.
 - **HARD** should have 1-2 gatekeepers maximum. If you have 3+ gatekeepers, it's likely IMPOSSIBLE.
 - **IMPOSSIBLE** should be intentionally unfair. Don't use it just because a puzzle is challenging—use it when the knowledge required is genuinely obscure or niche.
+- **EXTRA IMPOSSIBLE** requires ALL THREE criteria: 4-5 specialized domains, semantic misdirection (obscure word meanings), AND multi-layered references. If missing any criterion, it's just IMPOSSIBLE.
 
 ### Pitfall 6: Starting with Overly Common Words
 **Problem:** Beginning chains with very common words (`DEAD`, `END`, `STREET`, `GAME`, `ROOM`) increases the likelihood of conflicts with existing puzzles and makes it harder to build toward gatekeepers.

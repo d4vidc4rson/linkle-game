@@ -2461,5 +2461,55 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["KEYNOTE", "SPEAKER", "PHONE", "BANK", "ACCOUNT", "EXECUTIVE", "PRODUCER", "GAS", "LIGHT"],
         narrative: "A KEYNOTE SPEAKER delivers the main address at conferences and events. A SPEAKERPHONE allows hands-free telephone communication. A PHONE BANK is a coordinated group making calls for political campaigns. A BANK ACCOUNT stores funds at a financial institution. An ACCOUNT EXECUTIVE manages client relationships in advertising and sales. An EXECUTIVE PRODUCER oversees film/TV production and secures financing. PRODUCER GAS is a fuel gas made by passing air over heated coal or biomass. A GAS LIGHT was pre-electric illumination using burning gas, now associated with psychological manipulation (gaslighting).",
         difficulty: 'IMPOSSIBLE'
-    }
+    },
+    {
+        solution: ["TECTONIC", "SHIFT", "CIPHER", "TEXT", "MINING", "CLAIM", "JUMPER", "CABLE", "NEWS"],
+        narrative: "A TECTONIC SHIFT describes massive change in Earth's crust or metaphorically in society. A SHIFT CIPHER (Caesar cipher) replaces each letter with one a fixed number of positions away. CIPHERTEXT is the encrypted output of a cryptographic algorithm. TEXT MINING is the NLP process of extracting insights from unstructured text data. A MINING CLAIM is the legal right to extract minerals from a specific plot of land. A CLAIM JUMPER illegally seizes another prospector's mining rights—or the American restaurant chain. JUMPER CABLES connect batteries to jump-start vehicles. CABLE NEWS refers to 24-hour television news channels like CNN and Fox News.",
+        difficulty: 'EXTRA_IMPOSSIBLE'
+    },
+    {
+        solution: ["ORBITAL", "VELOCITY", "VECTOR", "GRAPHICS", "CARD", "COUNTING", "CALORIES", "DEFICIT", "SPENDING"],
+        narrative: "ORBITAL VELOCITY is the speed required for an object to maintain stable orbit around a celestial body. A VELOCITY VECTOR describes both the speed and direction of motion in physics. VECTOR GRAPHICS use mathematical paths rather than pixels for infinitely scalable images. A GRAPHICS CARD (GPU) renders visual output in computers. CARD COUNTING is the blackjack advantage play technique of tracking dealt cards. COUNTING CALORIES is the dietary practice of monitoring energy intake for weight management. A CALORIE DEFICIT occurs when energy expenditure exceeds intake, causing weight loss. DEFICIT SPENDING is the fiscal policy of government expenditure exceeding revenue.",
+        difficulty: 'EXTRA_IMPOSSIBLE'
+    },
+    {
+        solution: ["HARMONIC", "SERIES", "FINALE", "COUNTDOWN", "TIMER", "RELAY", "RACE", "CONDITION", "REPORT"],
+        narrative: "A HARMONIC SERIES is the infinite sum 1 + 1/2 + 1/3 + ... which diverges in mathematics, or the overtone sequence in music. A SERIES FINALE is the conclusive episode of a television program. The FINAL COUNTDOWN is Europe's iconic 1986 synth-rock anthem. A COUNTDOWN TIMER displays remaining time until an event. A TIMER RELAY is an electronic component that switches circuits after a set delay. A RELAY RACE is the track event where team members pass a baton. A RACE CONDITION is a software bug where system behavior depends on unpredictable timing of concurrent processes. A CONDITION REPORT documents the state of artwork or collectibles for insurance and sale.",
+        difficulty: 'EXTRA_IMPOSSIBLE'
+    },
+    {
+        solution: ["LAPLACE", "TRANSFORM", "BOUNDARY", "DISPUTE", "RESOLUTION", "CENTER", "FIELDER", "CHOICE", "PARALYSIS"],
+        narrative: "The LAPLACE TRANSFORM converts differential equations to algebraic ones in mathematics. A TRANSFORM BOUNDARY is where tectonic plates slide horizontally past each other. A BOUNDARY DISPUTE is a legal conflict over territorial demarcation between nations or properties. DISPUTE RESOLUTION encompasses mediation, arbitration, and other ADR methods. A RESOLUTION CENTER is the optical point of maximum focus sharpness, or a customer service facility. A CENTER FIELDER plays the defensive position between left and right field in baseball. FIELDER'S CHOICE is the ruling when a fielder retires a baserunner instead of the batter. CHOICE PARALYSIS (paradox of choice) is the psychological phenomenon where too many options inhibit decision-making.",
+        difficulty: 'EXTRA_IMPOSSIBLE'
+    },
+    {
+        solution: ["PECKING", "ORDER", "FLOW", "CYTOMETRY", "CORE", "SAMPLE", "PLATTER", "PRESENTATION", "SKILLS"],
+        narrative: "PECKING ORDER is the social hierarchy observed in poultry and metaphorically in organizations. ORDER FLOW is the stream of buy/sell orders analyzed by traders for market direction. FLOW CYTOMETRY is the laser-based laboratory technique for analyzing cell populations. A CYTOMETRY CORE is the shared university facility providing flow cytometry services. A CORE SAMPLE is the cylindrical section extracted for geological or ice analysis. A SAMPLE PLATTER offers a variety of appetizers for tasting—or a collection of audio samples for music production. PLATTER PRESENTATION refers to the artistic arrangement of food for visual appeal. PRESENTATION SKILLS are the professional competencies for effective public speaking.",
+        difficulty: 'EXTRA_IMPOSSIBLE'
+    },
+    {
+        solution: ["NOISE", "FLOOR", "ROUTINE", "MAINTENANCE", "SCHEDULE", "DRUG", "DEALER", "NETWORK", "EFFECT"],
+        narrative: "The NOISE FLOOR is the baseline electronic interference in audio recording. A FLOOR ROUTINE is a gymnast's choreographed performance on the mat. ROUTINE MAINTENANCE is the regular upkeep of equipment or systems. A MAINTENANCE SCHEDULE is the timetable for service intervals. A SCHEDULE DRUG is a controlled substance classified by potential for abuse. A DRUG DEALER is someone who illegally sells controlled substances. A DEALER NETWORK is a distribution system of authorized sellers. The NETWORK EFFECT is the economic phenomenon where a product gains value as more people use it.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["INDIE", "SLEAZE", "ROCK", "OPERA", "GHOST", "PROTOCOL", "DROID", "ARMY", "SURPLUS"],
+        narrative: "INDIE SLEAZE was the 2000s NYC party scene documented by Cobrasnake. SLEAZE ROCK is the flashy glam metal subgenre of the 1980s. ROCK OPERA is a theatrical album format like The Who's Tommy or Pink Floyd's The Wall. OPERA GHOST is the Phantom from Gaston Leroux's novel. GHOST PROTOCOL is the 2011 Mission: Impossible film starring Tom Cruise. A PROTOCOL DROID is the Star Wars robot type like C-3PO. A DROID ARMY refers to the Separatist battle droids in the Clone Wars. ARMY SURPLUS stores sell military equipment to civilians.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STAN", "ACCOUNT", "TAKEOVER", "BID", "WHIST", "DRIVE", "THRU", "HIKER", "TRASH"],
+        narrative: "A STAN ACCOUNT is a social media profile dedicated to obsessive fandom. An ACCOUNT TAKEOVER is a cybersecurity breach where hackers steal login credentials. A TAKEOVER BID is a corporate acquisition offer. BID WHIST is the African-American trick-taking card game popular since the early 1900s. A WHIST DRIVE is a social card game tournament. A DRIVE-THRU is the fast-food lane for ordering from your car. A THRU-HIKER completes an entire long-distance trail like the Appalachian Trail. HIKER TRASH is the affectionate term thru-hikers use for their disheveled trail appearance.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SIMP", "ARMY", "RESERVE", "DEPUTY", "MAYOR", "PETE", "SAMPRAS", "SERVE", "RETURN"],
+        narrative: "A SIMP ARMY is the internet term for a creator's devoted (often mocked) fanbase. An ARMY RESERVE is the part-time military force that supplements active duty. A RESERVE DEPUTY is a volunteer law enforcement officer. A DEPUTY MAYOR is the second-in-command of a city government. MAYOR PETE is the nickname for Pete Buttigieg, former South Bend mayor and U.S. Secretary of Transportation. PETE SAMPRAS is the 14-time Grand Slam tennis champion of the 1990s. A SAMPRAS SERVE was his legendary weapon that won him seven Wimbledon titles. A SERVE-AND-RETURN is the tennis rally pattern of serving and returning the ball.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["PARASOCIAL", "BOND", "YIELD", "CURVE", "FLATTENING", "AGENT", "ORANGE", "PEEL", "SESSION"],
+        narrative: "A PARASOCIAL BOND is the one-sided emotional attachment fans form with media figures. A BOND YIELD is the return an investor earns on a debt security. A YIELD CURVE graphs interest rates across different bond maturities. CURVE FLATTENING occurs when short and long-term rates converge, often signaling recession. A FLATTENING AGENT is a paint additive that reduces gloss. AGENT ORANGE is the herbicide/defoliant notoriously used during the Vietnam War. ORANGE PEEL is the dimpled texture in paint or drywall, named for citrus skin. A PEEL SESSION was a live radio recording for BBC DJ John Peel, who championed alternative music from 1967-2004.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

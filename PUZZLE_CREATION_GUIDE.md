@@ -379,5 +379,100 @@ Solution: ["CELESTIAL", "ARCHANGEL", "MICHAEL", "JACKSON", "FIVE", "STAR", "TREK
 
 ---
 
+## Part VI: Optimized Workflow for AI Puzzle Generation
+
+This section describes the optimized workflow for generating puzzles with AI assistance (e.g., in Cursor with Claude). The key insight is that **uniqueness checking should be done by code, not by the AI scanning the entire puzzles.ts file**.
+
+### The Problem with the Old Workflow
+
+Previously, generating puzzles required:
+1. AI reads entire `puzzles.ts` (~260KB, ~2500 lines)
+2. AI manually searches for conflicting bigrams
+3. This is slow, token-expensive, and gets worse as puzzles.ts grows
+
+### The Optimized Workflow
+
+#### Step 1: Read the Bigram Index (Not puzzles.ts)
+
+Instead of reading `puzzles.ts`, read `bigram-index.txt` (~48KB). This file contains:
+- All used bigrams in `WORD1→WORD2` format
+- One per line, sorted alphabetically
+- Easy to scan for conflicts
+
+```
+# Example entries from bigram-index.txt
+KEY→BOARD
+BOARD→CERTIFIED
+CERTIFIED→ORGANIC
+...
+```
+
+#### Step 2: Generate Candidate Puzzles
+
+Generate puzzle candidates following the rules in this guide. You can:
+- **Option A:** Check `bigram-index.txt` while generating to avoid conflicts
+- **Option B:** Generate multiple candidates without checking, then validate
+
+Option B is faster when generating many puzzles at once.
+
+#### Step 3: Validate with the Script
+
+Use the validation script to confirm uniqueness:
+
+```bash
+# Validate a puzzle (dry run - doesn't add)
+node scripts/add-puzzle.js --dry-run --solution "WORD1" "WORD2" "WORD3" "WORD4" "WORD5" "WORD6" "WORD7" "WORD8" "WORD9"
+
+# Validate and add if unique
+node scripts/add-puzzle.js \
+  --solution "WORD1" "WORD2" "WORD3" "WORD4" "WORD5" "WORD6" "WORD7" "WORD8" "WORD9" \
+  --narrative "Your narrative explaining each connection..." \
+  --difficulty EASY
+```
+
+The script will:
+- Check all 8 bigrams against the index in O(1) time
+- Report any conflicts with specific pair positions
+- If valid: add to `puzzles.ts` AND update `bigram-index.txt`
+
+#### Step 4: Regenerate Index (If Needed)
+
+If `puzzles.ts` is ever edited manually or the index gets out of sync:
+
+```bash
+node scripts/build-bigram-index.js
+```
+
+### Script Reference
+
+| Script | Purpose |
+|--------|---------|
+| `node scripts/build-bigram-index.js` | Regenerate bigram-index.txt from puzzles.ts |
+| `node scripts/add-puzzle.js --dry-run --solution ...` | Validate a puzzle without adding |
+| `node scripts/add-puzzle.js --solution ... --narrative ... --difficulty ...` | Validate and add a puzzle |
+| `node verify-puzzle-pairs.js "WORD1" "WORD2" ...` | Legacy verification (still works) |
+
+### Benefits of This Workflow
+
+- **~80% fewer tokens**: Read 48KB instead of 260KB
+- **O(1) validation**: Set-based lookup instead of text search
+- **Scalable**: Works the same at 500 or 5000 puzzles
+- **Atomic updates**: Script updates both files together
+- **Error prevention**: Script catches conflicts before they enter puzzles.ts
+
+### Quick Start for AI Assistants
+
+When asked to generate puzzles:
+
+1. Read `bigram-index.txt` to see all used bigrams
+2. Read `PUZZLE_CREATION_GUIDE.md` for rules (this file)
+3. Generate candidate puzzles avoiding used bigrams
+4. Use `node scripts/add-puzzle.js --dry-run ...` to validate
+5. If valid, run without `--dry-run` to add
+
+**Do NOT read the entire puzzles.ts file for uniqueness checking.**
+
+---
+
 ## Final Reminder
 **Quality over quantity.** It's better to spend time verifying one perfect puzzle than to rush and create flawed ones. When in doubt, check the rules again, verify uniqueness, and test dyadic integrity. A great puzzle is worth the effort.

@@ -2465,27 +2465,27 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
     {
         solution: ["TECTONIC", "SHIFT", "CIPHER", "TEXT", "MINING", "CLAIM", "JUMPER", "CABLE", "NEWS"],
         narrative: "A TECTONIC SHIFT describes massive change in Earth's crust or metaphorically in society. A SHIFT CIPHER (Caesar cipher) replaces each letter with one a fixed number of positions away. CIPHERTEXT is the encrypted output of a cryptographic algorithm. TEXT MINING is the NLP process of extracting insights from unstructured text data. A MINING CLAIM is the legal right to extract minerals from a specific plot of land. A CLAIM JUMPER illegally seizes another prospector's mining rights—or the American restaurant chain. JUMPER CABLES connect batteries to jump-start vehicles. CABLE NEWS refers to 24-hour television news channels like CNN and Fox News.",
-        difficulty: 'EXTRA_IMPOSSIBLE'
+        difficulty: 'IMPOSSIBLE'
     },
     {
         solution: ["ORBITAL", "VELOCITY", "VECTOR", "GRAPHICS", "CARD", "COUNTING", "CALORIES", "DEFICIT", "SPENDING"],
         narrative: "ORBITAL VELOCITY is the speed required for an object to maintain stable orbit around a celestial body. A VELOCITY VECTOR describes both the speed and direction of motion in physics. VECTOR GRAPHICS use mathematical paths rather than pixels for infinitely scalable images. A GRAPHICS CARD (GPU) renders visual output in computers. CARD COUNTING is the blackjack advantage play technique of tracking dealt cards. COUNTING CALORIES is the dietary practice of monitoring energy intake for weight management. A CALORIE DEFICIT occurs when energy expenditure exceeds intake, causing weight loss. DEFICIT SPENDING is the fiscal policy of government expenditure exceeding revenue.",
-        difficulty: 'EXTRA_IMPOSSIBLE'
+        difficulty: 'IMPOSSIBLE'
     },
     {
         solution: ["HARMONIC", "SERIES", "FINALE", "COUNTDOWN", "TIMER", "RELAY", "RACE", "CONDITION", "REPORT"],
         narrative: "A HARMONIC SERIES is the infinite sum 1 + 1/2 + 1/3 + ... which diverges in mathematics, or the overtone sequence in music. A SERIES FINALE is the conclusive episode of a television program. The FINAL COUNTDOWN is Europe's iconic 1986 synth-rock anthem. A COUNTDOWN TIMER displays remaining time until an event. A TIMER RELAY is an electronic component that switches circuits after a set delay. A RELAY RACE is the track event where team members pass a baton. A RACE CONDITION is a software bug where system behavior depends on unpredictable timing of concurrent processes. A CONDITION REPORT documents the state of artwork or collectibles for insurance and sale.",
-        difficulty: 'EXTRA_IMPOSSIBLE'
+        difficulty: 'IMPOSSIBLE'
     },
     {
         solution: ["LAPLACE", "TRANSFORM", "BOUNDARY", "DISPUTE", "RESOLUTION", "CENTER", "FIELDER", "CHOICE", "PARALYSIS"],
         narrative: "The LAPLACE TRANSFORM converts differential equations to algebraic ones in mathematics. A TRANSFORM BOUNDARY is where tectonic plates slide horizontally past each other. A BOUNDARY DISPUTE is a legal conflict over territorial demarcation between nations or properties. DISPUTE RESOLUTION encompasses mediation, arbitration, and other ADR methods. A RESOLUTION CENTER is the optical point of maximum focus sharpness, or a customer service facility. A CENTER FIELDER plays the defensive position between left and right field in baseball. FIELDER'S CHOICE is the ruling when a fielder retires a baserunner instead of the batter. CHOICE PARALYSIS (paradox of choice) is the psychological phenomenon where too many options inhibit decision-making.",
-        difficulty: 'EXTRA_IMPOSSIBLE'
+        difficulty: 'IMPOSSIBLE'
     },
     {
         solution: ["PECKING", "ORDER", "FLOW", "CYTOMETRY", "CORE", "SAMPLE", "PLATTER", "PRESENTATION", "SKILLS"],
         narrative: "PECKING ORDER is the social hierarchy observed in poultry and metaphorically in organizations. ORDER FLOW is the stream of buy/sell orders analyzed by traders for market direction. FLOW CYTOMETRY is the laser-based laboratory technique for analyzing cell populations. A CYTOMETRY CORE is the shared university facility providing flow cytometry services. A CORE SAMPLE is the cylindrical section extracted for geological or ice analysis. A SAMPLE PLATTER offers a variety of appetizers for tasting—or a collection of audio samples for music production. PLATTER PRESENTATION refers to the artistic arrangement of food for visual appeal. PRESENTATION SKILLS are the professional competencies for effective public speaking.",
-        difficulty: 'EXTRA_IMPOSSIBLE'
+        difficulty: 'IMPOSSIBLE'
     },
     {
         solution: ["NOISE", "FLOOR", "ROUTINE", "MAINTENANCE", "SCHEDULE", "DRUG", "DEALER", "NETWORK", "EFFECT"],

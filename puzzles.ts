@@ -1986,5 +1986,410 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         solution: ["GRAVEYARD", "SHIFT", "DRESS", "CODE", "BREAKER", "BAR", "BELL", "TOWER", "DEFENSE"],
         narrative: "The GRAVEYARD SHIFT is the overnight work shift. A SHIFT DRESS is a loose, straight-cut women's garment. A DRESS CODE specifies acceptable attire for a venue. A CODEBREAKER deciphers encrypted messages. A BREAKER BAR is a long-handled tool for loosening bolts. A BARBELL is weightlifting equipment with weights on both ends. A BELL TOWER is a structure housing bells, often in churches. TOWER DEFENSE is a video game genre about defending against waves of enemies.",
         difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ACORN", "SQUASH", "COURT", "ROOM", "MATE", "DATE", "NIGHT", "OWL", "HOOT"],
+        narrative: "ACORN SQUASH is a winter vegetable. SQUASH COURT is where you play squash. A COURTROOM is where trials are held. A ROOMMATE shares your living space. A MATE DATE is casual slang for a hookup. DATE NIGHT is a romantic evening. A NIGHT OWL stays up late. An OWL HOOT is the bird's distinctive call.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SALMON", "RUN", "FLAT", "TIRE", "IRON", "MAN", "MADE", "UP", "TURN"],
+        narrative: "A SALMON RUN is when fish swim upstream to spawn. RUN FLAT tires can drive without air. A FLAT TIRE needs to be changed. A TIRE IRON helps change tires. IRON MAN is a triathlon or superhero. MAN-MADE means artificial. MADE UP can mean invented or wearing makeup. An UP TURN is an improvement.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PUMPKIN", "PATCH", "WORK", "BENCH", "PRESS", "BOX", "TOP", "COAT", "HANGER"],
+        narrative: "A PUMPKIN PATCH grows autumn squash. PATCHWORK is a quilt style with fabric pieces. A WORKBENCH is for crafts and repairs. A BENCH PRESS is a weightlifting exercise. A PRESS BOX is for sports journalists. BOX TOP labels can be collected. A TOPCOAT is an outer garment. A COAT HANGER holds clothing.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PICNIC", "BASKET", "WEAVE", "POLE", "CAT", "FISH", "BONE", "YARD", "SALE"],
+        narrative: "A PICNIC BASKET holds food for outdoor meals. BASKET WEAVE is an interlaced pattern. A WEAVE POLE is used in dog agility. A POLECAT is a small carnivorous mammal. A CATFISH lurks in murky waters. A FISHBONE can get stuck in your throat. A BONEYARD is a graveyard or junkyard. A YARD SALE sells used household items.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["GRAPEFRUIT", "JUICE", "BOX", "CUTTER", "ANT", "FARM", "LAND", "LORD", "SHIP"],
+        narrative: "GRAPEFRUIT JUICE is a tangy breakfast drink. A JUICE BOX is a portable drink container. A BOX CUTTER is a sharp utility knife. A CUTTER ANT slices leaves. An ANT FARM is a glass habitat for observing ants. FARMLAND is agricultural territory. A LANDLORD owns rental property. LORDSHIP is a title of nobility.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FOREST", "RANGER", "RICK", "ROLL", "CALL", "WAITING", "ROOM", "TEMP", "JOB"],
+        narrative: "A FOREST RANGER protects wilderness areas. RANGER RICK is a children's nature magazine. To RICK-ROLL someone is to prank them with the famous song. A ROLL CALL checks attendance. CALL WAITING alerts you to another caller. A WAITING ROOM is where you sit before appointments. ROOM TEMP is ambient temperature. A TEMP JOB is temporary employment.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["JUNGLE", "GYM", "RAT", "PACK", "MULE", "DEER", "TICK", "BITE", "SIZE"],
+        narrative: "A JUNGLE GYM is a climbing structure for kids. A GYM RAT spends lots of time exercising. A RAT PACK is a group of friends (or the famous entertainers). A PACK MULE carries heavy loads. MULE DEER have distinctive large ears. A DEER TICK can transmit Lyme disease. A TICK BITE leaves a mark. BITE-SIZE means small enough for one mouthful.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["WAFFLE", "IRON", "CLAD", "ARMOR", "PLATE", "GLASS", "CEILING", "FAN", "BASE"],
+        narrative: "A WAFFLE IRON makes breakfast treats. IRONCLAD means impenetrable or guaranteed. CLAD ARMOR is protective covering. ARMOR PLATE is thick protective metal. PLATE GLASS is flat, polished glass. A GLASS CEILING is an invisible barrier to advancement. A CEILING FAN circulates air. A FAN BASE is a group of supporters.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TICKLE", "PINK", "SLIP", "STREAM", "LINE", "MAN", "DATE", "PALM", "TREE"],
+        narrative: "TICKLED PINK means very pleased. A PINK SLIP is a layoff notice. A SLIPSTREAM is the area behind a moving vehicle. To STREAMLINE is to make more efficient. A LINEMAN works on power lines or plays football. A MAN DATE is a social outing between male friends. A DATE PALM is a tree that produces dates. A PALM TREE is a tropical icon.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BLACKBERRY", "PIE", "CRUST", "PUNK", "ROCK", "STAR", "DUST", "BUNNY", "HOP"],
+        narrative: "BLACKBERRY PIE is a sweet summer dessert. A PIE CRUST is the pastry shell. CRUST PUNK is a subgenre of punk rock. PUNK ROCK is a music genre. A ROCK STAR is a famous musician. STARDUST is cosmic debris or magical particles. A DUST BUNNY is a ball of fluff under furniture. The BUNNY HOP is a playful dance.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SAUSAGE", "LINK", "UP", "SHOT", "CLOCK", "TOWER", "BRIDGE", "WORK", "MAN"],
+        narrative: "A SAUSAGE LINK is one connected piece. A LINK-UP is a connection or meeting. The UP SHOT is the final result. A SHOT CLOCK limits time in basketball. A CLOCK TOWER is a tall structure with a timepiece. TOWER BRIDGE is famous in London. BRIDGE WORK is dental repair. A WORKMAN is a laborer.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PANCAKE", "STACK", "YARD", "ARM", "LOCK", "OUT", "LINE", "AGE", "SPOT"],
+        narrative: "A PANCAKE STACK is a pile of breakfast treats. A STACK YARD is where hay bales are stored. A YARDARM is a horizontal beam on a ship's mast. An ARM LOCK is a wrestling hold. A LOCKOUT prevents workers from entering. An OUTLINE is a summary or border. LINEAGE is your ancestry. An AGE SPOT is a skin blemish.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["RASPBERRY", "JAM", "BAND", "AID", "WORKER", "BEE", "KEEPER", "GOAL", "POST"],
+        narrative: "RASPBERRY JAM is a sweet spread. A JAM BAND plays extended improvisations. BAND-AID is a bandage brand. An AID WORKER provides humanitarian help. A WORKER BEE toils for the hive. A BEEKEEPER tends hives. A GOALKEEPER defends the net. A GOALPOST is what you aim for in sports.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["VOLCANO", "ASH", "TRAY", "TABLE", "LAND", "MARK", "DOWN", "FALL", "BACK"],
+        narrative: "VOLCANIC ASH is ejected during eruptions. An ASHTRAY holds cigarette remains. A TRAY TABLE folds down on planes. TABLELAND is a flat elevated area. A LANDMARK is a notable location. A MARKDOWN is a price reduction. A DOWNFALL is a sudden decline. A FALLBACK is a backup option.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CHIPMUNK", "CHEEK", "BONE", "HEAD", "BAND", "WIDTH", "WISE", "CRACK", "DOWN"],
+        narrative: "A CHIPMUNK stores food in its CHEEKS. A CHEEKBONE is the facial bone under your eye. A BONEHEAD makes foolish mistakes. A HEADBAND is worn around the forehead. BANDWIDTH is data transfer capacity. WIDTHWISE means across the width. A WISECRACK is a clever joke. A CRACKDOWN is strict enforcement.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SARDINE", "CAN", "DO", "OVER", "LOOK", "OUT", "DOOR", "BELL", "BOY"],
+        narrative: "SARDINES are packed in a CAN. A CAN-DO attitude is positive and willing. A DO-OVER is a second chance. To OVERLOOK is to miss something or have a view. A LOOKOUT watches for danger. OUTDOOR means outside. A DOORBELL announces visitors. A BELLBOY carries luggage at hotels.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HERRING", "BONE", "CHINA", "DOLL", "HOUSE", "PROUD", "LION", "HEART", "BEAT"],
+        narrative: "HERRINGBONE is a zigzag pattern. BONE CHINA is fine porcelain. A CHINA DOLL is a delicate figurine. A DOLLHOUSE is a miniature home. HOUSE PROUD means taking pride in your home. A PROUD LION is the king of the jungle. LIONHEART means courageous. A HEARTBEAT is your pulse.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PEACOCK", "FEATHER", "DUSTER", "COAT", "CHECK", "MARK", "TIME", "CLOCK", "WISE"],
+        narrative: "A PEACOCK FEATHER has an iridescent eye. A FEATHER DUSTER cleans surfaces. A DUSTER COAT is a long light coat. A COAT CHECK holds outerwear. A CHECKMARK indicates completion. To MARK TIME is to wait in place. A TIME CLOCK tracks work hours. CLOCKWISE is the standard rotation direction.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["COPPER", "HEAD", "STRONG", "ARM", "CHAIR", "MAN", "HUNT", "DOWN", "TOWN"],
+        narrative: "A COPPERHEAD is a venomous snake. HEADSTRONG means stubborn. A STRONGARM uses force. An ARMCHAIR is a comfortable seat. A CHAIRMAN leads a meeting. A MANHUNT searches for a fugitive. To HUNT DOWN is to pursue relentlessly. DOWNTOWN is the city center.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LOBSTER", "CLAW", "HAMMER", "HEAD", "DRESS", "SHIRT", "TAIL", "END", "ZONE"],
+        narrative: "A LOBSTER CLAW is a pincer. A CLAW HAMMER has a curved end for pulling nails. A HAMMERHEAD is a type of shark. A HEADDRESS is ceremonial headwear. A DRESS SHIRT is formal attire. A SHIRTTAIL hangs below the waist. The TAIL END is the final part. An END ZONE is where touchdowns are scored.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["WILD", "CARD", "SHARP", "SHOOTER", "MARBLE", "CAKE", "WALK", "THROUGH", "PUT"],
+        narrative: "A WILDCARD is an unpredictable element. A CARD SHARP is a skilled card player. A SHARPSHOOTER is an expert marksman. A SHOOTER MARBLE is the larger marble used in games. MARBLE CAKE has a swirled pattern. A CAKEWALK is something easy. A WALKTHROUGH is an instructional guide. THROUGHPUT measures system capacity.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["MASTER", "MIND", "BLOWN", "GLASS", "CEILING", "FAN", "CLUB", "SANDWICH", "BOARD"],
+        narrative: "A criminal genius is a MASTERMIND. To be amazed is to have your MIND BLOWN. An artisan creates BLOWN GLASS. A GLASS CEILING is an invisible barrier to advancement. A CEILING FAN cools a room. Enthusiasts form a FAN CLUB. A CLUB SANDWICH has three slices of bread. A SANDWICH BOARD is a type of sign worn on the body.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SPRING", "BOARD", "WALK", "AWAY", "TEAM", "PLAYER", "PIANO", "BAR", "TENDER"],
+        narrative: "A SPRINGBOARD is used in diving. A BOARDWALK is a wooden path along a beach. To WALK AWAY is to leave. An AWAY TEAM plays at another venue. A TEAM PLAYER works well with others. A PLAYER PIANO plays itself. A PIANO BAR features live music. A BARTENDER serves drinks.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["WITNESS", "STAND", "UP", "GRADE", "SCHOOL", "YARD", "STICK", "FIGURE", "EIGHT"],
+        narrative: "A WITNESS STAND is where testimony is given. STAND-UP comedy is performed while standing. To UPGRADE is to improve. A GRADE SCHOOL educates children. A SCHOOLYARD is where kids play. A YARDSTICK measures three feet. A STICK FIGURE is a simple drawing. A FIGURE EIGHT is a shape or skating pattern.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["QUARTER", "BACK", "FLIP", "FLOP", "HOUSE", "KEEPING", "SCORE", "KEEPER", "RING"],
+        narrative: "A QUARTERBACK leads the offense in football. A BACKFLIP is an acrobatic move. A FLIP-FLOP is a sandal or a policy reversal. A FLOPHOUSE is cheap lodging. HOUSEKEEPING cleans rooms. KEEPING SCORE tracks points in a game. A SCOREKEEPER records the results. A KEEPER RING holds things in place.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FAST", "TRACK", "SUIT", "CASE", "STUDY", "HALL", "PASS", "PORT", "WINE"],
+        narrative: "A FAST TRACK speeds up progress. A TRACKSUIT is athletic wear. A SUITCASE holds clothes for travel. A CASE STUDY is an in-depth analysis. A STUDY HALL is supervised time for homework. A HALL PASS allows students to leave class. A PASSPORT enables international travel. PORT WINE is a sweet fortified wine.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LIGHT", "HOUSE", "HOLD", "OUT", "LAW", "SUIT", "ABLE", "SEAMAN", "SHIP"],
+        narrative: "A LIGHTHOUSE guides ships safely. A HOUSEHOLD is a domestic unit. To HOLD OUT is to resist or endure. An OUTLAW is a criminal. A LAWSUIT is a legal action. A SUITABLE choice is appropriate. An ABLE SEAMAN is a skilled sailor. SEAMANSHIP is nautical skill.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["POCKET", "WATCH", "TOWER", "BRIDGE", "WORK", "FORCE", "FIELD", "GOAL", "POST"],
+        narrative: "A POCKET WATCH is a portable timepiece. A WATCHTOWER provides surveillance. TOWER BRIDGE is a famous London landmark. BRIDGEWORK is dental prosthetics. A WORKFORCE is employed people. A FORCE FIELD is a protective barrier. In football, a FIELD GOAL scores three points. A GOALPOST marks the scoring area.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["ROYAL", "FLUSH", "TOILET", "PAPER", "TIGER", "SHARK", "BAIT", "SWITCH", "BLADE"],
+        narrative: "A ROYAL FLUSH is the best poker hand. To FLUSH a TOILET removes waste. TOILET PAPER is essential bathroom tissue. A PAPER TIGER appears threatening but is ineffectual. A TIGER SHARK is a dangerous predator. SHARK BAIT is vulnerable prey. A BAIT AND SWITCH is a deceptive sales tactic. A SWITCHBLADE is a folding knife.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["COMMON", "GROUND", "ZERO", "TOLERANCE", "LEVEL", "HEAD", "COUNT", "DOWN", "LOAD"],
+        narrative: "COMMON GROUND is shared understanding. GROUND ZERO is the epicenter. ZERO TOLERANCE is a strict policy. A TOLERANCE LEVEL is the acceptable limit. A LEVEL HEAD stays calm. A HEADCOUNT tallies people present. A COUNTDOWN precedes an event. To DOWNLOAD is to transfer data.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CRYSTAL", "BALL", "PARK", "BENCH", "MARK", "DOWN", "TURN", "OVER", "NIGHT"],
+        narrative: "A CRYSTAL BALL predicts the future. BALLPARK figures are rough estimates. A PARK BENCH offers outdoor seating. A BENCHMARK is a standard for comparison. To MARK DOWN is to reduce price. A DOWNTURN is an economic decline. To TURN OVER is to flip or transfer. OVERNIGHT means happening in one night.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FIRE", "DRILL", "SERGEANT", "PEPPER", "SPRAY", "TAN", "LINE", "DANCE", "FLOOR"],
+        narrative: "A FIRE DRILL practices evacuation. A DRILL SERGEANT trains military recruits. SERGEANT PEPPER is a famous Beatles album. PEPPER SPRAY is for self-defense. A SPRAY TAN adds color artificially. A TAN LINE shows sun exposure. LINE DANCING is choreographed. A DANCE FLOOR is where people dance.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SHADOW", "BOXING", "RING", "LEADER", "BOARD", "CERTIFIED", "PUBLIC", "DOMAIN", "NAME"],
+        narrative: "SHADOW BOXING is practice fighting without an opponent. A BOXING RING is where fights take place. A RINGLEADER organizes a group. A LEADERBOARD shows rankings. BOARD CERTIFIED means professionally qualified. A CERTIFIED PUBLIC accountant handles finances. PUBLIC DOMAIN means freely available. A DOMAIN NAME identifies a website.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["UNDER", "WORLD", "RECORD", "BREAKING", "NEWS", "FLASH", "FLOOD", "GATE", "KEEPER"],
+        narrative: "The UNDERWORLD is the criminal realm or realm of the dead. A WORLD RECORD is the best global achievement. RECORD BREAKING surpasses previous bests. BREAKING NEWS is urgent reporting. A NEWS FLASH is a sudden announcement. A FLASH FLOOD happens rapidly. A FLOODGATE controls water flow. A GATEKEEPER controls access.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["THUNDER", "STRUCK", "GOLD", "DIGGER", "WASP", "NEST", "EGG", "SHELL", "SHOCKED"],
+        narrative: "THUNDERSTRUCK means amazed or the AC/DC song. To have STRUCK GOLD is to find fortune. A GOLD DIGGER seeks wealthy partners. A DIGGER WASP is a burrowing insect. A WASP NEST houses the colony. A NEST EGG is savings for the future. An EGGSHELL is fragile. SHELL-SHOCKED means traumatized.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["STAIR", "WELL", "SPRING", "CHICKEN", "SCRATCH", "PAD", "LOCK", "JAW", "BREAKER"],
+        narrative: "A STAIRWELL is an enclosed staircase. A WELLSPRING is a source of something. A SPRING CHICKEN is a young person. CHICKEN SCRATCH is illegible handwriting. A SCRATCH PAD is for quick notes. A PADLOCK secures things. LOCKJAW is tetanus. A JAWBREAKER is a hard candy.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BITTER", "SWEET", "HEART", "LAND", "SLIDE", "SHOW", "ROOM", "MATE", "SHIP"],
+        narrative: "BITTERSWEET is both pleasant and painful. A SWEETHEART is a loved one. The HEARTLAND is the central region. A LANDSLIDE is an overwhelming victory or earth movement. A SLIDESHOW is a presentation. A SHOWROOM displays products. A ROOMMATE shares living space. MATESHIP is the Australian concept of friendship and loyalty.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BLOOD", "HOUND", "DOG", "FIGHT", "CLUB", "FOOT", "PRINT", "SCREEN", "PLAY"],
+        narrative: "A BLOODHOUND tracks scents. A HOUND DOG is a hunting breed. A DOGFIGHT is aerial combat. FIGHT CLUB is the famous film. A CLUBFOOT is a birth defect. A FOOTPRINT is a mark left behind. To PRINT SCREEN captures your display. A SCREENPLAY is a movie script.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SMOOTH", "TALK", "SHOW", "CASE", "LOAD", "BEARING", "ARMS", "RACE", "TRACK"],
+        narrative: "To SMOOTH TALK is to persuade with charm. A TALK SHOW features interviews. A SHOWCASE displays items. A CASELOAD is work volume. LOAD-BEARING walls support structure. BEARING ARMS means carrying weapons. An ARMS RACE is military competition. A RACETRACK hosts competitions.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BREAKING", "POINT", "BLANK", "CHECK", "LIST", "PRICE", "TAG", "LINE", "BACKER"],
+        narrative: "A BREAKING POINT is when someone snaps. POINT BLANK is close range. A BLANK CHECK gives unlimited authority. A CHECKLIST helps track tasks. A LIST PRICE is the retail cost. A PRICE TAG shows the cost. A TAGLINE is a memorable slogan. A LINEBACKER is a football position.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DOUBLE", "DUTCH", "OVEN", "MITT", "ROMNEY", "MARSH", "MALLOW", "CUP", "CAKE"],
+        narrative: "DOUBLE DUTCH is a jump rope game. A DUTCH OVEN is a heavy cooking pot. An OVEN MITT protects hands from heat. MITT ROMNEY is a U.S. politician. ROMNEY MARSH is a wetland in England. A MARSHMALLOW is a soft candy. A MALLOW CUP is a chocolate candy. A CUPCAKE is a small individual cake.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DEAD", "POOL", "PARTY", "ANIMAL", "HOUSE", "MUSIC", "VIDEO", "GAME", "OVER"],
+        narrative: "DEADPOOL is the Marvel antihero. A POOL PARTY is a summer gathering. A PARTY ANIMAL loves to celebrate. ANIMAL HOUSE is the classic comedy film. HOUSE MUSIC is an electronic dance genre. A MUSIC VIDEO accompanies a song. A VIDEO GAME is interactive entertainment. GAME OVER means you've lost.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SLAP", "STICK", "FIGURE", "HEAD", "STRONG", "ARM", "CHAIR", "LIFT", "OFF"],
+        narrative: "SLAPSTICK is physical comedy. A STICK FIGURE is a simple drawing. A FIGUREHEAD is a symbolic leader. HEADSTRONG means stubborn. To STRONGARM is to use force. An ARMCHAIR is for relaxing. A CHAIRLIFT takes skiers uphill. LIFTOFF is a rocket launch.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["GHOST", "WRITER", "BLOCK", "CHAIN", "GANG", "BUSTER", "SWORD", "FISH", "FRY"],
+        narrative: "A GHOSTWRITER writes for others without credit. WRITER'S BLOCK is creative paralysis. BLOCKCHAIN is cryptocurrency technology. A CHAIN GANG is prisoners working together. GANGBUSTERS means with great success. The BUSTER SWORD is Cloud's weapon in Final Fantasy. A SWORDFISH is a large billfish. A FISH FRY is a Southern cooking tradition.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SLAM", "POETRY", "READING", "RAINBOW", "BRIDGE", "TROLL", "DOLL", "HOUSE", "HUSBAND"],
+        narrative: "SLAM POETRY is competitive spoken word. A POETRY READING is a literary event. READING RAINBOW was LeVar Burton's educational show. RAINBOW BRIDGE is where pets go in the afterlife. A BRIDGE TROLL demands payment to cross. A TROLL DOLL has wild colorful hair. A DOLLHOUSE is a miniature home. A HOUSE HUSBAND manages the household.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HAPPY", "HOUR", "GLASS", "JAW", "BONE", "HEAD", "HUNTER", "KILLER", "WHALE"],
+        narrative: "HAPPY HOUR offers discounted drinks. An HOURGLASS measures time with sand. A GLASS JAW means easily knocked out. The JAWBONE is part of the skull. A BONEHEAD makes stupid mistakes. A HEADHUNTER recruits executives. HUNTER KILLER is a type of submarine or the film. A KILLER WHALE is an orca.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BUZZ", "KILL", "JOY", "RIDE", "SHARE", "WARE", "HOUSE", "ARREST", "WARRANT"],
+        narrative: "A BUZZKILL ruins the fun. A KILLJOY spoils others' enjoyment. A JOYRIDE is an unauthorized spin in a vehicle. RIDESHARE services include Uber and Lyft. SHAREWARE is try-before-you-buy software. A WAREHOUSE stores goods. HOUSE ARREST confines someone to their home. An ARREST WARRANT authorizes detention.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["LEFT", "FIELD", "DAY", "DREAM", "BOAT", "HOUSE", "CAT", "WALK", "OVER"],
+        narrative: "Something unexpected comes from LEFT FIELD. A FIELD DAY is a fun outdoor event. A DAYDREAM is a waking fantasy. A DREAMBOAT is an attractive person. A BOATHOUSE stores watercraft. A HOUSE CAT is a domestic feline. A CATWALK is a fashion runway. A WALKOVER is an easy victory.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SKULL", "CAP", "GUN", "SHOT", "CLOCK", "TOWER", "DEFENSE", "ATTORNEY", "GENERAL"],
+        narrative: "A SKULLCAP is a close-fitting hat. A CAP GUN is a toy firearm. A GUNSHOT is a bullet discharge. A SHOT CLOCK limits play time in basketball. A CLOCK TOWER displays time publicly. TOWER DEFENSE is a video game genre. A DEFENSE ATTORNEY represents the accused. The ATTORNEY GENERAL is the top legal official.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HATE", "CRIME", "SCENE", "KID", "ROCK", "BOTTOM", "LINE", "DANCE", "OFF"],
+        narrative: "A HATE CRIME targets protected groups. A CRIME SCENE is investigated by police. A SCENE KID embraces emo/alternative fashion. KID ROCK is the American rock musician. ROCK BOTTOM is the lowest point. The BOTTOM LINE is the final result. LINE DANCING is choreographed country dancing. A DANCE-OFF is a competition.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MEAN", "GIRL", "POWER", "TRIP", "WIRE", "TAP", "DANCE", "BATTLE", "SHIP"],
+        narrative: "A MEAN GIRL is a bully from the iconic film. GIRL POWER celebrates female empowerment. A POWER TRIP is an ego-driven abuse of authority. A TRIPWIRE triggers alarms or explosives. A WIRETAP intercepts communications. TAP DANCE uses metal-soled shoes. A DANCE BATTLE is a competitive showdown. BATTLESHIP is the naval strategy game.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CASH", "COW", "GIRL", "BOSS", "MAN", "CAVE", "PAINTING", "CLASS", "ACTION"],
+        narrative: "A CASH COW generates steady profits. A COWGIRL rides horses in the West. A GIRL BOSS is a female entrepreneur. The BOSSMAN is in charge. A MAN CAVE is a male retreat. CAVE PAINTINGS are prehistoric art. A PAINTING CLASS teaches art. A CLASS ACTION is a group lawsuit.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SIDE", "CHICK", "FLICK", "KNIFE", "FIGHT", "CLUB", "FOOT", "NOTE", "BOOK"],
+        narrative: "A SIDE CHICK is slang for a secret girlfriend. A CHICK FLICK is a romantic movie. A FLICK KNIFE is British for switchblade. A KNIFE FIGHT is a blade combat. FIGHT CLUB is the Fincher film. A CLUBFOOT is a congenital condition. A FOOTNOTE is supplementary text. A NOTEBOOK is for writing.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DEAD", "BEAT", "BOX", "SET", "PIECE", "WORK", "SHOP", "LIFT", "OFF"],
+        narrative: "A DEADBEAT avoids responsibilities. To BEATBOX is to make music vocally. A BOX SET is a collection of media. A SET PIECE is a planned play in sports. PIECEWORK pays by output. A WORKSHOP is a hands-on session. To SHOPLIFT is to steal merchandise. LIFTOFF is a rocket launch.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DUMB", "BELL", "BOY", "TOY", "STORY", "TIME", "WARP", "SPEED", "BUMP"],
+        narrative: "A DUMBBELL is a weight for exercise. A BELLBOY carries luggage at hotels. A BOY TOY is a young male companion. TOY STORY is the Pixar franchise. STORYTIME is when tales are read. A TIME WARP distorts the timeline. WARP SPEED is faster than light. A SPEED BUMP slows traffic.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COUCH", "POTATO", "HEAD", "STONE", "WALL", "FLOWER", "POWER", "HOUR", "GLASS"],
+        narrative: "A COUCH POTATO is a lazy person. MR. POTATO HEAD is the classic toy. A HEADSTONE marks a grave. To STONEWALL is to obstruct. A WALLFLOWER is a shy person at parties. FLOWER POWER was a 60s slogan. A POWER HOUR is intense drinking. An HOURGLASS measures time with sand.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STONE", "COLD", "CASE", "FILE", "CABINET", "MAKER", "SPACE", "JAM", "SESSION"],
+        narrative: "STONE COLD Steve Austin is a WWE legend. A COLD CASE is an unsolved crime. A CASE FILE contains investigation documents. A FILE CABINET stores documents. A CABINET MAKER builds furniture. A MAKERSPACE is for DIY projects. SPACE JAM is the Michael Jordan film. A JAM SESSION is improvisational music.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BURN", "OUT", "BACK", "PACK", "RAT", "RACE", "CAR", "JACK", "POT"],
+        narrative: "BURNOUT is exhaustion from overwork. The OUTBACK is Australian wilderness. A BACKPACK carries belongings. A PACK RAT hoards items. The RAT RACE is the daily grind. A RACE CAR competes at high speeds. To CARJACK is to steal a vehicle. The JACKPOT is the big prize.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PLAY", "GROUND", "BREAKING", "BAD", "ASS", "HAT", "TRICK", "SHOT", "GUN"],
+        narrative: "A PLAYGROUND is where kids play. GROUNDBREAKING is revolutionary. BREAKING BAD is the acclaimed TV series. A BADASS is impressively tough. An ASSHAT is slang for a jerk. A HAT TRICK is three goals in one game. A TRICK SHOT requires skill. A SHOTGUN is a firearm.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SWEAT", "PANTS", "SUIT", "CASE", "LOAD", "BEARING", "ARMS", "RACE", "TRACK"],
+        narrative: "SWEATPANTS are comfortable loungewear. A PANTSUIT is professional attire. A SUITCASE holds travel belongings. A CASELOAD is work volume. LOAD-BEARING supports weight. BEARING ARMS is the right to carry weapons. An ARMS RACE is military competition. A RACETRACK hosts competitions.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["AIR", "STRIKE", "ZONE", "OUT", "RAGE", "QUIT", "SMOKING", "GUN", "BOAT"],
+        narrative: "An AIR STRIKE is a military bombing. The STRIKE ZONE is where pitches must cross. To ZONE OUT is to lose focus. OUTRAGE is intense anger. To RAGE QUIT is to angrily leave a game. QUIT SMOKING is a health goal. A SMOKING GUN is undeniable evidence. A GUNBOAT is a small armed vessel.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SPILL", "TEA", "PARTY", "ANIMAL", "CRACKER", "BARREL", "CHEST", "BUMP", "MAP"],
+        narrative: "To SPILL TEA is to share gossip. A TEA PARTY is a political movement or social gathering. A PARTY ANIMAL loves to celebrate. An ANIMAL CRACKER is an animal-shaped snack. CRACKER BARREL is a restaurant chain. A BARREL CHEST is a rounded torso. A CHEST BUMP is a celebratory gesture. A BUMP MAP adds texture in 3D graphics.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["TIGER", "KING", "PIN", "DROP", "KICK", "ASS", "BACKWARDS", "HAT", "BOX"],
+        narrative: "TIGER KING is the viral Netflix documentary. A KINGPIN is a crime boss. You could hear a PIN DROP in silence. A DROP KICK is a rugby or wrestling move. To KICK ASS is to dominate. ASS BACKWARDS means doing things wrong. A BACKWARDS HAT is worn with the brim behind. A HATBOX stores headwear.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STINK", "EYE", "CANDY", "CANE", "TOAD", "STOOL", "PIGEON", "HOLE", "PUNCH"],
+        narrative: "To give the STINK EYE is to glare disapprovingly. EYE CANDY is visually pleasing. A CANDY CANE is a holiday treat. A CANE TOAD is an invasive amphibian. A TOADSTOOL is a poisonous mushroom. A STOOL PIGEON is an informant. To PIGEONHOLE is to categorize narrowly. A HOLE PUNCH makes paper holes.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["FLEX", "TAPE", "DELAY", "PEDAL", "STEEL", "GUITAR", "HERO", "WORSHIP", "SERVICE"],
+        narrative: "FLEX TAPE is the infomercial adhesive. A TAPE DELAY is an audio effect. A DELAY PEDAL modifies guitar sound. PEDAL STEEL is a type of guitar. A STEEL GUITAR produces country twang. GUITAR HERO is the old rock-star video game. HERO WORSHIP is excessive admiration. A WORSHIP SERVICE is a religious gathering.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MAMA", "BEAR", "MARKET", "VALUE", "MEAL", "DEAL", "BREAKER", "BOX", "OFFICE"],
+        narrative: "A MAMA BEAR is a protective mother. A BEAR MARKET has declining prices. MARKET VALUE is fair price. A VALUE MEAL is a fast food combo. A MEAL DEAL is a discounted food offer. A DEAL BREAKER ruins negotiations. A BREAKER BOX controls electrical circuits. The BOX OFFICE sells tickets.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SIDE", "HUSTLE", "FLOW", "STATE", "TROOPER", "HAT", "BOX", "OFFICE", "SPACE"],
+        narrative: "A SIDE HUSTLE is secondary income. HUSTLE & FLOW is the Oscar-winning film. A FLOW STATE is peak mental performance. A STATE TROOPER patrols highways. A TROOPER HAT is the wide-brimmed campaign cover. A HATBOX stores headwear. The BOX OFFICE sells tickets. OFFICE SPACE is the cult workplace comedy.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["VIBE", "CHECK", "MARK", "UP", "CHARGE", "CARD", "BOARD", "GAME", "OVER"],
+        narrative: "A VIBE CHECK assesses the mood. A CHECK MARK indicates completion. A MARKUP increases prices. An UPCHARGE is an extra fee. A CHARGE CARD is for purchases. CARDBOARD is packaging material. A BOARD GAME provides entertainment. GAME OVER ends play.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SAFE", "WORD", "VOMIT", "COMET", "TAIL", "SPIN", "DOCTOR", "WHO", "CARES"],
+        narrative: "A SAFE WORD stops BDSM activity. WORD VOMIT is uncontrollable speech from Mean Girls. The VOMIT COMET simulates zero gravity. A COMET TAIL trails behind. A TAILSPIN is an uncontrolled descent. A SPIN DOCTOR manipulates public perception. DOCTOR WHO is the BBC sci-fi series. WHO CARES expresses indifference.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["FEAR", "FACTOR", "IN", "LAW", "FIRM", "HAND", "SHAKE", "WEIGHT", "LIFTING"],
+        narrative: "FEAR FACTOR was the extreme game show. To FACTOR IN is to include. An IN-LAW is a spouse's relative. A LAW FIRM employs attorneys. A FIRM HAND shows discipline. A HANDSHAKE seals agreements. A SHAKE WEIGHT is the fitness gimmick. WEIGHTLIFTING builds muscle.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DEEP", "FAKE", "NEWS", "ANCHOR", "MAN", "CAVE", "IN", "CROWD", "FUNDING"],
+        narrative: "A DEEPFAKE uses AI to create fake media. FAKE NEWS is misinformation. A NEWS ANCHOR reports stories. ANCHORMAN is the Will Ferrell comedy. A MAN CAVE is a male retreat. To CAVE IN is to collapse or yield. The IN CROWD is the popular group. CROWDFUNDING raises money online.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DUCK", "FACE", "PLANT", "FOOD", "STAMP", "DUTY", "FREE", "AGENT", "ORANGE"],
+        narrative: "A DUCK FACE is a selfie pout. To FACE PLANT is to fall forward. PLANT FOOD is fertilizer. FOOD STAMPS assist low-income families. STAMP DUTY is a property tax. DUTY FREE means no import taxes. A FREE AGENT signs with any team. AGENT ORANGE was a toxic herbicide.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["LAME", "DUCK", "TAPE", "WORM", "HOLE", "PUNCH", "DRUNK", "DIAL", "TONE"],
+        narrative: "A LAME DUCK is an outgoing politician. DUCK TAPE is adhesive tape. A TAPEWORM is a parasite. A WORMHOLE is a space-time tunnel. A HOLE PUNCH makes paper holes. PUNCH DRUNK means dazed from blows. To DRUNK DIAL is to call while intoxicated. A DIAL TONE signals an open line.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["TALK", "DIRTY", "DANCING", "QUEEN", "BEE", "LINE", "UP", "CHUCK", "NORRIS"],
+        narrative: "To TALK DIRTY is to speak sexually. DIRTY DANCING is the Swayze film. DANCING QUEEN is the ABBA hit. A QUEEN BEE leads the hive. To make a BEELINE is to go directly. A LINEUP is a police identification. To UPCHUCK is to vomit. CHUCK NORRIS is the martial arts legend.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STAGE", "DIVING", "BOARD", "MEMBER", "SHIP", "YARD", "ARM", "PIT", "CREW"],
+        narrative: "STAGE DIVING leaps into a crowd. A DIVING BOARD launches swimmers. A BOARD MEMBER governs an organization. MEMBERSHIP grants access. A SHIPYARD builds vessels. A YARD ARM is a sail support. An ARMPIT is a body cavity. A PIT CREW services race cars.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HYPE", "TRAIN", "STATION", "MASTER", "CLASS", "ACTION", "MOVIE", "STAR", "STRUCK"],
+        narrative: "The HYPE TRAIN builds excitement. A TRAIN STATION is a transit hub. A STATION MASTER manages rail operations. A MASTER CLASS teaches expertise. A CLASS ACTION is a group lawsuit. An ACTION MOVIE features stunts. A MOVIE STAR is a celebrity. STAR STRUCK means awestruck by fame.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SHADE", "TREE", "LINE", "DANCE", "BATTLE", "ROYAL", "FLUSH", "MOUNT", "EVEREST"],
+        narrative: "A SHADE TREE provides cover. A TREE LINE marks where trees stop growing. A LINE DANCE is synchronized group dancing. A DANCE BATTLE is a competitive showdown. BATTLE ROYALE is a last-person-standing fight. A ROYAL FLUSH is the best poker hand. A FLUSH MOUNT is a ceiling light style. MOUNT EVEREST is Earth's tallest peak.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COAT", "CHECK", "POINT", "BLANK", "SLATE", "ROOF", "DECK", "HAND", "STAND"],
+        narrative: "A COAT CHECK stores outerwear. A CHECKPOINT verifies passage. POINT BLANK is at close range. A BLANK SLATE is a fresh start. A SLATE ROOF uses stone tiles. A ROOF DECK is an outdoor platform. A DECKHAND works on a ship. A HANDSTAND is a gymnastic pose.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PETTY", "CASH", "COW", "BELL", "PEPPER", "MILL", "STREAM", "BED", "ROOM"],
+        narrative: "PETTY CASH is small funds for expenses. A CASH COW generates steady profit. A COWBELL is a percussion instrument. A BELL PEPPER is a vegetable. A PEPPER MILL grinds spices. A MILLSTREAM powers water wheels. A STREAMBED is the channel floor. A BEDROOM is for sleeping.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DOOM", "SCROLL", "LOCK", "JAW", "DROP", "DEAD", "WEIGHT", "LOSS", "LEADER"],
+        narrative: "To DOOMSCROLL is to obsessively read bad news. SCROLL LOCK is a keyboard key. LOCKJAW is tetanus. A JAW DROP expresses shock. DROP DEAD means to die suddenly. DEADWEIGHT is useless burden. WEIGHT LOSS is slimming. A LOSS LEADER is a discounted product to attract customers.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SUPER", "BOWL", "CUT", "THROAT", "PUNCH", "DRUNK", "TEXT", "BOOK", "SMART"],
+        narrative: "The SUPER BOWL is football's championship. A BOWL CUT is a rounded haircut. CUTTHROAT means ruthlessly competitive. A THROAT PUNCH is a violent strike. PUNCH DRUNK is dazed from blows. A DRUNK TEXT is sent while intoxicated. A TEXTBOOK is for studying. BOOK SMART means academically intelligent.",
+        difficulty: 'HARD'
     }
 ];

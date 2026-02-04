@@ -25,7 +25,7 @@ import {
 // Pre-locked tiles make easier puzzles by reducing the problem space
 const getPreLockedPositions = (difficulty: string): number[] => {
     switch (difficulty) {
-        case 'EASY': return [0, 8];      // First and last tiles
+        case 'EASY': return [0];         // First tile only
         case 'HARD': return [8];          // Last tile
         case 'IMPOSSIBLE': return [];     // No pre-locked tiles
         default: return [];
@@ -284,7 +284,7 @@ export const useGameLogic = (playerData: PlayerData, setPlayerData: (data: Playe
             puzzleStartTimeRef.current = Date.now();
             setPuzzle(newPuzzle);
             
-            // Pre-lock tiles based on difficulty (Easy: first/last, Hard: middle, Impossible: none)
+            // Pre-lock tiles based on difficulty (Easy: first, Hard: last, Impossible: none)
             const lockedPositions = getPreLockedPositions(newPuzzle.difficulty);
             setBoardState(shuffleWithLockedPositions(newPuzzle.solution, lockedPositions));
             setLockedSlots(Array(9).fill(false).map((_, i) => lockedPositions.includes(i)));

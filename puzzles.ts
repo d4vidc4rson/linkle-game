@@ -2682,4 +2682,29 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "CHERRY COLA is a cola flavored with cherry syrup. A COLA NUT is a caffeine-containing seed from Africa. NUT BROWN is a warm brown color. BROWN SUGAR is sugar with molasses. A SUGAR PLUM is a small candy associated with Christmas. PLUM PUDDING is a traditional British Christmas dessert. A PUDDINGHEAD is a foolish or stupid person. HEADPHONES are audio devices worn over the ears.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["REAR", "MOUNT", "GEORGE", "BUSH", "TRIM", "EXCESS", "FAT", "CHANCE", "ENCOUNTER"],
+        narrative: "A REAR MOUNT is a dominant grappling position. MOUNT GEORGE is a peak in Colorado's Rocky Mountains. GEORGE BUSH was president—pick your favorite one. To BUSH TRIM is to shape your shrubbery. You TRIM EXCESS to cut what you don't need. EXCESS FAT is what diet culture won't shut up about. FAT CHANCE means 'yeah right, not happening.' A CHANCE ENCOUNTER is a serendipitous meeting.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LEMON", "FRESH", "MEAT", "MARKET", "SHARE", "WIVES", "TALE", "SPIN", "DOCTORS"],
+        narrative: "LEMON FRESH is that clean citrus scent in cleaning products. FRESH MEAT is slang for a newcomer. A MEAT MARKET is where you buy cuts—or scope out singles. MARKET SHARE is a company's percentage of total sales. To SHARE WIVES refers to the 70s swinger culture of wife swapping. An old WIVES' TALE is a superstitious belief passed down through generations. TALE SPIN is what stories do when they spiral—also the Disney cartoon with Baloo. The SPIN DOCTORS are the 90s band who gave us 'Two Princes' and 'Little Miss Can't Be Wrong.'",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["NORTH", "STAR", "FIELDS", "MEDAL", "WINNERS", "CIRCLE", "BACK", "DOOR", "KNOB"],
+        narrative: "The NORTH STAR is Polaris, your celestial compass pointing true north. STAR FIELDS are those shimmering expanses of stars in the night sky. The FIELDS MEDAL is the most prestigious award in mathematics—the Nobel Prize of math. MEDAL WINNERS are the champions who stand on podiums. The WINNERS CIRCLE is where victors gather to celebrate. To CIRCLE BACK means to revisit a topic later. A BACK DOOR is the rear entrance—or a sneaky way in. A DOOR KNOB is the handle you turn to open it.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BOY", "GEORGE", "WASHINGTON", "DC", "COMIC", "RELIEF", "PITCHER", "PLANT", "EVIDENCE"],
+        narrative: "BOY GEORGE is the Culture Club frontman who really did want to hurt you (with impeccable style). GEORGE WASHINGTON was the first U.S. president who famously couldn't tell a lie. WASHINGTON DC is the nation's capital. A DC COMIC is a comic book published by DC Comics like Batman and Superman. COMIC RELIEF is humor that breaks dramatic tension. A RELIEF PITCHER enters to save the game in baseball. A PITCHER PLANT is a carnivorous plant that traps insects in its tubular leaves. To PLANT EVIDENCE is to frame someone by placing incriminating items—highly illegal, very dramatic.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GIVE", "THANKS", "MISTER", "MISTER", "BIG", "HOUSE", "SALAD", "SHOOTER", "MCGAVIN"],
+        narrative: "GIVE THANKS is what you do at Thanksgiving. 'THANKS, MISTER!' is what a polite kid says. MISTER MISTER is the 80s band behind 'Take These Broken Wings' and 'Kyrie.' MISTER BIG is Carrie Bradshaw's enigmatic love interest in Sex and the City. The BIG HOUSE is slang for prison. A HOUSE SALAD is the restaurant's signature greens starter. A SALAD SHOOTER is that As-Seen-On-TV kitchen gadget for slicing and shredding vegetables. SHOOTER MCGAVIN is the villainous golfer from Happy Gilmore who eats pieces of garbage like you for breakfast.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

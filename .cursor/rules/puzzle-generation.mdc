@@ -5,24 +5,28 @@ alwaysApply: true
 
 # Puzzle Generation Workflow
 
-When asked to create, generate, or add puzzles, follow this optimized workflow to minimize token usage:
+When asked to create, generate, or add puzzles, follow this workflow optimized for token efficiency.
 
-## Step 1: Read Required Files FIRST
+## Step 1: Read the Creation Guide
 
-Before generating any puzzles:
+Read `PUZZLE_CREATION_GUIDE.md` for puzzle rules and difficulty guidelines (EASY/HARD/IMPOSSIBLE criteria).
 
-1. Read `bigram-index.txt` (~53KB) - contains all used bigrams in `WORD1→WORD2` format
-2. Read `PUZZLE_CREATION_GUIDE.md` for puzzle rules and difficulty guidelines
+**Do NOT read `puzzles.ts`** - it's huge and unnecessary for uniqueness checking.
+**Do NOT read the full `bigram-index.txt`** - it's 50KB+ and grows over time.
 
-**Do NOT read `puzzles.ts` for uniqueness checking** - it's 10x larger and unnecessary.
+## Step 2: Identify "Golden Words" (Optional Quick Check)
 
-## Step 2: Generate Puzzles While Checking the Index
+Use targeted grep to find words with NO existing entries - these are ideal chain anchors:
 
-Generate candidate 9-word chains while cross-referencing the bigram index in your reasoning. For each proposed bigram (e.g., SNOW→FLAKE), verify it's not in the index before including it.
+```bash
+rg "^TARGETWORD→|→TARGETWORD$" bigram-index.txt
+```
 
-## Step 3: Validate and Add (One Script Call Per Puzzle)
+Words with zero matches are "golden" - any compound using them as the first element will be unique.
 
-Only call the script ONCE per puzzle - after you've already verified uniqueness:
+## Step 3: Generate and Validate with Script-First Approach
+
+**Use the script for validation directly** - it gives instant, precise feedback:
 
 ```bash
 node scripts/add-puzzle.js \
@@ -31,10 +35,30 @@ node scripts/add-puzzle.js \
   --difficulty EASY|HARD|IMPOSSIBLE
 ```
 
-## What NOT To Do
+- If it succeeds: puzzle is added, move to next
+- If it fails: read the conflict list, fix ONLY those pairs, retry
 
-- Do NOT use trial-and-error with `--dry-run` to check uniqueness
-- Do NOT run 10+ validation commands hoping to find a unique puzzle
-- Do NOT generate puzzles without first reading the bigram index
+## Step 4: Iterate Efficiently
 
-The bigram index exists specifically so you can check uniqueness yourself, not via expensive script iterations.
+- Fix only the conflicting bigrams identified by the script
+- Maximum 3-4 attempts per chain concept
+- If hitting 5+ failures on one chain, abandon it and try completely different word roots
+- Target: <5 script calls per successful puzzle
+
+## Efficiency Rules
+
+**DO:**
+- Use script validation as your primary uniqueness check
+- Start chains with uncommon words (foods, plants, proper nouns)
+- Run multiple puzzle attempts in parallel when possible
+- Trust the script's error output - it's precise
+
+**DO NOT:**
+- Grep every single bigram before attempting (too slow for saturated indexes)
+- Read the entire bigram-index.txt into context
+- Spend 10+ attempts fixing the same chain - pivot instead
+- Pre-validate more than 2-3 key bigrams per chain
+
+## Why This Approach
+
+The bigram index is now large (3500+ entries). Pre-checking every bigram via grep costs more tokens than just running the script and iterating on failures. The script validates all 8 bigrams instantly and tells you exactly which ones conflict.

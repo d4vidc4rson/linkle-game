@@ -2662,4 +2662,24 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "SEEING RED means becoming extremely angry. RED BULL is the famous energy drink brand. A BULLRING is an arena where bullfighting takes place. RINGSIDE refers to seats closest to a boxing or wrestling ring. A SIDECAR is a one-wheeled attachment to a motorcycle. A CARPORT is a covered structure for parking a car. A PORT CITY is a city with a harbor for ships. A CITY-STATE is an independent city that governs itself.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["PEANUT", "BUTTER", "SCOTCH", "EGG", "ROLL", "BACK", "SPACE", "TIME", "KEEPER"],
+        narrative: "PEANUT BUTTER is a spread made from ground peanuts. BUTTERSCOTCH is a confection made with butter and brown sugar. A SCOTCH EGG is a British pub snack of sausage-wrapped hard-boiled egg. An EGG ROLL is a fried appetizer. To ROLL BACK is to reverse or undo. The BACKSPACE key deletes the previous character. SPACE-TIME is the four-dimensional continuum in physics. A TIMEKEEPER is someone who records elapsed time.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COTTON", "GIN", "FIZZ", "POP", "CORN", "HUSK", "TOMATO", "PASTE", "BOARD"],
+        narrative: "A COTTON GIN is a machine that separates cotton fibers from seeds. A GIN FIZZ is a classic cocktail with gin and soda water. FIZZ POP is onomatopoeia for carbonated candy. POPCORN is a snack made from heated corn kernels. A CORN HUSK is the leafy outer covering of an ear of corn. A HUSK TOMATO is another name for a tomatillo. TOMATO PASTE is a thick concentrate used in cooking. PASTEBOARD is a stiff material made of layers of paper.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["OLIVE", "OIL", "SLICK", "WILLY", "NILLY", "GRITTY", "CITY", "LIMITS", "TEST"],
+        narrative: "OLIVE OIL is pressed from olives and used in cooking. An OIL SLICK is a layer of oil floating on water. SLICK WILLY was a nickname for Bill Clinton. WILLY-NILLY means in a haphazard or random manner. NITTY-GRITTY refers to the essential details of something. A GRITTY CITY has a tough, urban character. CITY LIMITS are the boundaries of a municipality. A LIMITS TEST examines behavior at extreme values.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CHERRY", "COLA", "NUT", "BROWN", "SUGAR", "PLUM", "PUDDING", "HEAD", "PHONES"],
+        narrative: "CHERRY COLA is a cola flavored with cherry syrup. A COLA NUT is a caffeine-containing seed from Africa. NUT BROWN is a warm brown color. BROWN SUGAR is sugar with molasses. A SUGAR PLUM is a small candy associated with Christmas. PLUM PUDDING is a traditional British Christmas dessert. A PUDDINGHEAD is a foolish or stupid person. HEADPHONES are audio devices worn over the ears.",
+        difficulty: 'HARD'
+    },
 ];

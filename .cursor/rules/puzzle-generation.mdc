@@ -1,0 +1,40 @@
+---
+description: Optimized workflow for generating word puzzles with unique bigrams
+alwaysApply: true
+---
+
+# Puzzle Generation Workflow
+
+When asked to create, generate, or add puzzles, follow this optimized workflow to minimize token usage:
+
+## Step 1: Read Required Files FIRST
+
+Before generating any puzzles:
+
+1. Read `bigram-index.txt` (~53KB) - contains all used bigrams in `WORD1→WORD2` format
+2. Read `PUZZLE_CREATION_GUIDE.md` for puzzle rules and difficulty guidelines
+
+**Do NOT read `puzzles.ts` for uniqueness checking** - it's 10x larger and unnecessary.
+
+## Step 2: Generate Puzzles While Checking the Index
+
+Generate candidate 9-word chains while cross-referencing the bigram index in your reasoning. For each proposed bigram (e.g., SNOW→FLAKE), verify it's not in the index before including it.
+
+## Step 3: Validate and Add (One Script Call Per Puzzle)
+
+Only call the script ONCE per puzzle - after you've already verified uniqueness:
+
+```bash
+node scripts/add-puzzle.js \
+  --solution "WORD1" "WORD2" ... "WORD9" \
+  --narrative "Your narrative..." \
+  --difficulty EASY|HARD|IMPOSSIBLE
+```
+
+## What NOT To Do
+
+- Do NOT use trial-and-error with `--dry-run` to check uniqueness
+- Do NOT run 10+ validation commands hoping to find a unique puzzle
+- Do NOT generate puzzles without first reading the bigram index
+
+The bigram index exists specifically so you can check uniqueness yourself, not via expensive script iterations.

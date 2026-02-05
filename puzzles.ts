@@ -2632,4 +2632,34 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "A WURLITZER ORGAN is a pipe organ made by the famous Wurlitzer Company. ORGAN MEAT refers to edible internal organs of animals like liver and kidneys. MEAT SPACE is slang for the physical world, as opposed to cyberspace. A SPACE HEATER is a portable device for warming a room. A HEATER CORE is an automotive component that provides cabin heat. A CORE ISSUE is a fundamental or central problem. An ISSUE AREA is a domain of policy concern. An AREA CODE is a telephone dialing prefix for a geographic region.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["GARBAGE", "DISPOSAL", "UNIT", "CIRCLE", "BACK", "DATED", "REFERENCE", "LIBRARY", "CARD"],
+        narrative: "A GARBAGE DISPOSAL is a kitchen appliance that grinds food waste. A DISPOSAL UNIT is a mechanism for disposing of waste. A UNIT CIRCLE in mathematics is a circle with radius one. To CIRCLE BACK means to return to a topic later. BACK DATED refers to something given an earlier date retroactively. A DATED REFERENCE is an outdated source or citation. A REFERENCE LIBRARY is one where materials cannot be checked out. A LIBRARY CARD gives borrowing privileges at a library.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["POWER", "OUTAGE", "REPAIR", "SHOP", "WINDOW", "DRESSING", "TABLE", "MANNERS", "COACH"],
+        narrative: "POWER OUTAGE is a loss of electrical power. OUTAGE REPAIR refers to fixing a service interruption. A REPAIR SHOP is a business that fixes things. SHOP WINDOW is a display window in a store. WINDOW DRESSING means decorating windows or making something look better superficially. A DRESSING TABLE is a piece of furniture with a mirror for grooming. TABLE MANNERS are the etiquette rules for eating. A MANNERS COACH teaches proper social behavior and etiquette.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CARBON", "FOOTPRINT", "ANALYSIS", "BREAKDOWN", "LANE", "DEPARTURE", "LOUNGE", "CHAIR", "EXERCISE"],
+        narrative: "A CARBON FOOTPRINT measures greenhouse gas emissions. FOOTPRINT ANALYSIS studies the impact or traces of activity. An ANALYSIS BREAKDOWN is a detailed examination of data. A BREAKDOWN LANE is an emergency stopping area on highways. LANE DEPARTURE refers to warning systems in vehicles. A DEPARTURE LOUNGE is an airport waiting area. A LOUNGE CHAIR is a comfortable reclining seat. CHAIR EXERCISE refers to seated fitness routines.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STREAM", "SNIPE", "HUNT", "CLUB", "KID", "GLOVES", "OFF", "GRID", "LOCK"],
+        narrative: "STREAM SNIPING is when gamers watch a live stream to gain unfair advantage. A SNIPE HUNT is a practical joke where someone is sent to find a nonexistent creature. A HUNT CLUB is a private organization for hunting enthusiasts. CLUB KIDS were NYC's notorious 1980s-90s nightlife personalities. KID GLOVES means handling something with extreme care and delicacy. GLOVES OFF means no restraint—anything goes. OFF GRID means living without public utilities or disconnected from mainstream systems. GRIDLOCK is severe traffic congestion or political stalemate.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SLEEP", "OVER", "POWER", "TOOL", "BELT", "LINE", "BREAK", "NECK", "LACE"],
+        narrative: "A SLEEPOVER is staying overnight at a friend's house. To OVERPOWER means to defeat with superior strength. A POWER TOOL is an electrically driven tool. A TOOL BELT holds tools for easy access while working. A BELTLINE is the waistline of a garment or a transit loop. A LINE BREAK is where text wraps to a new line. BREAKNECK means dangerously fast speed. A NECKLACE is jewelry worn around the neck.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SEEING", "RED", "BULL", "RING", "SIDE", "CAR", "PORT", "CITY", "STATE"],
+        narrative: "SEEING RED means becoming extremely angry. RED BULL is the famous energy drink brand. A BULLRING is an arena where bullfighting takes place. RINGSIDE refers to seats closest to a boxing or wrestling ring. A SIDECAR is a one-wheeled attachment to a motorcycle. A CARPORT is a covered structure for parking a car. A PORT CITY is a city with a harbor for ships. A CITY-STATE is an independent city that governs itself.",
+        difficulty: 'HARD'
+    },
 ];

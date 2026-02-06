@@ -2707,4 +2707,24 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "GIVE THANKS is what you do at Thanksgiving. 'THANKS, MISTER!' is what a polite kid says. MISTER MISTER is the 80s band behind 'Take These Broken Wings' and 'Kyrie.' MISTER BIG is Carrie Bradshaw's enigmatic love interest in Sex and the City. The BIG HOUSE is slang for prison. A HOUSE SALAD is the restaurant's signature greens starter. A SALAD SHOOTER is that As-Seen-On-TV kitchen gadget for slicing and shredding vegetables. SHOOTER MCGAVIN is the villainous golfer from Happy Gilmore who eats pieces of garbage like you for breakfast.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["TECHNICALLY", "ILLEGAL", "ALIEN", "SPECIES", "EXTINCTION", "EVENT", "SPACE", "HEATER", "COIL"],
+        narrative: "TECHNICALLY ILLEGAL means it's against the law on a technicality, even if it seems harmless. An ILLEGAL ALIEN is an undocumented immigrant. An ALIEN SPECIES is a non-native organism introduced to an ecosystem. SPECIES EXTINCTION is when an entire species dies out permanently. An EXTINCTION EVENT is a catastrophic occurrence that wipes out most life on Earth. EVENT SPACE is a venue rented for gatherings and parties. A SPACE HEATER is a portable device for warming a room. A HEATER COIL is the heating element inside that keeps you toasty.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DOCTOR", "PEPPER", "SPRAY", "TAN", "LINES", "CROSSED", "EYES", "CLOSED", "CAPTION"],
+        narrative: "DR PEPPER is the 23-flavor soft drink that's older than Coca-Cola. PEPPER SPRAY is a self-defense aerosol that'll ruin anyone's day. A SPRAY TAN gives you that sun-kissed glow without the UV damage. TAN LINES are the telltale marks of uneven sun exposure. LINES CROSSED means boundaries have been violated. CROSSED EYES is when the eyes turn inward toward the nose. EYES CLOSED means your peepers are shut. CLOSED CAPTION provides subtitles for the hearing impaired.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PHILOSOPHERS", "STONE", "ROSES", "BLOOMING", "ONION", "CHUTNEY", "SPREAD", "RUMOR", "MILL"],
+        narrative: "The PHILOSOPHERS' STONE is the legendary alchemical substance that turns lead to gold—also Harry Potter's first quest. The STONE ROSES are the legendary British band who defined the late-80s Madchester sound. ROSES BLOOMING is springtime in full glory. A BLOOMING ONION is the iconic deep-fried appetizer at Outback Steakhouse. ONION CHUTNEY is a sweet and tangy condiment. A CHUTNEY SPREAD goes on sandwiches and cheese boards. To SPREAD A RUMOR is to pass along gossip. A RUMOR MILL is where speculation gets manufactured.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ISAAC", "STERN", "MEASURE", "TWICE", "REMOVED", "ACCESS", "GRANTED", "IMMUNITY", "PROVISION"],
+        narrative: "ISAAC STERN was the legendary Ukrainian-American violinist and cultural ambassador. A STERN MEASURE is a harsh or strict action taken. MEASURE TWICE comes from the carpenter's wisdom: 'measure twice, cut once.' TWICE REMOVED describes a distant cousin relationship. REMOVED ACCESS means your permissions have been revoked. ACCESS GRANTED is what you hear when you're let through security. GRANTED IMMUNITY is legal protection from prosecution. An IMMUNITY PROVISION is a clause in law that provides that protection.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

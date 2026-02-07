@@ -2727,4 +2727,24 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "ISAAC STERN was the legendary Ukrainian-American violinist and cultural ambassador. A STERN MEASURE is a harsh or strict action taken. MEASURE TWICE comes from the carpenter's wisdom: 'measure twice, cut once.' TWICE REMOVED describes a distant cousin relationship. REMOVED ACCESS means your permissions have been revoked. ACCESS GRANTED is what you hear when you're let through security. GRANTED IMMUNITY is legal protection from prosecution. An IMMUNITY PROVISION is a clause in law that provides that protection.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["SUGAR", "BABY", "FAT", "AMY", "IRVING", "BERLIN", "WALL", "E", "MAIL"],
+        narrative: "A SUGAR BABY is someone financially supported by a wealthy benefactor. BABY FAT is the adorable chubbiness infants carry. FAT AMY is Rebel Wilson's iconic character from Pitch Perfect who calls herself that so 'twig bitches' don't do it behind her back. AMY IRVING is the actress known for Carrie, Yentl, and being Spielberg's ex. IRVING BERLIN was the legendary composer behind 'White Christmas' and 'God Bless America.' The BERLIN WALL divided East and West Germany until 1989. WALL-E is the lovable Pixar robot cleaning up Earth. E-MAIL is electronic mail—remember when that was exciting?",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DIRTY", "SECRETS", "BURIED", "DEEPLY", "SACRED", "COW", "TIPPING", "POINT", "SPREAD"],
+        narrative: "DIRTY SECRETS are the shameful truths we hide. SECRETS BURIED are hidden away from discovery. BURIED DEEPLY means something is concealed far beneath the surface. DEEPLY SACRED describes something profoundly holy. A SACRED COW is something immune from criticism. COW TIPPING is the mostly-mythical rural prank of pushing over sleeping cows. A TIPPING POINT is the critical moment when change becomes unstoppable. A POINT SPREAD is the betting margin in sports gambling.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STAND", "STILL", "SINGLE", "LADIES", "FIRST", "LOVE", "STORY", "TIME", "LIMIT"],
+        narrative: "To STAND STILL is to remain completely motionless. STILL SINGLE means you haven't found your person yet. SINGLE LADIES is Beyoncé's anthem—if you liked it, you should have put a ring on it. LADIES FIRST is the chivalrous gesture of letting women go ahead. FIRST LOVE is that initial romantic attachment you never quite forget. A LOVE STORY is a romantic tale—also a Taylor Swift deep cut. STORY TIME is when tales are read aloud to eager ears. A TIME LIMIT is a deadline you're probably ignoring right now.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DREAM", "BIG", "BUTT", "HEADS", "TURN", "SIGNAL", "BOOST", "ENERGY", "BILL"],
+        narrative: "To DREAM BIG is to have ambitious aspirations. A BIG BUTT is what Sir Mix-a-Lot cannot lie about liking. To BUTT HEADS is to clash or argue stubbornly. HEADS TURN when someone stunning walks by. A TURN SIGNAL is your car's blinker—please use it. A SIGNAL BOOST amplifies a message, especially on social media. To BOOST ENERGY is to increase your get-up-and-go. An ENERGY BILL is that monthly reminder that electricity isn't free.",
+        difficulty: 'EASY'
+    },
 ];

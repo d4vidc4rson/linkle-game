@@ -2747,4 +2747,34 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "To DREAM BIG is to have ambitious aspirations. A BIG BUTT is what Sir Mix-a-Lot cannot lie about liking. To BUTT HEADS is to clash or argue stubbornly. HEADS TURN when someone stunning walks by. A TURN SIGNAL is your car's blinker—please use it. A SIGNAL BOOST amplifies a message, especially on social media. To BOOST ENERGY is to increase your get-up-and-go. An ENERGY BILL is that monthly reminder that electricity isn't free.",
         difficulty: 'EASY'
     },
+    {
+        solution: ["SLOPPY", "JOE", "ROGAN", "FANS", "FIRST", "DATE", "PLANS", "CHANGE", "ORDER"],
+        narrative: "A SLOPPY JOE is the messy ground beef sandwich on a bun. JOE ROGAN is the podcaster and UFC commentator with the world's longest interviews. ROGAN FANS are the devoted listeners who've heard every episode. FANS FIRST is the philosophy of putting your audience first. A FIRST DATE is that nerve-wracking initial outing. DATE PLANS are what you've arranged for the evening. PLANS CHANGE when life throws you a curveball. A CHANGE ORDER is a modification to a construction contract.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SLOPPY", "SEX", "PISTOLS", "BLAZING", "GLORY", "DAYS", "LATER", "YEARS", "AGO"],
+        narrative: "SLOPPY SEX is the messy, enthusiastic kind. The SEX PISTOLS were the legendary punk band that gave us 'Anarchy in the U.K.' PISTOLS BLAZING means guns firing with abandon. BLAZING GLORY is going out in spectacular fashion. GLORY DAYS are those golden times you'll never stop talking about—thanks, Springsteen. DAYS LATER refers to what comes after—like '28 Days Later.' LATER YEARS are the twilight of one's life. YEARS AGO is the past you're nostalgic for.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MY", "SPACE", "PIRATE", "RADIO", "FREQUENCY", "RESPONSE", "TEAM", "AMERICA", "FERRARA"],
+        narrative: "MYSPACE was the social network we all abandoned for Facebook. A SPACE PIRATE is a sci-fi swashbuckler among the stars. PIRATE RADIO is unlicensed broadcasting from the margins. RADIO FREQUENCY is the electromagnetic wave used for transmission. FREQUENCY RESPONSE measures how audio equipment handles different pitches. A RESPONSE TEAM is a squad dispatched in emergencies. TEAM AMERICA is the satirical puppet movie that mocked action films. AMERICA FERRARA is the actress who broke through in Ugly Betty and now directs Barbie.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SPLIT", "DECISION", "TREE", "BARK", "COLLAR", "BONE", "HEALTH", "CARE", "PROVIDER"],
+        narrative: "A SPLIT DECISION is a close call in boxing or judging. A DECISION TREE is a flowchart for making choices. TREE BARK is the rough outer layer protecting the trunk. A BARK COLLAR discourages excessive dog noise. The COLLAR BONE is your clavicle. BONE HEALTH is crucial as you age. HEALTH CARE is the medical services keeping you alive. A CARE PROVIDER is someone who delivers those services.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SPLIT", "SECOND", "BEST", "PICTURE", "BOOK", "CLUB", "SCENE", "CHANGE", "YOURSELF"],
+        narrative: "A SPLIT SECOND is an instant—blink and you'll miss it. SECOND BEST means you almost won. BEST PICTURE is the top Oscar category everyone cares about. A PICTURE BOOK is an illustrated story for kids. A BOOK CLUB gathers to discuss what they've read over wine. The CLUB SCENE is nightlife culture—dancing, drinks, and drama. A SCENE CHANGE shifts the setting in theater or film. CHANGE YOURSELF is the self-improvement mantra.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SHADOW", "KEEP", "GOING", "ATOMIC", "CLOCK", "MANAGEMENT", "TRAINING", "WHEELS", "UP"],
+        narrative: "Shadow of the Erdtree's SHADOW KEEP is the fortress in Elden Ring's DLC. KEEP GOING is the encouragement to continue. GOING ATOMIC means escalating to nuclear levels. An ATOMIC CLOCK is the most precise timekeeping device, accurate to billionths of a second. CLOCK MANAGEMENT is the art of controlling time in sports. MANAGEMENT TRAINING prepares you for leadership. TRAINING WHEELS are the stabilizers on a kid's first bike. WHEELS UP means the plane has left the ground.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

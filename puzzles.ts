@@ -2777,4 +2777,54 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "Shadow of the Erdtree's SHADOW KEEP is the fortress in Elden Ring's DLC. KEEP GOING is the encouragement to continue. GOING ATOMIC means escalating to nuclear levels. An ATOMIC CLOCK is the most precise timekeeping device, accurate to billionths of a second. CLOCK MANAGEMENT is the art of controlling time in sports. MANAGEMENT TRAINING prepares you for leadership. TRAINING WHEELS are the stabilizers on a kid's first bike. WHEELS UP means the plane has left the ground.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["COUNTRY", "MUSIC", "LOVER", "BOY", "WONDER", "BREAD", "DOUGH", "NUT", "JOB"],
+        narrative: "COUNTRY MUSIC is Nashville's gift to the world. A MUSIC LOVER can't go a day without a playlist. LOVER BOY is the charming romantic. BOY WONDER is Robin—or any young prodigy. WONDER BREAD is the classic soft white bread. BREAD DOUGH is what you knead before baking. A DOUGHNUT is the fried pastry with a hole. A NUT JOB is slang for someone acting crazy.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["UNIQUELY", "STYLISH", "LOOK", "FORWARD", "MOTION", "SICKNESS", "EPIDEMIC", "OUTBREAK", "CONTAINMENT"],
+        narrative: "UNIQUELY STYLISH means you've got your own distinctive flair. A STYLISH LOOK is a put-together appearance. To LOOK FORWARD is to anticipate what's coming. FORWARD MOTION is progress in any direction. MOTION SICKNESS is that queasy feeling from movement. A SICKNESS EPIDEMIC is widespread illness. An EPIDEMIC OUTBREAK is when disease spreads rapidly. OUTBREAK CONTAINMENT is the effort to stop it from spreading further.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LENNY", "BRUCE", "LEE", "JEANS", "POCKET", "SQUARE", "PEG", "LEG", "LIFTS"],
+        narrative: "LENNY BRUCE was the groundbreaking comedian who pushed every boundary. BRUCE LEE was the martial arts legend who transcended cinema. LEE JEANS is the denim brand rivaling Levi's. A JEANS POCKET holds your phone and loose change. A POCKET SQUARE is the dapper handkerchief in a suit jacket. A SQUARE PEG doesn't fit in a round hole. A PEG LEG is the classic pirate prosthetic. LEG LIFTS are the ab exercise that makes you question your life choices.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CHAIN", "SMOKING", "HOT", "PLATE", "SERVICE", "ANIMAL", "HOUSE", "PLANT", "LIFE"],
+        narrative: "CHAIN SMOKING is lighting one cigarette from the last. SMOKING HOT means extremely attractive. A HOT PLATE is a portable cooking surface. PLATE SERVICE is the style of individually serving plated meals. A SERVICE ANIMAL is a trained helper for those with disabilities. ANIMAL HOUSE is the 1978 comedy that launched a thousand toga parties. A HOUSE PLANT brings the outdoors inside. PLANT LIFE is all vegetation.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FRENCH", "KISS", "CAM", "GIRL", "POWER", "BOTTOM", "LINE", "DANCE", "MOM"],
+        narrative: "A FRENCH KISS involves tongue. The KISS CAM catches couples smooching at stadiums. A CAM GIRL streams live on webcam. GIRL POWER was the Spice Girls' rallying cry. A POWER BOTTOM knows what they want. The BOTTOM LINE is the final result that matters. A LINE DANCE is synchronized country dancing. A DANCE MOM is the stage parent pushing their kid to pirouette perfection.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LAB", "RAT", "POISON", "IVY", "BRIDGE", "TUNNEL", "DIODE", "LASER", "COOLING"],
+        narrative: "A LAB RAT is a test subject—literally or figuratively. RAT POISON is rodenticide. POISON IVY is the itchy plant (and Batman's eco-terrorist villain). IVY BRIDGE was Intel's 2012 processor architecture. A BRIDGE TUNNEL combines both structures, like the Chesapeake Bay crossing. A TUNNEL DIODE is an electronic component with negative resistance. A DIODE LASER uses semiconductors to generate coherent light. LASER COOLING is a physics technique that uses light to slow atoms to near absolute zero.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SURI", "CRUISE", "MISSILE", "DEFENSE", "COACH", "BAG", "MAN", "CHILD", "SAFETY"],
+        narrative: "SURI CRUISE is Tom Cruise and Katie Holmes' daughter. A CRUISE MISSILE is a guided weapon. MISSILE DEFENSE systems protect against incoming attacks. A DEFENSE COACH focuses on the defensive side of sports. A COACH BAG is the luxury leather accessory. A BAG MAN collects or delivers money—often shadily. A MAN CHILD is an adult who never grew up. CHILD SAFETY is about protecting the little ones.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DETERMINISTIC", "CHAOS", "THEORY", "CRAFTING", "TABLE", "SALT", "BRIDGE", "TROLL", "FARM"],
+        narrative: "DETERMINISTIC CHAOS describes systems that appear random but follow precise rules. CHAOS THEORY studies sensitive dependence on initial conditions. THEORY CRAFTING is deep-diving into game mechanics to optimize strategies. A CRAFTING TABLE is where you build items in Minecraft. TABLE SALT is everyday sodium chloride. A SALT BRIDGE connects half-cells in electrochemistry. A BRIDGE TROLL is the folklore creature demanding tolls. A TROLL FARM is an organized disinformation operation.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KRISTEN", "STEWART", "DYNASTY", "DRAFT", "BILL", "DUE", "RESPECT", "ELDERS", "WISDOM"],
+        narrative: "KRISTEN STEWART is the actress who went from Twilight to Spencer to indie darling. The STEWART DYNASTY (House of Stuart) ruled Scotland and England for centuries. A DYNASTY DRAFT is a fantasy sports format where you keep players long-term. A DRAFT BILL is proposed legislation not yet passed. A BILL DUE is a payment owed. DUE RESPECT is the proper deference someone deserves. To RESPECT ELDERS is a core value across cultures. ELDERS' WISDOM is the insight that comes from a lifetime of experience.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CARE", "LESS", "COMMON", "COLD", "SHOWER", "CURTAIN", "CALL", "BLUFF", "DWELLERS"],
+        narrative: "Couldn't CARE LESS means you have zero interest. LESS COMMON means it doesn't happen often. The COMMON COLD is the viral nuisance we all catch. A COLD SHOWER wakes you up fast. A SHOWER CURTAIN keeps water in the tub. A CURTAIN CALL is when performers take their bows. To CALL A BLUFF is to challenge someone's claim. BLUFF DWELLERS are people who live on elevated terrain overlooking water or valleys.",
+        difficulty: 'EASY'
+    },
 ];

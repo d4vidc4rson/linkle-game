@@ -2827,4 +2827,54 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "Couldn't CARE LESS means you have zero interest. LESS COMMON means it doesn't happen often. The COMMON COLD is the viral nuisance we all catch. A COLD SHOWER wakes you up fast. A SHOWER CURTAIN keeps water in the tub. A CURTAIN CALL is when performers take their bows. To CALL A BLUFF is to challenge someone's claim. BLUFF DWELLERS are people who live on elevated terrain overlooking water or valleys.",
         difficulty: 'EASY'
     },
+    {
+        solution: ["KITCHEN", "SINK", "LOWER", "THIRD", "SPACE", "JAM", "PACKED", "TIGHT", "WAD"],
+        narrative: "A KITCHEN SINK is where you wash dishes—or throw everything including it. To SINK LOWER is to descend further. A LOWER THIRD is the graphic at the bottom of TV screens showing names and titles. THIRD SPACE is the social environment beyond home and work. SPACE JAM is the Michael Jordan and Looney Tunes movie. JAM PACKED means completely full. PACKED TIGHT means squeezed in with no room to spare. A TIGHTWAD is someone too cheap to spend a dime.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TREAD", "LIGHTLY", "ROASTED", "ALMOND", "MILK", "TOAST", "TRAUMA", "BOND", "INDEX"],
+        narrative: "To TREAD LIGHTLY is to proceed with caution. LIGHTLY ROASTED describes a gentler roast. A ROASTED ALMOND is the crunchy nut snack. ALMOND MILK is the dairy-free alternative. MILK TOAST is bland comfort food (and milquetoast is the timid personality). TOAST TRAUMA is the embarrassment from giving or receiving a terrible toast—like that rambling best man speech at a wedding. A TRAUMA BOND is the unhealthy attachment formed through abuse cycles. A BOND INDEX tracks the performance of fixed-income securities.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BREATHE", "DEEP", "FRIED", "FISH", "TACO", "TRUCK", "BED", "BUG", "DEVICE"],
+        narrative: "To BREATHE DEEP is to take a full, calming breath. DEEP FRIED means submerged in hot oil until crispy. FRIED FISH is a classic preparation. A FISH TACO is the Baja California specialty. A TACO TRUCK serves mobile Mexican food. A TRUCK BED is the cargo area of a pickup. A BED BUG is the bloodsucking pest of nightmares. A BUG DEVICE is a hidden surveillance tool.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CIGAR", "BUTT", "SNIFF", "COKE", "HEAD", "FAKE", "LEATHER", "FACE", "TIME"],
+        narrative: "A CIGAR BUTT is the stub left after smoking. To BUTT SNIFF is what dogs do when they meet. To SNIFF COKE is to use cocaine nasally. A COKEHEAD is slang for a cocaine addict. A HEAD FAKE is a deceptive move in sports. FAKE LEATHER is pleather or faux leather. LEATHERFACE is the chainsaw-wielding villain from Texas Chainsaw Massacre. FACETIME is Apple's video calling app—or just quality time together.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["EARRING", "STUD", "POKER", "TABLE", "READ", "PROFUSELY", "APOLOGIZE", "PUBLICLY", "ACKNOWLEDGE"],
+        narrative: "An EARRING STUD is a small, simple earring. STUD POKER is the poker variant with face-up cards. A POKER TABLE is where the cards are dealt. A TABLE READ is when actors read through a script together. To READ PROFUSELY is to read excessively—devouring books nonstop. To APOLOGIZE PROFUSELY is to say sorry repeatedly. To APOLOGIZE PUBLICLY is to make amends in the open. To PUBLICLY ACKNOWLEDGE is to recognize something for all to see.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["WORK", "HARD", "ROCK", "SOLID", "GOLD", "BAR", "TAB", "COLA", "WARS"],
+        narrative: "To WORK HARD is to put in serious effort. HARD ROCK is the guitar-driven music genre. ROCK SOLID means completely reliable. SOLID GOLD is pure gold—also the 80s TV music show. A GOLD BAR is a brick of bullion. A BAR TAB is your running bill at the pub. TAB COLA was the original diet soda. The COLA WARS were the battle between Coca-Cola and Pepsi for soda supremacy.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TOO", "BIG", "BELLY", "LAUGH", "HARD", "SURFACE", "TENSION", "HEADACHE", "RELIEF"],
+        narrative: "TOO BIG means it won't fit. A BIG BELLY is a large stomach. A BELLY LAUGH is a deep, hearty chuckle. To LAUGH HARD is to crack up completely. A HARD SURFACE is rigid and unyielding. SURFACE TENSION is the property that lets water striders walk on water. A TENSION HEADACHE comes from stress. HEADACHE RELIEF is what aspirin provides.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ARTFULLY", "WRITTEN", "BY", "GEORGE", "MICHAEL", "JORDAN", "SPARKS", "FLY", "WHEEL"],
+        narrative: "ARTFULLY WRITTEN means skillfully composed. WRITTEN BY gives authorship credit. 'BY GEORGE!' is the exclamation of surprised discovery. GEORGE MICHAEL was the Wham! singer who went solo with 'Careless Whisper.' MICHAEL JORDAN is basketball royalty. JORDAN SPARKS—whether the singer Jordin or just the name—brings the heat. SPARKS FLY when there's chemistry or conflict. A FLYWHEEL stores rotational energy and keeps things spinning.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SECONDHAND", "SMOKE", "GRASS", "LAWN", "TENNIS", "SKIRT", "ISSUE", "NUMBER", "SEQUENCE"],
+        narrative: "SECONDHAND SMOKE is the exhaled smoke you unwillingly breathe. To SMOKE GRASS is slang for using marijuana. GRASS LAWN is the green carpet of suburbia. LAWN TENNIS is the formal name for the sport played at Wimbledon. A TENNIS SKIRT is the pleated athletic wear. To SKIRT AN ISSUE is to avoid addressing it. An ISSUE NUMBER identifies a magazine or comic edition. A NUMBER SEQUENCE is an ordered series of numbers.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DOMESTIC", "PET", "SOUNDS", "BAD", "SANTA", "CON", "FAB", "FOUR", "HORSEMEN"],
+        narrative: "A DOMESTIC PET is an animal kept at home. PET SOUNDS is the Beach Boys' 1966 masterpiece album. SOUNDS BAD means something doesn't seem good. BAD SANTA is the dark comedy with Billy Bob Thornton. SANTACON is the annual pub crawl where thousands dress as Santa. A CONFAB is an informal chat or discussion. The FAB FOUR is the Beatles' nickname. The FOUR HORSEMEN are the apocalyptic riders—or Ric Flair's wrestling stable.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

@@ -2877,4 +2877,54 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "A DOMESTIC PET is an animal kept at home. PET SOUNDS is the Beach Boys' 1966 masterpiece album. SOUNDS BAD means something doesn't seem good. BAD SANTA is the dark comedy with Billy Bob Thornton. SANTACON is the annual pub crawl where thousands dress as Santa. A CONFAB is an informal chat or discussion. The FAB FOUR is the Beatles' nickname. The FOUR HORSEMEN are the apocalyptic riders—or Ric Flair's wrestling stable.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["IN", "LOVE", "PARADE", "FLOAT", "AWAY", "LUGGAGE", "CARRIER", "PIGEON", "POOP"],
+        narrative: "To be IN LOVE is to be romantically smitten. The LOVE PARADE was Berlin's massive EDM street parade that drew millions. A PARADE FLOAT is a decorated vehicle in a procession. To FLOAT AWAY is to drift off. AWAY LUGGAGE is the trendy direct-to-consumer suitcase brand. A LUGGAGE CARRIER is a rack for transporting bags. A CARRIER PIGEON delivers messages by wing. PIGEON POOP is what they leave on your car and statues.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["LITTLE", "PARIS", "TEXAS", "RANGER", "RICK", "SPRINGFIELD", "MISSOURI", "TIGERS", "TAIL"],
+        narrative: "LITTLE PARIS is any neighborhood with Parisian flair. PARIS, TEXAS is the haunting Wim Wenders film. A TEXAS RANGER is a member of the legendary law enforcement division. RANGER RICK is the beloved children's nature magazine. RICK SPRINGFIELD is the 80s rocker behind 'Jessie's Girl.' SPRINGFIELD, MISSOURI is a city in the Ozarks. The MISSOURI TIGERS are the Mizzou athletic teams. A TIGER'S TAIL is something you don't want to grab.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SUB", "HEADING", "DOWNTOWN", "CHICAGO", "RIVER", "PHOENIX", "MERCURY", "POISONING", "INCIDENT"],
+        narrative: "A SUB HEADING is a secondary title beneath the main one. HEADING DOWNTOWN means going to the city center. DOWNTOWN CHICAGO is the Loop and its surrounding neighborhoods. The CHICAGO RIVER famously flows backward through the city. RIVER PHOENIX was the talented actor gone too soon. The PHOENIX MERCURY is the WNBA team. MERCURY POISONING is toxic exposure to the heavy metal. A POISONING INCIDENT is an event involving toxic substances.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["WHITE", "KNUCKLE", "UNDER", "PAR", "BAKING", "CHOCOLATE", "CAKE", "POP", "ROCKS"],
+        narrative: "WHITE KNUCKLE means gripping something tightly from fear or tension. To KNUCKLE UNDER is to submit or give in. UNDER PAR means below the expected standard—or a good golf score. PAR BAKING is partially blind-baking a crust. BAKING CHOCOLATE is unsweetened chocolate for recipes. CHOCOLATE CAKE is the dessert everyone loves. A CAKE POP is cake on a stick, dipped in frosting. POP ROCKS are the crackling candy that fizzes on your tongue.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BADLY", "BRUISED", "EGO", "DEATH", "SPIRAL", "HAM", "KNUCKLE", "SANDWICH", "PLATTER"],
+        narrative: "BADLY BRUISED means covered in painful contusions. A BRUISED EGO is wounded pride. EGO DEATH is the complete dissolution of self-identity—a psychedelic milestone. A DEATH SPIRAL is a downward trajectory toward failure. A SPIRAL HAM is pre-sliced for easy serving. A HAM KNUCKLE is the joint end of a ham. A KNUCKLE SANDWICH is slang for a punch to the face. A SANDWICH PLATTER is a tray of assorted sandwiches for a group.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BORN", "LUCKY", "DRAW", "NEAR", "BEER", "BATTER", "UP", "YOURS", "TRULY"],
+        narrative: "BORN LUCKY means naturally fortunate from birth. A LUCKY DRAW is a random prize selection. To DRAW NEAR is to approach or come closer. NEAR BEER is non-alcoholic or low-alcohol beer. BEER BATTER is batter made with beer for frying fish and chips. BATTER UP is the call when a baseball player steps to the plate. UP YOURS is the vulgar dismissal. YOURS TRULY is how you sign a letter—or refer to yourself.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["THINK", "DEEPLY", "SORRY", "SIGHT", "SINGING", "TELEGRAM", "SERVICE", "ELEVATOR", "MUSIC"],
+        narrative: "To THINK DEEPLY is to ponder with great care. DEEPLY SORRY means profoundly apologetic. A SORRY SIGHT is something pitiful to behold. SIGHT SINGING is reading and performing music without prior practice. A SINGING TELEGRAM delivers a message in song. TELEGRAM SERVICE was how urgent messages were sent. A SERVICE ELEVATOR is for staff and freight. ELEVATOR MUSIC is the bland muzak that fills the silence.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CROWD", "SURF", "WAX", "EXISTENTIAL", "THREAT", "AVOIDANCE", "MANEUVER", "AROUND", "MIDNIGHT"],
+        narrative: "To CROWD SURF is to be passed over the audience at a concert. SURF WAX is applied to surfboards for grip. To WAX EXISTENTIAL is to philosophize about existence—like waxing poetic. An EXISTENTIAL THREAT endangers your very existence. THREAT AVOIDANCE is steering clear of danger. An AVOIDANCE MANEUVER is an evasive action. To MANEUVER AROUND is to navigate past obstacles. 'ROUND MIDNIGHT is the Thelonious Monk jazz standard.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MOON", "WALKING", "DEAD", "WINTER", "FUR", "BABY", "BLUE", "STEEL", "OATS"],
+        narrative: "MOONWALKING is Michael Jackson's iconic backward glide. THE WALKING DEAD is the zombie apocalypse TV series. DEAD WINTER is the coldest, harshest part of the season. WINTER FUR is the thick coat animals grow for cold weather. A FUR BABY is a pet treated like a child. BABY BLUE is the soft, pale shade of blue. BLUE STEEL is Derek Zoolander's signature smoldering look. STEEL-CUT OATS are the hearty, chewy oatmeal variety.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ABSOLUTE", "ZERO", "CARBON", "DATING", "POOL", "FILTER", "BUBBLE", "GUM", "DISEASE"],
+        narrative: "ABSOLUTE ZERO is the coldest possible temperature: −273.15°C. ZERO CARBON means no carbon emissions. CARBON DATING determines age using radioactive decay. A DATING POOL is the available singles in your area. A POOL FILTER keeps swimming water clean. A FILTER BUBBLE is the algorithm that shows you only what you want to see. BUBBLE GUM is the chewy pink candy. GUM DISEASE is periodontal trouble—floss more.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

@@ -2927,4 +2927,49 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "ABSOLUTE ZERO is the coldest possible temperature: −273.15°C. ZERO CARBON means no carbon emissions. CARBON DATING determines age using radioactive decay. A DATING POOL is the available singles in your area. A POOL FILTER keeps swimming water clean. A FILTER BUBBLE is the algorithm that shows you only what you want to see. BUBBLE GUM is the chewy pink candy. GUM DISEASE is periodontal trouble—floss more.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["EQUIVOCAL", "TERMS", "SHEET", "METAL", "FATIGUE", "FACTOR", "ANALYSIS", "PARALYSIS", "AGITANS"],
+        narrative: "EQUIVOCAL TERMS are ambiguous or unclear language. A TERMS SHEET outlines the key conditions of a deal. SHEET METAL is thin, flat metal used in construction and manufacturing. METAL FATIGUE is the weakening of material from repeated stress. A FATIGUE FACTOR measures the impact of exhaustion. FACTOR ANALYSIS is a statistical method for identifying underlying variables. ANALYSIS PARALYSIS is when overthinking prevents action. PARALYSIS AGITANS is the old medical term for Parkinson's disease.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ABRAHAM", "LINCOLN", "LOG", "CABIN", "BOY", "GEORGE", "WASHINGTON", "POST", "MALONE"],
+        narrative: "ABRAHAM LINCOLN was the 16th U.S. president who preserved the Union. LINCOLN LOGS are the classic toy building blocks. A LOG CABIN is a rustic house made of logs. A CABIN BOY is a young servant on a ship. BOY GEORGE is the Culture Club frontman. GEORGE WASHINGTON was the first U.S. president. THE WASHINGTON POST is the newspaper that broke Watergate. POST MALONE is the rapper behind 'Circles' and 'Rockstar.'",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SUB", "ATOMIC", "BLONDE", "JOKE", "BOOK", "CLUB", "SODA", "ASH", "CLOUD"],
+        narrative: "SUBATOMIC refers to particles smaller than atoms. ATOMIC BLONDE is the Charlize Theron Cold War action film. A BLONDE JOKE is the tired comedy trope. A JOKE BOOK is a collection of jokes. A BOOK CLUB gathers to discuss literature. CLUB SODA is carbonated water with minerals. SODA ASH is sodium carbonate used in glass and detergent manufacturing. An ASH CLOUD is volcanic debris suspended in the atmosphere.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["JAMES", "BOND", "STREET", "FIGHTER", "JET", "PLANE", "CRASH", "LANDING", "GEAR"],
+        narrative: "JAMES BOND is 007, the suave British spy. BOND STREET is London's upscale shopping destination. STREET FIGHTER is the legendary arcade fighting game. A FIGHTER JET is a military combat aircraft. A JET PLANE is powered by jet engines. A PLANE CRASH is an aviation disaster. A CRASH LANDING is an emergency touchdown. LANDING GEAR is the wheels and struts that let aircraft touch down.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["GO", "PRO", "WRESTLING", "MATCH", "GAME", "PLAY", "GROUND", "BALL", "BEARING"],
+        narrative: "To GO PRO is to turn professional—or grab a GoPro camera. PRO WRESTLING is the theatrical athletic entertainment of WWE and beyond. A WRESTLING MATCH is a bout between grapplers. MATCH GAME is the classic TV game show with fill-in-the-blank humor. GAMEPLAY is how a game is experienced. A PLAYGROUND is where kids climb and swing. A GROUND BALL is a baseball hit along the dirt. A BALL BEARING is a mechanical component that reduces friction.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PETRO", "DOLLAR", "GENERAL", "PURPOSE", "BUILT", "TOUGH", "CROWD", "WORK", "BOOTS"],
+        narrative: "A PETRODOLLAR is oil revenue denominated in U.S. dollars. DOLLAR GENERAL is the discount retail chain. GENERAL PURPOSE means suitable for multiple uses. PURPOSE BUILT means designed specifically for one task. BUILT TOUGH is Ford's truck slogan. A TOUGH CROWD is a hard-to-please audience. CROWD WORK is when a comedian riffs with the audience. WORK BOOTS are sturdy footwear for labor.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["FINELY", "CRUSHED", "VELVET", "CAPE", "MAY", "I", "PHONE", "NUMBER", "PAD"],
+        narrative: "FINELY CRUSHED means ground into tiny pieces. CRUSHED VELVET is the luxurious textured fabric. A VELVET CAPE is a dramatic garment fit for royalty or vampires. CAPE MAY is the charming New Jersey shore town. 'MAY I?' is the polite way to ask permission. An iPHONE is Apple's ubiquitous smartphone. A PHONE NUMBER is how you reach someone. A NUMBER PAD is the numeric keypad for data entry.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["ABSOLUTELY", "NECESSARY", "EVIL", "DEAD", "LAST", "WILL", "POWER", "HUNGRY", "HIPPOS"],
+        narrative: "ABSOLUTELY NECESSARY means completely required. A NECESSARY EVIL is something bad that must be accepted. EVIL DEAD is Sam Raimi's cult horror franchise. DEAD LAST means finishing in final place. A LAST WILL is a testament dictating your final wishes. WILLPOWER is the self-discipline to resist temptation. POWER HUNGRY means craving authority. HUNGRY HUNGRY HIPPOS is the frantic marble-chomping board game.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["EQUAL", "PAY", "EXTRA", "JUDICIAL", "STAY", "MELLOW", "YELLOW", "JACKET", "CROWN"],
+        narrative: "EQUAL PAY means the same wages for the same work. To PAY EXTRA is to spend more than the base price. EXTRAJUDICIAL means outside the legal system. A JUDICIAL STAY is a court-ordered pause on proceedings. STAY MELLOW means keep calm and relaxed. MELLOW YELLOW is the 1966 Donovan song. A YELLOW JACKET is a wasp—or Georgia Tech's mascot. A JACKET CROWN is a dental restoration that covers a tooth.",
+        difficulty: 'HARD'
+    },
 ];

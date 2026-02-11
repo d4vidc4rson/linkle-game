@@ -369,6 +369,9 @@
         isolation: isolate; /* Create new stacking context */
         min-height: 3em; /* Ensure button has height for pseudo-elements */
     }
+    .start-screen-container .button:not(.button-outline):not(.button-signup) {
+        font-size: 1.75rem;
+    }
     
     /* Face (with shimmer for default button) */
     .start-screen-container .button::after {
@@ -2889,6 +2892,9 @@
       .start-screen-container .button {
         font-size: 1.5em;
         padding: 0.75em 2.5em;
+      }
+      .start-screen-container .button:not(.button-outline):not(.button-signup) {
+        font-size: 1.75em;
       }
 
       /* --- Desktop Layout Overrides for Cohesion --- */

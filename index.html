@@ -289,7 +289,7 @@
         display: flex;
         flex-direction: column;
         gap: calc(var(--grid-unit) * 2);
-        margin-top: var(--grid-unit);
+        margin-top: calc(var(--grid-unit) * 2);
         width: 100%;
         max-width: 192px;
     }
@@ -2836,7 +2836,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.25em; /* Match header gap: same space tagline→Play as logo→tagline */
+        gap: 2.5em; /* Space between tagline and Play (2× header gap) */
         width: 100%;
         max-width: 30em;
       }
@@ -4439,7 +4439,7 @@
         margin-top: calc(var(--grid-unit) * 2);
       }
       .start-screen-buttons {
-        margin-top: calc(var(--grid-unit) * 2);
+        margin-top: calc(var(--grid-unit) * 4);
       }
     }
 

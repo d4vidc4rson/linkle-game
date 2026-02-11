@@ -289,7 +289,9 @@
         display: flex;
         flex-direction: column;
         gap: calc(var(--grid-unit) * 2);
-        margin-top: calc(var(--grid-unit) * 5);
+        margin-top: var(--grid-unit);
+        width: 100%;
+        max-width: 192px;
     }
     .start-screen-interaction {
         display: flex;
@@ -2834,7 +2836,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 3.5em; /* Space between lock-up and buttons */
+        gap: 1.25em; /* Match header gap: same space tagline→Play as logo→tagline */
         width: 100%;
         max-width: 30em;
       }
@@ -2879,6 +2881,7 @@
       }
       .start-screen-buttons {
         margin-top: 0;
+        max-width: 14.4em;
       }
       .start-screen-container .button {
         font-size: 1.5em;
@@ -4305,6 +4308,9 @@
       .start-screen-interaction {
         margin-top: 0;
       }
+      .start-screen-buttons {
+        margin-top: 0;
+      }
       .welcome-back-message {
         margin-top: calc(var(--grid-unit) * 4);
       }
@@ -4430,6 +4436,9 @@
 
     @media (max-width: 767px) {
       .start-screen-container .tagline {
+        margin-top: calc(var(--grid-unit) * 2);
+      }
+      .start-screen-buttons {
         margin-top: calc(var(--grid-unit) * 2);
       }
     }

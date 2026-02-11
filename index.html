@@ -278,12 +278,12 @@
     .mini-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 4px;
+        gap: 6px;
     }
     .mini-grid-tile {
         aspect-ratio: 1 / 1;
         background-color: #00bf63;
-        border-radius: calc(var(--border-radius) / 2);
+        border-radius: calc(var(--border-radius) * 0.75);
     }
     .mini-grid-tile.highlight {
         background-color: #9379E6;
@@ -2858,7 +2858,7 @@
         padding: 4px;
       }
       .start-screen-container .mini-grid {
-        gap: 4px;
+        gap: 6px;
       }
       .start-screen-container .header svg {
         max-width: 14.4em;

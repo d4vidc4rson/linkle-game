@@ -242,7 +242,7 @@ const App = () => {
                                         <button className="button" onClick={handlePlayClick}><span>Play</span></button>
                                         {!user && (
                                             <>
-                                                <button className="button button-outline" onClick={() => handleShowAuth('login')}><span>Login</span></button>
+                                                <button className="start-screen-login-link" onClick={() => handleShowAuth('login')}>- Login -</button>
                                                 <button className="button button-signup" onClick={() => handleShowAuth('signup')}><span>Sign-Up</span></button>
                                             </>
                                         )}

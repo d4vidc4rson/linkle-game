@@ -288,7 +288,7 @@
     .start-screen-buttons {
         display: flex;
         flex-direction: column;
-        gap: var(--grid-unit);
+        gap: calc(var(--grid-unit) * 2);
         margin-top: calc(var(--grid-unit) * 5);
     }
     .start-screen-interaction {
@@ -318,6 +318,21 @@
         width: 18px;
         height: 18px;
     }
+    .start-screen-login-link {
+        background: none;
+        border: none;
+        color: var(--tagline-text);
+        font-family: var(--font-ui);
+        font-size: 1.15rem;
+        font-weight: 400;
+        cursor: pointer;
+        padding: calc(var(--grid-unit) * 0.5) 0;
+        transition: color 0.2s ease;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .start-screen-login-link:hover {
+        text-decoration: underline;
+    }
     .welcome-back-message {
       color: var(--primary-text);
       font-family: var(--font-ui);
@@ -337,7 +352,7 @@
     }
     .start-screen-container .button {
         font-size: 1.5rem;
-        padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 4);
+        padding: calc(var(--grid-unit) * 1.5) calc(var(--grid-unit) * 5);
         background-color: transparent;
         color: var(--button-text);
         position: relative;
@@ -447,10 +462,11 @@
         display: block;
         background-color: #b0a4fb;
         background-image: none;
-        border-radius: 16px !important; /* Face radius - 16px */
+        border-radius: 8px !important;
     }
     .start-screen-container .button.button-outline::before {
         background-color: #8981bd;
+        border-radius: 16px !important;
     }
 
     body[data-theme='dark'] .start-screen-container .button.button-outline {
@@ -459,10 +475,11 @@
     body[data-theme='dark'] .start-screen-container .button.button-outline::after {
         display: block;
         background-color: #b0a4fb;
-        border-radius: 16px !important; /* Face radius - 16px */
+        border-radius: 8px !important;
     }
     body[data-theme='dark'] .start-screen-container .button.button-outline::before {
         background-color: #8981bd;
+        border-radius: 16px !important;
     }
 
     .start-screen-container .button.button-signup {
@@ -477,6 +494,16 @@
     }
     .start-screen-container .button.button-signup::before {
         background-color: #7E57C2;
+    }
+
+    /* Auth buttons: same font size as Play but reduced padding to keep smaller footprint */
+    .start-screen-container .button.button-outline,
+    .start-screen-container .button.button-signup {
+        font-size: 1.5rem;
+        padding: calc(var(--grid-unit) * 0.5) calc(var(--grid-unit) * 2.5);
+        min-height: 1.5em;
+        align-self: center;
+        width: fit-content;
     }
     
     .start-screen-container .button:active {
@@ -2840,6 +2867,9 @@
         text-transform: none; /* Override parent header style */
         text-align: center;   /* Override parent header style */
       }
+      .start-screen-login-link {
+        font-size: 1.2em;
+      }
       .welcome-back-message {
         display: none;
       }
@@ -2852,7 +2882,7 @@
       }
       .start-screen-container .button {
         font-size: 1.5em;
-        padding: 0.75em 2em;
+        padding: 0.75em 2.5em;
       }
 
       /* --- Desktop Layout Overrides for Cohesion --- */
@@ -5463,9 +5493,6 @@
     .start-screen-container .button.button-outline::before {
       background-color: #8981bd;
       outline: 2px solid #3b422e;
-    }
-    [data-theme='dark'] .start-screen-container .button.button-outline {
-      color: #3b422e;
     }
 
     /* Start screen SIGN-UP button - face and shadow (purple) */

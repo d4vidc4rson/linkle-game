@@ -2942,4 +2942,54 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "EQUAL PAY means the same wages for the same work. To PAY EXTRA is to spend more than the base price. EXTRAJUDICIAL means outside the legal system. A JUDICIAL STAY is a court-ordered pause on proceedings. STAY MELLOW means keep calm and relaxed. MELLOW YELLOW is the 1966 Donovan song. A YELLOW JACKET is a wasp—or Georgia Tech's mascot. A JACKET CROWN is a dental restoration that covers a tooth.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["PRIMA", "DONNA", "SUMMER", "DUVET", "COVER", "CROP", "DUSTING", "CLOTH", "NAPKIN"],
+        narrative: "A PRIMA DONNA is a temperamental diva—or the lead soprano. DONNA SUMMER was the Queen of Disco. A SUMMER DUVET is lighter bedding for warm months. A DUVET COVER is the washable shell that protects your duvet. A COVER CROP is planted to protect and enrich soil between growing seasons. CROP DUSTING is aerial pesticide spraying. A DUSTING CLOTH is for wiping away dust. A CLOTH NAPKIN is fabric rather than paper.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SHOW", "PONY", "EXPRESS", "BUS", "SHELTER", "ISLAND", "BED", "REST", "NOTE"],
+        narrative: "A SHOW PONY is flashy display—or a horse bred for exhibition. The PONY EXPRESS was the legendary mail delivery service of the Old West. An EXPRESS BUS makes fewer stops for a faster ride. A BUS SHELTER is the covered structure where you wait. SHELTER ISLAND is the place between the North and South Forks of Long Island. An ISLAND BED is a freestanding garden bed visible from all sides. BED REST is when doctors order you to stay in bed. A REST NOTE is the musical symbol for silence.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CARBON", "BLACK", "ICE", "CHEST", "VOICE", "DUB", "STEP", "SISTER", "CHROMATIDS"],
+        narrative: "CARBON BLACK is the pigment used in tires and ink. BLACK ICE is the invisible hazard on winter roads. An ICE CHEST is a cooler for keeping drinks cold. CHEST VOICE is your lower, resonant vocal register. To VOICE DUB is to replace dialogue in another language. DUBSTEP is the bass-heavy electronic genre. A STEP SISTER is a sibling through a parent's remarriage. SISTER CHROMATIDS are the identical DNA copies before cell division.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LORD", "BRAHMA", "STEER", "HIDE", "OUT", "SOURCE", "MATERIAL", "SCIENCE"],
+        narrative: "LORD BRAHMA is the Hindu creator god. A BRAHMA STEER is a castrated bull of the Brahma cattle breed. STEER HIDE is the leather from cattle. A HIDE OUT is a secret refuge. To OUT SOURCE is to contract work to an external company. SOURCE MATERIAL is the original inspiration or reference. MATERIAL SCIENCE is the study of the properties and applications of materials.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["WEAK", "KNEE", "DEEP", "PLANTAR", "FLEX", "MUSCLE", "CAR", "WASH", "CYCLE"],
+        narrative: "A WEAK KNEE can be unstable or give out easily. KNEE DEEP means submerged to the knees. DEEP PLANTAR refers to structures in the sole of the foot. PLANTAR FLEX is pointing your foot downward. To FLEX a MUSCLE is to show it off. A MUSCLE CAR is a high-performance American vehicle. A CAR WASH cleans your vehicle. A WASH CYCLE is one run through the laundry.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DEAD", "AIR", "BORN", "LUCKY", "BAMBOO", "FOREST", "CANOPY", "COVER", "BAND"],
+        narrative: "DEAD AIR is silence on radio or TV. AIR BORN is Jan Davis's 2023 memoir about a WWII pilot and his astronaut daughter. BORN LUCKY means naturally fortunate. LUCKY BAMBOO is the ornamental plant believed to bring luck. A BAMBOO FOREST is a grove of towering bamboo. The FOREST CANOPY is the dense upper layer of tree branches. CANOPY COVER measures how much ground the canopy shades. A COVER BAND plays other artists' songs.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["STIR", "GENTLY", "TICKLED", "PINK", "CADILLAC", "RANCH", "HOUSE", "DRESSING", "ROOM"],
+        narrative: "To STIR GENTLY is to mix with light, careful motion. GENTLY TICKLED means lightly amused. TICKLED PINK means delighted. A PINK CADILLAC is the iconic car—or the Mary Kay reward. CADILLAC RANCH is the art installation of cars buried nose-down in Texas. A RANCH HOUSE is a single-story American home style. HOUSE DRESSING is the restaurant's signature salad dressing. A DRESSING ROOM is where you try on clothes.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HIGHER", "GROUND", "CINNAMON", "STICK", "BALL", "JOINT", "VENTURE", "CAPITAL", "GAINS"],
+        narrative: "HIGHER GROUND is Stevie Wonder's anthem—or the moral high ground. GROUND CINNAMON is the powdered spice. A CINNAMON STICK is the rolled bark used in mulled cider. STICKBALL is street baseball played with a broom handle. A BALL JOINT is the automotive suspension component. A JOINT VENTURE is a business partnership. VENTURE CAPITAL funds risky startups. CAPITAL GAINS are profits from selling assets.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HEAD", "FIRST", "BORN", "WILD", "MUSTANG", "OFFICER", "MATERIAL", "WITNESS", "BOX"],
+        narrative: "HEAD FIRST means leading with your noggin—dive in. FIRST BORN is the eldest child. BORN WILD means raised in nature. A WILD MUSTANG is a feral horse of the American West. A MUSTANG OFFICER is one who rose from enlisted ranks—military slang. OFFICER MATERIAL means someone fit for leadership. A MATERIAL WITNESS has crucial information for a case. A WITNESS BOX is the British term for the witness stand.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SPINAL", "CORD", "BLOOD", "BROTHER", "GERMANE", "ISSUE", "WARNING", "LABEL", "PRINTER"],
+        narrative: "The SPINAL CORD carries nerve signals through your spine. CORD BLOOD is the stem-cell-rich blood from umbilical cords. A BLOOD BROTHER is a sworn brotherhood. BROTHER GERMANE is a legal term for a full brother who shares both parents with his sibling. A GERMANE ISSUE is one that's actually relevant to the matter. To ISSUE a WARNING is to sound the alarm. A WARNING LABEL cautions about hazards. A LABEL PRINTER produces stickers and tags.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

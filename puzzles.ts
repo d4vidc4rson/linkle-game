@@ -2992,4 +2992,14 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "The SPINAL CORD carries nerve signals through your spine. CORD BLOOD is the stem-cell-rich blood from umbilical cords. A BLOOD BROTHER is a sworn brotherhood. BROTHER GERMANE is a legal term for a full brother who shares both parents with his sibling. A GERMANE ISSUE is one that's actually relevant to the matter. To ISSUE a WARNING is to sound the alarm. A WARNING LABEL cautions about hazards. A LABEL PRINTER produces stickers and tags.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["PREMANENT", "RESIDENT", "PHYSICIAN", "ASSISTANT", "PROFESSOR", "PLUM", "PUDDING", "FACE", "VALUE"],
+        narrative: "A PREMANENT RESIDENT holds long-term immigration status. A RESIDENT PHYSICIAN is a doctor completing training. A PHYSICIAN ASSISTANT (PA) provides care under a doctor's supervision. An ASSISTANT PROFESSOR is a junior faculty rank. PROFESSOR PLUM is the Clue character suspected in the conservatory with the candlestick. PLUM PUDDING is the traditional British Christmas dessert. PUDDING FACE is an insult for a soft, round face. FACE VALUE is the stated worth—or taking something at its apparent meaning.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["IRON", "MAIDEN", "VOYAGE", "CHARTER", "FLIGHT", "RISK", "POOL", "HALL", "MARK"],
+        narrative: "IRON MAIDEN is the legendary heavy metal band. A MAIDEN VOYAGE is a ship's first trip. A VOYAGE CHARTER hires a vessel. A CHARTER FLIGHT is a privately hired plane. A FLIGHT RISK may flee before trial. A RISK POOL shares insurance liability. A POOL HALL has billiard tables. A HALL MARK is a sign of quality.",
+        difficulty: 'HARD'
+    },
 ];

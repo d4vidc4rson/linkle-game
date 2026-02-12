@@ -2993,8 +2993,8 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'IMPOSSIBLE'
     },
     {
-        solution: ["PREMANENT", "RESIDENT", "PHYSICIAN", "ASSISTANT", "PROFESSOR", "PLUM", "PUDDING", "FACE", "VALUE"],
-        narrative: "A PREMANENT RESIDENT holds long-term immigration status. A RESIDENT PHYSICIAN is a doctor completing training. A PHYSICIAN ASSISTANT (PA) provides care under a doctor's supervision. An ASSISTANT PROFESSOR is a junior faculty rank. PROFESSOR PLUM is the Clue character suspected in the conservatory with the candlestick. PLUM PUDDING is the traditional British Christmas dessert. PUDDING FACE is an insult for a soft, round face. FACE VALUE is the stated worth—or taking something at its apparent meaning.",
+        solution: ["PERMANENT", "RESIDENT", "PHYSICIAN", "ASSISTANT", "PROFESSOR", "PLUM", "PUDDING", "FACE", "VALUE"],
+        narrative: "A PERMANENT RESIDENT holds long-term immigration status. A RESIDENT PHYSICIAN is a doctor completing training. A PHYSICIAN ASSISTANT (PA) provides care under a doctor's supervision. An ASSISTANT PROFESSOR is a junior faculty rank. PROFESSOR PLUM is the Clue character suspected in the conservatory with the candlestick. PLUM PUDDING is the traditional British Christmas dessert. PUDDING FACE is an insult for a soft, round face. FACE VALUE is the stated worth—or taking something at its apparent meaning.",
         difficulty: 'IMPOSSIBLE'
     },
     {

@@ -1478,11 +1478,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'HARD'
     },
     {
-        solution: ["YELLOW", "BRICK", "ROAD", "WARRIOR", "PRINCESS", "CUT", "THROAT", "SINGER", "SONGWRITER"],
-        narrative: "The YELLOW BRICK Road is the famous path to the Emerald City in 'The Wizard of Oz.' A BRICK ROAD is a street paved with bricks. A ROAD WARRIOR is someone who travels frequently for work, also the subtitle of 'Mad Max 2.' WARRIOR PRINCESS refers to Xena from the TV series 'Xena: Warrior Princess.' A PRINCESS CUT is a square-shaped diamond cut. CUTTHROAT means ruthlessly competitive. A THROAT SINGER practices the ancient vocal technique from Tuva and Mongolia where multiple pitches are produced simultaneously. A SINGER-SONGWRITER is a musician who writes and performs their own songs.",
-        difficulty: 'HARD'
-    },
-    {
         solution: ["SMOKE", "SIGNAL", "FIRE", "STARTER", "MOTOR", "CITY", "LIGHTS", "CAMERA", "SHY"],
         narrative: "A SMOKE SIGNAL is an ancient form of long-distance communication using puffs of smoke. A SIGNAL FIRE is a beacon lit to send a message or warning. 'FIRESTARTER' is a 1997 hit song by The Prodigy, also someone who starts fires. A STARTER MOTOR is the electric motor that initiates an engine. MOTOR CITY is the nickname for Detroit, home of the American auto industry. 'CITY LIGHTS' is Charlie Chaplin's beloved 1931 silent film. 'LIGHTS, CAMERA, Action!' is the traditional film set command. CAMERA SHY describes someone uncomfortable being photographed or filmed.",
         difficulty: 'HARD'
@@ -1993,11 +1988,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'EASY'
     },
     {
-        solution: ["SALMON", "RUN", "FLAT", "TIRE", "IRON", "MAN", "MADE", "UP", "TURN"],
-        narrative: "A SALMON RUN is when fish swim upstream to spawn. RUN FLAT tires can drive without air. A FLAT TIRE needs to be changed. A TIRE IRON helps change tires. IRON MAN is a triathlon or superhero. MAN-MADE means artificial. MADE UP can mean invented or wearing makeup. An UP TURN is an improvement.",
-        difficulty: 'EASY'
-    },
-    {
         solution: ["PUMPKIN", "PATCH", "WORK", "BENCH", "PRESS", "BOX", "TOP", "COAT", "HANGER"],
         narrative: "A PUMPKIN PATCH grows autumn squash. PATCHWORK is a quilt style with fabric pieces. A WORKBENCH is for crafts and repairs. A BENCH PRESS is a weightlifting exercise. A PRESS BOX is for sports journalists. BOX TOP labels can be collected. A TOPCOAT is an outer garment. A COAT HANGER holds clothing.",
         difficulty: 'EASY'
@@ -2145,11 +2135,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
     {
         solution: ["FIRE", "DRILL", "SERGEANT", "PEPPER", "SPRAY", "TAN", "LINE", "DANCE", "FLOOR"],
         narrative: "A FIRE DRILL practices evacuation. A DRILL SERGEANT trains military recruits. SERGEANT PEPPER is a famous Beatles album. PEPPER SPRAY is for self-defense. A SPRAY TAN adds color artificially. A TAN LINE shows sun exposure. LINE DANCING is choreographed. A DANCE FLOOR is where people dance.",
-        difficulty: 'EASY'
-    },
-    {
-        solution: ["SHADOW", "BOXING", "RING", "LEADER", "BOARD", "CERTIFIED", "PUBLIC", "DOMAIN", "NAME"],
-        narrative: "SHADOW BOXING is practice fighting without an opponent. A BOXING RING is where fights take place. A RINGLEADER organizes a group. A LEADERBOARD shows rankings. BOARD CERTIFIED means professionally qualified. A CERTIFIED PUBLIC accountant handles finances. PUBLIC DOMAIN means freely available. A DOMAIN NAME identifies a website.",
         difficulty: 'EASY'
     },
     {
@@ -2513,11 +2498,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'IMPOSSIBLE'
     },
     {
-        solution: ["GRASS", "FED", "SMOKER", "VOICE", "ACTOR", "NETWORK", "ATTACHED", "STORAGE", "LOCKER"],
-        narrative: "GRASS-FED describes cattle raised on pasture rather than grain. A FED SMOKER is slang for someone who provides information to federal agents (fed + informant smoker). SMOKER VOICE is the raspy vocal quality associated with longtime smokers. A VOICE ACTOR performs dialogue for animation, video games, and dubbing. An ACTOR NETWORK is the sociological theory (ANT) that treats objects as participants in social networks. NETWORK ATTACHED STORAGE (NAS) is a dedicated file storage device on a local network. A STORAGE LOCKER is a rented unit for keeping possessions.",
-        difficulty: 'IMPOSSIBLE'
-    },
-    {
         solution: ["TERMINALLY", "ONLINE", "HARM", "REDUCTION", "PRINT", "SPOOLER", "ALERT", "FATIGUE", "CRACK"],
         narrative: "TERMINALLY ONLINE describes someone so internet-addicted they're disconnected from reality. ONLINE HARM refers to digital abuse, harassment, and exploitation. HARM REDUCTION is the public health approach of minimizing drug use risks without requiring abstinence. REDUCTION PRINT is a printmaking technique where layers are carved from a single block. A PRINT SPOOLER is the system service that manages printer jobs in an operating system. SPOOLER ALERT is a Windows notification about print queue issues. ALERT FATIGUE is the phenomenon where excessive warnings cause people to ignore them. FATIGUE CRACK is a fracture that develops from repeated stress cycles in materials science.",
         difficulty: 'IMPOSSIBLE'
@@ -2535,11 +2515,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
     {
         solution: ["YEET", "CANNON", "FODDER", "CROP", "TOP", "BLOKE", "CORE", "MEMORY", "PALACE"],
         narrative: "The YEET CANNON G1 is a Hi-Point pistol named after the meme-winning entry in their 2019 online naming contest. CANNON FODDER refers to soldiers viewed as expendable in military operations. FODDER CROP is agricultural vegetation grown specifically for animal feed. CROP TOP is the midriff-baring shirt style. A TOP BLOKE is British/Australian slang for a great guy. BLOKE CORE is the TikTok aesthetic of traditional masculine hobbies. CORE MEMORY is the emotional moment that becomes fundamental to identity (from Pixar's Inside Out). A MEMORY PALACE is the mnemonic technique of mentally placing items in an imagined building to improve recall.",
-        difficulty: 'IMPOSSIBLE'
-    },
-    {
-        solution: ["QUIET", "QUITTING", "TIME", "THIEF", "KNOT", "GARDEN", "LEAVE", "BEHIND", "SCENES"],
-        narrative: "QUIET QUITTING is the 2022 workplace trend of doing only the minimum job requirements. QUITTING TIME is the end of the workday. A TIME THIEF is someone or something that wastes your time unproductively. A THIEF KNOT resembles a reef knot but was used by sailors to detect if someone tampered with their belongings. A KNOT GARDEN is the formal garden style with intricately patterned low hedges. GARDEN LEAVE is paid time off during a notice period where the employee stays home. LEAVE BEHIND refers to materials or items left after a meeting or presentation. BEHIND THE SCENES describes what happens out of public view.",
         difficulty: 'IMPOSSIBLE'
     },
     {
@@ -2595,11 +2570,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
     {
         solution: ["SLAPS", "DIFFERENT", "GRAVY", "TRAIN", "SIMULATOR", "SICKNESS", "BEHAVIOR", "CHART", "TOPPER"],
         narrative: "SLAPS is Gen Z slang meaning something is excellent or impressive. SLAPS DIFFERENT means something hits harder or is unexpectedly good. DIFFERENT GRAVY is British slang for being exceptionally high quality. A GRAVY TRAIN is an easy source of money or benefits. A TRAIN SIMULATOR is a video game genre for realistic railway operation. SIMULATOR SICKNESS is the motion-induced nausea from VR or simulation games. SICKNESS BEHAVIOR is the set of symptoms like fatigue and loss of appetite during illness. A BEHAVIOR CHART tracks actions for rewards (common in classrooms). A CHART TOPPER is a song that reaches #1 on music charts.",
-        difficulty: 'IMPOSSIBLE'
-    },
-    {
-        solution: ["DRUM", "BEAT", "DROP", "CULTURE", "VULTURE", "CAPITALISM", "DEATH", "SPIRAL", "FRACTURE"],
-        narrative: "A DRUM BEAT is the rhythmic pattern played on drums. A BEAT DROP is the moment in electronic music when the bass kicks in. DROP CULTURE is the streetwear practice of releasing limited products without notice. A CULTURE VULTURE is someone who appropriates trends from other cultures for clout. VULTURE CAPITALISM describes predatory private equity that strips assets from companies. A CAPITALISM DEATH SPIRAL is the concept of systemic collapse from internal contradictions. A DEATH SPIRAL is an insurance term for adverse selection destroying a market, or a figure skating move. A SPIRAL FRACTURE is a bone break caused by twisting force.",
         difficulty: 'IMPOSSIBLE'
     },
     {

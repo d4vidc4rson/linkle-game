@@ -3002,4 +3002,54 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "IRON MAIDEN is the legendary heavy metal band. A MAIDEN VOYAGE is a ship's first trip. A VOYAGE CHARTER hires a vessel. A CHARTER FLIGHT is a privately hired plane. A FLIGHT RISK may flee before trial. A RISK POOL shares insurance liability. A POOL HALL has billiard tables. A HALL MARK is a sign of quality.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["FEEL", "STRONGLY", "IMPLIED", "VOLITILITY", "SPIKE", "PROTEIN", "POWDER", "ROOM", "ACOUSTICS"],
+        narrative: "To FEEL STRONGLY is to have passionate convictions. STRONGLY IMPLIED means heavily suggested without stating directly. IMPLIED VOLATILITY is the market's expectation of future price swings. A VOLATILITY SPIKE is a sudden surge in price swings. A SPIKE PROTEIN is the coronavirus protein that binds to cells. PROTEIN POWDER is the supplement for building muscle. A POWDER ROOM is the euphemistic bathroom. ROOM ACOUSTICS describes how sound behaves in a space.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["TARGET", "ACQUIRED", "TASTE", "TEST", "SUBJECT", "VERB", "TENSE", "MOMENT", "PASSED"],
+        narrative: "TARGET ACQUIRED is the lock-on confirmation. An ACQUIRED TASTE is something you learn to enjoy. A TASTE TEST is sampling to evaluate flavor. A TEST SUBJECT is a participant in an experiment. SUBJECT-VERB agreement means the action word has to match how many people or things are doing it. VERB TENSE indicates past, present, or future. A TENSE MOMENT is full of anxiety. The MOMENT PASSED and things moved on.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["VAULT", "LOCKED", "IN", "BULK", "UPLOAD", "FAILED", "COMPLETELY", "MENTAL", "CLARITY"],
+        narrative: "A VAULT LOCKED is secure. LOCKED IN means committed or unable to leave. To buy IN BULK is to purchase large quantities. A BULK UPLOAD sends many files at once. UPLOAD FAILED is the dreaded error message. FAILED COMPLETELY means total defeat. COMPLETELY MENTAL is British slang for insane. MENTAL CLARITY is clear, focused thinking.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["BURIAL", "PLOT", "SUMMARY", "JUDGEMENT", "CALL", "SIGN", "LANGUAGE", "BARRIER", "WALL"],
+        narrative: "A BURIAL PLOT is your final resting place. A PLOT SUMMARY is the story synopsis. SUMMARY JUDGEMENT is a court ruling without a full trial. A JUDGEMENT CALL is a decision based on discretion. A CALL SIGN is a radio identifier for aircraft or ships. SIGN LANGUAGE is visual communication for the deaf. A LANGUAGE BARRIER blocks understanding. A BARRIER WALL is a physical obstruction.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["OPENLY", "BI", "POLAR", "OPPOSITE", "DIRECTION", "STYLE", "QUEEN", "BEE", "STING"],
+        narrative: "OPENLY BI means openly bisexual. BI POLAR is the mood disorder (bipolar). POLAR OPPOSITE means complete opposite. OPPOSITE DIRECTION is the other way. DIRECTION and STYLE together shape how something is presented. A STYLE QUEEN is a fashion icon. The QUEEN BEE runs the hive—or the social group. A BEE STING hurts.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["LIGHTLY", "SALTED", "CARAMEL", "POPCORN", "CHICKEN", "LITTLE", "MERMAID", "MYTH", "BUSTERS"],
+        narrative: "LIGHTLY SALTED has just a pinch of salt. SALTED CARAMEL is the beloved sweet-and-salty flavor. CARAMEL POPCORN is Cracker Jack territory. POPCORN CHICKEN is bite-sized fried nuggets. CHICKEN LITTLE thought the sky was falling. THE LITTLE MERMAID is the Disney fairytale. A MERMAID is a MYTH—a legendary creature. MYTHBUSTERS was the Discovery show that tested myths.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DORIAN", "GRAY", "PARTRIDGE", "FAMILY", "CUSTOM", "INTERIOR", "DESIGN", "BRIEF", "ENCOUNTER"],
+        narrative: "DORIAN GRAY is Oscar Wilde's portrait-aging protagonist. A GRAY PARTRIDGE is a game bird. THE PARTRIDGE FAMILY was the 70s musical sitcom. A FAMILY CUSTOM is a tradition passed down. CUSTOM INTERIOR means bespoke furnishings. INTERIOR DESIGN is the profession of shaping spaces. A DESIGN BRIEF spells out the project scope. A BRIEF ENCOUNTER is a short meeting—also the classic David Lean film.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["HUNDRED", "GRAND", "OPENING", "NIGHT", "OWL", "EYES", "FORWARD", "THINKING", "AHEAD"],
+        narrative: "A HUNDRED GRAND is $100,000—or the Nestlé candy bar. A GRAND OPENING launches a new business. OPENING NIGHT is the first performance. A NIGHT OWL stays up late. OWL EYES are large and watchful. EYES FORWARD means look ahead. FORWARD THINKING is progressive and innovative. THINKING AHEAD is planning for the future.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TROPICAL", "PARADISE", "LOST", "SOUL", "FOOD", "PORN", "STAR", "STRUCK", "DOWN", "POUR"],
+        narrative: "TROPICAL PARADISE is the island getaway. PARADISE LOST is Milton's epic about the fall of man. A LOST SOUL is spiritually adrift. SOUL FOOD is Southern comfort cooking. FOOD PORN is those irresistible food photos. A PORN STAR performs in adult films. STAR STRUCK means mesmerized by celebrity. STRUCK DOWN means felled or defeated. A DOWNPOUR is heavy rain.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["FIGHT", "CLUB", "MEMBERS", "ONLY", "FANS", "CHOICE", "CUTS", "DEEP", "FAKE"],
+        narrative: "FIGHT CLUB is the cult film—first rule: don't talk about it. CLUB MEMBERS belong to the organization. MEMBERS ONLY means exclusive access. ONLYFANS is the content subscription platform. FANS' CHOICE is the audience's favorite. CHOICE CUTS are the premium meat selections. CUTS DEEP when the insult wounds. A DEEP FAKE is AI-generated forged video or audio.",
+        difficulty: 'HARD'
+    },
 ];

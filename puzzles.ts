@@ -3052,4 +3052,59 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "FIGHT CLUB is the cult film—first rule: don't talk about it. CLUB MEMBERS belong to the organization. MEMBERS ONLY means exclusive access. ONLYFANS is the content subscription platform. FANS' CHOICE is the audience's favorite. CHOICE CUTS are the premium meat selections. CUTS DEEP when the insult wounds. A DEEP FAKE is AI-generated forged video or audio.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["OPEN", "PRIMARY", "RESIDENCE", "VISA", "SIGNATURE", "COCKTAIL", "DRESS", "BLUES", "SCALE"],
+        narrative: "An OPEN PRIMARY is an election where voters aren't limited by party affiliation. A PRIMARY RESIDENCE is where someone officially lives. A RESIDENCE VISA grants permission to live in a foreign country. VISA SIGNATURE is a premium tier of credit card. A SIGNATURE COCKTAIL is a bar or event's distinctive drink. A COCKTAIL DRESS is semi-formal attire for women. DRESS BLUES are formal military uniforms. A BLUES SCALE is a musical scale used in blues music.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GOVERNMENT", "CHEESE", "WHIZ", "KID", "ROCK", "HUDSON", "BAY", "BRIDGE", "PLAYER"],
+        narrative: "GOVERNMENT CHEESE is processed cheese distributed through U.S. welfare programs. CHEEZ WHIZ is a well-known brand of cheese spread. A WHIZ KID is a young person with exceptional talent. KID ROCK is a famous American musician. ROCK HUDSON was a legendary Hollywood leading man. HUDSON BAY is the massive body of water in northeastern Canada. The BAY BRIDGE connects San Francisco and Oakland across the San Francisco Bay. A BRIDGE PLAYER is someone who plays the classic card game.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CRITICAL", "RAVE", "CULTURE", "JAMMING", "OUT", "CROP", "CIRCLE", "K", "MART"],
+        narrative: "A CRITICAL RAVE is an overwhelmingly positive review from critics. RAVE CULTURE is the social scene surrounding electronic dance music. CULTURE JAMMING is the practice of subverting mainstream media and advertising. JAMMING OUT means enthusiastically playing or listening to music. An OUTCROP is a visible exposure of bedrock at the earth's surface. A CROP CIRCLE is a mysterious pattern flattened into a field of crops. CIRCLE K is a chain of convenience stores. KMART is a well-known department store chain.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CHOICE", "RIB", "CAGE", "MATCH", "CUT", "AWAY", "GAME", "BOY", "KING"],
+        narrative: "A CHOICE RIB is a prime cut of beef graded by the USDA. The RIB CAGE is the skeletal structure that protects the chest organs. A CAGE MATCH is a professional wrestling bout fought inside a steel enclosure. A MATCH CUT is a film editing technique that transitions between visually similar shots. A CUTAWAY is a filmmaking technique that briefly shows something away from the main action. An AWAY GAME is a sporting event played at the opponent's venue. A GAME BOY is Nintendo's iconic handheld gaming console. A BOY KING is a monarch who ascends to the throne as a child, like Tutankhamun.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HEAR", "SAY", "WHEN", "ASKED", "QUESTION", "EVERYTHING", "BAGEL", "SHOP", "STEWARD"],
+        narrative: "HEARSAY is secondhand information that is generally inadmissible in court. SAY WHEN is the phrase used when pouring someone a drink to let them decide how much. WHEN ASKED is a common journalistic construction for quoting a source's response. An ASKED QUESTION is one that has been formally posed, as in 'frequently asked questions.' To QUESTION EVERYTHING is to adopt a skeptical, inquisitive philosophical stance. An EVERYTHING BAGEL is topped with a medley of sesame seeds, poppy seeds, garlic, and salt. A BAGEL SHOP is an establishment specializing in freshly made bagels. A SHOP STEWARD is a union representative who advocates for workers in the workplace.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["FRAGGLE", "ROCK", "STEADY", "STATE", "CHANGE", "AGENT", "SMITH", "CORONA", "DISCHARGE"],
+        narrative: "FRAGGLE ROCK is a beloved Jim Henson puppet TV show from the 1980s. ROCK STEADY is a genre of Jamaican music that preceded reggae. A STEADY STATE is a condition of stable equilibrium in a system. A STATE CHANGE is a transition between physical states of matter, like solid to liquid. A CHANGE AGENT is someone who drives transformation within an organization. AGENT SMITH is the menacing antagonist from The Matrix trilogy. SMITH CORONA is a historic American typewriter and office equipment manufacturer. A CORONA DISCHARGE is an electrical phenomenon where ionized air glows near a charged conductor.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["LEGALLY", "VAGUE", "IDEA", "ECONOMY", "SIZE", "MATTERS", "MOST", "RECENT", "EPOCH"],
+        narrative: "Something LEGALLY VAGUE is unconstitutionally ambiguous under the void-for-vagueness doctrine. A VAGUE IDEA is a hazy, not fully formed concept. The IDEA ECONOMY is a knowledge-based economic model driven by innovation and intellectual capital. An ECONOMY SIZE is a large, value-oriented product package. SIZE MATTERS is a common idiom about the importance of dimensions. What MATTERS MOST is what holds the greatest importance. MOST RECENT means the latest or newest in a sequence. The RECENT EPOCH is another name for the Holocene, Earth's current geological period.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["GREATER", "MANCHESTER", "UNITED", "FRONT", "RUNNING", "GAG", "GIFT", "HORSE", "LATITUDES"],
+        narrative: "GREATER MANCHESTER is a metropolitan county in northwest England. MANCHESTER UNITED is one of the world's most famous football clubs. A UNITED FRONT is a show of collective solidarity against a common challenge. FRONT-RUNNING means leading a race or, in finance, trading ahead of a client's order. A RUNNING GAG is a joke that recurs throughout a performance or conversation. A GAG GIFT is a humorous novelty present meant to get a laugh. A GIFT HORSE is something whose value you shouldn't question, as in 'don't look a gift horse in the mouth.' The HORSE LATITUDES are subtropical ocean regions known for calm winds and stalled sailing ships.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["SITH", "LORD", "BALFOUR", "DECLARATION", "WAR", "CRY", "WOLF", "WHISTLE", "BLOWER"],
+        narrative: "A SITH LORD is a dark side villain in the Star Wars universe. LORD BALFOUR was the British Foreign Secretary behind a pivotal 1917 statement on Palestine. The BALFOUR DECLARATION expressed British support for a Jewish homeland in Palestine. A DECLARATION of WAR is a formal announcement of military hostilities between nations. A WAR CRY is a rallying shout used to intimidate enemies and inspire troops. To CRY WOLF is to raise a false alarm, from Aesop's famous fable about the boy who did it too often. A WOLF WHISTLE is a two-note whistle expressing admiration or attraction. A WHISTLEBLOWER is someone who exposes wrongdoing within an organization.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["STATE", "VISIT", "DURATION", "GAP", "TOOTH", "PICK", "GUARD", "RING", "CYCLE"],
+        narrative: "A STATE VISIT is a formal diplomatic trip by a head of state to another country. A VISIT DURATION is the measured length of a stay. A DURATION GAP is a financial measure of interest rate risk exposure in banking. A GAP TOOTH is a distinctive space between the front teeth. A TOOTHPICK is a small pointed stick used for cleaning between teeth. A PICKGUARD is the protective plate on the body of a guitar. A GUARD RING is a protective band used in electronics or jewelry to prevent signal leakage or stone loss. The RING CYCLE is Richard Wagner's monumental four-opera epic, Der Ring des Nibelungen.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["GOD", "SPEED", "DIAL", "CALIPER", "MOUNT", "FUJI", "WATER", "GATE", "KEEPER"],
+        narrative: "GODSPEED is a blessing wishing someone a safe and prosperous journey. SPEED DIAL is a phone feature for quickly calling frequently used numbers. A DIAL CALIPER is a precision measuring instrument with a circular dial readout. A CALIPER MOUNT is a bracket for attaching brake calipers on a bicycle or vehicle. MOUNT FUJI is Japan's iconic sacred volcano and highest peak. FUJI WATER is mineral water sourced from the pristine springs at the base of Mount Fuji. WATERGATE is the infamous 1970s political scandal that brought down a U.S. president. A GATEKEEPER is someone who controls access to something valuable or important.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

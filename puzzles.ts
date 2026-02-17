@@ -3107,4 +3107,49 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "GODSPEED is a blessing wishing someone a safe and prosperous journey. SPEED DIAL is a phone feature for quickly calling frequently used numbers. A DIAL CALIPER is a precision measuring instrument with a circular dial readout. A CALIPER MOUNT is a bracket for attaching brake calipers on a bicycle or vehicle. MOUNT FUJI is Japan's iconic sacred volcano and highest peak. FUJI WATER is mineral water sourced from the pristine springs at the base of Mount Fuji. WATERGATE is the infamous 1970s political scandal that brought down a U.S. president. A GATEKEEPER is someone who controls access to something valuable or important.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["COCOA", "BUTTER", "FINGER", "PRINT", "PROOF", "POSITIVE", "FEEDBACK", "LOOP", "STITCH"],
+        narrative: "COCOA BUTTER is a natural fat extracted from cacao beans used in chocolate and cosmetics. BUTTERFINGER is a popular candy bar with a crispy peanut butter core. A FINGERPRINT is the unique pattern of ridges on a fingertip used for identification. PRINT PROOF is a test copy used in publishing to check for errors before final printing. PROOF POSITIVE is conclusive evidence that settles a matter beyond doubt. POSITIVE FEEDBACK is a reinforcing response that amplifies a behavior or system output. A FEEDBACK LOOP is a circular system where outputs influence future inputs. A LOOP STITCH is a sewing technique that creates a raised, looped texture.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BUNNY", "HOP", "SCOTCH", "EGG", "WHITE", "WITCH", "HAZEL", "NUT", "MEAT"],
+        narrative: "The BUNNY HOP is a playful dance move or a jumping motion. HOPSCOTCH is a classic children's playground game played by hopping between numbered squares. A SCOTCH EGG is a British snack of a hard-boiled egg wrapped in sausage meat and breadcrumbs. EGG WHITE is the clear albumen protein that surrounds the yolk. A WHITE WITCH practices benevolent magic focused on healing and protection. WITCH HAZEL is a flowering plant whose extract is used as an astringent for skin care. A HAZELNUT is the edible nut of the hazel tree, popular in desserts and spreads. NUTMEAT is the edible kernel inside a nut's shell.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["THERAPY", "COUCH", "SURF", "BETTY", "WHITE", "HOUSE", "SPEAKER", "CABINET", "MINISTER"],
+        narrative: "A THERAPY COUCH is the iconic piece of furniture where patients recline during psychoanalysis. To COUCHSURF is to travel by staying on strangers' couches as free accommodation. SURF BETTY is a casual term for a female surfer or beach enthusiast. BETTY WHITE was the beloved actress and comedian known for The Golden Girls and decades of entertainment. The WHITE HOUSE is the official residence and workplace of the U.S. President. The HOUSE SPEAKER is the presiding officer of the U.S. House of Representatives. A SPEAKER CABINET is an enclosure housing loudspeakers in audio equipment. A CABINET MINISTER is a senior government official heading a department in parliamentary systems.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CLANDESTINE", "OPERATION", "ROOM", "TEMPERATURE", "SCALE", "UP", "TEMPO", "CHANGE", "PURSE"],
+        narrative: "A CLANDESTINE OPERATION is a covert mission conducted in secrecy, often by intelligence agencies. An OPERATION ROOM is a sterile medical facility where surgeries are performed. ROOM TEMPERATURE is the ambient temperature of an indoor space, typically around 68-72°F. A TEMPERATURE SCALE is a system for measuring heat, like Celsius or Fahrenheit. To SCALE UP means to increase something in size, scope, or production capacity. UP-TEMPO describes music with a fast, energetic pace and quick beat. A TEMPO CHANGE is a shift in the speed of a musical piece. A CHANGE PURSE is a small pouch or wallet specifically for carrying coins.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KEEP", "GOING", "RETRO", "FUTURE", "SELF", "HELP", "DESK", "JOCKEY", "SHORTS"],
+        narrative: "KEEP GOING means to continue forward without stopping or giving up. GOING RETRO means adopting a vintage or nostalgic style from past decades. RETRO-FUTURE describes a design aesthetic imagining the future from a past era's perspective, like 1950s visions of the year 2000. Your FUTURE SELF is the person you will become through your choices and experiences. SELF-HELP refers to personal development resources for improving one's life without professional assistance. A HELP DESK is a support service that assists users with technical or customer service issues. A DESK JOCKEY is slang for an office worker who sits at a desk all day. JOCKEY SHORTS are a brand name for men's brief-style underwear.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["PLYMOUTH", "ROCK", "GARDEN", "VARIETY", "SHOW", "TUNE", "SMITH", "COLLEGE", "HUMOR"],
+        narrative: "PLYMOUTH ROCK is the historic Massachusetts site where the Pilgrims allegedly first landed in 1620. A ROCK GARDEN is a landscaping style featuring stones, boulders, and alpine plants. GARDEN-VARIETY means ordinary or commonplace, nothing special. A VARIETY SHOW is an entertainment format featuring diverse acts like comedy, music, and dance. A SHOW TUNE is a song written for and performed in a musical theater production. A TUNESMITH is a songwriter or composer who crafts melodies. SMITH COLLEGE is a prestigious women's liberal arts college in Northampton, Massachusetts. COLLEGEHUMOR is a comedy brand and website known for viral videos and satirical content targeting young adults.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["ROAD", "WORK", "VIRTUAL", "ASSISTANT", "DEAN", "MARTIN", "SHORT", "BREAD", "LINE"],
+        narrative: "ROADWORK refers to construction, maintenance, or repairs being performed on streets and highways. To WORK VIRTUAL means to operate in a digital environment or perform duties remotely through technology. A VIRTUAL ASSISTANT is an AI-powered digital helper or a remote human worker providing administrative support. An ASSISTANT DEAN is a university administrator who supports the dean in managing an academic division. DEAN MARTIN was the legendary crooner, actor, and member of the Rat Pack. MARTIN SHORT is the acclaimed Canadian-American comedian and actor known for his energetic characters. SHORTBREAD is a rich, crumbly Scottish butter cookie with a tender texture. A BREADLINE is a queue where people wait to receive free food during times of economic hardship.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["VISCOUS", "LIQUIDS", "ASSETS", "FROZEN", "PIZZA", "PAN", "ASIAN", "AMERICAN", "PSYCHO"],
+        narrative: "VISCOUS LIQUIDS are thick, sticky fluids like honey or syrup that resist flowing. LIQUID ASSETS are financial resources that can be quickly converted to cash, like stocks or bonds. FROZEN ASSETS are funds or property legally seized or blocked by authorities. FROZEN PIZZA is a convenient pre-made pizza stored in the freezer for quick preparation. A PIZZA PAN is a flat, round metal tray used for baking pizza. PAN-ASIAN refers to cuisine or culture that blends elements from multiple Asian countries. ASIAN AMERICAN describes people of Asian descent living in the United States. AMERICAN PSYCHO is the controversial novel by Bret Easton Ellis, later adapted into a cult film starring Christian Bale.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["CAREER", "CRIMINAL", "COURT", "RULING", "ELITE", "SNIPER", "RIFLE", "BRIGADE", "FORMATION"],
+        narrative: "A CAREER CRIMINAL is a habitual offender who makes crime their primary livelihood. A CRIMINAL COURT is a judicial venue where cases involving alleged crimes are tried. A COURT RULING is an official decision or judgment issued by a judge or panel of judges. The RULING ELITE are the small, powerful group who control a society's political and economic systems. An ELITE SNIPER is a highly trained marksman capable of precision shooting from concealed positions. A SNIPER RIFLE is a specialized long-range firearm designed for accurate shooting at distant targets. A RIFLE BRIGADE is a military unit historically armed with rifles rather than muskets. A BRIGADE FORMATION is the tactical arrangement of a military brigade's units for battle or movement.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

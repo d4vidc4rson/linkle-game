@@ -3197,4 +3197,9 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "TECH-SAVVY means knowledgeable and comfortable with modern technology and digital tools. A SAVVY CONSUMER is a smart, informed shopper who makes wise purchasing decisions. CONSUMER DEMAND is the desire and willingness of buyers to purchase goods and services at various prices. DEMAND SHRINKING means decreasing consumer interest or purchasing activity in a market. A SHRINKING VIOLET is an idiom for an extremely shy, timid person who avoids attention. A VIOLET FLOWER is a purple or blue-purple blossom from plants in the genus Viola. A FLOWER CHILD is a term for young hippies in the 1960s-70s who promoted peace and love. A CHILD PRODIGY is a young person who displays exceptional abilities or talents far beyond their years.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["ALI", "EXPRESS", "BUS", "MILE", "POST", "WAR", "HEAD", "BUTT", "END"],
+        narrative: "ALI EXPRESS is the online shopping platform. An EXPRESS BUS gets you there faster. A BUS MILE is a standard metric for measuring the distance a bus operates while in service, often used to calculate costs and efficiency. A MILE POST marks distance along a road. POST WAR refers to the period after a war. A WAR HEAD is the explosive part of a missile. To HEAD BUTT is to strike with the head. The BUTT END is the thick, handle-end of a tool, weapon, or sporting implement, such as a hockey stick, lacrosse stick, or rifle.",
+        difficulty: 'HARD'
+    },
 ];

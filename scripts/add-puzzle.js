@@ -231,11 +231,14 @@ if (!args.dryRun && !validDifficulties.includes(args.difficulty)) {
 // Load index and validate
 const bigramIndex = loadBigramIndex();
 const { errors, conflicts } = validatePuzzle(args.solution, bigramIndex);
+const exactConflicts = conflicts.filter((c) => c.type === 'exact');
+const reverseConflicts = conflicts.filter((c) => c.type === 'reverse');
+const allowed = errors.length === 0 && reverseConflicts.length === 0 && exactConflicts.length <= 1;
 
 // Output results
 if (args.json) {
     const result = {
-        valid: errors.length === 0 && conflicts.length === 0,
+        valid: allowed,
         solution: args.solution,
         errors,
         conflicts,
@@ -254,20 +257,25 @@ if (errors.length > 0) {
     errors.forEach(e => console.log(`   - ${e}`));
 }
 
-if (conflicts.length > 0) {
-    console.log('❌ Bigram conflicts:');
-    conflicts.forEach(c => {
-        if (c.type === 'exact') {
-            console.log(`   - Pair ${c.position}: ${c.pair} (already exists)`);
-        } else {
-            console.log(`   - Pair ${c.position}: ${c.pair} (reverse ${c.reversePair} exists)`);
-        }
+if (reverseConflicts.length > 0) {
+    console.log('❌ Bigram conflicts (reverse pairs not allowed):');
+    reverseConflicts.forEach((c) => {
+        console.log(`   - Pair ${c.position}: ${c.pair} (reverse ${c.reversePair} exists)`);
     });
 }
 
-if (errors.length === 0 && conflicts.length === 0) {
-    console.log('✅ All 8 bigrams are unique!\n');
-    
+if (exactConflicts.length > 1) {
+    console.log('❌ Too many reused bigrams (at most one allowed):');
+    exactConflicts.forEach((c) => console.log(`   - Pair ${c.position}: ${c.pair} (already exists)`));
+}
+
+if (exactConflicts.length === 1 && reverseConflicts.length === 0) {
+    console.log(`⚠️  Pair ${exactConflicts[0].position}: ${exactConflicts[0].pair} already used (one reuse allowed).`);
+}
+
+if (allowed) {
+    console.log(exactConflicts.length === 0 ? '✅ All 8 bigrams are unique!\n' : '✅ Valid (one reused bigram allowed).\n');
+
     if (args.dryRun) {
         console.log('🔸 Dry run mode - puzzle was NOT added');
         console.log('   Remove --dry-run to add the puzzle to puzzles.ts');

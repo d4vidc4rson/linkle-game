@@ -9,9 +9,9 @@ Our goal is to create puzzles that are **clever, not obscure**. A great puzzle r
 These two rules apply to ALL puzzles, regardless of their intended difficulty. A puzzle that violates either of these rules is fundamentally flawed and must be rejected or redesigned.
 
 ### 1. The Rule of Uniqueness
-- **Definition:** Each connected word pair (e.g., `KEY`-`BOARD`) must be unique across the entire puzzle library. A pair used in one puzzle can never be used in another.
-- **Purpose:** Ensures every puzzle provides a fresh challenge and prevents the game from becoming repetitive. It guarantees that each solution is a genuine discovery for the player.
-- **Verification Method:** Before adding any puzzle, you MUST check every single word pair individually against the entire `puzzles.ts` file. Use grep or search to verify each of the 8 pairs in your 9-word chain is unique.
+- **Definition:** At most **one** of the eight connected word pairs in a puzzle may have been used in a previous puzzle; the other seven must be unique across the entire library. A reverse pair (e.g. `BOARD`-`KEY` when `KEY`-`BOARD` exists) is never allowed.
+- **Purpose:** Keeps puzzles mostly fresh while allowing a single reused link when needed. Reverse pairs remain forbidden to avoid ambiguity.
+- **Verification Method:** Before adding any puzzle, check each of the 8 pairs against the bigram index: at most one pair may already exist (exact match); no pair may be the reverse of an existing bigram. Use `add-puzzle.js --dry-run` to validate.
 
 ### 2. The Rule of Directional Order
 - **Definition:** In the chain A → B → C, the pair A→B must form the valid phrase "A B" (not "B A"). The order of words in the puzzle IS the order of the compound word/phrase.

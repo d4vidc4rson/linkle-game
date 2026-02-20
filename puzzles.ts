@@ -3202,4 +3202,19 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "ALI EXPRESS is the online shopping platform. An EXPRESS BUS gets you there faster. A BUS MILE is a standard metric for measuring the distance a bus operates while in service, often used to calculate costs and efficiency. A MILE POST marks distance along a road. POST WAR refers to the period after a war. A WAR HEAD is the explosive part of a missile. To HEAD BUTT is to strike with the head. The BUTT END is the thick, handle-end of a tool, weapon, or sporting implement, such as a hockey stick, lacrosse stick, or rifle.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["BLOB", "FISH", "TAIL", "WIND", "SCREEN", "SHOT", "GLASS", "PAPER", "BOY"],
+        narrative: "A BLOB FISH is a deep-sea fish known for its gelatinous appearance. A FISH TAIL is the tail of a fish, or to fishtail in a vehicle. A TAIL WIND is a wind blowing from behind. A WIND SCREEN is a windshield. A SCREEN SHOT is a capture of what's on a screen. A SHOT GLASS holds a single measure of spirits. Glass paper is abrasive paper used for smoothing or polishing. A PAPER BOY delivers newspapers.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BATTLE", "GROUND", "HOG", "WILD", "FIRE", "STORM", "COCK", "PIT", "FALL"],
+        narrative: "A BATTLE GROUND is where a battle is fought. A GROUND HOG is a woodchuck. To go HOG WILD is to behave wildly. A WILD FIRE is an uncontrolled fire. A FIRE STORM is an intense fire or controversy. A STORM COCK is another name for the mistle thrush, a bird. A COCK PIT is the compartment for the pilot in an aircraft or the driver in a race car. A PIT FALL is a hidden danger or trap.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["MAH", "JONG", "UN", "SAFE", "GUARD", "DOG", "TOOTH", "PASTE", "UP"],
+        narrative: "MAH JONG is the classic tile game. JONG UN is the name of the North Korean leader. UN SAFE means not safe. A SAFE GUARD is a safeguard or protection. A GUARD DOG protects property. A DOG TOOTH is a canine tooth, or the dogtooth pattern in design. TOOTH PASTE is toothpaste. A PASTE UP is a layout of pasted elements in publishing or design.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

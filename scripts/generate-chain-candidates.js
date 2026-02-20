@@ -158,10 +158,20 @@ function findChainsDFS(unusedNext, startPool, limit) {
     return found;
 }
 
+/** Shuffle array in place (Fisher–Yates). */
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
 /** DFS on full graph allowing at most one "used" bigram; no reverse pairs. */
 function findChainsDFSAllowOneReuse(graph, bigramIndex, limit) {
     const { transitions, startWords } = graph;
     const found = [];
+    const startOrder = shuffle([...startWords]);
 
     function dfs(word, path, usedBudget) {
         if (path.length === 9) {
@@ -184,7 +194,7 @@ function findChainsDFSAllowOneReuse(graph, bigramIndex, limit) {
         return false;
     }
 
-    for (const start of startWords) {
+    for (const start of startOrder) {
         if (found.length >= limit) break;
         if (dfs(start, [start], 1)) break;
     }

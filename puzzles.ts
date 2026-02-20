@@ -3152,4 +3152,49 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "A CAREER CRIMINAL is a habitual offender who makes crime their primary livelihood. A CRIMINAL COURT is a judicial venue where cases involving alleged crimes are tried. A COURT RULING is an official decision or judgment issued by a judge or panel of judges. The RULING ELITE are the small, powerful group who control a society's political and economic systems. An ELITE SNIPER is a highly trained marksman capable of precision shooting from concealed positions. A SNIPER RIFLE is a specialized long-range firearm designed for accurate shooting at distant targets. A RIFLE BRIGADE is a military unit historically armed with rifles rather than muskets. A BRIGADE FORMATION is the tactical arrangement of a military brigade's units for battle or movement.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["TRAINED", "PROFESSIONAL", "BOWLING", "SHOE", "POLISH", "SAUSAGE", "PARTY", "POOPER", "SCOOPER"],
+        narrative: "A TRAINED PROFESSIONAL is someone with formal education and expertise in their field. A PROFESSIONAL BOWLING league features skilled competitors who bowl for prize money. A BOWLING SHOE is specialized footwear with smooth soles designed for sliding on the lanes. SHOE POLISH is a waxy substance used to shine and protect leather footwear. POLISH SAUSAGE is kielbasa, a flavorful smoked sausage originating from Poland. A SAUSAGE PARTY is slang for a gathering with predominantly or exclusively male attendees. A PARTY POOPER is someone who dampens the mood or refuses to participate in fun activities. A POOPER SCOOPER is a tool for picking up pet waste during walks.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SQUATTY", "POTTY", "TRAINED", "DANCER", "SILHOUETTE", "PORTRAIT", "PHOTOGRAPHY", "CLASS", "RANK"],
+        narrative: "The SQUATTY POTTY is a popular bathroom stool that elevates the feet for better posture during elimination. POTTY-TRAINED describes a young child who has learned to use the toilet independently. A TRAINED DANCER has undergone formal instruction in dance techniques and choreography. A DANCER SILHOUETTE is the distinctive outline and shape of a dancer's body in motion. A SILHOUETTE PORTRAIT is an artistic profile rendering showing only the dark outline against a light background. PORTRAIT PHOTOGRAPHY is the art of capturing a person's likeness, personality, and mood in still images. A PHOTOGRAPHY CLASS is an instructional course teaching camera techniques and composition principles. CLASS RANK is a student's academic standing relative to their peers, often expressed as a percentile or ordinal position.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["HIGHLY", "DISTINGUISHED", "ACADEMIC", "RANK", "SYSTEM", "CHECK", "BALANCE", "BOARD", "APPROVAL"],
+        narrative: "HIGHLY DISTINGUISHED means exceptionally honored or renowned for achievements and contributions. A DISTINGUISHED ACADEMIC is a scholar of notable accomplishment and prestige in their field. ACADEMIC RANK refers to the hierarchical position of faculty members, such as assistant, associate, or full professor. A RANK SYSTEM is an organizational structure that orders individuals by status, authority, or achievement. A SYSTEM CHECK is a diagnostic procedure that verifies all components are functioning properly. A CHECK BALANCE is the verification of remaining funds in a financial account. A BALANCE BOARD is a fitness device that challenges equilibrium and core stability by creating an unstable surface. BOARD APPROVAL is the official authorization granted by a governing board or committee.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CORN", "FIELD", "TESTED", "CLINICALLY", "RECOMMENDED", "HIGHLY", "REGARDED", "POORLY", "WRITTEN"],
+        narrative: "A CORNFIELD is an agricultural area planted with rows of corn crops. FIELD-TESTED means proven effective through real-world practical use rather than just laboratory conditions. CLINICALLY TESTED indicates a product has undergone formal medical or scientific trials with human subjects. CLINICALLY RECOMMENDED means endorsed by healthcare professionals based on scientific evidence. Something RECOMMENDED HIGHLY is enthusiastically endorsed as excellent or essential. HIGHLY REGARDED means widely respected and held in esteem by peers or the public. Something REGARDED POORLY is viewed with little respect or low opinion. POORLY WRITTEN describes text that is badly composed with unclear expression, grammatical errors, or weak structure.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["KETTLE", "CORN", "TORTILLA", "SHELL", "GAME", "BALL", "HOG", "WASH", "CLOTH"],
+        narrative: "KETTLE CORN is a sweet and salty popcorn snack traditionally made in large iron kettles. A CORN TORTILLA is a flatbread made from masa, or ground corn, used in Mexican cuisine. A TORTILLA SHELL is a crispy fried corn or flour shell used for tacos and tostadas. The SHELL GAME is a sleight-of-hand con where a pea is hidden under one of three shells. A GAME BALL is the official ball used in a sporting event, often kept as a memento. A BALL HOG is an athlete who monopolizes possession and rarely passes to teammates. HOGWASH is nonsense or meaningless talk, rubbish or baloney. A WASHCLOTH is a small square fabric used for cleaning the body during bathing.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BITTER", "SWEET", "TEA", "KETTLE", "BELL", "BOTTOM", "DOLLAR", "MENU", "OPTIONS"],
+        narrative: "BITTERSWEET describes something that is simultaneously pleasant and painful, a mixture of joy and sorrow. SWEET TEA is a heavily sweetened iced tea beverage popular in the Southern United States. A TEAKETTLE is a metal pot with a spout used for boiling water, often whistling when ready. A KETTLEBELL is a cast-iron weight with a handle used for strength and cardio workouts. BELL-BOTTOMS are pants with legs that flare out dramatically from the knee down, iconic of the 1970s. The BOTTOM DOLLAR is the last of one's money, as in 'you can bet your bottom dollar.' A DOLLAR MENU is a fast-food offering of low-priced items, typically around one dollar each. MENU OPTIONS are the available choices or selections presented in a list.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["HOUSE", "ANGOSTURA", "BITTER", "FEUD", "OVER", "KILL", "SWITCH", "BLADE", "SHARPENER"],
+        narrative: "HOUSE OF ANGOSTURA is the Trinidad-based company famous for producing Angostura aromatic bitters. ANGOSTURA BITTERS is an essential cocktail ingredient made from a secret blend of herbs and spices. A BITTER FEUD is a prolonged, intense conflict marked by deep resentment and hostility. To FEUD OVER something means to quarrel or fight about a particular issue or resource. OVERKILL means using excessive force or effort far beyond what is necessary to achieve a goal. A KILL SWITCH is an emergency shutoff mechanism that immediately stops a machine or system. SWITCHBLADE is a folding knife with a spring-loaded blade that flips out at the push of a button. A BLADE SHARPENER is a tool or device used to restore the cutting edge of knives and blades.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DISPOSABLE", "RAZOR", "SHARP", "TONGUE", "RING", "BEARER", "BOND", "MATURITY", "DATE"],
+        narrative: "A DISPOSABLE RAZOR is a single-use or limited-use shaving tool designed to be thrown away after several uses. RAZOR-SHARP means extremely keen and capable of cutting with minimal pressure, or intellectually acute. A SHARP TONGUE refers to someone who speaks in a cutting, harsh, or sarcastic manner. A TONGUE RING is a piece of body jewelry pierced through the tongue. A RING-BEARER is a young child in a wedding who carries the rings down the aisle. A BEARER BOND is an unregistered security that belongs to whoever physically holds it. BOND MATURITY is the date when a bond's principal is repaid to the investor. A MATURITY DATE is when a financial instrument becomes due for payment or a loan must be fully repaid.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["TECH", "SAVVY", "CONSUMER", "DEMAND", "SHRINKING", "VIOLET", "FLOWER", "CHILD", "PRODIGY"],
+        narrative: "TECH-SAVVY means knowledgeable and comfortable with modern technology and digital tools. A SAVVY CONSUMER is a smart, informed shopper who makes wise purchasing decisions. CONSUMER DEMAND is the desire and willingness of buyers to purchase goods and services at various prices. DEMAND SHRINKING means decreasing consumer interest or purchasing activity in a market. A SHRINKING VIOLET is an idiom for an extremely shy, timid person who avoids attention. A VIOLET FLOWER is a purple or blue-purple blossom from plants in the genus Viola. A FLOWER CHILD is a term for young hippies in the 1960s-70s who promoted peace and love. A CHILD PRODIGY is a young person who displays exceptional abilities or talents far beyond their years.",
+        difficulty: 'HARD'
+    },
 ];

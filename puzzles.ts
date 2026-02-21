@@ -3217,4 +3217,49 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "MAH JONG is the classic tile game. JONG UN is the name of the North Korean leader. UN SAFE means not safe. A SAFE GUARD is a safeguard or protection. A GUARD DOG protects property. A DOG TOOTH is a canine tooth, or the dogtooth pattern in design. TOOTH PASTE is toothpaste. A PASTE UP is a layout of pasted elements in publishing or design.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["HIMILAYAN", "SALT", "WATER", "GUN", "SAFETY", "HARNESS", "RACING", "STRIPE", "PATTERN"],
+        narrative: "HIMILAYAN SALT is pink salt from the region. SALT WATER is seawater or brine. A WATER GUN is a toy that shoots water. GUN SAFETY is the safe handling of firearms. A SAFETY HARNESS is fall-protection equipment. HARNESS RACING is a form of horse racing. A RACING STRIPE is a decorative stripe on a vehicle. A STRIPE PATTERN is a pattern made of stripes.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["WHY", "NOT", "QUITE", "FOND", "FAREWELL", "SPEECH", "PATTERN", "MATCHING", "PAJAMAS"],
+        narrative: "WHY NOT means there is no reason not to. NOT QUITE means almost but not exactly. QUITE FOND means rather fond of something. A FOND FAREWELL is a warm goodbye. A FAREWELL SPEECH is a goodbye address. A SPEECH PATTERN is a characteristic way of speaking. PATTERN MATCHING is comparing data to a pattern. MATCHING PAJAMAS are coordinated sleepwear.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["BEAUTY", "COLLEGE", "MINOR", "INJURY", "OCCURS", "NATURALLY", "FIBROUS", "GROWTH", "SPURT"],
+        narrative: "A BEAUTY COLLEGE is a cosmetology school. A COLLEGE MINOR is a secondary field of study. A MINOR INJURY is a small hurt. When an INJURY OCCURS, it happens. OCCURS NATURALLY means happens in nature. NATURALLY FIBROUS means having natural fibers. A FIBROUS GROWTH is a growth made of fibers. A GROWTH SPURT is a sudden increase in growth.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["BARELY", "SURVIVING", "CHRISTMAS", "MORNING", "MEDITATION", "MUSIC", "FESTIVAL", "SEASON", "FINALE"],
+        narrative: "BARELY SURVIVING means just getting by. SURVIVING CHRISTMAS is a movie or the idea of getting through the holiday. CHRISTMAS MORNING is the morning of December 25. MORNING MEDITATION is meditation done at dawn. MEDITATION MUSIC is calm, reflective music. A MUSIC FESTIVAL is a multi-artist concert event. FESTIVAL SEASON is the time when many festivals happen. A SEASON FINALE is the last episode of a TV season.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PURELY", "MATHEMATICAL", "CONSTANT", "NAGGING", "FEAR", "FACTOR", "ANALYSIS", "PAPAER", "THIN"],
+        narrative: "PURELY MATHEMATICAL means only math. A MATHEMATICAL CONSTANT is a fixed number like pi. CONSTANT NAGGING is incessant pestering. A NAGGING FEAR is a persistent worry. FEAR FACTOR is a TV show or the concept of facing fears. FACTOR ANALYSIS is a statistical method. An ANALYSIS PAPER is a research paper. PAPER THIN means very thin.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["CONNECTIVE", "TISSUE", "PAPER", "TRAIL", "BLAZER", "LINING", "UP", "EARLY", "BIRD"],
+        narrative: "CONNECTIVE TISSUE binds body structures together. TISSUE PAPER is thin, delicate paper. A PAPER TRAIL is a documented record of evidence. A TRAIL BLAZER is a pioneer. BLAZER LINING is the inner fabric of a jacket. LINING UP means forming a line or queue. UP EARLY means rising early in the morning. An EARLY BIRD is someone who wakes or arrives early.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["YOURS", "TRULY", "TIMELESS", "BEAUTY", "GURU", "FIGURE", "EIGHT", "TRACK", "PAD"],
+        narrative: "YOURS TRULY means me or a letter closing. TRULY TIMELESS means classically enduring. TIMELESS BEAUTY is beauty that never fades. A BEAUTY GURU is a makeup or skincare expert. A GURU FIGURE is an authority or expert. A FIGURE EIGHT is the shape of the number 8. An EIGHT TRACK is an old cartridge tape format. A TRACK PAD is a laptop touchpad.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["DRIED", "FIG", "LEAF", "BLOWER", "FAN", "BASE", "JUMP", "SUIT", "YOURSELF"],
+        narrative: "A DRIED FIG is a preserved fig fruit. A FIG LEAF is the leaf of a fig tree or a covering. A LEAF BLOWER is a garden tool that blows leaves. A BLOWER FAN is a fan that blows air. A FAN BASE is the group of fans of something. BASE JUMP is jumping from a fixed object with a parachute. A JUMP SUIT is a one-piece garment. SUIT YOURSELF means do as you please.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["DANTE'S", "INFERNO", "FLAMES", "SPREAD", "EAGLE", "TALON", "STRIKE", "GOLD", "LEAF"],
+        narrative: "DANTE'S INFERNO is the first part of the Divine Comedy. INFERNO FLAMES are the fires of hell. When FLAMES SPREAD, fire extends. SPREAD EAGLE is a position with arms and legs outstretched. An EAGLE TALON is the bird's claw. A TALON STRIKE is a strike with a claw. To STRIKE GOLD is to find success or wealth. GOLD LEAF is very thin gold used for gilding.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

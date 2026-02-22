@@ -3262,4 +3262,49 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "DANTE'S INFERNO is the first part of the Divine Comedy. INFERNO FLAMES are the fires of hell. When FLAMES SPREAD, fire extends. SPREAD EAGLE is a position with arms and legs outstretched. An EAGLE TALON is the bird's claw. A TALON STRIKE is a strike with a claw. To STRIKE GOLD is to find success or wealth. GOLD LEAF is very thin gold used for gilding.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["CUSTARD", "PIE", "SAFE", "DEPOSIT", "SLIP", "CASE", "WORK", "OUT", "PUT"],
+        narrative: "A CUSTARD PIE is a dessert. A PIE SAFE is a cupboard. A SAFE DEPOSIT is secure storage. A DEPOSIT SLIP is a bank form. A SLIP CASE is a book cover. CASE WORK is social work. A WORK OUT is exercise. An OUT PUT is production. A PUT DOWN is an insult.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CUSTARD", "APPLE", "JACK", "FROST", "BITE", "BLOCK", "OUT", "REACH", "THROUGH"],
+        narrative: "A CUSTARD APPLE is a tropical fruit. APPLE JACK is apple brandy or a cereal. JACK FROST nips at your nose. FROST BITE is cold injury. A BITE BLOCK is a dental device. To BLOCK OUT is to exclude. OUT REACH is community outreach. REACH THROUGH means to extend through.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["TAPIOCA", "PUDDING", "MIX", "TAPE", "MEASURE", "UP", "HILL", "BILLY", "BOB"],
+        narrative: "TAPIOCA PUDDING is a dessert. A PUDDING MIX is a boxed mix. A MIX TAPE is a curated tape. A TAPE MEASURE is a measuring tool. To MEASURE UP is to meet a standard. UP HILL means upward. A HILL BILLY is a person from a rural, often mountainous backwoods area. BILLY BOB refers to the actor Billy Bob Thornton.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["CURIOUS", "GEORGE", "JEFFERSON", "AIRPLANE", "HANGER", "STEAK", "KNIFE", "THROWING", "FIT"],
+        narrative: "CURIOUS GEORGE is the mischievous monkey from children's books. GEORGE JEFFERSON is the character from The Jeffersons TV show. JEFFERSON AIRPLANE is the 1960s rock band. An AIRPLANE HANGER is a building where aircraft are stored. A HANGER STEAK is a tender cut of beef. A STEAK KNIFE is used for cutting steak. KNIFE THROWING is a circus or carnival act. A THROWING FIT is a tantrum or outburst of anger.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["COUSCOUS", "PILAF", "RICE", "CAKE", "FLOUR", "MILL", "RUN", "WAY", "STATION"],
+        narrative: "COUSCOUS PILAF is a dish. PILAF RICE is rice cooked pilaf style. RICE CAKE is a snack. CAKE FLOUR is fine flour. A FLOUR MILL grinds grain. MILL RUN is the ungraded output from a mill—grain or flour as it comes off the run, before being sorted into grades. A RUN WAY is a runway. A WAY STATION is a stop.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["NON", "DAIRY", "QUEEN", "ELIZABETH", "HURLEY", "BRAND", "IDENTITY", "THIEF", "LORD"],
+        narrative: "NON DAIRY means free of dairy. DAIRY QUEEN is the ice cream chain. QUEEN ELIZABETH is the British monarch. ELIZABETH HURLEY is the actress. HURLEY BRAND is surf and skate apparel. BRAND IDENTITY is how a brand is perceived. An IDENTITY THIEF steals personal information. The THIEF LORD is a lord of thieves, or the title of a children's novel.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["REGARDING", "HENRY", "FORD", "BRONCO", "TRUCK", "BED", "SPREAD", "BUTTER", "PECAN"],
+        narrative: "REGARDING HENRY is a film about an amnesiac lawyer. HENRY FORD founded Ford Motor Company. The FORD BRONCO is an SUV. A BRONCO TRUCK is a truck model. A TRUCK BED is the cargo bed of a pickup. A BED SPREAD is a bedspread. To SPREAD BUTTER is to apply butter. BUTTER PECAN is an ice cream flavor.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["PASS", "GO", "GET", "HIGH", "HEAL", "SHOE", "HORN", "SECTION", "LEADER"],
+        narrative: "PASS GO is what you do in Monopoly. GO GET means to fetch. GET HIGH is slang for becoming intoxicated. A HIGH HEAL is a type of women's shoe. A HEAL SHOE is a therapeutic or comfort shoe. A SHOE HORN is a curved tool you slip into the back of a shoe so your heel can slide in without crushing the heel counter. A HORN SECTION is the brass section of an orchestra. A SECTION LEADER leads a section.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["EMOTIONAL", "STATE", "MONOPOLY", "POWER", "STEERING", "COMMITTEE", "HEARING", "DAMAGE", "CONTROL"],
+        narrative: "An EMOTIONAL STATE is how you feel. A STATE MONOPOLY is when the state controls an industry. MONOPOLY POWER is dominant market power. POWER STEERING assists steering in a vehicle. A STEERING COMMITTEE guides an organization. A COMMITTEE HEARING is a formal hearing. HEARING DAMAGE is injury to the ears. DAMAGE CONTROL is containing fallout or harm.",
+        difficulty: 'IMPOSSIBLE'
+    },
 ];

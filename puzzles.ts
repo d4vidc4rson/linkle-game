@@ -3307,4 +3307,9 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "An EMOTIONAL STATE is how you feel. A STATE MONOPOLY is when the state controls an industry. MONOPOLY POWER is dominant market power. POWER STEERING assists steering in a vehicle. A STEERING COMMITTEE guides an organization. A COMMITTEE HEARING is a formal hearing. HEARING DAMAGE is injury to the ears. DAMAGE CONTROL is containing fallout or harm.",
         difficulty: 'IMPOSSIBLE'
     },
+    {
+        solution: ["STARBUCKS", "COFFEE", "BEAN", "CASSEROLE", "DINNER", "HOSTESS", "CUPCAKE", "FROSTING", "SPATULA"],
+        narrative: "STARBUCKS COFFEE is the chain's brew. A COFFEE BEAN is the roasted seed used to make coffee. A BEAN CASSEROLE is a baked dish featuring beans, like green bean casserole. A CASSEROLE DINNER is a meal built around a casserole. A DINNER HOSTESS is a woman who hosts a dinner. A HOSTESS CUPCAKE is the snack-cake brand. CUPCAKE FROSTING is the sweet topping on a cupcake. A FROSTING SPATULA is a flat tool for spreading frosting.",
+        difficulty: 'HARD'
+    },
 ];

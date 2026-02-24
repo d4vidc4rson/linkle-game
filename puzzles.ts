@@ -3312,4 +3312,39 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         narrative: "STARBUCKS COFFEE is the chain's brew. A COFFEE BEAN is the roasted seed used to make coffee. A BEAN CASSEROLE is a baked dish featuring beans, like green bean casserole. A CASSEROLE DINNER is a meal built around a casserole. A DINNER HOSTESS is a woman who hosts a dinner. A HOSTESS CUPCAKE is the snack-cake brand. CUPCAKE FROSTING is the sweet topping on a cupcake. A FROSTING SPATULA is a flat tool for spreading frosting.",
         difficulty: 'HARD'
     },
+    {
+        solution: ["KING", "ROBERT", "BLAKE", "LIVELY", "CONVERSATION", "PIT", "BULL", "RIDER", "CLAUSE"],
+        narrative: "KING ROBERT refers to King Robert Baratheon from Game of Thrones. ROBERT BLAKE was the actor. BLAKE LIVELY is the actress. A LIVELY CONVERSATION is an animated exchange. A CONVERSATION PIT is a sunken seating area for talking. A PIT BULL is a breed of dog. A BULL RIDER competes in rodeo. A RIDER CLAUSE is an addition or amendment to a contract.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MEG", "RYAN", "REYNOLDS", "WRAP", "SKIRT", "CHASER", "LIGHT", "BEER", "PONG"],
+        narrative: "MEG RYAN is the actress. RYAN REYNOLDS is the actor. REYNOLDS WRAP is the aluminum foil brand. A WRAP SKIRT is a skirt that wraps and ties. A SKIRT CHASER is slang for someone who pursues women. A CHASER LIGHT is a light in a string or strip that sequences in a running or chasing pattern, one bulb after another. LIGHT BEER is lower-calorie beer. BEER PONG is the drinking game.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["SERENA", "WILLIAMS", "SONOMA", "COUNTY", "CLERK", "POSITION", "STATEMENT", "PIECE", "MEAL"],
+        narrative: "SERENA WILLIAMS is the tennis champion. WILLIAMS SONOMA is the cookware and home retailer. SONOMA COUNTY is the wine-country county in California. A COUNTY CLERK is an elected or appointed official. A CLERK POSITION is a job as a clerk. A POSITION STATEMENT is a formal statement of one's stance. A STATEMENT PIECE is an item that makes a bold impression. PIECE MEAL is another way to say piecemeal—done in stages or pieces.",
+        difficulty: 'HARD'
+    },
+    {
+        solution: ["JAKE", "PAUL", "SIMON", "SAYS", "WHO", "CARES", "ACT", "NORMAL", "DISTRIBUTION"],
+        narrative: "JAKE PAUL is the YouTuber and boxer. PAUL SIMON is the musician. SIMON SAYS is the children's game where you obey only when the leader says \"Simon says.\" SAYS WHO is a retort questioning authority. WHO CARES means it doesn't matter. The CARES ACT is federal pandemic relief legislation. ACT NORMAL means behave ordinarily. A NORMAL DISTRIBUTION is the bell curve in statistics.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["DICK", "TRACY", "MORGAN", "FREEMAN", "DYSON", "VACUUM", "CLEANER", "ENERGY", "BAR"],
+        narrative: "DICK TRACY is the comic-strip detective. TRACY MORGAN is the comedian. MORGAN FREEMAN is the actor. FREEMAN DYSON was the physicist. A DYSON VACUUM is the brand of vacuum. A VACUUM CLEANER sucks up dirt. CLEANER ENERGY is energy from renewable or lower-emission sources. An ENERGY BAR is a snack bar for a quick boost.",
+        difficulty: 'IMPOSSIBLE'
+    },
+    {
+        solution: ["MOBY", "DICK", "JOKE", "GIFT", "WRAP", "PARTY", "BUS", "SHELTER", "ANIMAL"],
+        narrative: "MOBY DICK is the novel and the whale. A DICK JOKE is a vulgar joke. A JOKE GIFT is a gag gift. GIFT WRAP is paper and ribbon for wrapping presents. A WRAP PARTY celebrates the end of filming. A PARTY BUS is a bus used for group partying. A BUS SHELTER is a structure where people wait for the bus. A SHELTER ANIMAL is an animal adopted from a shelter.",
+        difficulty: 'EASY'
+    },
+    {
+        solution: ["SAINT", "ELIZABETH", "TAYLOR", "SWIFT", "BOAT", "CAPTAIN", "JACK", "SPARROW", "NEST"],
+        narrative: "SAINT ELIZABETH is a saint named Elizabeth, such as Elizabeth of Hungary. ELIZABETH TAYLOR was the actress. TAYLOR SWIFT is the singer. A SWIFT BOAT is a fast patrol vessel. A BOAT CAPTAIN commands a boat. CAPTAIN JACK is the Billy Joel song. JACK SPARROW is the pirate in Pirates of the Caribbean. A SPARROW NEST is where a sparrow lays its eggs.",
+        difficulty: 'HARD'
+    },
 ];

@@ -2643,11 +2643,6 @@ export const PREGENERATED_PUZZLES: Puzzle[] = [
         difficulty: 'HARD'
     },
     {
-        solution: ["OLIVE", "OIL", "SLICK", "WILLY", "NILLY", "GRITTY", "CITY", "LIMITS", "TEST"],
-        narrative: "OLIVE OIL is pressed from olives and used in cooking. An OIL SLICK is a layer of oil floating on water. SLICK WILLY was a nickname for Bill Clinton. WILLY-NILLY means in a haphazard or random manner. NITTY-GRITTY refers to the essential details of something. A GRITTY CITY has a tough, urban character. CITY LIMITS are the boundaries of a municipality. A LIMITS TEST examines behavior at extreme values.",
-        difficulty: 'HARD'
-    },
-    {
         solution: ["CHERRY", "COLA", "NUT", "BROWN", "SUGAR", "PLUM", "PUDDING", "HEAD", "PHONES"],
         narrative: "CHERRY COLA is a cola flavored with cherry syrup. A COLA NUT is a caffeine-containing seed from Africa. NUT BROWN is a warm brown color. BROWN SUGAR is sugar with molasses. A SUGAR PLUM is a small candy associated with Christmas. PLUM PUDDING is a traditional British Christmas dessert. A PUDDINGHEAD is a foolish or stupid person. HEADPHONES are audio devices worn over the ears.",
         difficulty: 'HARD'

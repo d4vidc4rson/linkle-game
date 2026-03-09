@@ -115,13 +115,13 @@ export const SCHEDULE_EPOCH = new Date(2025, 10, 9); // Month is 0-indexed, so 1
  * Uses days since SCHEDULE_EPOCH to determine which puzzles to show
  */
 export const calculatePuzzleIndicesForDate = (date: Date): { easy: number; hard: number; impossible: number } => {
-    // Normalize both dates to midnight to ensure consistent day calculation
-    const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    const normalizedEpoch = new Date(SCHEDULE_EPOCH.getFullYear(), SCHEDULE_EPOCH.getMonth(), SCHEDULE_EPOCH.getDate());
+    // Use UTC to avoid DST issues — local midnight arithmetic can collapse two
+    // consecutive calendar days to the same dayIndex when clocks spring forward.
+    const utcDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+    const utcEpoch = Date.UTC(SCHEDULE_EPOCH.getFullYear(), SCHEDULE_EPOCH.getMonth(), SCHEDULE_EPOCH.getDate());
     
-    // Calculate days since epoch
     const msPerDay = 24 * 60 * 60 * 1000;
-    const daysSinceEpoch = Math.floor((normalizedDate.getTime() - normalizedEpoch.getTime()) / msPerDay);
+    const daysSinceEpoch = Math.floor((utcDate - utcEpoch) / msPerDay);
     
     // Handle dates before epoch (shouldn't happen in practice, but be safe)
     const dayIndex = Math.max(0, daysSinceEpoch);

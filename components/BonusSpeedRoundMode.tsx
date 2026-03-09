@@ -287,6 +287,34 @@ export const BonusSpeedRoundMode = () => {
         document.body.dataset.theme = initialTheme;
     }, []);
 
+    // Ensure "today" always shows today's puzzles: if we're on start view and targetDate
+    // is in the past (e.g. app was left open overnight), reset to actual today.
+    const syncTargetDateToToday = useCallback(() => {
+        const now = new Date();
+        const todayKey = formatDateKey(now);
+        const targetKey = formatDateKey(targetDate);
+        if (targetKey < todayKey) {
+            setTargetDate(new Date());
+        }
+    }, [targetDate]);
+
+    useEffect(() => {
+        if (view === 'start') {
+            syncTargetDateToToday();
+        }
+    }, [view, syncTargetDateToToday]);
+
+    // When user returns to the tab, re-sync so overnight sessions get today's puzzle
+    useEffect(() => {
+        const onVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && view === 'start') {
+                syncTargetDateToToday();
+            }
+        };
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+    }, [view, syncTargetDateToToday]);
+
     // Check for circle invite code in URL on mount
     useEffect(() => {
         const checkForInviteCode = async () => {
